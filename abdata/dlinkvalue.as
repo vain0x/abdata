@@ -1,7 +1,7 @@
 // ‘o•ûŒüƒŠƒ“ƒN•t‚«—v‘f
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_DOUBLE_LINK_VALUE_AS__
-#define __ABSTRACT_DATA_STRUCTURE_DOUBLE_LINK_VALUE_AS__
+#ifndef IG_ABDATA_DOUBLE_LINK_VALUE_AS
+#define IG_ABDATA_DOUBLE_LINK_VALUE_AS
 
 #include "mod_pvalptr.as"
 

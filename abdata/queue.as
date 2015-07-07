@@ -1,8 +1,9 @@
 // queue - キュー ( FILO & LIFO )
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_queue_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_queue_AS
+#ifndef IG_ABDATA_QUEUE_AS
+#define IG_ABDATA_QUEUE_AS
 
+#include "abheader.as"
 #include "deque.as"
 
 //##############################################################################
@@ -12,10 +13,14 @@
 // @abdata_queue という使い方はできない ( @abdata_deque に置換されない )
 #define global abdata_queue abdata_deque
 
+#define global Queue_ClsName "queue"
+#define global queueNull dequeNull
+
 //##############################################################################
 //                構築・解体
 //##############################################################################
 
+#define global new_queue    new_deque
 #define global queue_new    deque_new
 #define global queue_delete deque_delete
 

@@ -1,17 +1,19 @@
-// abdata モジュールをすべて使用できるようにします
+// abdata - 一括 import
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_ALL_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_ALL_AS
+#ifndef IG_ABDATA_ALL_AS
+#define IG_ABDATA_ALL_AS
 
 #include "alg_iter.as"
 
+;#include "abelem.as"
+;#include "abheader.as"
 #include "value.as"
 #include "list.as"
 #include "deque.as"
 #include "stack.as"
 #include "queue.as"
 #include "dlinklist.as"
-;include "tree.as"
+#include "tnode.as"
 #include "pair.as"
 #include "unor.as"
 #include "dictionary.as"

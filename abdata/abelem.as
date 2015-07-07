@@ -1,9 +1,10 @@
 // abdata elem
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_ABELEM_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_ABELEM_AS
+#ifndef IG_ABDATA_ABELEM_AS
+#define IG_ABDATA_ABELEM_AS
 
 #include "mod_pvalptr.as"
+#include "mod_opCompare.as"
 
 #module abdata_abelem mValue
 
@@ -77,6 +78,28 @@
 		dimtype mValue, vt
 	}
 	return
+	
+//------------------------------------------------
+// î‰är
+//
+// @result: î‰äríl { -1 (<), 0 (==), +1 (>) }
+//------------------------------------------------
+#modcfunc abelem_cmp var rhs,  local vt, local tmp
+
+	vt(0) = abelem_vartype( thismod )
+	vt(1) = abelem_vartype( rhs )
+	
+	// å^Ç≈î‰är
+	if ( vt(0) != vt(1) ) {
+		return ( vt(0) - vt(1) )
+	}
+	
+	// ílÇ≈î‰är
+	dimtype tmp, vt(0), 2
+	abelem_getv thismod, tmp(0)
+	abelem_getv rhs,     tmp(1)
+	
+	return opCompare( tmp(0), tmp(1) )
 	
 #global
 

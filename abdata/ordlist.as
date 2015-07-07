@@ -1,7 +1,7 @@
 // Ordlist - 整列リスト
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_ORDLIST_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_ORDLIST_AS
+#ifndef IG_ABDATA_ORDLIST_AS
+#define IG_ABDATA_ORDLIST_AS
 
 #include "abelem.as"			// 要素型
 #include "mod_shiftArray.as"	// 配列操作モジュール
@@ -11,7 +11,7 @@
 
 // @ 順序や要素型に自由が利かないリスト
 // @ 探索が最適化できる
-// @ key や abelem 引数が var なので、使いづらい
+// @ key や value 引数が var なので、使いづらい
 
 //##############################################################################
 //                Ordered-List
@@ -288,7 +288,7 @@
 #modcfunc Ordlist_size
 	return mCnt
 	
-#define global Ordlist_n      Ordlist_size
+#define global ctype Ordlist_empty(%1) ( Ordlist_size(%1) == 0 )
 #define global Ordlist_count  Ordlist_size
 #define global Ordlist_length Ordlist_size
 
@@ -301,6 +301,7 @@
 //------------------------------------------------
 // 値の要素番号を得る
 // @private
+// @prm bNoAdd : key が存在しないときでも要素を追加しない。
 //------------------------------------------------
 #modcfunc Ordlist_getIndex@abdata_ordlist var key, int bNoAdd,  local idx
 	

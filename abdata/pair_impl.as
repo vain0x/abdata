@@ -1,7 +1,7 @@
 // pair - ペア (実装)
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_PAIR_IMPL_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_PAIR_IMPL_AS
+#ifndef IG_ABDATA_PAIR_IMPL_AS
+#define IG_ABDATA_PAIR_IMPL_AS
 
 // @ pair
 // @ 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
@@ -20,9 +20,6 @@
 #define ctype ARG_TEMP(%1) st_temp_%1_arg@abdata_pair_impl
 ;#define VAR_TEMP  stt_temp1@abdata_pair_impl
 ;#define VAR_TEMP2 stt_temp2@abdata_pair_impl
-
-#define global pairInsts st_allinsts@abdata_pair_impl
-#define global pairNull  st_null@abdata_pair_impl
 
 //------------------------------------------------
 // 要素の idx 値
@@ -240,7 +237,7 @@
 	
 #else
 
-#define global ContainerImpl_dbglog(%1) :
+#define global pairImpl_dbglog(%1) :
 
 #endif
 	

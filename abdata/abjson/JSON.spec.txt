@@ -1,0 +1,72 @@
+# JSON 文法仕様
+# トークンとトークンの間のどこにでも空白を挿入できる
+
+object 
+	: { }
+	| { members }
+	
+members
+	: pair
+	| pair ',' members
+	
+pair
+	: string ':' value
+	
+array
+	: [ ]
+	| [ elements ]
+	
+elements
+	: value 
+	| value ',' elements
+
+value
+	: string
+	| number
+	| object
+	| array
+	| true
+	| false
+	| null
+
+string
+	: ""
+	| '"' chars '"'
+
+chars
+	: char+
+	
+char
+	: any-Unicode-character-
+		except-"-or-\-or-
+		control-character
+	| '\'([\/bfnrt]|u four-hex-digits)
+	
+number
+	: int
+	| int frac
+	| int exp
+	| int frac exp
+	
+int
+	: digit
+	| digit1-9 digits 
+	| '-' digit
+	| '-' digit1-9 digits
+	
+frac
+	: . digits
+	
+exp
+	: e digits
+	
+digits
+	: digit
+	| digit digits
+e
+	: e
+	| e+
+	| e-
+	| E
+	| E+
+	| E-

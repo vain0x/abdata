@@ -1,7 +1,16 @@
 // unor - 連想配列 ( 不整列コンテナ ) (実装)
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_UNORDERED_IMPL_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_UNORDERED_IMPL_AS
+#ifndef IG_ABDATA_UNOR_IMPL_AS
+#define IG_ABDATA_UNOR_IMPL_AS
+
+// @ unor
+// @ mlistKey   := key のリスト。この添字は mlistValue と共通する。
+// @ mlistValue := val のリスト。この添字は mlistKey   と共通する。
+// @ unor の要素番号 := mlistKey, mlistValue で共通する添字。要素を追加するごとに変化することも考えられる。
+// @	内部では、_getIndex() で取得する。
+// @	要素へのアクセスは、基本的に key を _getIndex() で変換する関数と、それに対応する _byIndex_() 関数を使う。
+// @ key := 要素を特定するための、特定の文字列。str 型に限る。同じ文字列のキーは、1つの Unor に、高々1つ存在する。
+// @ 
 
 #include "list.as"
 #include "alg_iter.as"
@@ -11,9 +20,7 @@
 //                abdata::unordered
 //##############################################################################
 #module abdata_unor_impl mlistKey, mlistValue
-
-#define global unorInsts st_allinsts@abdata_unor_impl
-#define global unorNull  st_unorNull@abdata_unor_impl 
+;, mbMutual
 
 #define ctype ARG_TEMP(%1) st_temp_%1_arg@abdata_unor_impl
 ;#define MAX_HASH 53
@@ -22,12 +29,6 @@
 #define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
 #define true  1
 #define false 0
-
-// @ mlistKey   := key のリスト。この添字は mlistValue と共通する。
-// @ mlistValue := val のリスト。この添字は mlistKey   と共通する。
-// @ unor の要素番号 := mlistKey, mlistValue で共通する添字。要素を追加するごとに変化することも考えられる。
-// @	内部では、_getIndex() で取得する。
-// @ key := 要素を特定するための、特定の文字列。str 型に限る。同じ文字列のキーは、1つの Unor に、高々1つ存在する。
 
 //##############################################################################
 //                構築・解体
@@ -58,6 +59,10 @@
 //################################################
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
+// 
+// @ *_get_v_byIndex_ : (idx) → value
+// @ *_get_v_         : (key) → idx : *_get_v_byIndex_
+// @ *_get_try_v_()   : *_get_v_ の、キーが存在しないとき失敗し false を返す版。
 //------------------------------------------------
 #modfunc unorImpl_getv_byIndex_ int i, var result, int bRemove
 	list_getv mlistValue, result, i
@@ -71,8 +76,15 @@
 	unorImpl_getv_byIndex_ thismod, unorImpl_getIndex(thismod, key), result, bRemove
 	return
 	
-#define global unorImpl_getv(%1,%2="",%3) unorImpl_getv_ %1, %2, %3, 0
-#define global unorImpl_popv(%1,%2="",%3) unorImpl_getv_ %1, %2, %3, 1
+#modcfunc unorImpl_try_getv_ str key, var result, int bRemove,  local idx
+	idx = unorImpl_getIndex(thismod, key, true)
+	if ( idx < 0 ) { return false }
+	
+	unorImpl_getv_byIndex_ thismod, idx, result, bRemove
+	return true
+	
+#define global unorImpl_getv(%1, %2 = "", %3) unorImpl_getv_ %1, %2, %3, 0
+#define global unorImpl_popv(%1, %2 = "", %3) unorImpl_getv_ %1, %2, %3, 1
 
 //------------------------------------------------
 // 値の取得 ( 関数形式 )
@@ -81,8 +93,14 @@
 	unorImpl_getv_ thismod, key, tmp, bRemove
 	return tmp
 	
-#define global ctype unorImpl_get(%1,%2="") unorImpl_get_(%1, %2, 0)
-#define global ctype unorImpl_pop(%1,%2="") unorImpl_get_(%1, %2, 1)
+#modcfunc unorImpl_tryget_ str key, var result, int bRemove,  local tmp
+	return unorImpl_try_getv_( thismod, key, result, bRemove )
+	
+#define global ctype unorImpl_get(%1, %2 = "") unorImpl_get_(%1, %2, 0)
+#define global ctype unorImpl_pop(%1, %2 = "") unorImpl_get_(%1, %2, 1)
+
+#define global ctype unorImpl_tryget(%1, %2 = "", %3) unorImpl_tryget_(%1, %2, %3, 0)
+#define global ctype unorImpl_trypop(%1, %2 = "", %3) unorImpl_tryget_(%1, %2, %3, 1)
 
 //------------------------------------------------
 // 参照化 ( 命令形式 )
@@ -98,7 +116,8 @@
 //------------------------------------------------
 // 参照化 ( 関数形式 )
 //------------------------------------------------
-#define global ctype unorImpl_ref(%1,%2="") ARG_TEMP@abdata_unor_impl(ref)( unorImpl_ref_(%1,%2) )
+	dim ARG_TEMP@abdata_unor_impl(ref)		// 警告対策
+#define global ctype unorImpl_ref(%1, %2 = "") ARG_TEMP@abdata_unor_impl(ref)( unorImpl_ref_(%1,%2) )
 #modcfunc unorImpl_ref_byIndex_ int i
 	unorImpl_clone thismod, i, ARG_TEMP@abdata_unor_impl(ref)
 	return 0
@@ -122,7 +141,7 @@
 //------------------------------------------------
 // 値の設定
 //------------------------------------------------
-#define global unorImpl_set(%1,%2="",%3) ARG_TEMP@abdata_unor_impl(set) = %3 : unorImpl_setv %1, %2, ARG_TEMP@abdata_unor_impl(set)
+#define global unorImpl_set(%1, %2 = "" ,%3) ARG_TEMP@abdata_unor_impl(set) = %3 : unorImpl_setv %1, %2, ARG_TEMP@abdata_unor_impl(set)
 
 #modfunc unorImpl_setv str key, var vValue
 	unorImpl_setv_byIndex_ thismod, unorImpl_getIndex(thismod, key), vValue
@@ -140,7 +159,7 @@
 // 
 // @ 既存なら失敗
 //------------------------------------------------
-#define global unorImpl_add(%1,%2="",%3=stt_zero@) ARG_TEMP@abdata_unor_impl(add) = %3 : unorImpl_addv %1, %2, ARG_TEMP@abdata_unor_impl(add)
+#define global unorImpl_add(%1, %2 = "", %3 = stt_zero@) ARG_TEMP@abdata_unor_impl(add) = %3 : unorImpl_addv %1, %2, ARG_TEMP@abdata_unor_impl(add)
 
 #modfunc unorImpl_addv str key, var vValue
 	unorImpl_addValue thismod, key, vValue
@@ -366,13 +385,13 @@
 //------------------------------------------------
 #define global unorImpl_dbglog(%1) unorImpl_dbglog_ %1, "%1"
 
-#modfunc unorImpl_dbglog_ str _ident,  local ident, local it
+#deffunc unorImpl_dbglog_ var self,  str _ident,  local ident, local it
 	ident = _ident
 	
-	logmes "["+ strtrim(ident, 0, ' ') +"] debug-log"
+	logmes "[" + strtrim(ident, 0, ' ') + "] debug-log"
 	
-	IterateBegin thismod, unorImpl, it
-		logmes strf("%s\t: %s", it, unorImpl_get(thismod, it))
+	IterateBegin self, unorImpl, it
+		logmes strf("%s\t: %s", it, unorImpl_get(self, it))
 	IterateEnd
 	
 	logmes ""

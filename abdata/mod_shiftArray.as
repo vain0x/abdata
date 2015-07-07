@@ -1,18 +1,37 @@
 // ”z—ñƒVƒtƒgƒ‚ƒWƒ…[ƒ‹
 
-#ifndef __MODULE_SHIFT_ARRAY_AS__
-#define __MODULE_SHIFT_ARRAY_AS__
+#ifndef IG_MODULE_SHIFT_ARRAY_AS
+#define IG_MODULE_SHIFT_ARRAY_AS
 
 #module shift_array_mod
 
+#define global ArrayRangeEndDefault (-127)
+
+//------------------------------------------------
+// ”z—ñ‹æŠÔ‚Ì³‹K‰» @private
+// 
+// @result: ”½“]‹æŠÔ‚©”Û‚©
+//------------------------------------------------
+#deffunc ArrayRangeRegularize@shift_array_mod array self, array range,  local tmp
+	if ( range(1) == ArrayRangeEndDefault ) { range(1) = length(self) }
+	
+	if ( range(0) > range(1) ) {		// ‹æŠÔ‚ª‹t => —¼•û + 1 ‚µ‚ÄŒğŠ·
+		tmp      = range(0) + 1
+		range(0) = range(1) + 1
+		range(1) = tmp
+		return true
+	} else {
+		return false
+	}
+	
 //------------------------------------------------
 // ‘}“ü ( “I‚Èˆ— )
 //------------------------------------------------
-#deffunc ArrayInsert array arr, int idx
+#deffunc ArrayInsert array self, int idx
 	
 	// ‘}“ü‚³‚ê‚éêŠ‚ğ‹ó‚¯‚é
-	for i, length(arr), idx, -1
-		arr(i) = arr(i - 1)
+	for i, length(self), idx, -1
+		self(i) = self(i - 1)
 	next
 	
 	return
@@ -20,11 +39,11 @@
 //------------------------------------------------
 // íœ ( “I‚Èˆ— )
 //------------------------------------------------
-#deffunc ArrayRemove array arr, int idx
+#deffunc ArrayRemove array self, int idx
 	
 	// íœ‚³‚ê‚éêŠ‚ğÁ‚· ( ‘¼‚Ì’l‚Åã‘‚«‚·‚é )
-	for i, idx, length(arr) - 1
-		arr(i) = arr(i + 1)
+	for i, idx, length(self) - 1
+		self(i) = self(i + 1)
 	next
 	
 	return
@@ -32,11 +51,11 @@
 //------------------------------------------------
 // ˆÚ“®
 //------------------------------------------------
-#deffunc ArrayMove array arr, int from, int to,  local temp
+#deffunc ArrayMove array self, int from, int to,  local temp, local dir
 	if ( from == to ) { return }
 	
 	// ˆÚ“®Œ³‚Ì’l‚ğ•Û‘¶‚·‚é
-	temp = arr(from)
+	temp = self(from)
 	
 	// ˆÚ“®‚·‚é
 	if ( from > to ) {
@@ -45,49 +64,58 @@
 		dir = 1
 	}
 	for i, from, to, dir
-		arr(i) = arr(i + dir)	// Ÿ‚ÌêŠ‚Ì’l‚ğó‚¯æ‚é
+		self(i) = self(i + dir)	// Ÿ‚ÌêŠ‚Ì’l‚ğó‚¯æ‚é
 	next
-	arr(to) = temp
+	self(to) = temp
 	
 	return
 	
 //------------------------------------------------
 // ŒğŠ·
 //------------------------------------------------
-#deffunc ArraySwap array arr, int pos1, int pos2,  local temp
+#deffunc ArraySwap array self, int pos1, int pos2,  local temp
 	if ( pos1 == pos2 ) { return }
-	temp      = arr(pos1)
-	arr(pos1) = arr(pos2)
-	arr(pos2) = temp
+	temp       = self(pos1)
+	self(pos1) = self(pos2)
+	self(pos2) = temp
 	return
 	
 //------------------------------------------------
 // „‰ñ
+// 
+// @prm self
+// @prm step         : „‰ñ•ûŒü
+// @prm [iBgn, iEnd) : „‰ñ‘ÎÛ‚Ì‹æŠÔ
 //------------------------------------------------
-#deffunc ArrayRotate array arr, int step,  local temp
-	if ( step >= 0 ) {
-		ArrayMove arr, 0, length(arr) - 1
+#deffunc ArrayRotateImpl array self, int iBgn, int iEnd, int dir,  local range
+	range = iBgn, iEnd
+	ArrayRangeRegularize self, range
+	
+	if ( dir >= 0 ^ stat ) {		// ”½“]‹æŠÔ => ‹t•ûŒü‚É Rotate
+		ArrayMove self, range(0), range(1) - 1
 	} else {
-		ArrayMove arr,    length(arr) - 1, 0
+		ArrayMove self,           range(1) - 1, range(0)
 	}
 	return
 	
 // ‹t‰ñ“]
-#define global ArrayRotateBack(%1) ArrayRotate %1, -1
+#define global ArrayRotate(    %1, %2 = 0, %3 = ArrayRangeEndDefault) ArrayRotateImpl %1, %2, %3,  1
+#define global ArrayRotateBack(%1, %2 = 0, %3 = ArrayRangeEndDefault) ArrayRotateImpl %1, %2, %3, -1
 
 //------------------------------------------------
 // ”½“]
+// 
+// @prm this
+// @prm [iBgn, iEnd) : ”½“]‘ÎÛ‚Ì‹æŠÔ
 //------------------------------------------------
-#define global ArrayReverse(%1,%2=-1) ArrayReverse_ %1,%2
-#deffunc ArrayReverse_ array arr, int _lenArray,  local lenArray
-	if ( _lenArray < 0 ) {
-		lenArray = length(arr)
-	} else {
-		lenArray = _lenArray
-	}
+#define global ArrayReverse(%1, %2 = 0, %3 = ArrayRangeEndDefault) ArrayReverse_ %1, %2, %3
+#deffunc ArrayReverse_ array self, int iBgn, int iEnd,  local range
+	range = iBgn, iEnd
+	ArrayRangeRegularize self, range
+	if ( stat ) { return }			// ”½“]‹æŠÔ => ”½“]‚µ‚Ä‚à–ß‚é‚Ì‚Åˆ—‚·‚é•K—v‚È‚µ
 	
-	repeat lenArray / 2
-		ArraySwap arr, cnt, lenArray - cnt - 1
+	repeat (range(1) - range(0)) / 2
+		ArraySwap self, range(0) + cnt, range(1) - cnt - 1
 	loop
 	
 	return

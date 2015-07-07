@@ -1,7 +1,7 @@
 // Tree - 木構造
 
-#ifndef IG_ABDATA_TREE_AS
-#define IG_ABDATA_TREE_AS
+#ifndef IG_ABSTRACT_DATA_STRUCTURE_TREE_AS
+#define IG_ABSTRACT_DATA_STRUCTURE_TREE_AS
 
 #include "mod_pvalptr.as"
 #include "mod_shiftArray.as"
@@ -107,12 +107,7 @@
 			TNode_getInstance node, idParent
 		}
 	loop
-	return
-	
-// 親ノードのIdを変更する
-#modfunc TNodeMod_setParent int tnId
-	midParent = tnId
-	return
+	return 
 	
 // 子ノードIdを追加する
 #modfunc TNodeMod_addChildId int tnId
@@ -207,14 +202,11 @@
 #define global TRootMod_new(%1="root") TNodeMod_new  %1, TNID_PARENT_OF_ROOT
 #define global TNodeMod_new(%1,%2) newmod stt_allInsts@abdata_tree, abdata_tree@, %1, %2
 
-#deffunc TNode_new array aryTnId, str _name, int parentId,  local id_new
+#deffunc TNode_new array aryTnId, str _name, int parentId,  local id_new, local nIdx
+	
 	TNodeMod_new _name, parentId
 	id_new = stat
-	TNode_addNode aryTnId, id_new
-	return stat
-	
-#deffunc TNode_addNode array aryTnId, int id_new,  local nIdx
-	nIdx = -1
+	nIdx   = -1
 	
 	// 使われていない要素を探す
 	foreach aryTnId
@@ -305,7 +297,7 @@
  */
 #define global ctype TNode_isRoot(%1) TNodeMod_isRoot( TNInstance(%1) )
 #modcfunc TNodeMod_isRoot
-	return ( mIdParent == TNID_PARENT_OF_ROOT )
+	return mIdParent == TNID_PARENT_OF_ROOT
 	
 /**
  * 親ノードのIdを得る
@@ -346,38 +338,8 @@
 #define global ctype TNode_getName(%1) TNodeMod_getName( TNInstance(%1) )
 
 /**
- * 子ノード(部分木)を追加する
- * p1 に部分木を、子ノードとして追加します。
- * 追加する木 p2 が Root だった場合、複写せずにそのまま繋げます。
- * Root で無かった場合は、複写したものを連結します。
- * 子ノードのモジュール変数を取得するには、
- * TNode_getChild 命令を使用してください。
- * 
- * @prm p1 = modvar	: 親ノードのモジュール変数
- * @prm p2 = modvar : 部分木
- * @return = int    : 追加した子ノードのノードId
- */
-#define global TNode_addSubTree(%1,%2) TNodeMod_addSubTree TNInstance(%1), %2, %1
-
-#modfunc TNodeMod_addSubTree int subTreeId, int thisId,  local id_new, local srcId, local tmpNode
-	if ( TNode_isRoot(subTreeId) ) {
-		TNodeMod_setParent  TNInstance(subTreeId), thisId
-		srcId = subTreeId
-	} else {
-		TRoot_new  tmpNode, TNode_getName(subTreeId)
-		TNode_copy tmpNode, subTreeId
-		srcId = tmpNode
-		assert
-	}
-	
-	TNode_addNode mChildren, srcId
-	id_new = mChildren( stat )
-	mcntChildren ++
-	return id_new
-	
-/**
  * 子ノードを追加する
- * 子ノードを新規作成し、p1 に追加します。
+ * p1 の子ノードを新規作成します。
  * 子ノードのモジュール変数を取得するには、
  * TNode_getChild 命令を使用してください。
  * 
@@ -569,14 +531,13 @@
 		
 		// これ以上子ノードはない
 		if ( mIter >= mcntChildren ) {
-		;	vIterId = TNID_DISABLE		// default で TNID_DISABLE なので代入する必要はない
 			return
 			
 		// まだ子ノードがある
 		} else {
 			vIterId = mChildren(mIter)
 			if ( IsTnIdValid(vIterId) == false ) {
-				TNodeMod_iterCheckCore thismod, vIterId		// 同じ処理を繰り返す
+				TNodeMod_iterCheckCore thismod, vIterId
 			}
 		}
 	}
@@ -624,12 +585,11 @@
 	while ( TNode_iterCheck(fromId, itId) )
 		
 		stmp = TNode_getName(itId)
-		TNode_getv itId, value
-		
-		TNode_addChild thisId, stmp		// 同名の子ノードを追加
+		TNode_getv       itId, value
+		TNode_addChild thisId, stmp			// 同名の子ノードを追加
 		childId = stat
-		TNode_setv  childId, value		// 保持する値をコピー
-		TNode_chain childId, itId		// 孫レベルノードを連結
+		TNode_setv     childId, value		// 保持する値をコピー
+		TNode_chain    childId, itId		// 孫レベルノードを連結
 		
 	wend
 	return
@@ -644,7 +604,6 @@
  */
 #deffunc TNode_copy int thisId, int fromId
 	TNode_clear thisId
-	TNode_set   thisId, TNode_get(fromId)
 	TNode_chain thisId, fromId
 	return
 	
@@ -724,7 +683,7 @@ TRootMod_new ""
 //##############################################################################
 //               サンプル・スクリプト
 //##############################################################################
-#if 1
+#if 0
 	
 	TRoot_new tr
 	TNode_set tr, "親"
@@ -756,17 +715,9 @@ TRootMod_new ""
 	TNode_dbglog tr
 	
 	TRoot_new    tr2, "root2"
-	TNode_chain  tr2, tr
-;	TNode_copy   tr2, tr
+;	TNode_chain  tr2, tr
+	TNode_copy   tr2, tr
 	TNode_dbglog tr2
-	
-	TNode_addSubTree tr, tr2
-	TNode_dbglog tr
-	
-	logmes ""
-	assert
-	TNode_addSubTree tr, tr2
-	TNode_dbglog tr
 	
 	stop
 

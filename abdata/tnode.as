@@ -1,7 +1,7 @@
 // tnode - 木構造(1)
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_TREE_NODE_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_TREE_NODE_AS
+#ifndef IG_ABDATA_TREE_NODE_AS
+#define IG_ABDATA_TREE_NODE_AS
 
 // @ tree node (tnode)
 // @ メンバ { ノード値, 子データ }
@@ -9,8 +9,8 @@
 // @	子データに list, pair などを突っ込めば複数個の子ノードを得られる。
 // @ <ノード値, 子データ> にそれぞれ [0], [1] という index を割り振る (ただし外部からは使用できない)。
 
-// @ typo が怖いので Child はすべて Chd と略す。
-// @ 複数の場所から参照されうるようにするため、子→親のリンクは貼らないことにした。
+// @ typo が怖いので child はすべて chd と略す。
+// @ 複数の場所から参照されうるようにするため、(子 → 親) のリンクは貼らないことにした。
 
 // @# 実装の上では、list の wrapper 。
 
@@ -20,8 +20,8 @@
 //##############################################################################
 //                abdata::tnode<1>
 //##############################################################################
-;#define global tnodeInsts st_allinsts@abdata_tnode
-#define global tnodeNull  listNull	;st_null@abdata_tnode
+#define global TNode_ClsName "tnode"
+#define global tnodeNull listNull
 
 #define global TNIdx_Value  0
 #define global TNIdx_Chd    1
@@ -233,7 +233,7 @@
 //        子ノード操作::拡張記法
 //##########################################################
 // @ tnb_* : 二分木 (chd is a pair)
-// @ tnx_* : Ｘ分木 (chd is a list)
+// @ tnx_* :  X分木 (chd is a list)
 
 //------------------------------------------------
 // 子ノードの追加 ( 命令形式 )

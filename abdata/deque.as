@@ -1,7 +1,7 @@
 // deque - 双方向キュー
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_DEQUE_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_DEQUE_AS
+#ifndef IG_ABDATA_DEQUE_AS
+#define IG_ABDATA_DEQUE_AS
 
 #include "container.as"
 
@@ -12,10 +12,14 @@
 // @abdata_deque という使い方はできない ( @abdata_container に置換されない )
 #define global abdata_deque abdata_container
 
+#define global Deque_ClsName "deque"
+#define global dequeNull abdataNull
+
 //##############################################################################
 //                構築・解体
 //##############################################################################
 
+#define global new_deque    new_Container
 #define global deque_new    Container_new
 #define global deque_delete Container_delete
 

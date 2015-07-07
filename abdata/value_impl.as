@@ -1,7 +1,7 @@
 // ”Ä’lŒ^ (ŽÀ‘•)
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_valueImpl_IMPL_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_valueImpl_IMPL_AS
+#ifndef IG_ABDATA_VALUE_IMPL_AS
+#define IG_ABDATA_VALUE_IMPL_AS
 
 #include "mod_pvalptr.as"
 
@@ -9,9 +9,6 @@
 //                abdata::value
 //##############################################################################
 #module abdata_value_impl mValue
-
-#define global valueInsts   st_allinsts@abdata_value_impl
-#define global valueNull    st_valueNull@abdata_value_impl
 
 #define ctype ARG_TEMP(%1) st_temp_%1_arg@abdata_value_impl
 
@@ -161,6 +158,6 @@
 	
 #global
 
-	valueImpl_new st_valueNull@abdata_value_impl
+	valueImpl_new valueNull
 	
 #endif

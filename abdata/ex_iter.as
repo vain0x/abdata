@@ -1,143 +1,164 @@
-// value - 汎値型 (ラッパ)
+// iter - 反復子 (実装)
 
-#ifndef IG_ABDATA_VALUE_WRAPPER_AS
-#define IG_ABDATA_VALUE_WRAPPER_AS
+#ifndef IG_ABDATA_EXTRA_ITER_IMPL_AS
+#define IG_ABDATA_EXTRA_ITER_IMPL_AS
 
-#include "abheader.as"
-#include "value_impl.as"
+// 不完全
 
 //##############################################################################
-//                abdata::value
+//                  定義部 : abdata_iter_impl
 //##############################################################################
-#module abdata_value mValue
+#module abdata_iter_impl mInst, mIt, mIterData
+;, mbReversed
 
-#define global valueNull abdataNull
+#define ctype ARG_TEMP(%1) stt_temp_%1@abdata_iter_impl
 
 //------------------------------------------------
-// [i] 要素数
+// 真理値・成敗値・NULL値
 //------------------------------------------------
-#define global ctype value_size(%1)  1
-#define global ctype value_empty(%1) 0
-#define global value_count  value_size
-#define global value_length value_size
+#define true    1
+#define false   0
+#define success 1
+#define failure 0
+#define NULL    0
 
 //##########################################################
 //        構築・解体
 //##########################################################
-#define global value_new(%1, %2 = stt_zero@) valueImpl_new    abdataInsts, %2 : %1 = stat
-#define global value_delete(%1)              valueImpl_delete abdataInsts(%1)
+#define global iterImpl_new(%1,%2) newmod %1, abdata_iter_impl@ : iterImpl_clear %1, %2
+#define global iterImpl_delete(%1) delmod %1
 
 //------------------------------------------------
-// 構築者
+// 構築
 //------------------------------------------------
-#define global ctype new_value(%1 = stt_zero@) new_value_(%1)
-#defcfunc new_value_ var vSrc,  local newOne
-	value_new newOne, vSrc
-	return    newOne
+#modinit var inst
+	mInst = inst
+	return
 	
 //------------------------------------------------
-// 解体者
+// 解体
 //------------------------------------------------
 ;#modterm
-
+;	return
+	
 //##########################################################
 //        取得系
 //##########################################################
 //------------------------------------------------
+// 実体の取得
+//------------------------------------------------
+#define global iterImpl_getInstance(%1) ARG_TEMP@abdata_iter_impl(inst)(iterImpl_getInstanceCore(%1, ARG_TEMP@abdata_iter_impl(inst))
+#modcfunc iterImpl_getInstanceCore var dst
+	dup dst, mInst
+	return 0
+	
+//------------------------------------------------
 // 値の取得
 //------------------------------------------------
-#define global       value_getv(%1, %2) valueImpl_getv abdataInsts(%1), %2
-#define global ctype value_get(%1)      valueImpl_get( abdataInsts(%1) )
-
+#modfunc iterImpl_getv var dst
+	dst = mIt
+	return
+	
+#modcfunc iterImpl_get
+	return mIt
+	
 //------------------------------------------------
-// 参照化
+// 値の型の取得
 //------------------------------------------------
-#define global value_clone(%1, %2) valueImpl_clone abdataInsts(%1), %2
-
+#modcfunc iterImpl_vartype
+	return vartype(mIt)
+	
 //------------------------------------------------
-// 型の取得
+// データの取得
 //------------------------------------------------
-#define global ctype value_vartype(%1) valueImpl_vartype( abdataInsts(%1) )
-
+#modfunc iterImpl_getvData var dst
+	dst = mIterData
+	return
+	
+#modcfunc iterImpl_getData
+	return mIterData
+	
 //##########################################################
-//        操作系
+//        設定系
 //##########################################################
 //------------------------------------------------
 // 値の設定
 //------------------------------------------------
-#define global value_set(%1, %2)  valueImpl_set  abdataInsts(%1), %2
-#define global value_setv(%1, %2) valueImpl_setv abdataInsts(%1), %2
-
+#define global iterImpl_set(%1, %2) ARG_TEMP@abdata_iter_impl(set) = (%2) : iterImpl_setv %1, ARG_TEMP@abdata_iter_impl(set)
+#modfunc iterImpl_setv var src
+	mIt = src
+	return
+	
 //------------------------------------------------
-// 可変長要素の拡張
+// データの設定
 //------------------------------------------------
-#define global value_memexpand(%1, %2) valueImpl_memexpand abdataInsts(%1), %2
-
-//------------------------------------------------
-// 要素の型を変換する
-//------------------------------------------------
-#define global value_changeVartype(%1, %2) valueImpl_changeVartype abdataInsts(%1), %2
-
-//##########################################################
-//        雑多系
-//##########################################################
+#define global iterImpl_setData(%1, %2) ARG_TEMP@abdata_iter_impl(setData) = (%2) : iterImpl_sevData %1, ARG_TEMP@abdata_iter_impl(setData)
+#modfunc iterImpl_setvData var src
+	mIterData = src
+	return
+	
+#modfunc iterImpl_incData
+	mIterData ++
+	return
+	
 //------------------------------------------------
 // 
 //------------------------------------------------
 
 //##########################################################
-//        コンテナ操作
+//        動作系
 //##########################################################
 //------------------------------------------------
-// [i] 完全消去
+// 実体へのアクセスの準備
 //------------------------------------------------
-#define global value_clear(%1) valueImpl_clear abdataInsts(%1)
+#define global       iterImpl_initAccess(%1)  dummy_sttm@abdata_iter_impl  clone_getInstance(%1)
+#define global ctype iterImpl_initAccessf(%1) dummy_func@abdata_iter_impl( clone_getInstance(%1) )
 
 //------------------------------------------------
-// [i] 複写
+// 前後へ移動
 //------------------------------------------------
-#define global value_copy(%1, %2) valueImpl_copy abdataInsts(%1), abdataInsts(%2)
+#define global iterImpl_prev(%1, %2) iterImpl_initAccess %1 : %2_iterPrev iterImpl_getInstance(%1), %1
+#define global iterImpl_next(%1, %2) iterImpl_initAccess %1 : %2_iterNext iterImpl_getInstance(%1), %1
 
 //------------------------------------------------
-// [i] 連結
+// 
 //------------------------------------------------
-#define global value_chain(%1, %2) "value_chain は不可能。[value_chain(%1, %2)]"
-;#define global value_chain(%1, %2) valueImpl_chain abdataInsts(%1), abdataInsts(%2)
-
-//------------------------------------------------
-// [i] 交換
-//------------------------------------------------
-#define global value_exchange(%1, %2) valueImpl_exchange abdataInsts(%1), abdataInsts(%2)
 
 //##########################################################
-//        反復子操作
+//        統一関数
 //##########################################################
 //------------------------------------------------
-// [i] 反復子::初期化
+// [i] 初期化
 //------------------------------------------------
-#define global value_iterInit(%1, %2) valueImpl_iterInit abdataInsts(%1), %2
+#define global iterImpl_clear(%1, %2) iterImpl_initAccess %1 : %2_iterInit iterImpl_getInstance(%1), iterImpl_getInitVar(%1)
 
 //------------------------------------------------
-// [i] 反復子::更新
+// 
 //------------------------------------------------
-#define global ctype value_iterNext(%1, %2, %3) valueImpl_iterNext( abdataInsts(%1), %2, %3 )
+
+//##########################################################
+//        その他
+//##########################################################
+//------------------------------------------------
+// ダミー命令・関数
+//------------------------------------------------
+#deffunc dummy_sttm@abdata_iter_impl var x
+	return
+	
+#defcfunc dummy_func@abdata_iter_impl var x
+	return 0
+	
+//------------------------------------------------
+// 
+//------------------------------------------------
 
 #global
 
 //##############################################################################
-//                  サンプル・スクリプト
+//                サンプル・スクリプト
 //##############################################################################
 #if 0
 
-	a = 1
-	b = "II"
-	c = 3.14
-	
-	list = new_value(a), new_value(b), new_value(c)
-	
-	foreach list
-		mes value_get(arr(cnt))
-	loop
 	
 	stop
 	

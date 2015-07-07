@@ -179,7 +179,7 @@
 	@ いい訳語ないかなぁ。
 	
 ＠正常動作
-	Windows XP sp3 HomeEdition 上での HSP3.2 での動作を確認しています。
+	Windows XP sp3 HomeEdition、HSP3.2 での動作を確認しています。
 	
 ＠著作権
 	このモジュールに含まれるすべてのファイルの著作権は作者にありますが、
@@ -205,6 +205,19 @@
 			stop
 		
 ＠更新履歴 (開発視点)
+＊2011 04/04 (Mon)
+	・abAssert を追加し、要素範囲外の時には assert で止まるようにした。
+	・swap, move で、要素が2つ未満の時は assert で止まるようにした。
+	
+＊2011 01/09 (Sun)
+	・insert 時に、要素番号が最大要素数を超えている場合、要素の自動拡張を行う
+		ようにした。
+		
+＊2010 10/13 (Wed)
+	・インスタンスの実体をすべて abdataInst に格納するようにした。
+	・インクルードガード識別子の、abdata を示す ABSTRACT_DATA_STRUECTURE を
+		ABDATA にした。
+	
 ＊2010 10/01 (Fri)
 	・value を abelem に改名した。
 	・コンテナ value を作成した。

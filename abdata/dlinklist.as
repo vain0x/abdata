@@ -1,8 +1,8 @@
 // ëoï˚å¸òAåãÉäÉXÉg - èzä¬
 // Double linked list (circularly)
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_DOUBLE_LINKED_LIST_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_DOUBLE_LINKED_LIST_AS
+#ifndef IG_ABDATA_DOUBLE_LINKED_LIST_AS
+#define IG_ABDATA_DOUBLE_LINKED_LIST_AS
 
 #include "dlinkvalue.as"
 
@@ -544,25 +544,24 @@
 	}
 	
 	switch c
-	case '+'
-		n = rnd(100)
-		DLList_insert mDLList, n, prm
-		
-		color 255, 255, 255 : boxf 110, 20, 180, 40 : color
-		pos 110, 26 : mes "insert : "+ n
-		
-		gosub *disp
-		swbreak
-		
-	case '-'
-		DLList_remove mDLList, prm
-		gosub *disp
-		swbreak
-		
-	case '@'
-		randomize prm
-		swbreak
-		
+		case '+'
+			n = rnd(100)
+			DLList_insert mDLList, n, prm
+			
+			color 255, 255, 255 : boxf 110, 20, 180, 40 : color
+			pos 110, 26 : mes "insert : "+ n
+			
+			gosub *disp
+			swbreak
+			
+		case '-'
+			DLList_remove mDLList, prm
+			gosub *disp
+			swbreak
+			
+		case '@'
+			randomize prm
+			swbreak
 	swend
 	
 	poke cmd

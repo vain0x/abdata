@@ -1,8 +1,9 @@
 // Container Impl - 汎用コンテナ (実装)
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_CONTAINER_IMPL_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_CONTAINER_IMPL_AS
+#ifndef IG_ABDATA_CONTAINER_IMPL_AS
+#define IG_ABDATA_CONTAINER_IMPL_AS
 
+#include "abheader.as"
 #include "abelem.as"				// 簡易要素型
 #include "mod_shiftArray.as"		// 配列操作モジュール
 ;#include "mod_getnextaddindex.as"	// 次に追加される要素番号
@@ -14,14 +15,14 @@
 #module abdata_con_impl mCnt, mElems, midlist
 ; abdata_container_impl は識別子長の限界を超えているため
 
-#define       VAR_TEMP stt_temp@abdata_con_impl
+;#define       VAR_TEMP stt_temp@abdata_con_impl	// 未使用
 #define ctype ARG_TEMP(%1) stt_temp_%1_arg@abdata_con_impl
 
 #define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
 #define true  1
 #define false 0
 
-#define ctype STR_ERR_OVER_RANGE(%1) "Error! [abdata コンテナ] 要素番号範囲外エラー("+ (%1) +")"
+#define ctype STR_ERR_OVER_RANGE(%1) "Error! [abdata コンテナ] 要素番号範囲外エラー(" + (%1) + ")"
 
 // SortMode
 #enum global SortMode_Ascending = 0		// 昇順
@@ -30,23 +31,25 @@
 //##############################################################################
 //                構築・解体
 //##############################################################################
-#define global ContainerImpl_new(%1, %2 = 0, %3 = stt_zero@) \
-	newmod %1, abdata_con_impl@, %2, %3
+#define global ContainerImpl_new(%1, %2 = 0, %3 = stt_zero@) newmod %1, abdata_con_impl@, %2, %3
 #define global ContainerImpl_delete(%1) delmod %1
 
 //------------------------------------------------
 // [i] 構築
+// 
+// @prm num      : num 個の要素を既に確保した状態で生成する。
+// @prm vDefault : 確保する値の初期値
 //------------------------------------------------
 #modinit int num, var vDefault
 	
 	// メンバ変数の初期化
 	abelem_new mElems, vDefault
-	midlist = 0
-	mCnt    = 0
+	midlist  = 0
+	mCnt     = 0
 	
 	// コンストラクト処理
 	if ( num <= 0 ) {
-		abelem_delete mElems(0)
+		abelem_delete mElems(0)		// 要素 0 にする
 		
 	} else {
 		// 連続確保
@@ -125,6 +128,8 @@
 //------------------------------------------------
 // 参照化 ( 関数形式 )
 //------------------------------------------------
+	dim ARG_TEMP@abdata_con_impl(ref)		// 警告対策
+	
 #define global ctype ContainerImpl_ref(%1,%2=0) ARG_TEMP@abdata_con_impl(ref)( ContainerImpl_ref_(%1,%2) )
 #modcfunc ContainerImpl_ref_ int i
 	ContainerImpl_clone thismod, ARG_TEMP@abdata_con_impl(ref), i
@@ -181,16 +186,20 @@
 // @permit (i == mCnt) : 最後尾への追加のため
 // @ i が範囲外 => {
 // @	( i <     0 ) => i += mCnt,
-// @	( i >= mCnt ) => i := mCnt,
+// @	( i >= mCnt ) => ([i] まで要素を自動拡張)
 // @ };
 //------------------------------------------------
 #define global ContainerImpl_insert(%1,%2,%3=0) ARG_TEMP@abdata_con_impl(insert) = %2 : ContainerImpl_insertv %1, ARG_TEMP@abdata_con_impl(insert), %3
 #modfunc ContainerImpl_insertv var vValue, int _i,  local i, local id
-	
+	i = _i
 	if ( _i < 0 ) {
-		i = _i + mCnt
+		i += mCnt
 	} else : if ( _i > mCnt ) {
-		i = mCnt
+		logmes "abdata 要素を自動拡張 [" + mCnt + ", " + _i + "]"
+		repeat _i - mCnt, mCnt
+			ContainerImpl_insertv thismod, stt_zero@, cnt
+		loop
+		i = _i
 	} else {
 		i = _i
 	}
@@ -250,12 +259,46 @@
 #define global ContainerImpl_remove_back(%1)  ContainerImpl_remove %1, (-1)
 
 //------------------------------------------------
+// 要素数の設定
+// 
+// @result: 元の要素数
+//------------------------------------------------
+#modfunc ContainerImpl_setSize int newlen,  local dif
+	dif = newlen - mCnt
+	
+	if ( dif == 0 ) {
+		;
+		
+	// 減少
+	} elsif ( dif < 0 ) {
+		if ( newlen <= 0 ) {
+			ContainerImpl_clear thismod
+			
+		} else {
+			// 要素 [newlen] 以降を除去
+			repeat -dif, newlen
+				abelem_delete mElems( midlist(cnt) )
+				midlist(cnt) = -1		// 無効要素にする
+			loop
+		}
+		
+	// 増加
+	} else {
+		// 新要素を dif 個生成し、末尾に追加する
+		repeat dif, newlen - dif
+			abelem_new mElems, stt_zero@
+			midlist(cnt) = stat	;id
+		loop
+	}
+	
+	mCnt = newlen
+	return newlen - dif
+	
+//------------------------------------------------
 // 移動
 //------------------------------------------------
 #modfunc ContainerImpl_move int iSrc, int iDst
-	if ( ContainerImpl_size(thismod) < 2 ) {		// 最低でも2つの要素がないと、move は意味がない
-		return
-	}
+	abAssert ( ContainerImpl_size(thismod) >= 2 ), "move には少なくとも2要素が必要"		// 最低でも2つの要素がないと、move は意味がない
 	
 	ArrayMove midlist, ContainerImpl_getRealIndex(thismod, iSrc), ContainerImpl_getRealIndex(thismod, iDst)
 	return
@@ -264,9 +307,7 @@
 // 交換
 //------------------------------------------------
 #modfunc ContainerImpl_swap int iPos1, int iPos2
-	if ( ContainerImpl_size(thismod) < 2 ) {		// 最低でも2つの要素がないと、swap は意味がない
-		return
-	}
+	abAssert ( ContainerImpl_size(thismod) >= 2 ), "swap には少なくとも2要素が必要"		// 最低でも2つの要素がないと、swap は意味がない
 	
 	ArraySwap midlist, ContainerImpl_getRealIndex(thismod, iPos1), ContainerImpl_getRealIndex(thismod, iPos2)
 	return
@@ -277,22 +318,21 @@
 //------------------------------------------------
 // 巡回
 //------------------------------------------------
-#modfunc ContainerImpl_rotate int step
-	ArrayRotate midlist, step
+#modfunc ContainerImpl_rotateImpl int iBgn, int _iEnd, int dir,  local iEnd
+	if ( _iEnd == ArrayRangeEndDefault ) { iEnd = ContainerImpl_size(thismod) } else { iEnd = _iEnd }
+	ArrayRotateImpl midlist, iBgn, iEnd, dir
 	return
 	
-//------------------------------------------------
-// 巡回 ( 逆回転 )
-//------------------------------------------------
-#modfunc ContainerImpl_rotate_back
-	ArrayRotateBack midlist
-	return
-	
+#define global ContainerImpl_rotate(     %1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_rotateImpl %1, %2, %3,  1
+#define global ContainerImpl_rotate_back(%1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_rotateImpl %1, %2, %3, -1
+
 //------------------------------------------------
 // 反転
 //------------------------------------------------
-#modfunc ContainerImpl_reverse
-	ArrayReverse midlist, ContainerImpl_size(thismod)
+#define global ContainerImpl_reverse(%1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_reverse_ %1, %2, %3
+#modfunc ContainerImpl_reverse_ int iBgn, int _iEnd,  local iEnd
+	if ( _iEnd == ArrayRangeEndDefault ) { iEnd = ContainerImpl_size(thismod) } else { iEnd = _iEnd }
+	ArrayReverse midlist, iBgn, iEnd
 	return
 	
 //##########################################################
@@ -317,10 +357,11 @@
 //------------------------------------------------
 // [i] 連結
 //------------------------------------------------
-#modfunc ContainerImpl_chain var src,  local tmp
+#modfunc ContainerImpl_chain var src,  local tmp, local offset
+	offset = mCnt
  	repeat ContainerImpl_size( src )
 		ContainerImpl_getv       src, tmp, cnt
-		ContainerImpl_insert thismod, tmp, cnt
+		ContainerImpl_insert thismod, tmp, cnt + offset
 	loop
 	return
 	
@@ -351,7 +392,11 @@
 // @	2. 同じ型 => 不等号による比較で整列
 // @prm mode : SortMode_* (default: SortMode_Ascening)
 //------------------------------------------------
-#modfunc ContainerImpl_sort int mode,  local arrTmp, local arrDst, local len, local p, local p1, local e1, local p2, local e2, local sizeSegment, local sizeSegMerged, local cmp
+#modfunc ContainerImpl_sort int mode,  \
+	local arrTmp, local arrDst, local len, \
+	local p, local p1, local e1, local p2, local e2, local sizeSegment, local sizeSegMerged, \
+	local cmp
+	
 	len = ContainerImpl_size(thismod)
 	dim     arrDst, len
 	foreach arrDst
@@ -382,7 +427,7 @@
 					arrTmp(cnt) = arrDst(p2) : p2 ++
 				} else {
 					// ?( 一致する or ( 左が小さく(真) 昇順(真) || 右が小さく(偽) 降順(偽) ) ) => lhs からとる
-					cmp = ContainerImpl_opCmpElem( thismod, arrDst(p1), arrDst(p2) )
+					cmp = abelem_cmp( mElems(arrDst(p1)), mElems(arrDst(p2)) )
 					if ( cmp == 0 || ( (cmp < 0) == (mode == SortMode_Ascending) ) ) {
 						arrTmp(cnt) = arrDst(p1) : p1 ++
 					} else {
@@ -463,57 +508,14 @@
 		i += mCnt
 	}
 	
-	if ( i < 0 || i >= mCnt ) {
-		logmes STR_ERR_OVER_RANGE(i)
-		return mCnt - 1
-	}
+	abAssert ( 0 <= i && i < mCnt ), STR_ERR_OVER_RANGE(i)
 	
 	return i
-	
-//##########################################################
-//        演算
-//##########################################################
-//------------------------------------------------
-// 要素比較
-//------------------------------------------------
-#modcfunc ContainerImpl_opCmpElem int idxLhs, int idxRhs,  local vt, local tmp
-
-	vt(0) = abelem_vartype( mElems(idxLhs) )
-	vt(1) = abelem_vartype( mElems(idxRhs) )
-	
-	// 型で比較
-	if ( vt(0) != vt(1) ) {
-		return ( vt(0) - vt(1) )
-	}
-	
-	// 値で比較
-	dimtype tmp, vt(0), 2
-	abelem_getv mElems(idxLhs), tmp(0)
-	abelem_getv mElems(idxRhs), tmp(1)
-	
-	return opCompare( tmp(0), tmp(1) )
 	
 //##############################################################################
 //                静的メンバ命令・関数
 //##############################################################################
-//------------------------------------------------
-// 一般的な比較演算
-// 
-// @(condition): lhs, rhs の型は一致する
-//------------------------------------------------
-#defcfunc opCompare@abdata_con_impl var lhs, var rhs
-	if ( vartype(lhs) == 2 /* vartype("str") */ ) {
-		return (lhs != rhs)
-	} else {
-		if ( lhs < rhs ) {
-			return -1
-		} else : if ( lhs > rhs ) {
-			return 1
-		} else {
-			return 0
-		}
-	}
-	
+
 //##############################################################################
 //                デバッグ用
 //##############################################################################
@@ -548,7 +550,7 @@
 //                サンプル・スクリプト
 //##############################################################################
 #if 0
-
+	
 	ContainerImpl_new    vSt
 	ContainerImpl_add    vSt, "Hello, world!"
 	ContainerImpl_add    vSt, 100
@@ -558,6 +560,7 @@
 	ContainerImpl_dbglog vSt
 	
 	ContainerImpl_insert vSt, 0x7FFFFFFF, 0
+	ContainerImpl_insert vSt, 0x7FFF, 12
 	ContainerImpl_dbglog vSt
 	
 	ContainerImpl_reverse vSt
@@ -585,9 +588,17 @@
 
 /******
 	
-*	"index 管理"
-	midlist $array[$int] に、mElems の要素番号である数値(ID)を代入しておく。
-	※実際のデータは abdata_abelem の配列である mElems メンバに保存される。
-	swap や move、inseart などは、これを使えば簡単かつ軽快にできる。
+＠ index 管理
+	すべての要素は mElems に、無ソートの状態で保持する。
+	@ mElems の要素番号(idx)は変更されないので、実質的に参照(弱)として機能する。
+	リスト内での要素の順序は、int配列 midlist が持つ mElems への参照の順番が表す。
+	@ midlist には mElems の要素番号 (参照) を格納する。
+	@ つまり、このリストの要素 [i] は mElems[ midlist[i] ] で参照できる。
+	@ mElems の要素番号を「実体インデックス」(RealIndex),
+	@	midlist の要素番号を「要素インデックス」(ElemIndex)という。
+	
+	swap や insert は、midlist の数値の順番を変更するだけで、mElems 自体は動かさないので、
+	比較的軽い処理である。
+	@ インデックス・ソート (index sort)
 	
 ******/

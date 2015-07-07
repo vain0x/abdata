@@ -1,8 +1,9 @@
 // list - リスト
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_LIST_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_LIST_AS
+#ifndef IG_ABDATA_LIST_AS
+#define IG_ABDATA_LIST_AS
 
+#include "abheader.as"
 #include "container.as"
 
 //##############################################################################
@@ -12,7 +13,9 @@
 // @abdata_list という使い方はできない ( @abdata_container に置換されない )
 #define global abdata_list abdata_container
 
-#define global nullList nullContainer
+#define global listNull abdataNull
+
+#define global List_ClsName "list"
 
 //##############################################################################
 //                構築・解体
@@ -112,6 +115,11 @@
 #define global list_remove       Container_remove
 ;#define global list_remove_front Container_remove_front
 ;#define global list_remove_back  Container_remove_back
+
+//------------------------------------------------
+// 要素数設定
+//------------------------------------------------
+#define global list_setSize     Container_setSize
 
 //------------------------------------------------
 // 順序操作

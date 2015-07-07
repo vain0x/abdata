@@ -1,8 +1,9 @@
 // スタック - stack ( FIFO & LILO )
 
-#ifndef IG_ABSTRACT_DATA_STRUCTURE_STACK_AS
-#define IG_ABSTRACT_DATA_STRUCTURE_STACK_AS
+#ifndef IG_ABDATA_STACK_AS
+#define IG_ABDATA_STACK_AS
 
+#include "abheader.as"
 #include "deque.as"
 
 //##############################################################################
@@ -12,10 +13,14 @@
 // @abdata_stack という使い方はできない ( @abdata_deque に置換されない )
 #define global abdata_stack abdata_deque
 
+#define global Stack_ClsName "stack"
+#define global stackNull dequeNull
+
 //##############################################################################
 //                構築・解体
 //##############################################################################
 
+#define global new_stack    new_deque
 #define global stack_new    deque_new
 #define global stack_delete deque_delete
 
