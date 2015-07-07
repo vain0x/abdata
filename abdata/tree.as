@@ -3,8 +3,8 @@
 #ifndef __ABSTRACT_DATA_STRUCTURE_TREE_AS__
 #define __ABSTRACT_DATA_STRUCTURE_TREE_AS__
 
-#include "Mo/pvalptr.as"
-#include "Mo/mod_shiftArray.as"
+#include "mod_pvalptr.as"
+#include "mod_shiftArray.as"
 #include "alg_iter.as"
 
 /**+

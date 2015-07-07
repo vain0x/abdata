@@ -3,7 +3,7 @@
 #ifndef __ABSTRACT_DATA_STRUCTURE_DOUBLE_LINK_VALUE_AS__
 #define __ABSTRACT_DATA_STRUCTURE_DOUBLE_LINK_VALUE_AS__
 
-#include "Mo/pvalptr.as"
+#include "mod_pvalptr.as"
 
 #module DLinkValue mVal, mLinkNext, mLinkPrev
 

@@ -133,9 +133,7 @@
 // キューの内容を全部表示
 //------------------------------------------------
 #modfunc Queue_dbglog
-	repeat Queue_size(thismod)
-		logmes strf("#%2d = ", cnt) + Queue_peek( thismod, cnt )
-	loop
+	List_dbglog mList
 	return
 	
 #else

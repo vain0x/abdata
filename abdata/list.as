@@ -4,8 +4,8 @@
 #define __ABSTRACT_DATA_STRUCTURE_LIST_AS__
 
 #include "value.as"					// 簡易要素型
-#include "Mo/mod_shiftArray.as"		// 配列操作モジュール
-#include "Mo/getnextaddindex.as"	// 次に追加される要素番号
+#include "mod_shiftArray.as"		// 配列操作モジュール
+#include "mod_getnextaddindex.as"	// 次に追加される要素番号
 
 #module abdata_list midlist, mValues, mCnt
 
@@ -204,7 +204,7 @@
 //------------------------------------------------
 // [i] 交換
 //------------------------------------------------
-#modfunc List_exchange var mv2, local mvTemp
+#modfunc List_exchange var mv2,  local mvTemp
 	List_new  mvTemp
 	List_copy mvTemp,  thismod
 	List_copy thismod, mv2
@@ -269,6 +269,23 @@
 	List_clear thismod
 	return
 	
+//##############################################################################
+//                デバッグ用
+//##############################################################################
+#ifdef _DEBUG
+
+#modfunc List_dbglog
+	repeat List_size(thismod)
+		logmes strf("#%2d: ", cnt) + List_get(thismod, cnt)
+	loop
+	return
+
+#else
+
+#define global List_dbglog(%1) :
+
+#endif
+	
 #global
 
 //##############################################################################
@@ -276,14 +293,7 @@
 //##############################################################################
 #if 0
 
-#module
-#deffunc List_output var mv_list
-	repeat List_size(mv_list)
-		mes strf("#%2d: ", cnt) + List_get(mv_list, cnt)
-	loop
-	mes
-	return
-#global
+#define List_output(%1) List_dbglog %1 : logmes ""
 
 	List_new    list
 	List_add    list, "Hello, world!"

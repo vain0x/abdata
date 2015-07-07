@@ -139,7 +139,7 @@
  #modfunc Stack_dbglog
 	foreach mValue
 		value_getv mValue(cnt), VAR_TEMP
-		logmes strf("#%2d = ", cnt) + VAR_TEMP
+		logmes strf("#%2d: ", cnt) + VAR_TEMP
 	loop
 	return
 #else
