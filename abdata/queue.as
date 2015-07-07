@@ -7,7 +7,7 @@
 
 #module abdata_queue mList
 
-#define VAR_TEMP ___tmp@abdata_queue
+#define VAR_TEMP stt_temp@abdata_queue
 #define mv modvar abdata_queue@
 
 #define ctype numrg(%1,%2,%3) (((%2) <= (%1)) && ((%1) <= (%3)))
@@ -19,8 +19,8 @@
 //##############################################################################
 //                メンバ命令・関数
 //##############################################################################
-#modfunc Queue_dupList@abdata_queue var v
-	dup v, mList
+#modfunc Queue_dupList@abdata_queue var vRefList
+	dup vRefList, mList
 	return
 	
 //################################################
@@ -29,16 +29,16 @@
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
-#defcfunc Queue_n mv
-	return List_n( mList )
+#defcfunc Queue_size mv
+	return List_size( mList )
 	
-#define global Queue_size Queue_n
+#define global Queue_n Queue_size
 
 //------------------------------------------------
 // 範囲チェック
 //------------------------------------------------
-#defcfunc Queue_valid mv, int i
-	return List_valid(mList, i)
+#defcfunc Queue_isValid mv, int i
+	return List_isValid(mList, i)
 	
 //################################################
 //        取得系
@@ -46,24 +46,24 @@
 //------------------------------------------------
 // 値返し ( 命令形式 )
 //------------------------------------------------
-#modfunc Queue_peekv int i, var result
-	if ( Queue_valid(thismod, i) == false ) { logmes STR_ERR_OVER_RANGE(i) : return }
-	List_getv mList, i, result
+#modfunc Queue_peekv var result, int i
+	if ( Queue_isValid(thismod, i) == false ) { logmes STR_ERR_OVER_RANGE(i) : return }
+	List_getv mList, result, i
 	return
 	
 //------------------------------------------------
 // 値返し ( 関数形式 )
 //------------------------------------------------
 #defcfunc Queue_peek mv, int i
-	Queue_peekv thismod, i, VAR_TEMP
+	Queue_peekv thismod, VAR_TEMP, i
 	return VAR_TEMP
 	
 //------------------------------------------------
 // pop ( 命令形式 )
 //------------------------------------------------
 #modfunc Queue_popv var result
-	List_getv   mList, 0, result
-	List_remove mList, 0
+	List_getv   mList, result, 0
+	List_remove mList,         0
 	return
 	
 //------------------------------------------------
@@ -85,8 +85,10 @@
 //------------------------------------------------
 #define global Queue_push(%1,%2) VAR_TEMP@abdata_queue = %2 : Queue_pushv %1,VAR_TEMP@abdata_queue
 #modfunc Queue_pushv var v_value
-	List_insertv mList, -1, v_value
+	List_insertv mList, v_value, -1
 	return
+	
+#define global Queue_push_back Queue_push
 	
 //################################################
 //        その他
@@ -118,8 +120,8 @@
 // [i] 連結
 //------------------------------------------------
 #modfunc Queue_exchange var mv2,  local fromList
-	Queue_dupList mv_from, fromList
-	List_exchange mList,   fromList
+	Queue_dupList mv2,   fromList
+	List_exchange mList, fromList
 	return
 	
 //################################################
@@ -130,15 +132,15 @@
 //------------------------------------------------
 // キューの内容を全部表示
 //------------------------------------------------
-#modfunc Queue_log
-	repeat Queue_n(thismod)
+#modfunc Queue_dbglog
+	repeat Queue_size(thismod)
 		logmes strf("#%2d = ", cnt) + Queue_peek( thismod, cnt )
 	loop
 	return
 	
 #else
 
-#define global Queue_log(%1) :
+#define global Queue_dbglog(%1) :
 
 #endif
 //##############################################################################
@@ -169,21 +171,21 @@
 //##############################################################################
 #if 0
 
-	Queue_init q
+	Queue_new q
 	repeat 2
 		mes "loop "+ cnt
 	
-		repeat 4
-			Queue_push q, 1 << cnt
+		repeat 8
+			Queue_push q, (1 << cnt)
 		loop
 		
-		repeat Queue_n( q )
-			mes Queue_pop(q)
+		repeat Queue_size(q)
+			mes strf("\t0x%04X", Queue_pop(q))
 		loop
-		
-		mes Queue_n(q)
-		
 	loop
+	
+	Queue_delete q
+	stop
 	
 #endif
 

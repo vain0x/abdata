@@ -8,8 +8,18 @@
 #module abdata_pair mValue
 
 #define mv modvar abdata_pair@
-#define VAR_TEMP  stt_temp@abdata_pair
+#define VAR_TEMP  stt_temp1@abdata_pair
 #define VAR_TEMP2 stt_temp2@abdata_pair
+
+//------------------------------------------------
+// [i] 構築・解体マクロ
+//------------------------------------------------
+#define global Pair_new(%1,%2=stt_zero@,%3=stt_zero@) \
+	VAR_TEMP@abdata_pair  = %2 :\
+	VAR_TEMP2@abdata_pair = %3 :\
+	newmod %1, abdata_pair@, VAR_TEMP@abdata_pair, VAR_TEMP2@abdata_pair	;
+	
+#define global Pair_delete(%1) delmod %1
 
 //------------------------------------------------
 // 値の設定
@@ -35,7 +45,7 @@
 //------------------------------------------------
 // 値の取得
 //------------------------------------------------
-#defcfunc Pair_getv mv, var vResult, int n
+#modfunc Pair_getv var vResult, int n
 	value_getv mValue(n), vResult
 	return
 	
@@ -105,17 +115,31 @@
 #define global ctype Pair_size(%1) 2
 #define global Pair_n Pair_size
 
+//------------------------------------------------
+// [i] 繰返子初期化
+//------------------------------------------------
+#modfunc Pair_iterInit var vIt
+	vIt = -1
+	return
+	
+//------------------------------------------------
+// [i] 繰返子更新
+//------------------------------------------------
+#defcfunc Pair_iterNext mv, var vIt, var iterData
+	iterData ++
+	if ( 0 <= iterData && iterData < Pair_size(thismod) ) {
+		Pair_getv thismod, vIt, iterData
+		return true
+	} else {
+		return false
+	}
+	
 //##############################################################################
 //                コンストラクタ・デストラクタ
 //##############################################################################
 //------------------------------------------------
 // [i] コンストラクタ
 //------------------------------------------------
-#define global Pair_new(%1,%2=stt_zero@,%3=stt_zero@) \
-	VAR_TEMP@abdata_pair  = %2 :\
-	VAR_TEMP2@abdata_pair = %3 :\
-	newmod %1, abdata_pair@, VAR_TEMP@abdata_pair, VAR_TEMP2@abdata_pair
-	
 #modinit var p2, var p3
 	value_new mValue, p2
 	value_new mValue, p3
@@ -124,8 +148,6 @@
 //------------------------------------------------
 // [i] デストラクタ
 //------------------------------------------------
-#define global Pair_delete(%1) delmod %1
-
 //------------------------------------------------
 // 
 //------------------------------------------------	

@@ -43,8 +43,8 @@
 //------------------------------------------------
 // プッシュ
 //------------------------------------------------
-#define global Stack_push(%1,%2) VAR_TEMP@abdata_stack = (%2) : Stack_pushvar %1, VAR_TEMP@abdata_stack
-#modfunc Stack_pushvar var value
+#define global Stack_push(%1,%2) VAR_TEMP@abdata_stack = (%2) : Stack_pushv %1, VAR_TEMP@abdata_stack
+#modfunc Stack_pushv var value
 	value_new mValue, value			// 新しい項目を一番後ろに作成
 	mCnt ++							// 項目数を増加
 	return

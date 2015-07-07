@@ -5,33 +5,17 @@
 
 #include "Mo/pvalptr.as"
 #include "Mo/mod_shiftArray.as"
+#include "alg_iter.as"
 
 /**+
  * abdata_tree
  * Abstract Data - Tree
  * @author Ue-dai
- * @date   2009/07/07
- * @ver    1.1.0
+ * @date   2009/07/09
+ * @ver    1.1.1
  * @type   抽象データ型モジュール
  * @group  モジュールメンバ関数
  */
-
-/*-----------------------------------------------*
- * [History]
- * 
- * 2009/07/07 (Tue)
- * 　・copy, clear, chain を実装。
- * 　・インスタンスをすべて静的に管理するように変更
- * 　　モジュール変数は Id を保持するだけになった。
- *   ・exchange を実装。
- * 
- * 2009/04/12 (Sun)
- * 　・階層表現機能を追加。
- * 
- * 2008/10/13
- * 　・初期タイプ完成。
- * 
- *----------------------------------------------*/
 
 //##############################################################################
 //                ノード・モジュール
@@ -41,11 +25,22 @@
 #define mv modvar abdata_tree@
 #define VAR_TEMP stt_temp@abdata_tree
 
+#define ctype LOWORD(%1) ((%1) & 0xFFFF)
+#define ctype HIWORD(%1) LOWORD((%1) >> 16)
+
 #define global TNID_PARENT_OF_ROOT (0x7FFFFFFF)
 #define global TNID_DISABLE        (0xFFFFFFFF)
 
 #define mIter mIter_v(mIter_c)
 
+#defcfunc TNode_toRegularName str _name,  local sName, local c
+	sName = _name
+	c     = peek(sName)
+	if ( '0' <= c && c <= '9' ) {
+		return "#"+ sName
+	}
+	return sName
+	
 /**
  * ノードId がルートの親か
  * ツリーノードId がルートノードの親ノードを表す値であるかどうかを返します。
@@ -130,9 +125,22 @@
 	return
 	
 // 子ノードのインデックスを得る
-#defcfunc TNodeMod_getChildIdx mv, str _name,  local nIdx
-	nIdx = -1
+#defcfunc TNodeMod_getChildIdx mv, str _name,  local sName, local nIdx
+	sName =  TNode_toRegularName(_name)
+	nIdx  = -1
 	
+	// 数値
+	if ( peek(sName) == '#' ) {
+		getstr sName, sName, 1
+		nIdx = int(sName)
+		
+		if ( nIdx < 0 || mCntChildren <= nIdx ) {		// 子ノードの範囲外である場合
+			nIdx = -1
+		}
+		return nIdx
+	}
+	
+	// 文字列
 	foreach mChildren
 		if ( IsTnIdValid(mChildren(cnt)) == false ) { continue }
 		if ( _name == TNodeMod_getName( TNInstance(mChildren(cnt)) ) ) {
@@ -357,7 +365,7 @@
  * @return bool		: 存在したら真
  */
 #defcfunc TNode_existsChild int thisId, str _name
-	return TNodeMod_existsChild(TNInstance(thisId), _name)
+	return TNodeMod_existsChild( TNInstance(thisId), _name )
 	
 /**
  * 子ノードのId を得る
@@ -372,12 +380,13 @@
  * @prm p2 = str	: 子ノード名
  * @return = int	: 子ノードのId
  */
-#define global ctype TNode_getChild(%1,%2) TNodeMod_getChild( TNInstance(%1), %2 )
+#define global ctype TNode_getChild(%1,%2) TNodeMod_getChild( TNInstance(%1), str(%2) )
 
 // 階層表現対応
 #defcfunc TNode_getChildHier int _thisId, str _name,  local thisId, local sName, local stmp
 	thisId = _thisId
 	sName  = _name
+	
 	if ( peek(sName) == '/' ) {			// 絶対パス
 		getstr sName, sName, 1
 		thisId = TNode_getRoot(thisId)	// ルートノードから検索開始
@@ -500,6 +509,7 @@
 	} else {
 		mIter_c ++
 	}
+	
 	mIter = -1
 	return
 	
@@ -508,21 +518,49 @@
 	mIter_c --
 	return
 	
+#modfunc TNodeMod_iterCheckCore var vIterId
+	// 子ノード反復
+	if ( mIterMode == TRAVERSE_MODE_CHILDREN ) {
+		mIter ++
+		
+		// これ以上子ノードはない
+		if ( mIter >= mCntChildren ) {
+			return
+			
+		// まだ子ノードがある
+		} else {
+			vIterId = mChildren(mIter)
+			if ( IsTnIdValid(vIterId) == false ) {
+				TNodeMod_iterCheckCore thismod, vIterId
+			}
+		}
+	}
+	return
+	
 #define global ctype TNode_iterCheck(%1,%2) TNodeMod_iterCheck(TNInstance(%1), %2)
 #defcfunc TNodeMod_iterCheck mv, var vIterId
-	mIter ++
+	vIterId = TNID_DISABLE
 	
-	if ( mIter >= mCntChildren ) {
+	TNodeMod_iterCheckCore thismod, vIterId
+	
+	if ( vIterId == TNID_DISABLE ) {
 		TNodeMod_iterDelete thismod
 		return false
-		
-	} else {
-		vIterId = mChildren(mIter)
-		if ( IsTnIdValid(vIterId) == false ) {
-			return TNodeMod_iterCheck( thismod, vIterId )
-		}
-		return true
 	}
+	return true
+	
+//------------------------------------------------
+// [i] 繰返子初期化
+//------------------------------------------------
+#deffunc TNode_iterInit int thisId, var iterData
+	TNode_iterNew thisId
+	return
+	
+//------------------------------------------------
+// [i] 繰返子更新
+//------------------------------------------------
+#defcfunc TNode_iterNext int thisId, var vIt, var iterData
+	return TNode_iterCheck(thisId, vIt)
 	
 //##########################################################
 //        その他
@@ -597,7 +635,8 @@
 //-------- デバッグ時 --------
 
 // ノード名を再帰的に出力する
-#deffunc TNode_dbglog int thisId, int nest,  local itId, local stmp
+#deffunc TNode_dbglog int _thisId, int nest,  local thisId, local itId, local stmp
+	thisId = _thisId
 	if ( isTnIdValid(thisId) == false ) { return }
 	
 	sdim stmp, nest * 2 + 512
@@ -617,6 +656,10 @@
 	while ( TNode_iterCheck( thisId, itId ) )
 		TNode_dbglog itId, nest + 1
 	wend
+;	IterateBegin thisId, TNode, itId
+;		TNode_dbglog itId, nest + 1
+;	IterateEnd
+	
 	return
 	
 #else

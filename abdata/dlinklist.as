@@ -166,9 +166,9 @@
 	return
 	
 //------------------------------------------------
-// ŒJ•ÔŽq‚ð‰Šú‰»
+// ŒJ•ÔŽq‚Ì‰Šú‰»
 //------------------------------------------------
-#modfunc DLList_iterReset
+#modfunc DLList_iterClear
 	mIter       = mTop
 	mbIterStart = true
 	if ( mCntValue == 0 ) { mbIterStart = 0 }
@@ -179,7 +179,7 @@
 //------------------------------------------------
 #modfunc DLList_iterNew
 	mIter_c          ++			// ƒJƒEƒ“ƒg‚ð‘‰Á
-	DLList_iterReset thismod	// “KØ‚É‰Šú‰»‚·‚é
+	DLList_iterClear thismod	// “KØ‚É‰Šú‰»‚·‚é
 	return
 	
 //------------------------------------------------
@@ -219,6 +219,19 @@
 #defcfunc DLList_iterIsLast mv
 	return mIter == mLast
 	
+//------------------------------------------------
+// [i] ŒJ•ÔŽq‰Šú‰»
+//------------------------------------------------
+#modfunc DLList_iterInit var iterData
+	DLList_iterNew thismod
+	return
+	
+//------------------------------------------------
+// [i] ŒJ•ÔŽqXV
+//------------------------------------------------
+#defcfunc DLList_iterNext mv, var vIt, var iterData
+	return DLList_iterCheck(thismod, vIt)
+	
 //##############################################################################
 //                €–ÚŽæ“¾ŒnŠÖ”ŒQ
 //##############################################################################
@@ -232,7 +245,7 @@
 #define global ctype DLList_peekNextf(%1) DLList_getSeqf(%1,0)
 
 #define global DLList_dupNext(%1,%2,%3=1)  DLList_getSeq %1,%2,%3,1
-#define global DLList_dupValue(%1,%2,%3=0) DLList_getv %1,%2,%3,1
+#define global DLList_dupValue(%1,%2,%3=0) DLList_getv   %1,%2,%3,1
 
 //------------------------------------------------
 // Sequential Access –½—ßŒ`Ž®
@@ -394,9 +407,8 @@
 //------------------------------------------------
 #modfunc DLList_clear
 	dim     mValue
-	DLV_new mValue, VAR_TEMP
-	
-	mCntValue = 1		// —v‘f”
+;	DLV_new mValue, VAR_TEMP
+	mCntValue = 0		// —v‘f”
 	mTop      = 0		// æ“ª‚Ì—v‘f”Ô†
 	mLast     = 0		// ÅŒã‚Ì—v‘f”Ô†
 	mIter_v   = 0		// ŒJ•ÔŽq
@@ -469,7 +481,6 @@
 		logmes strf("(%2d) ", i) + it
 		i ++
 	wend
-	DLList_iterDelete thismod
 	return
 	
 #else
@@ -484,6 +495,8 @@
 //                ƒTƒ“ƒvƒ‹EƒXƒNƒŠƒvƒg
 //##############################################################################
 #if 0
+
+#include "alg_iter.as"
 
 #ifndef __UserDefHeader__
  #define color32(%1=0) color ((%1) & 0xFF),(((%1) >> 8) & 0xFF),(((%1) >> 16) & 0xFF)
@@ -559,13 +572,18 @@
 	boxf 10 + ( 60 * count ), 45, 70 + ( 60 * count ), 230 : color32 bturn(cref)
 	pos  15 + ( 60 * count ), 50
 	
+	/*
 	i = 0
 	DLList_iterNew mDLList
 	while ( DLList_iterCheck(mDLList, it) )
 		mes strf("(%2d) : ", i) + it
 		i ++
 	wend
-	DLList_iterDelete mDLList
+	/*/
+	IterateBegin mDLList, DLList
+		mes strf("(%2d) : ", IterateCnt) + it
+	IterateEnd
+	//*/
 	
 	count ++
 	return

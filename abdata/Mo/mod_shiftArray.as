@@ -9,7 +9,7 @@
 #deffunc ArrayInsert array arr, int idx
 	
 	// ‘}“ü‚³‚ê‚éêŠ‚ğ‹ó‚¯‚é
-	for i, length(arr) - 1, idx, -1
+	for i, length(arr), idx, -1
 		arr(i) = arr(i - 1)
 	next
 	
@@ -76,7 +76,7 @@
 #if 0
 
 #module
-#define global output(%1,%2) _output %1,%2,"%2"
+#define global output(%1,%2) _output %1, %2, "%2"
 #deffunc _output str ps1, array pa2, str ps3
 	mes ps1
 	foreach pa2
@@ -136,11 +136,11 @@
 	// íœ‚·‚é”Ô†
 	p = 3
 	
-	ArrayDelete a, p
+	ArrayRemove a, p
 	
 	// •\¦
 	pos 500, 20
-	output "Array Delete", a		// (5) ‚Ííœ‚³‚ê‚½cŠ[
+	output "Array Remove", a		// (5) ‚Ííœ‚³‚ê‚½cŠ[
 	
 	stop
 	

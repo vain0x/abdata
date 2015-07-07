@@ -53,7 +53,7 @@
 //------------------------------------------------
 // 値返し ( 命令形式 )
 //------------------------------------------------
-#modfunc List_getv int i, var result
+#modfunc List_getv var result, int i
 	if ( List_isValid(thismod, i) == false ) { logmes STR_ERR_OVER_RANGE(i) : return }
 	value_getv mValues( midlist(i) ), result
 	return
@@ -62,15 +62,15 @@
 // 値返し ( 関数形式 )
 //------------------------------------------------
 #defcfunc List_get mv, int i
-	List_getv thismod, i, VAR_TEMP
+	List_getv thismod, VAR_TEMP, i
 	return VAR_TEMP
 	
 //------------------------------------------------
-// クローン( 命令形式 )
+// 参照化 ( 命令形式 )
 //------------------------------------------------
-#modfunc List_dup int i, var clone
+#modfunc List_dup var vRef, int i
 	if ( List_isValid(thismod, i) == false ) { logmes STR_ERR_OVER_RANGE(i) : return }
-	value_dup mValues( midlist(i) ), clone
+	value_dup mValues( midlist(i) ), vRef
 	return
 	
 //################################################
@@ -79,17 +79,17 @@
 //------------------------------------------------
 // データ置換
 //------------------------------------------------
-#define global List_set(%1,%2=0,%3) VAR_TEMP@abdata_list = %3 : List_setv %1,%2,VAR_TEMP@abdata_list
-#modfunc List_setv int i, var v_value
+#define global List_set(%1,%2,%3=0) VAR_TEMP@abdata_list = %2 : List_setv %1,VAR_TEMP@abdata_list,%3
+#modfunc List_setv var vValue, int i
 	if ( List_isValid(thismod, i) == false ) {
 		// 新規追加
 		midlist( mCnt ) = GetNextAddIndex( mValues )	// 追加されるであろう番号
-		value_new mValues, v_value
+		value_new mValues, vValue
 		mCnt ++
 		
 	} else {
 		// 値の変更
-		value_setv mValues( midlist(i) ), v_value
+		value_setv mValues( midlist(i) ), vValue
 	}
 	return
 	
@@ -99,8 +99,8 @@
 //------------------------------------------------
 // 挿入
 //------------------------------------------------
-#define global List_insert(%1,%2=0,%3) VAR_TEMP@abdata_list = %3 : List_insertv %1,%2,VAR_TEMP@abdata_list
-#modfunc List_insertv int _i, var v_value,  local i
+#define global List_insert(%1,%2,%3=0) VAR_TEMP@abdata_list = %2 : List_insertv %1,VAR_TEMP@abdata_list,%3
+#modfunc List_insertv var vValue, int _i,  local i, local nIdx
 	i = _i
 	if ( i <    0 ) { i = mCnt - i }		// 循環参照
 	if ( i > mCnt ) { i = mCnt }
@@ -109,8 +109,9 @@
 	ArrayInsert midlist, i
 	
 	// 新規値を追加
-	value_new mValues, v_value
-	midlist(i) = i
+	nIdx       = GetNextAddIndex( mValues )
+	value_new mValues, vValue
+	midlist(i) = nIdx
 	mCnt ++
 	
 	return
@@ -118,7 +119,7 @@
 //------------------------------------------------
 // 最後尾への追加
 //------------------------------------------------
-#define global List_add(%1,%2) List_set %1, List_size(%1), %2
+#define global List_add(%1,%2) List_set %1, %2, List_size(%1)
 #define global List_push_back List_add
 
 //------------------------------------------------
@@ -128,7 +129,7 @@
 	i = _i
 	if ( i < 0 ) { i += mCnt }				// 循環参照
 	
-	if ( List_isValid(thismod, i) == false ) { logmes STR_ERR_OVERRANGE(_i) : return }
+	if ( List_isValid(thismod, i) == false ) { logmes STR_ERR_OVER_RANGE(i) : return }
 	ivRemoved = midlist(i)
 	
 	// i 番目を詰める ( 実質的除去 )
@@ -187,9 +188,9 @@
 //------------------------------------------------
 #modfunc List_chain var mv_from
 	repeat List_size( mv_from )
-		List_getv   mv_from, cnt, VAR_TEMP
-		List_insert thismod, cnt, VAR_TEMP
-	loop
+		List_getv   mv_from, VAR_TEMP, cnt
+		List_insert thismod, VAR_TEMP, cnt
+	loop                          
 	return
 	
 //------------------------------------------------
@@ -211,6 +212,24 @@
 	List_delete mvTemp
 	return
 	
+//------------------------------------------------
+// [i] 繰返子初期化
+//------------------------------------------------
+#modfunc List_iterInit var iterData
+	iterData = -1
+	return
+	
+//------------------------------------------------
+// [i] 繰返子更新
+//------------------------------------------------
+#defcfunc List_iterNext mv, var vIt, var iterData
+	iterData ++
+	if ( iterData < 0 || iterData >= List_size(thismod) ) {
+		return false
+	}
+	List_getv thismod, vIt, iterData
+	return true
+	
 //##############################################################################
 //                静的メンバ命令・関数
 //##############################################################################
@@ -221,10 +240,10 @@
 //------------------------------------------------
 // [i] コンストラクタ
 //------------------------------------------------
-#modinit int num, var v_default
+#modinit int num, var vDefault
 	
 	// メンバ変数の初期化
-	value_new mValues, v_default
+	value_new mValues, vDefault
 	midlist = 0
 	mCnt    = 0
 	
@@ -235,7 +254,7 @@
 	} else {
 		// 連続確保
 		repeat num
-			value_new mValues, v_default
+			value_new mValues, vDefault
 			midlist(cnt) = cnt
 			mCnt ++
 		loop
@@ -251,7 +270,6 @@
 	return
 	
 #global
-
 
 //##############################################################################
 //                サンプル・スクリプト
@@ -272,7 +290,10 @@
 	List_add    list, 3200
 	List_add    list, 3.14159265358979
 	List_output list
-	List_move   list, 0, 1
+	List_move   list, 1, 2
+	List_output list
+	
+	List_insert list, 999999999, 0
 	List_output list
 	
 	stop
