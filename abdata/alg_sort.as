@@ -1,7 +1,7 @@
 // Algorithm::Sort 整列
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_ALGORITHM_SORT_AS__
-#define __ABSTRACT_DATA_STRUCTURE_ALGORITHM_SORT_AS__
+#ifndef IG_ABSTRACT_DATA_STRUCTURE_ALGORITHM_SORT_AS
+#define IG_ABSTRACT_DATA_STRUCTURE_ALGORITHM_SORT_AS
 
 // 未実装
 
@@ -20,8 +20,8 @@
 //------------------------------------------------
 // マクロ群
 //------------------------------------------------
-#define gloal abdata_sort(%1,%2,%3=SortOrder_Ascending) "未実装"
-	
+#define global abdata_sort(%1, %2, %3 = SortOrder_Ascending) !{"abdata_sort は未実装です"}!
+
 //##############################################################################
 //        サンプル・スクリプト
 //##############################################################################
@@ -31,17 +31,17 @@
 #include "list.as"
 	
 	// とりあえず要素追加
-	List_new slist
+	list_new slist
 	repeat 10
-		List_push_back slist, pow_i(-3, cnt)	;, strf("#%02d value;", 10 - cnt)
+		List_add slist, pow_i(-3, cnt)	;, strf("#%02d value;", 10 - cnt)
 	loop
 	
-	List_dbglog slist
+	list_dbglog slist
 	logmes ""
 	
-	abdata_sort slist, List, SortOrder_Ascending
+	abdata_sort slist, list, SortOrder_Ascending
 	
-	List_dbglog slist
+	list_dbglog slist
 	
 	stop
 	

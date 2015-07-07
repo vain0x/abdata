@@ -1,7 +1,7 @@
 // 辞書 - Dictionary
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_DICTIONARY_AS__
-#define __ABSTRACT_DATA_STRUCTURE_DICTIONARY_AS__
+#ifndef IG_ABSTRACT_DATA_STRUCTURE_DICTIONARY_AS
+#define IG_ABSTRACT_DATA_STRUCTURE_DICTIONARY_AS
 
 // 不完全
 // @ 参照が作れない。素直にハッシュ法で構築した方がいいかも。
@@ -88,14 +88,14 @@
 //*/
 	
 //------------------------------------------------
-// 値の型を取得
+// 型の取得
 //------------------------------------------------
 #modcfunc dict_vartype str key
 	dict_getv thismod, VAR_TEMP, key
 	return vartype( VAR_TEMP )
 	
 //------------------------------------------------
-// キーの有無を取得
+// キーの有無の取得
 //------------------------------------------------
 #modcfunc dict_exists str key
 	return mdict("Exists", key)
@@ -121,7 +121,8 @@
 	}
 	return
 	
-#define global dict_add dict_set
+#define global dict_add  dict_set
+#define global dict_addv dict_setv
 
 //------------------------------------------------
 // 要素の除去

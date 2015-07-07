@@ -1,7 +1,7 @@
 // ƒ‚ƒWƒ…[ƒ‹•Ï”‚É’Ç‰Á‚³‚ê‚é—v‘f”Ô†‚ğæ“¾
 
-#ifndef __GET_NEXT_ADD_INDEX_AS__
-#define __GET_NEXT_ADD_INDEX_AS__
+#ifndef IG_GET_NEXT_ADD_INDEX_AS
+#define IG_GET_NEXT_ADD_INDEX_AS
 
 #module gnai_mod
 

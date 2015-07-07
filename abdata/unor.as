@@ -1,42 +1,35 @@
-// Unor - 連想配列 ( 不整列コンテナ )
+// unor - 連想配列 ( 不整列コンテナ ) (ラッパ)
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_UNORDERED_AS__
-#define __ABSTRACT_DATA_STRUCTURE_UNORDERED_AS__
+#ifndef IG_ABSTRACT_DATA_STRUCTURE_UNORDERED_WRAPPER_AS
+#define IG_ABSTRACT_DATA_STRUCTURE_UNORDERED_WRAPPER_AS
 
-#include "list.as"
-#include "alg_iter.as"
+#include "unor_impl.as"
 
 //##############################################################################
-//                Unordered
+//                abdata::unordered
 //##############################################################################
-#module abdata_unor mlistKey, mlistValue
-
-#define VAR_TEMP stt_temp@abdata_unor
-;#define MAX_HASH 53
-
-#define ctype operate_strcmp(%1,%2,%3) ( (%1) != (%3) %2 0 )
-#define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
-#define true  1
-#define false 0
 
 //##############################################################################
 //                構築・解体
 //##############################################################################
+#define global unor_new(%1)    unorImpl_new    unorInsts : %1 = stat
+#define global unor_delete(%1) unorImpl_delete unorInsts(%1)
 
-#define global Unor_new(%1)    newmod %1, abdata_unor@
-#define global Unor_delete(%1) delmod %1
+//------------------------------------------------
+// 構築者
+//------------------------------------------------
+#module
+
+#defcfunc new_unor  local newOne
+	unor_new newOne
+	return   newOne
+	
+#global
 
 //------------------------------------------------
 // [i] 構築
 //------------------------------------------------
-#modinit
-	
-	// メンバ変数の初期化
-	List_new mlistKey
-	List_new mlistValue
-	
-	return
-	
+
 //------------------------------------------------
 // [i] 解体
 //------------------------------------------------
@@ -51,69 +44,49 @@
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
-#modfunc Unor_getv_byIndex_ int i, var result, int bRemove
-	List_getv mlistValue, result, i
-	
-	if ( bRemove ) {
-		Unor_remove_byIndex_ thismod, i
-	}
-	return
-	
-#modfunc Unor_getv_ str key, var result, int bRemove
-	Unor_getv_byIndex_ thismod, Unor_getIndex(thismod, key), result, bRemove
-	return
-	
-#define global Unor_getv(%1,%2="",%3) Unor_getv_ %1, %2, %3, 0
-#define global Unor_popv(%1,%2="",%3) Unor_getv_ %1, %2, %3, 1
+;#define global unor_getv_byIndex_(%1,%2,%3,%4) unorImpl_getv_byIndex_ unorInsts(%1), %2, %3, %4
+;#define global unor_getv_(%1,%2,%3,%4) unorImpl_getv_ unorInsts(%1), %2, %3, %4
+#define global unor_getv(%1,%2="",%3) unorImpl_getv unorInsts(%1), %2, %3
+#define global unor_popv(%1,%2="",%3) unorImpl_popv unorInsts(%1), %2, %3
 
 //------------------------------------------------
 // 値の取得 ( 関数形式 )
 //------------------------------------------------
-#modcfunc Unor_get_ str key, int bRemove
-	Unor_getv_ thismod, key, VAR_TEMP, bRemove
-	return VAR_TEMP
-	
-#define global ctype Unor_get(%1,%2="") Unor_get_(%1, %2, 0)
-#define global ctype Unor_pop(%1,%2="") Unor_get_(%1, %2, 1)
+;#define global unor_get_(%1,%2,%3) unorImpl_get_(unorInsts(%1), %2, %3)
+#define global ctype unor_get(%1,%2="") unorImpl_get(unorInsts(%1), %2)
+#define global ctype unor_pop(%1,%2="") unorImpl_pop(unorInsts(%1), %2)
 
 //------------------------------------------------
 // 参照化 ( 命令形式 )
 //------------------------------------------------
-#modfunc Unor_dup_byIndex_ int i, var vRef
-	List_dup mlistValue, i, vRef
-	return
-	
-#modfunc Unor_dup str key, var vRef
-	Unor_dup_byIndex_ thismod, Unor_getIndex( thismod, key ), vRef
-	return
-	
+;#define global unor_clone_byIndex_(%1,%2,%3) unorImpl_clone_byIndex_ unorInsts(%1), %2, %3
+#define global unor_clone(%1,%2="",%3) unorImpl_clone unorInsts(%1), %2, %3
+
 //------------------------------------------------
 // 参照化 ( 関数形式 )
 //------------------------------------------------
-#define global ctype Unor_ref(%1,%2="") VAR_TEMP@abdata_unor( Unor_ref_(%1,%2) )
-#modcfunc Unor_ref_byIndex_ int i
-	Unor_dup thismod, i, VAR_TEMP
-	return 0
-	
-#modcfunc Unor_ref_ str key
-	return Unor_ref_byIndex_( thismod, Unor_getIndex(thismod, key) )
-	
+#define global ctype unor_ref(%1,%2="") unorImpl_ref(unorInsts(%1), %2)
+
+;#define global ctype unor_ref_byIndex_(%1,%2) unorImpl_ref_byIndex_(unorInsts(%1), %2)
+;#define global ctype unor_ref_(%1,%2="")      unorImpl_ref_(unorInsts(%1), %2)
+
+//------------------------------------------------
+// 型の取得 ( 関数形式 )
+//------------------------------------------------
+;#define global unor_vartype_byIndex_(%1,%2) unorImpl_vartype_byIndex_(unorInsts(%1), %2)
+#define global ctype unor_vartype(%1,%2="") unorImpl_vartype(unorInsts(%1), %2)
+;#define global ctype unor_vartype_(%1,%2) unorImpl_vartype_(unorInsts(%1), %2)
+
 //################################################
 //        設定系
 //################################################
 //------------------------------------------------
 // 値の設定
 //------------------------------------------------
-#define global Unor_set(%1,%2="",%3) VAR_TEMP@abdata_unor = %3 : Unor_setv %1, %2, VAR_TEMP@abdata_unor
+#define global unor_set(%1,%2="",%3)  unorImpl_set  unorInsts(%1), %2, %3
+#define global unor_setv(%1,%2="",%3) unorImpl_setv unorInsts(%1), %2, %3
+;#define global unor_setv_byIndex_(%1,%2,%3) unorImpl_setv_byIndex_ unorInsts(%1), %2, %3
 
-#modfunc Unor_setv str key, var vValue
-	Unor_setv_byIndex_ thismod, Unor_getIndex(thismod, key), vValue
-	return
-	
-#modfunc Unor_setv_byIndex_ int i, var vValue
-	List_setv mlistValue, vValue, i
-	return
-	
 //################################################
 //        操作系
 //################################################
@@ -122,273 +95,145 @@
 // 
 // @ 既存なら失敗
 //------------------------------------------------
-#define global Unor_add(%1,%2="",%3=stt_zero@) VAR_TEMP@abdata_unor = %3 : Unor_addv %1, %2, VAR_TEMP@abdata_unor
+#define global unor_add(%1,%2="",%3=stt_zero@) unorImpl_add unorInsts(%1), %2, %3
+#define global unor_addv(%1,%2,%3) unorImpl_addv unorInsts(%1), %2, %3
 
-#modfunc Unor_addv str key, var vValue
-	Unor_addValue thismod, key, vValue
-	return
-	
 //------------------------------------------------
 // 除去
 // 
 // @+ 存在しない要素は除去しない
 //------------------------------------------------
-#modfunc Unor_remove str key,  local i
-	
-	i = Unor_getIndex(thismod, key, true)
-	if ( i < 0 ) { return }
-	
-	Unor_remove_byIndex_ thismod, i
-	return
-	
-#modfunc Unor_remove_byIndex_ int i
-	List_remove mlistKey,   i
-	List_remove mlistValue, i
-	return
-	
+#define global unor_remove(%1,%2) unorImpl_remove unorInsts(%1), %2
+;#define global unor_remove_byIndex_(%1,%2) unorImpl_remove_byIndex_ unorInsts(%1), %2
+
 //##########################################################
 //        コンテナ操作
 //##########################################################
 //------------------------------------------------
 // [i] 完全消去
 //------------------------------------------------
-#modfunc Unor_clear
-	List_clear mlistKey
-	List_clear mlistValue
-	return
-	
+#define global unor_clear(%1) unorImpl_clear unorInsts(%1)
+
 //------------------------------------------------
 // [i] 連結
 //------------------------------------------------
-#modfunc Unor_chain var mvFrom
-	
-	IterateBegin mvFrom, Unor
-		Unor_add thismod, it, Unor_get(mvFrom, it)
-	IterateEnd
-	
-	return
-	
+#define global unor_chain(%1,%2) unorImpl_chain unorInsts(%1), unorInsts(%2)
+
 //------------------------------------------------
 // [i] 複製
 //------------------------------------------------
-#modfunc Unor_copy var mvFrom
-	Unor_clear thismod
-	Unor_chain thismod, mvFrom
-	return
-	
+#define global unor_copy(%1,%2) unorImpl_copy unorInsts(%1), unorInsts(%2)
+
 //------------------------------------------------
 // [i] 交換
 //------------------------------------------------
-#modfunc Unor_exchange var mv2,  local mvTemp
-	Unor_new  mvTemp
-	Unor_copy mvTemp,  thismod
-	Unor_copy thismod, mv2
-	Unor_copy mv2,     mvTemp
-	Unor_delete mvTemp
-	return
-	
+#define global unor_exchange(%1,%2) unorImpl_exchange unorInsts(%1), unorInsts(%2)
+
 //##########################################################
 //        反復子操作
 //##########################################################
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#modfunc Unor_iterInit var iterData
-	List_iterInit mlistKey, iterData
-	return
-	
+#define global unor_iterInit(%1,%2) unorImpl_iterInit unorInsts(%1), %2
+
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#modcfunc Unor_iterNext var vIt, var iterData
-	return List_iterNext( mlistKey, vIt, iterData )
-	
-//################################################
+#define global ctype unor_iterNext(%1,%2,%3) unorImpl_iterNext( unorInsts(%1), %2, %3 )
+
+//##########################################################
 //        雑多系
-//################################################
+//#########################################################
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
-#modcfunc Unor_size
-	return List_size( mlistKey )
-	
-#define global Unor_n      Unor_size
-#define global Unor_count  Unor_size
-#define global Unor_length Unor_size
+#define global ctype unor_size(%1)  unorImpl_size(unorInsts(%1))
+#define global ctype unor_empty(%1) unorImpl_empty(unorInsts(%1))
+#define global unor_count  unor_size
+#define global unor_length unor_size
 
 //------------------------------------------------
 // キーの有無
 //------------------------------------------------
-#modcfunc Unor_exists str key
-	return ( Unor_getIndex( thismod, key, true ) >= 0 )
-	
+#define global ctype unor_exists(%1,%2) unorImpl_exists(unorInsts(%1), %2)
+
 //------------------------------------------------
 // 実際の要素番号を得る
 // @private
 // @result:
-// @	bNoAdd == false =>
+// @	?(bNoAdd == false) =>
 // @		ある場合 => キーがある要素番号
 // @		ない場合 => 新規追加し、その番号を返す。
 // @		=>> 常に有効な要素番号を返す。
-// @	else:
+// @	else =>
 // @		ある場合 => キーがある要素番号
 // @		ない場合 => 負数
 //------------------------------------------------
-#modcfunc Unor_getIndex@abdata_unor str key, int bNoAdd,  local idx
-	
-	Unor_find_ex thismod, key, idx
-	if ( stat ) {
-		return idx
-	}
-	
-	// 新規に追加する
-	if ( bNoAdd == false ) {
-		Unor_addValue_byIndex_ thismod, idx, key, stt_zero@
-		return stat
-	}
-	
-	return -1
-	
+;#define global ctype unor_getIndex(%1,%2,%3=0) unorImpl_getIndex@abdata_unor_impl(unorInsts(%1), %2, %3)
+
 //------------------------------------------------
 // 要素を追加する
 // @private
 // @result: 追加した要素の要素番号
-// @ 整列状態を保っておく
-// @ 重複したキーは無視する
+// @ 整列状態を保っておく。
+// @ 重複したキーは無視する。
 //------------------------------------------------
-#modfunc Unor_addValue@abdata_unor str key, var vValue,  local idx
-	
-	Unor_find_ex thismod, key, idx
-	if ( stat ) {		// キーは既存
-		return idx
-	}
-	
-	Unor_addValue_byIndex_ thismod, idx, key, vValue
-	
-	return idx
-	
-#modfunc Unor_addValue_byIndex_@abdata_unor int idx, str key, var vValue
-	List_insert  mlistKey,      key, idx
-	List_insertv mlistValue, vValue, idx
-	return idx
-	
+;#define global unor_addValue(%1,%2,%3) unorImpl_addValue@abdata_unor_impl unorInsts(%1), %2, %3
+;#define global unor_addValue_byIndex_(%1,%2,%3,%4) unorImpl_addValue_byIndex_@abdata_unor_impl unorInsts(%1), %2, %3, %4
+
 //------------------------------------------------
 // 要素を検索する
-// @private 
-// @result:
+// @private
+// @algorithm : 二分探索(binary search)
+// @result :
 // @	キーがある場合 => 真を返す。idx := 要素番号。
 // @	キーがない場合 => 偽を返す。idx := 指定キーがあるべき要素番号。
 //------------------------------------------------
-#modfunc Unor_find_ex@abdata_unor str key, var idx,  local size, local iMin, local iMax, local nCmp, local bExists
-	
-	size = Unor_size(thismod)
-	iMin = 0
-	iMax = size
-	idx  = size / 2
-	
-	bExists = false
-	
-	repeat
-		if ( iMin == iMax ) {
-			idx = iMin		// 一致した値
-			break
-		}
-		
-		nCmp = ( List_get(mlistKey, idx) != key )
-		
-		if ( nCmp == 0 ) {
-			bExists = true
-			break
-			
-		} else : if ( nCmp > 0 ) {
-			iMax = idx
-			
-		} else /* : if ( nCmp < 0 ) */ {
-			iMin = idx + 1
-		}
-		
-		// 残りの中央にフォーカス
-		idx = ( iMin + iMax ) / 2
-	loop
-	
-	return bExists
-	
+#define global ctype unor_find_ex(%1,%2,%3) unorImpl_find_ex@abdata_unor_impl(unorInsts(%1), %2, %3)
+
 //##############################################################################
 //                静的メンバ命令・関数
 //##############################################################################
+/*
 //------------------------------------------------
 // ハッシュ関数
-// @private
-// @result:
-// @	max := MAX_HASH - 1
-// @	min := 0
-// @	(key == "") => 0
 //------------------------------------------------
-#defcfunc MakeHash@abdata_unor str _key,  local key, local hash, local c
-	if ( _key == "" ) { return 0 }
-	
-	key = _key
-	
-	repeat strlen(key) - 1
-		hash += wpeek(key, cnt) << ( cnt \ 4 )
-	loop
-	
-	return abs( hash \ MAX_HASH )
+#defcfunc MakeHash@abdata_unor_impl str _key,  local key, local hash, local c
+
+//*/
 	
 //##############################################################################
 //                デバッグ用
 //##############################################################################
-#ifdef _DEBUG
+//------------------------------------------------
+// デバッグ出力
+//------------------------------------------------
+#define global unor_dbglog(%1) unorImpl_dbglog_ unorInsts(%1), "%1"
 
-#define global Unor_dbglog(%1) Unor_dbglog_ %1, "%1"
-
-#modfunc Unor_dbglog_ str _ident,  local ident
-	ident = _ident
+	unor_new unorNull
 	
-	logmes "["+ strtrim(ident, 0, ' ') +"] debug-log"
-	
-	IterateBegin thismod, Unor
-		logmes strf("%s\t: %s", it, Unor_get(thismod, it))
-	IterateEnd
-	
-	logmes ""
-	return
-	
-#else
-
-#define global Unor_dbglog(%1) :
-
-#endif
-	
-#global
-
 //##############################################################################
 //                サンプル・スクリプト
 //##############################################################################
 #if 0
 
-	Unor_new    vSt
-	Unor_add    vSt, "str", "Hello, world!"
-	Unor_add    vSt, "int", 100
-	Unor_add    vSt, "double", M_PI
-	Unor_add    vSt, "日本語", "Japanese"
-	Unor_add    vSt, "英語",   "English"
-	Unor_add    vSt, "____"			// 要素の既定値は int(0)
-	Unor_dbglog vSt
+	unor_new    vSt
+;	unor_new    vSt
+	unor_add    vSt, "str", "Hello, world!"
+	unor_add    vSt, "int", 100
+	unor_add    vSt, "double", M_PI
+	unor_add    vSt, "日本語", "Japanese"
+	unor_add    vSt, "英語",   "English"
+	unor_add    vSt, "____"			// 要素の既定値は int(0)
+	unor_dbglog vSt
 	
-	Unor_set    vSt, "str", "hoge-piyo-foo-bar"
-	Unor_remove vSt, "____"
-	Unor_dbglog vSt
+	unor_set    vSt, "str", "hoge-piyo-foo-bar"
+	unor_remove vSt, "____"
+	unor_dbglog vSt
 	
 	stop
 	
 #endif
 
 #endif
-
-/******
-	
-	mlistKey, mlistValue の要素番号が同じ要素が、キーと要素の組になる。
-	mlistKey は常に整列している。そのため、find_ex のような絞り込みが可能。
-	
-******/

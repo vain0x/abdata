@@ -35,7 +35,7 @@ return void	:
 
 ;--------------------
 %index
-TNodeMod_new
+TRoot_new
 ルートノードを作成する
 
 %prm
@@ -50,9 +50,8 @@ return int	: 値を格納した p1 の要素番号
 ノードの値は初期値で int 型の 0 です。
 
 ※この命令で作成される p1 は、実際には struct 型ではありませんが、
-varuse が使用できない、vartype が "int" の値を返す、などの違いはありますが、
-モジュール変数 modvar として扱っています。
-
+TNode_* 系の命令・関数では、これをモジュール変数 (modvar) として扱います。
+なお、varuse が使用できない、vartype が "int" の値を返す、などの違いがあります。
 ;--------------------
 %index
 TNode_getv

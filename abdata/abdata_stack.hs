@@ -6,7 +6,8 @@ abdata_stack
 uedai
 
 %date
-2009 09/02 (Wed)	// 最終更新
+2010 07/18 (Sun)	// 最終更新 表記の修正, _clone などの不足していた関数の説明を追加
+2009 10/04 (Sun)	// 
 2009 08/30 (Sun)	// Deque のラッパに変更
 2009 08/29 (Sat)	// リファレンス作成
 2008 09/0X (___)	// 作成
@@ -22,149 +23,168 @@ uedai
 
 ;--------------------
 %index
-Stack_new
-Stack 構築
+new_stack
+Stack 構築 (一時)
 
 %prm
-self
-modvar self : モジュール変数
+()
 
 %inst
-スタック (stack) を構築します。
-self がすでにモジュール型の場合、新しい要素に追加されます。
+新たなスタック (stack) を構築し、返します。
 
 %href
-Stack_new
-Stack_delete
+new_stack
+stack_new
+stack_delete
 
 %group
 構築命令
 
 ;--------------------
 %index
-Stack_delete
+stack_new
+Stack 構築
+
+%prm
+self
+var self : 構築先の変数
+
+%inst
+スタック (stack) を構築します。
+
+%href
+new_stack
+stack_new
+stack_delete
+
+%group
+構築命令
+
+;--------------------
+%index
+stack_delete
 Stack 破棄
 
 %prm
 self
-modvar self : モジュール変数
+inst self : スタック
 
 %inst
 スタック (Stack) を破棄します。
 
 %href
-Stack_new
-Stack_delete
+stack_new
+stack_delete
 
 %group
 解体関数
 
 ;--------------------
 %index
-Stack_push
+stack_push
 Stack に値を積む
 
 %prm
 self, value
-modvar self  : スタック
-any    value : 値
+inst self  : スタック
+any  value : 積む値
 
 %inst
 スタックに値を積みます。
 
-※Stack_push_back と同じ。
+※stack_push_back と同じ。
 
 %href
-Stack_push
-Stack_pushv
-Stack_pop
-Stack_popv
-Stack_peek
-Stack_peekv
+stack_push
+stack_pushv
+stack_pop
+stack_popv
+stack_peek
+stack_peekv
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-Stack_pushv
+stack_pushv
 Stack 値を積む ( 変数 )
 
 %prm
 self, value
-modvar self  : スタック
-var    value : 変数
+inst self  : スタック
+var  value : 積む値を持つ変数
 
 %inst
-スタックに値を積みます。Stack_push とは違い、value には変数のみ指定できます。
+スタックに値を積みます。stack_push とは違い、value には変数のみ指定できます。
 変数の値を積む場合は、無駄なコピーが行われません。
 
 %href
-Stack_push
-Stack_pushv
-Stack_pop
-Stack_popv
-Stack_peek
-Stack_peekv
+stack_push
+stack_pushv
+stack_pop
+stack_popv
+stack_peek
+stack_peekv
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-Stack_popv
+stack_popv
 Stack 値を降ろす ( 変数 )
 
 %prm
 self, vResult
-modvar self : スタック
-var vResult : 変数
+inst self    : スタック
+var  vResult : 格納先の変数
 
 %inst
 スタックから値を下ろし、変数に格納します。
 
 %href
-Stack_push
-Stack_pushv
-Stack_pop
-Stack_popv
-Stack_peek
-Stack_peekv
+stack_push
+stack_pushv
+stack_pop
+stack_popv
+stack_peek
+stack_peekv
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Stack_pop
+stack_pop
 Stack 値を降ろす
 
 %prm
 (self)
-modvar self : スタック
+inst self : スタック
 
 %inst
 スタックから値を降ろして返します。
 
 %href
-Stack_push
-Stack_pushv
-Stack_pop
-Stack_popv
-Stack_peek
-Stack_peekv
+stack_push
+stack_pushv
+stack_pop
+stack_popv
+stack_peek
+stack_peekv
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Stack_peekv
+stack_peekv
 Stack 値の取得 ( 変数 )
 
 %prm
 self, vResult, offset
-modvar self : スタック
+inst self   : スタック
 var vResult : 格納先の変数
 int offset  : オフセット量
 
@@ -173,58 +193,129 @@ int offset  : オフセット量
 
 offset で、トップ以外の要素の値を得ることが可能です。offset = 0 のとき、一番上の要素です。
 
-※ Stack_getv と同じ。
+※ stack_getv と同じ。
 
 %href
-Stack_push
-Stack_pushv
-Stack_pop
-Stack_popv
-Stack_peek
-Stack_peekv
+stack_push
+stack_pushv
+stack_pop
+stack_popv
+stack_peek
+stack_peekv
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Stack_peek
+stack_peek
 Stack 値の取得
 
 %prm
 (self, offset)
-modvar self : スタック
-int offset  : オフセット量
+inst self  : スタック
+int offset : オフセット量
 
 %inst
 スタックから値を取得し、返します。pop とは違い、取り出した値はスタックから取り除かれません。
 
 offset で、トップ以外の要素の値を得ることが可能です。offset = 0 のとき、一番上の要素です。
 
-※ Stack_get() と同じ。
+※ stack_get() と同じ。
 
 %href
-Stack_push
-Stack_pushv
-Stack_pop
-Stack_popv
-Stack_peek
-Stack_peekv
+stack_push
+stack_pushv
+stack_pop
+stack_popv
+stack_peek
+stack_peekv
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Stack_size
+stack_clone
+Stack クローンの作成 (命令)
+
+%prm
+self, result, offset
+inst self   : スタック
+var  result : クローンにする変数
+int  offset : オフセット量
+
+%inst
+スタック上の値のクローンを作ります。
+
+offset で、トップ以外の要素の値を得ることが可能です。offset = 0 のとき、一番上の要素です。
+
+%href
+stack_push
+stack_pushv
+stack_pop
+stack_popv
+stack_peek
+stack_peekv
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+stack_ref
+Stack クローンの作成 (関数)
+
+%prm
+(self, offset)
+inst self   : スタック
+int  offset : オフセット量
+
+%inst
+スタック上の値のクローンを作り、返します。これは値として正常でない場合があるため、代入文の右辺以外では使用しないでください。
+
+offset で、トップ以外の要素の値を得ることが可能です。offset = 0 のとき、一番上の要素です。
+
+%href
+stack_push
+stack_pushv
+stack_pop
+stack_popv
+stack_peek
+stack_peekv
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+stack_vartype
+Stack 型の取得
+
+%prm
+(self)
+inst self : スタック
+
+%inst
+スタックの一番上に積まれている要素の値の型を返します。
+
+%href
+;stack_vartype
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+stack_size
 Stack 要素数 [i]
 
 %prm
 (self)
-modvar self : スタック
+inst self : スタック
 
 %inst
-スタックに積まれている要素の数を返します。統一関数です。
+スタックに積まれている要素の数を返す統一関数です。
 
 %href
 
@@ -233,12 +324,12 @@ modvar self : スタック
 
 ;--------------------
 %index
-Stack_clear
+stack_clear
 Stack 消去 [i]
 
 %prm
 self
-modvar self : スタック
+inst self : スタック
 
 %inst
 スタックに積まれているすべての要素を消去し、スタックを空っぽにする統一関数です。
@@ -250,16 +341,16 @@ modvar self : スタック
 
 ;--------------------
 %index
-Stack_chain
+stack_chain
 Stack 連結 [i]
 
 %prm
-self, mv_from
-modvar self   : スタック
-modvar mvFrom : 〃
+self, src
+inst self : スタック
+inst src  : 〃
 
 %inst
-スタックに、mvFrom に積まれている要素をすべて積む統一関数です。Stack_pop と Stack_push を用いるため、積まれている順番は逆になります。
+スタックに、src に積まれている要素をすべて積む統一関数です。stack_pop と stack_push を用いるため、積まれている順番は逆になります。
 
 %href
 
@@ -268,16 +359,16 @@ modvar mvFrom : 〃
 
 ;--------------------
 %index
-Stack_copy
+stack_copy
 Stack 複写 [i]
 
 %prm
-self, mv_from
-modvar self   : スタック
-modvar mvFrom : 〃
+self, src
+inst self : スタック
+inst src  : 〃
 
 %inst
-スタックに mvFrom のすべての要素を複写する統一関数です。それまで積まれていた要素は削除されます。また、要素の順番は mvFrom のそれと同じであることが保証されます。
+スタックに src のすべての要素を複写する統一関数です。それまで積まれていた要素は削除されます。また、要素の順番は src のそれと同じであることが保証されます。
 
 %href
 
@@ -286,16 +377,16 @@ modvar mvFrom : 〃
 
 ;--------------------
 %index
-Stack_exchange
+stack_exchange
 Stack コンテナ交換 [i]
 
 %prm
-self, mv2
-modvar self : スタック
-modvar mv2  : 〃
+self, obj
+inst self : スタック
+inst obj  : 〃
 
 %inst
-self と mv2 のスタックの内容を、そっくりそのまま入れ替える統一関数です。
+self と obj のスタックの内容を、そっくりそのまま入れ替える統一関数です。
 
 %href
 
@@ -304,12 +395,12 @@ self と mv2 のスタックの内容を、そっくりそのまま入れ替える統一関数です。
 
 ;--------------------
 %index
-Stack_dbglog
+stack_dbglog
 Stack デバッグ出力
 
 %prm
 self
-modvar self : スタック
+inst self : スタック
 
 %inst
 スタックに積まれている要素をすべて logmes を用いて出力します。文字列型にできない要素がある場合は、その途中で失敗します。

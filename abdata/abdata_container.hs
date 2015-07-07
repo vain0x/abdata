@@ -6,7 +6,9 @@ abdata_container
 uedai
 
 %date
-2009 09/02 (Wed)
+2010 07/17 (Sat)	// 最終更新 _dup を _clone へ変更, new_Container 追加
+2010 06/25 (Fri)	// Container_Sort 追加
+2009 10/04 (Sun)	// 
 2009 08/31 (Mon)	// 作成
 
 %ver
@@ -23,17 +25,37 @@ http://prograpark.ninja-web.net/
 
 ;--------------------
 %index
+new_Container
+Container 構築 (一時)
+
+%prm
+()
+
+%inst
+汎用コンテナ (Container) を式中で構築します。
+
+%href
+new_Container
+Container_new
+Container_delete
+
+%group
+構築関数
+
+;--------------------
+%index
 Container_new
 Container 構築
 
 %prm
 self
-modvar self : モジュール変数
+inst self : 汎用コンテナを構築する変数
 
 %inst
 汎用コンテナ (Container) を構築します。
 
 %href
+new_Container
 Container_new
 Container_delete
 
@@ -47,7 +69,7 @@ Container 解体
 
 %prm
 self
-modvar self : モジュール変数
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナを解体します。
@@ -55,6 +77,7 @@ modvar self : モジュール変数
 自動で呼び出されるため、通常、呼び出す必要はありません。
 
 %href
+new_Container
 Container_new
 Container_delete
 
@@ -63,20 +86,20 @@ Container_delete
 
 ;--------------------
 %index
-Container_dup
+Container_clone
 Container 参照化
 
 %prm
 self, vRef, i
-modvar self : 汎用コンテナ
-var    vRef : 参照化する変数
-int    i    : 要素番号
+inst self : 汎用コンテナ
+var  vRef : 参照化する変数
+int  i    : 要素番号
 
 %inst
 vRef を、汎用コンテナの要素 [i] の参照 ( クローン ) にします。つまり、dup 命令のような処理です。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -102,19 +125,19 @@ Container_ref
 Container 参照
 
 %prm
-(self, i)
-modvar self : 汎用コンテナ
-int    i    : 要素番号
+(self, idx)
+inst self : 汎用コンテナ
+int  idx  : 要素番号
 
 %inst
-汎用コンテナの要素 [i] の参照を返します (擬似的に)。この関数は、代入文の左辺としてのみ使用できます。
+汎用コンテナの要素 [idx] の参照を返します (擬似的に)。この関数は、代入文の左辺としてのみ使用できます。
 
 %sample
-	Container_ref( i ) = 10
-	Container_ref( i ) = "string"	// 型の変換はできません
+	Container_ref( idx ) = 10
+	Container_ref( idx ) = "string"	// 型の変換はできません
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -140,17 +163,17 @@ Container_get
 Container 値の取得
 
 %prm
-(self, i)
-modvar self : 汎用コンテナ
-int    i    : 要素番号
+(self, idx)
+inst self : 汎用コンテナ
+int  idx  : 要素番号
 
 %inst
-汎用コンテナの要素 [i] の値を返します。
+汎用コンテナの要素 [idx] の値を返します。
 
 ※ pop 操作ではないので、要素が汎用コンテナから取り除かれるということはありません。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -177,7 +200,7 @@ Container 値の取得 ( 先頭 )
 
 %prm
 (self)
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの先頭の要素の値を返します。
@@ -185,7 +208,7 @@ modvar self : 汎用コンテナ
 ※ pop 操作ではないので、要素が汎用コンテナから取り除かれるということはありません。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -212,7 +235,7 @@ Container 値の取得 ( 末尾 )
 
 %prm
 (self)
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの末尾の要素の値を返します。
@@ -220,7 +243,7 @@ modvar self : 汎用コンテナ
 ※ pop 操作ではないので、要素が汎用コンテナから取り除かれるということはありません。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -246,18 +269,18 @@ Container_getv
 Container 値の取得 ( 変数 )
 
 %prm
-self, result, i
-modvar self : 汎用コンテナ
-var result  : 戻り値を格納する変数
-int i       : 要素番号
+self, result, idx
+inst self   : 汎用コンテナ
+var  result : 返値を格納する変数
+int  idx    : 要素番号
 
 %inst
-汎用コンテナの要素 [i] の値を、変数 result に格納します。
+汎用コンテナの要素 [idx] の値を、変数 result に格納します。
 
 ※ pop 操作ではないので、要素が汎用コンテナから取り除かれるということはありません。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -284,8 +307,8 @@ Container 値の取得 ( 先頭、変数 )
 
 %prm
 self, result
-modvar self : 汎用コンテナ
-var result  : 戻り値を格納する変数
+inst self   : 汎用コンテナ
+var  result : 戻り値を格納する変数
 
 %inst
 汎用コンテナの先頭の要素の値を、変数 result に格納します。
@@ -293,7 +316,7 @@ var result  : 戻り値を格納する変数
 ※ pop 操作ではないので、要素が汎用コンテナから取り除かれるということはありません。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -320,8 +343,8 @@ Container 値の取得 ( 末尾、変数 )
 
 %prm
 self, result
-modvar self : 汎用コンテナ
-var result  : 戻り値を格納する変数
+inst self   : 汎用コンテナ
+var  result : 戻り値を格納する変数
 
 %inst
 汎用コンテナの末尾の要素の値を、変数 result に格納します。
@@ -329,7 +352,7 @@ var result  : 戻り値を格納する変数
 ※ pop 操作ではないので、要素が汎用コンテナから取り除かれるということはありません。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -355,15 +378,15 @@ Container_pop
 Container 値の取得
 
 %prm
-self, i
-modvar self : 汎用コンテナ
-int    i    : 要素番号
+self, idx
+inst self : 汎用コンテナ
+int  i    : 要素番号
 
 %inst
-汎用コンテナの要素 [i] の値を取得し、返します。取り出した値は汎用コンテナから取り除かれます。
+汎用コンテナの要素 [idx] の値を取得し、返します。取り出した値は汎用コンテナから取り除かれます。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -392,13 +415,13 @@ Container 値の取得 ( 先頭 )
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの先頭の要素の値を取得し、返します。取り出した値は汎用コンテナから取り除かれます。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -427,13 +450,13 @@ Container 値の取得 ( 末尾 )
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの末尾の要素の値を取得し、返します。取り出した値は汎用コンテナから取り除かれます。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -461,16 +484,16 @@ Container_popv
 Container 値の取得 ( 変数 )
 
 %prm
-self, vResult, int i
-modvar self    : 汎用コンテナ
-var    vResult : 戻り値を格納する変数
-int    i       : 要素番号
+self, vResult, int idx
+inst self    : 汎用コンテナ
+var  vResult : 戻り値を格納する変数
+int  idx     : 要素番号
 
 %inst
-汎用コンテナの要素 [i] の値を取得し、vResult に格納します。取り出した値は汎用コンテナから取り除かれます。
+汎用コンテナの要素 [idx] の値を取得し、vResult に格納します。取り出した値は汎用コンテナから取り除かれます。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -499,14 +522,14 @@ Container 値の取得 ( 先頭、変数 )
 
 %prm
 self, vResult
-modvar self : 汎用コンテナ
-var vResult : 戻り値を格納する変数
+inst self    : 汎用コンテナ
+var  vResult : 戻り値を格納する変数
 
 %inst
 汎用コンテナの先頭の要素の値を取得し、vResult に格納します。取り出した値は汎用コンテナから取り除かれます。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -535,14 +558,14 @@ Container 値の取得 ( 末尾、変数 )
 
 %prm
 self, vResult
-modvar self : 汎用コンテナ
-var vResult : 戻り値を格納する変数
+inst self    : 汎用コンテナ
+var  vResult : 戻り値を格納する変数
 
 %inst
 汎用コンテナの末尾の要素の値を取得し、vResult に格納します。取り出した値は汎用コンテナから取り除かれます。
 
 %href
-Container_dup
+Container_clone
 Container_ref
 
 Container_get
@@ -560,6 +583,67 @@ Container_popv_front
 Container_popv_back
 
 Container_remove
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+Container_vartype
+Container 型の取得
+
+%prm
+(self, idx)
+inst self : 汎用コンテナ
+int  idx  : 要素番号
+
+%inst
+汎用コンテナの要素 [i] の値の型を返します。
+
+%href
+Container_vartype
+Container_vartype_front
+Container_vartype_back
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+Container_vartype_front
+Container 型の取得 ( 先頭 )
+
+%prm
+(self)
+inst self : 汎用コンテナ
+
+%inst
+汎用コンテナの先頭の要素の値の型を返します。
+
+%href
+Container_vartype
+Container_vartype_front
+Container_vartype_back
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+Container_vartype_back
+Container 型の取得 ( 末尾 )
+
+%prm
+(self)
+inst self : 汎用コンテナ
+
+%inst
+汎用コンテナの末尾の要素の値の型を返します。
+
+%href
+Container_vartype
+Container_vartype_front
+Container_vartype_back
 
 %group
 メンバ関数::取得系
@@ -570,10 +654,10 @@ Container_set
 Container 値の変更
 
 %prm
-self, value, i = 0
-modvar self  : 汎用コンテナ
-any    value : 設定する値
-int    i     : 要素番号
+self, value, idx = 0
+inst self  : 汎用コンテナ
+any  value : 設定する値
+int  idx   : 要素番号
 
 %inst
 汎用コンテナの要素 [i] の値を value に変更します。
@@ -607,13 +691,13 @@ Container_setv
 Container 値の変更 ( 変数 )
 
 %prm
-self, vValue, i
-modvar self   : 汎用コンテナ
-var    vValue : 設定する値が格納された変数
-int    i      : 要素番号
+self, vValue, idx
+inst self   : 汎用コンテナ
+var  vValue : 設定する値が格納された変数
+int  idx    : 要素番号
 
 %inst
-汎用コンテナの要素 [i] に、vValue の値を設定します。
+汎用コンテナの要素 [idx] に、vValue の値を設定します。
 
 %href
 Container_set
@@ -644,15 +728,15 @@ Container_insert
 Container 要素の挿入
 
 %prm
-self, value, p3 = 0
-modvar self  : 汎用コンテナ
-any    value : 挿入する要素の値
-int    i     : 新たな要素の番号
+self, value, idx = 0
+inst self  : 汎用コンテナ
+any  value : 挿入する要素の値
+int  idx   : 新たな要素の番号
 
 %inst
-汎用コンテナの [i] に、新しい要素を挿入します。i を省略する ( i == 0 にする ) と、汎用コンテナの先頭に追加されます。
+汎用コンテナの [idx] に、新しい要素を挿入します。idx を省略する ( idx == 0 にする ) と、汎用コンテナの先頭に追加されます。
 
-i は他のメンバのそれと違い、「i >= Container_size(...)」を許可します。この場合は、要素を末尾に追加するという、Container_push_back と同じ処理になります。
+idx は他のメンバのそれと違い、「idx >= Container_size(...)」を許可します。この場合は、要素を末尾に追加するという、Container_push_back と同じ処理になります。
 
 %href
 Container_set
@@ -683,13 +767,13 @@ Container_insertv
 Container 要素の挿入 ( 変数 )
 
 %prm
-self, vValue, i
-modvar self   : 汎用コンテナ
-var    vValue : 挿入する要素の値が格納された変数
-int    i      : 新しい要素の番号
+self, vValue, idx
+inst self   : 汎用コンテナ
+var  vValue : 挿入する要素の値が格納された変数
+int  idx    : 新しい要素の番号
 
 %inst
-汎用コンテナの [i] に新しい要素を挿入します。
+汎用コンテナの [idx] に新しい要素を挿入します。
 
 %href
 Container_set
@@ -720,12 +804,12 @@ Container_double
 Container 要素の倍化
 
 %prm
-self, i
-modvar self : 汎用コンテナ
-int    i    : 要素番号
+self, idx
+inst self : 汎用コンテナ
+int  idx  : 要素番号
 
 %inst
-汎用コンテナの [i] の要素の直後に、同じ値の要素を挿入します。
+汎用コンテナの [idx] の要素の直後に、同じ値の要素を挿入します。
 
 %href
 Container_set
@@ -756,9 +840,9 @@ Container_double_front
 Container 要素の倍化 ( 先頭 )
 
 %prm
-self, i
-modvar self : 汎用コンテナ
-int    i    : 要素番号
+self, idx
+inst self : 汎用コンテナ
+int  idx  : 要素番号
 
 %inst
 汎用コンテナの先頭の要素の直後に、同じ値の要素を挿入します。
@@ -792,9 +876,9 @@ Container_double_back
 Container 要素の倍化 ( 末尾 )
 
 %prm
-self, i
-modvar self : 汎用コンテナ
-int    i    : 要素番号
+self, idx
+inst self : 汎用コンテナ
+int  idx  : 要素番号
 
 %inst
 汎用コンテナの末尾の要素の直後に、同じ値の要素を挿入します。
@@ -829,8 +913,8 @@ Container 要素の追加 ( 先頭 )
 
 %prm
 self, value
-modvar self  : 汎用コンテナ
-any    value : 追加する要素の値
+inst self  : 汎用コンテナ
+any  value : 追加する要素の値
 
 %inst
 汎用コンテナの先頭に要素を追加します。
@@ -865,8 +949,8 @@ Container 要素の追加 ( 末尾 )
 
 %prm
 self, value
-modvar self  : 汎用コンテナ
-any    value : 追加する要素の値
+inst self  : 汎用コンテナ
+any  value : 追加する要素の値
 
 %inst
 汎用コンテナの末尾に要素を追加します。
@@ -903,8 +987,8 @@ Container 要素の追加 ( 先頭、変数 )
 
 %prm
 self, vValue
-modvar self   : 汎用コンテナ
-var    vValue : 追加する要素の値を格納した変数
+inst self   : 汎用コンテナ
+var  vValue : 追加する要素の値を格納した変数
 
 %inst
 汎用コンテナの先頭に要素を追加します。
@@ -939,8 +1023,8 @@ Container 要素の追加 ( 末尾、変数 )
 
 %prm
 self, vValue
-modvar self   : 汎用コンテナ
-var    vValue : 追加する要素の値を格納した変数
+inst self   : 汎用コンテナ
+var  vValue : 追加する要素の値を格納した変数
 
 %inst
 汎用コンテナの末尾に要素を追加します。
@@ -975,8 +1059,8 @@ Container 要素の追加 ( 末尾 )
 
 %prm
 self, value
-modvar self  : 汎用コンテナ
-any    value : 追加する要素の値
+inst self  : 汎用コンテナ
+any  value : 追加する要素の値
 
 %inst
 汎用コンテナの末尾に要素を追加する、Container_push_back と同じ動作です。
@@ -1010,9 +1094,9 @@ Container_remove
 Container 要素の除去
 
 %prm
-self, i
-modvar self : 汎用コンテナ
-int    i    : 要素番号
+self, idx
+inst self : 汎用コンテナ
+int  idx  : 要素番号
 
 %inst
 汎用コンテナの要素 [i] を汎用コンテナから取り除きます。
@@ -1032,7 +1116,7 @@ Container 要素の除去 ( 先頭 )
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの先頭の要素を、汎用コンテナから取り除きます。
@@ -1052,7 +1136,7 @@ Container 要素の除去 ( 末尾 )
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの末尾の要素を、汎用コンテナから取り除きます。
@@ -1072,9 +1156,9 @@ Container 要素の移動
 
 %prm
 self, from, to
-modvar self : 汎用コンテナ
-int    from : 移動前の要素番号
-int    to   : 移動後の要素番号
+inst self : 汎用コンテナ
+int  from : 移動前の要素番号
+int  to   : 移動後の要素番号
 
 %inst
 汎用コンテナの要素 [from] を、[to] の位置に移動させます。
@@ -1089,6 +1173,7 @@ Container_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
+Container_sort
 
 %group
 メンバ関数::順序操作系
@@ -1100,9 +1185,9 @@ Container 要素の交換
 
 %prm
 self, pos1, pos2
-modvar self : 汎用コンテナ
-int    pos1 : 交換する要素番号
-int    pos2 : 〃
+inst self : 汎用コンテナ
+int  pos1 : 交換する要素番号
+int  pos2 : 〃
 
 %inst
 汎用コンテナの要素 [pos1] と [pos2] を交換します。
@@ -1117,6 +1202,7 @@ Container_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
+Container_sort
 
 %group
 メンバ関数::順序操作系
@@ -1128,7 +1214,7 @@ Container 要素の交換 ( 先頭 )
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの先頭の要素2つを交換します。
@@ -1143,6 +1229,7 @@ Container_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
+Container_sort
 
 %group
 メンバ関数::順序操作系
@@ -1154,7 +1241,7 @@ Container 要素の交換 ( 末尾 )
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの末尾の要素2つを交換します。
@@ -1169,6 +1256,7 @@ Container_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
+Container_sort
 
 %group
 メンバ関数::順序操作系
@@ -1180,7 +1268,7 @@ Container 要素の巡回
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの要素をすべて、一つ前にずらします。つまり、先頭の要素を末尾に移動させる処理です。
@@ -1193,6 +1281,7 @@ Container_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
+Container_sort
 
 %group
 メンバ関数::順序操作系
@@ -1204,7 +1293,7 @@ Container 要素の巡回 ( 逆回転 )
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの要素をすべて、一つ後ろにずらします。つまり、末尾の要素を先頭に移動させる処理で、Container_rotate の丁度逆です。
@@ -1217,6 +1306,7 @@ Container_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
+Container_sort
 
 %group
 メンバ関数::順序操作系
@@ -1228,7 +1318,7 @@ Container 要素順の反転
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナの要素の順番を逆にします。
@@ -1243,6 +1333,43 @@ Container_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
+Container_sort
+
+%group
+メンバ関数::順序操作系
+
+;--------------------
+%index
+Container_sort
+Container 整列
+
+%prm
+self [, mode = SortMode_Ascending]
+inst self : 汎用コンテナ
+int  mode : SortMode_* 
+
+%inst
+汎用コンテナの要素を整列します。
+
+SortMode_Ascending => 昇順
+SortMode_Decending => 降順
+
+※ variant など、大小比較のできない型が含まれていた場合、エラー終了するので注意すること。
+
+(algorithm)
+1. 型タイプ値の小さい方を「小さい」と判断。
+2. 同じの場合、比較演算 (<, >) で判断。
+
+(ex) [1, 3, e, "a", 2, "b", π] を整列すると ["a", "b", e, π, 1, 2, 3] になる。
+%href
+Container_move
+Container_swap
+Container_swap_front
+Container_swap_back
+Container_rotate
+Container_rotate_back
+Container_reverse
+Container_sort
 
 %group
 メンバ関数::順序操作系
@@ -1254,7 +1381,7 @@ Container 消去 [i]
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 すべての要素を汎用コンテナから取り除く統一関数です。
@@ -1270,12 +1397,12 @@ Container_chain
 Container 連結 [i]
 
 %prm
-self, mvFrom
-modvar self   : 汎用コンテナ
-modvar mvFrom : 〃
+self, src
+inst self : 汎用コンテナ
+inst src  : 〃
 
 %inst
-汎用コンテナ mvFrom に含まれるすべての要素を、self の末尾に追加する統一関数です。mvFrom の要素の順番は維持されます。
+汎用コンテナ src に含まれるすべての要素を、self の末尾に追加する統一関数です。from の要素の順番は維持されます。
 
 %href
 
@@ -1288,12 +1415,12 @@ Container_copy
 Container 複写 [i]
 
 %prm
-self, mvFrom
-modvar self   : 汎用コンテナ
-modvar mvFrom : 〃
+self, src
+inst self : 汎用コンテナ
+inst src  : 〃
 
 %inst
-汎用コンテナ mvFrom を複写する統一関数です。元々あった汎用コンテナは Container_clear によって消去されます。
+汎用コンテナ src を複写する統一関数です。元々あった汎用コンテナは Container_clear によって消去されます。
 
 %href
 
@@ -1306,12 +1433,12 @@ Container_exchange
 Container コンテナ交換 [i]
 
 %prm
-self, mv2
-modvar self : 汎用コンテナ
-modvar mv2  : 〃
+self, obj2
+inst self : 汎用コンテナ
+inst obj2 : 〃
 
 %inst
-self と mv2 に含まれるすべての要素を交換します。それぞれの要素の順番は維持されます。
+self と obj2 に含まれるすべての要素を交換します。それぞれの要素の順番は維持されます。
 
 %href
 
@@ -1325,7 +1452,7 @@ Container 反復子::初期化 [i]
 
 %prm
 self, iterData
-modvar self  : 汎用コンテナ
+inst self    : 汎用コンテナ
 var iterData : 反復情報
 
 %inst
@@ -1347,7 +1474,7 @@ Container 反復子::更新 [i]
 
 %prm
 (self, vIt, iterData)
-modvar self  : 汎用コンテナ
+inst self    : 汎用コンテナ
 var vIt      : 反復子
 var iterData : 反復情報
 
@@ -1370,7 +1497,7 @@ Container 要素数 [i]
 
 %prm
 (self)
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナに含まれる要素の数を返す統一関数です。
@@ -1389,12 +1516,12 @@ Container_isValid
 Container 要素番号が有効かどうか
 
 %prm
-(self, i)
-modvar self : 汎用コンテナ
-int    i    : 要素番号
+(self, idx)
+inst self : 汎用コンテナ
+int  idx  : 要素番号
 
 %inst
-汎用コンテナの要素番号として i が適切かどうかを返します。
+汎用コンテナの要素番号として idx が適切かどうかを返します。
 適切な番号なら true ( 0 以外 ) を、不適切なら false ( = 0 ) を返します。
 
 %href
@@ -1409,7 +1536,7 @@ Container デバッグ出力
 
 %prm
 self
-modvar self : 汎用コンテナ
+inst self : 汎用コンテナ
 
 %inst
 汎用コンテナのすべての要素を logmes で出力します。

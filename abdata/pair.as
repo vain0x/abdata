@@ -1,38 +1,88 @@
-// pair - ペア
+// pair - ペア (ラッパ)
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_PAIR_AS__
-#define __ABSTRACT_DATA_STRUCTURE_PAIR_AS__
+#ifndef IG_ABSTRACT_DATA_STRUCTURE_PAIR_WRAPPER_AS
+#define IG_ABSTRACT_DATA_STRUCTURE_PAIR_WRAPPER_AS
 
-#include "value.as"
+// @ pair
+// @ 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
 
-#module abdata_pair mValue
+#include "pair_impl.as"
 
-#define VAR_TEMP  stt_temp1@abdata_pair
-#define VAR_TEMP2 stt_temp2@abdata_pair
+//##############################################################################
+//                abdata::pair (<lhs, rhs>)
+//##############################################################################
+//------------------------------------------------
+// 要素の idx 値
+//------------------------------------------------
+#define global PairIdx_Lhs PairImplIdx_Lhs
+#define global PairIdx_Rhs PairImplIdx_Rhs
+
+//------------------------------------------------
+// [i] 要素数
+//------------------------------------------------
+#define global ctype pair_size(%1)  pairImpl_size ( pairInsts(%1) )
+#define global ctype pair_empty(%1) pairImpl_empty( pairInsts(%1) )
+#define global pair_count  pair_size
+#define global pair_length pair_size
 
 //##############################################################################
 //                構築・解体
 //##############################################################################
 //------------------------------------------------
-#define global Pair_new(%1,%2=stt_zero@,%3=stt_zero@) \
-	VAR_TEMP@abdata_pair  = %2 :\
-	VAR_TEMP2@abdata_pair = %3 :\
-	newmod %1, abdata_pair@, VAR_TEMP@abdata_pair, VAR_TEMP2@abdata_pair
-	//
+//------------------------------------------------
+#define global pair_new(%1, %2 = stt_zero@, %3 = stt_zero@) \
+	pairImpl_new pairInsts, %2, %3 : %1 = stat
+	
+#define global pair_delete(%1) pairImpl_delete pairInsts(%1)
 
-#define global Pair_delete(%1) delmod %1
+//------------------------------------------------
+// 構築者
+//------------------------------------------------
+#module
+
+#define global ctype new_pair(%1 = stt_zero@, %2 = stt_zero@) new_pair_(%1, %2)
+#defcfunc new_pair_ var lhs, var rhs,  local newObj
+	pair_new newObj, lhs, rhs
+	return newObj
+	
+#global
 
 //------------------------------------------------
 // [i] 構築
 //------------------------------------------------
-#modinit var p2, var p3
-	value_new mValue, p2
-	value_new mValue, p3
-	return
-	
+
 //------------------------------------------------
 // [i] 解体
 //------------------------------------------------
+
+//##########################################################
+//        取得系
+//##########################################################
+//------------------------------------------------
+// 値の取得
+//------------------------------------------------
+#define global       pair_getv(%1,%2,%3=0)   pairImpl_getv pairInsts(%1), %2, %3
+#define global ctype pair_get(%1,%2=0)       pairImpl_get( pairInsts(%1), %2 )
+#define global ctype pair_getvLhs(%1,%2)     pairImpl_getvLhs( pairInsts(%1), %2 )
+#define global ctype pair_getvRhs(%1,%2)     pairImpl_getvRhs( pairInsts(%1), %2 )
+#define global       pair_getvBoth(%1,%2,%3) pairImpl_getvBoth(pairInsts(%1), %2, %3)
+
+#define global ctype pair_getLhs(%1)         pairImpl_getLhs(pairInsts(%1))
+#define global ctype pair_getRhs(%1)         pairImpl_getRhs(pairInsts(%1))
+
+//------------------------------------------------
+// 参照化 ( 命令形式 )
+//------------------------------------------------
+#define global pair_clone(%1,%2,%3=0) pairImpl_clone    pairInsts(%1), %2, %3
+#define global pair_cloneLhs(%1,%2)   pairImpl_cloneLhs pairInsts(%1), %2
+#define global pair_cloneRhs(%1,%2)   pairImpl_cloneRhs pairInsts(%1), %2
+
+//------------------------------------------------
+// 型の取得 ( 関数形式 )
+//------------------------------------------------
+#define global ctype pair_vartype(%1,%2) pairImpl_vartype(pairInsts(%1), %2)
+#define global ctype pair_vartypeLhs(%1) pairImpl_vartypeLhs(pairInsts(%1))
+#define global ctype pair_vartypeRhs(%1) pairImpl_vartypeRhs(pairInsts(%1))
 
 //##########################################################
 //        操作系
@@ -40,54 +90,21 @@
 //------------------------------------------------
 // 値の設定
 //------------------------------------------------
-#define global Pair_set(%1,%2,%3=0) VAR_TEMP@abdata_pair = %2 : Pair_setv %1, VAR_TEMP@abdata_pair, %3
-#modfunc Pair_setv var p2, int n
-	value_setv mValue(n), p2
-	return
-	
-#define global Pair_setFirst(%1,%2)  Pair_set %1, %2, 0
-#define global Pair_setSecond(%1,%2) Pair_set %1, %2, 1
+#define global pair_set(%1,%2,%3=0) pairImpl_set    pairInsts(%1), %2, %3		// (%3 := idx)
+#define global pair_setLhs(%1,%2)   pairImpl_setLhs pairInsts(%1), %2
+#define global pair_setRhs(%1,%2)   pairImpl_setRhs pairInsts(%1), %2
+
+#define global pair_setvLhs(%1,%2) pairImpl_setvLhs pairInsts(%1), %2
+#define global pair_setvRhs(%1,%2) pairImpl_setvRhs pairInsts(%1), %2
+
+#define global pair_setBoth(%1,%2,%3)  pairImpl_setBoth  pairInsts(%1), %2, %3
+#define global pair_setvBoth(%1,%2,%3) pairImpl_setvBoth pairInsts(%1), %2, %3
 
 //------------------------------------------------
 // 要素交換
-// @ first と second を交換する
+// @ lhs と rhs を交換する
 //------------------------------------------------
-#modfunc Pair_swap  local tempFirst, local tempSecond
-	Pair_getvFirst  thismod, tempFirst
-	Pair_getvSecond thismod, tempSecond
-	Pair_setFirst   thismod, tempSecond
-	Pair_setSecond  thismod, tempFirst
-	return
-	
-//##########################################################
-//        取得系
-//##########################################################
-//------------------------------------------------
-// 値の取得
-//------------------------------------------------
-#modfunc Pair_getv var vResult, int n
-	value_getv mValue(n), vResult
-	return
-	
-#modcfunc Pair_get int n
-	Pair_getv thismod, VAR_TEMP, n
-	return VAR_TEMP
-	
-#define global Pair_getvFirst(%1,%2)  Pair_getv (%1), (%2), 0
-#define global Pair_getvSecond(%1,%2) Pair_getv (%1), (%2), 1
-
-#define global ctype Pair_getFirst(%1)  Pair_get(%1, 0)
-#define global ctype Pair_getSecond(%1) Pair_get(%1, 1)
-
-//------------------------------------------------
-// 参照を作る
-//------------------------------------------------
-#modfunc Pair_dup var p2, int n
-	value_dup mValue(n), p2
-	return
-	
-#define global Pair_dupFirst(%1,%2)  Pair_dup %1, %2, 0
-#define global Pair_dupSecond(%1,%2) Pair_dup %1, %2, 1
+#define global pair_swap(%1) pairImpl_swap pairInsts(%1)
 
 //##########################################################
 //        コンテナ操作
@@ -95,84 +112,65 @@
 //------------------------------------------------
 // [i] 完全消去
 //------------------------------------------------
-#modfunc Pair_clear
-	foreach mValue
-		value_delete mValue(cnt)
-	loop
-	return
-	
+#define global pair_clear(%1) pairImpl_clear pairInsts(%1)
+
 //------------------------------------------------
 // [i] 複写
 //------------------------------------------------
-#modfunc Pair_copy var mv_from
-	Pair_clear     thismod
-	Pair_setFirst  thismod, Pair_getFirst (mv_from)
-	Pair_setSecond thismod, Pair_getSecond(mv_from)
-	return
-	
+#define global pair_copy(%1,%2) pairImpl_copy pairInsts(%1), pairInsts(%2)
+
 //------------------------------------------------
 // [i] 連結
 //------------------------------------------------
-#define global Pair_chain(%1,%2) "Pair_chain はできません。[Pair_chain(%1, %2)]"
-;#modfunc Pair_chain var mv_from
-;	return
-	
+#define global pair_chain(%1,%2) "pair_chain は不可能。[pair_chain(%1, %2)]"
+;#define global pair_chain(%1,%2) pairImpl_chain pairInsts(%1), pairInsts(%2)
+
 //------------------------------------------------
 // [i] 交換
 //------------------------------------------------
-#modfunc Pair_exchange var mv2,  local mvTemp
-	Pair_new  mvTemp
-	Pair_copy mvTemp,  thismod
-	Pair_copy thismod, mv2
-	Pair_copy mv2,     mvTemp
-	Pair_delete mvTemp
-	return
-	
+#define global pair_exchange(%1,%2) pairImpl_exchange pairInsts(%1), pairInsts(%2)
+
 //##########################################################
 //        反復子操作
 //##########################################################
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#modfunc Pair_iterInit var vIt
-	vIt = -1
-	return
-	
+#define global pair_iterInit(%1,%2) pairImpl_iterInit pairInsts(%1), %2
+
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#modcfunc Pair_iterNext var vIt, var iterData
-	iterData ++
-	if ( 0 <= iterData && iterData < Pair_size(thismod) ) {
-		Pair_getv thismod, vIt, iterData
-		return true
-	} else {
-		return false
-	}
-	
+#define global ctype pair_iterNext(%1,%2,%3) pairImpl_iterNext( pairInsts(%1), %2, %3 )
+
 //##########################################################
 //        雑多系
 //##########################################################
-//------------------------------------------------
-// [i] 要素数
-//------------------------------------------------
-#define global ctype Pair_size(%1) 2
-#define global Pair_n      Pair_size
-#define global Pair_count  Pair_size
-#define global Pair_length Pair_size
 
 //------------------------------------------------
 // 
 //------------------------------------------------	
 
-#global
+//##############################################################################
+//                デバッグ用
+//##############################################################################
+//------------------------------------------------
+// デバッグ出力
+//------------------------------------------------
+#define global pair_dbglog(%1) pairImpl_dbglog_ pairInsts(%1), "%1"
 
+	pair_new pairNull
+	
 //##############################################################################
 //                サンプル・スクリプト
 //##############################################################################
 #if 0
 
-	Pair_new pair
+	pair_new     p
+	pair_setBoth p, 1, 2
+	pair_dbglog  p
+	
+	p = pairNull
 	
 	stop
 	

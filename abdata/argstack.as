@@ -1,7 +1,9 @@
 // argument stack
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_ARGUMENT_STACK_AS__
-#define __ABSTRACT_DATA_STRUCTURE_ARGUMENT_STACK_AS__
+#ifndef IG_ABSTRACT_DATA_STRUCTURE_ARGUMENT_STACK_AS
+#define IG_ABSTRACT_DATA_STRUCTURE_ARGUMENT_STACK_AS
+
+// @ 未使用。将来的にも使用する予定なし。
 
 //##############################################################################
 //        Value Sturct for Argument Stack

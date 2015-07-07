@@ -6,7 +6,9 @@ abdata_pair
 uedai
 
 %date
-2009 09/02 (Wed)	// 最終更新
+2010 07/15 (Sat)	// 最終更新
+2010 06/25 (Fri)	// 
+2009 09/02 (Wed)	// 
 2009 04/08 (Wed)	// 作成
 
 %ver
@@ -23,376 +25,584 @@ http://prograpark.ninja-web.net/
 
 ;--------------------
 %index
-Pair_new
-Pair 構築
+new_pair
+Pair 構築 (一時)
 
 %prm
-self, [value1], [value2]
-modvar self : モジュール変数
-any value1  : 値 first
-any value2  : 値 second
+([lhs], [rhs])
+var lhs  : 初期左値
+var rhs  : 初期右値
 
 %inst
-ペア (Pair) を構築します。初期値は (value1, value 2) です ( 省略可 )。
+新しくペア (Pair) を構築し、返します。初期値は <lhs, rhs> です ( 省略可 )。どちらも、初期値が省略された要素は 0 が格納されます。
 
 %href
-Pair_new
-Pair_delete
+new_pair
+pair_new
+pair_delete
 
 %group
 構築関数
 
 ;--------------------
 %index
-Pair_delete
+pair_new
+Pair 構築
+
+%prm
+self, [lhs], [lhs]
+inst self : モジュール変数
+any  lhs  : 初期左値
+any  rhs  : 初期右値
+
+%inst
+ペア (Pair) を構築します。初期値は <lhs, rhs> です ( 省略可 )。どちらも、初期値が省略された要素は 0 が格納されます。
+
+ペアの要素番号は、lhs, rhs の順に 0, 1 で、この値は定数 PairIdx_Lhs, PairIdx_Rhs で得られます。
+
+%href
+new_pair
+pair_new
+pair_delete
+
+%group
+構築関数
+
+;--------------------
+%index
+pair_delete
 Pair 解体
 
 %prm
 self
-modvar self : モジュール変数
+inst self : Pair インスタンス
 
 %inst
 ペア (Pair) を解体します。
 
+この関数はプログラム終了時に自動で呼び出されるため、通常、呼び出す必要はありません。
+
 %href
-Pair_new
-Pair_delete
+new_pair
+pair_new
+pair_delete
 
 %group
 解体関数
 
 ;--------------------
 %index
-Pair_set
+pair_set
 Pair 値の変更
 
 %prm
-self, value, b = 0
-modvar self  : Pair インスタンス
-any    value : 値
-int    b     : 0 => first, 1 => second
+self, value, idx
+inst self  : Pair インスタンス
+any  value : 値
+int  idx   : 要素番号
 
 %inst
 ペアの値の片方を value に設定します。
 
 %href
-Pair_set
-Pair_setv
-Pair_setFirst
-Pair_setSecond
-Pair_dup
-Pair_dupFirst
-Pair_dupSecond
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-Pair_setv
+pair_setv
 Pair 値を設定 ( 変数 )
 
 %prm
-self, vValue, b
-modvar self   : Pair インスタンス
-var    vValue : 値が格納された変数
-int    b      : 0 => first, 1 => second
+self, vValue, idx
+inst self   : Pair インスタンス
+var  vValue : 値が格納された変数
+int  idx    : 要素番号
 
 %inst
 ペアの片方の要素に値を設定します。
 
 %href
-Pair_set
-Pair_setv
-Pair_setFirst
-Pair_setSecond
-Pair_dup
-Pair_dupFirst
-Pair_dupSecond
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-Pair_setFirst
-Pair 値を設定[first]
+pair_setLhs
+Pair 値を設定 (lhs)
 
 %prm
 self, value
-modvar self  : Pair インスタンス
-any    value : 設定する値
+inst self  : Pair インスタンス
+any  value : 設定する値
 
 %inst
-ペアの first に値を設定します。
+ペアの lhs に値を設定します。
 
 %href
-Pair_set
-Pair_setv
-Pair_setFirst
-Pair_setSecond
-Pair_dup
-Pair_dupFirst
-Pair_dupSecond
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-Pair_setSecond
-Pair 値を設定[second]
+pair_setRhs
+Pair 値を設定 (lhs)
 
 %prm
 self, value
-modvar self  : Pair インスタンス
-any    value : 設定する値
+inst self  : Pair インスタンス
+any  value : 設定する値
 
 %inst
-ペアの second に値を設定します。
+ペアの rhs に値を設定します。
 
 %href
-Pair_set
-Pair_setv
-Pair_setFirst
-Pair_setSecond
-Pair_dup
-Pair_dupFirst
-Pair_dupSecond
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-Pair_dup
+pair_setBoth
+Pair 値の変更 (両方)
+
+%prm
+self, valueLhs, valueRhs
+inst self     : Pair インスタンス
+any  valueLhs : lhs 値
+any  valueRhs : rhs 値
+
+%inst
+ペアの値を <valueLhs, valueRhs> に設定します。
+
+%href
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
+
+%group
+メンバ関数::操作系
+
+;--------------------
+%index
+pair_setvBoth
+Pair 値の変更 (両方) (変数)
+
+%prm
+self, vLhs, vRhs
+inst self : Pair インスタンス
+var  vLhs : lhs 値
+var  vRhs : rhs 値
+
+%inst
+ペアの値を <vLhs, vRhs> それぞれの値に設定します。
+
+%href
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
+
+%group
+メンバ関数::操作系
+
+;--------------------
+%index
+pair_clone
 Pair 要素の参照化
 
 %prm
-self, vRef, b
-modvar self : Pair インスタンス
-var    vRef : 参照化する変数
-int    b    : 0 => first, 1 => second
+self, vRef, idx
+inst self : Pair インスタンス
+var  vRef : クローン化する変数
+int  idx  : 要素番号
 
 %inst
-vRef を、b == 0 なら first の、b == 1 なら second の参照 ( クローン ) にします。
+vRef を、片方のクローンにします。
 
 %href
-Pair_set
-Pair_setv
-Pair_setFirst
-Pair_setSecond
-Pair_dup
-Pair_dupFirst
-Pair_dupSecond
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_dupFirst
-Pair 参照化[first]
+pair_cloneLhs
+Pair クローン化 (lhs)
 
 %prm
 self, vRef
-modvar self : Pair インスタンス
-var    vRef : 参照化する変数
+inst self : Pair インスタンス
+var  vRef : クローン化する変数
 
 %inst
-vRef を first の参照にします。
+vRef を lhs のクローンにします。
 
 %href
-Pair_set
-Pair_setv
-Pair_setFirst
-Pair_setSecond
-Pair_dup
-Pair_dupFirst
-Pair_dupSecond
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_dupSecond
-Pair 参照化[second]
+pair_cloneRhs
+Pair クローン化 (rhs)
 
 %prm
 self, vRef
-modvar self : Pair インスタンス
-var    vRef : 参照化する変数
+inst self : Pair インスタンス
+var  vRef : クローン化する変数
 
 %inst
-vRef を second の参照にします。
+vRef を rhs のクローンにします。
 
 %href
-Pair_set
-Pair_setv
-Pair_setFirst
-Pair_setSecond
-Pair_dup
-Pair_dupFirst
-Pair_dupSecond
+pair_set
+pair_setv
+pair_setLhs
+pair_setRhs
+
+pair_setBoth
+pair_setvBoth
+
+pair_clone
+pair_cloneLhs
+pair_cloneRhs
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_getv
+pair_getv
 Pair 値の取得 ( 変数 )
 
 %prm
-self, vResult, b
-modvar self    : Pair インスタンス
-var    vResult : 値を格納する変数
-int    b       : 0 => first, 1 => second
+self, vResult, idx
+inst self    : Pair インスタンス
+var  vResult : 値を格納する変数
+int  idx     : 要素番号
 
 %inst
 片方の要素の値を vResult に格納します。
 
 %href
-Pair_get
-Pair_getv
-Pair_getFirst
-Pair_getSecond
-Pair_getvFirst
-Pair_getvSecond
+pair_get
+pair_getv
+pair_getLhs
+pair_getRhs
+pair_getvLhs
+pair_getvRhs
+pair_getvBoth
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_get
+pair_get
 Pair 値の取得
 
 %prm
-(self, b)
-modvar self : Pair インスタンス
-int    b    : 0 => first, 1 => second
+(self, idx)
+inst self : Pair インスタンス
+int  idx  : 要素番号
 
 %inst
 片方の要素の値を取得して返す。
 
 %href
-Pair_get
-Pair_getv
-Pair_getFirst
-Pair_getSecond
-Pair_getvFirst
-Pair_getvSecond
+pair_get
+pair_getv
+pair_getLhs
+pair_getRhs
+pair_getvLhs
+pair_getvRhs
+pair_getvBoth
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_getvFirst
-Pair 値の取得[first] ( 変数 )
+pair_getvLhs
+Pair 値の取得 (lhs) ( 変数 )
 
 %prm
 self, vResult
-modvar self    : Pair インスタンス
-var    vResult : 戻り値を格納する変数
+inst self    : Pair インスタンス
+var  vResult : 返値を格納する変数
 
 %inst
-first の値を vResult に格納します。
+lhs の値を vResult に格納します。
 
 %href
-Pair_get
-Pair_getv
-Pair_getFirst
-Pair_getSecond
-Pair_getvFirst
-Pair_getvSecond
+pair_get
+pair_getv
+pair_getLhs
+pair_getRhs
+pair_getvLhs
+pair_getvRhs
+pair_getvBoth
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_getvSecond
-Pair 値の取得[second] ( 変数 )
+pair_getvRhs
+Pair 値の取得 (rhs) ( 変数 )
 
 %prm
 self, vResult
-modvar self    : Pair インスタンス
-var    vResult : 戻り値を格納する変数
+inst self    : Pair インスタンス
+var  vResult : 返値を格納する変数
 
 %inst
-second の値を vResult に格納します。
+rhs の値を vResult に格納します。
 
 %href
-Pair_get
-Pair_getv
-Pair_getFirst
-Pair_getSecond
-Pair_getvFirst
-Pair_getvSecond
+pair_get
+pair_getv
+pair_getLhs
+pair_getRhs
+pair_getvLhs
+pair_getvRhs
+pair_getvBoth
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_getFirst
-Pair 値の取得[first]
+pair_getvBoth
+Pair 値の取得 (both) ( 変数 )
+
+%prm
+self, vResultLhs, vResultRhs
+inst self       : Pair インスタンス
+var  vResultLhs : lhs の値を格納する変数
+var  vResultRhs : rhs の値を格納する変数
+
+%inst
+lhs, rhs の値をそれぞれ vResultLhs, vResultRhs に格納します。
+
+%href
+pair_get
+pair_getv
+pair_getLhs
+pair_getRhs
+pair_getvLhs
+pair_getvRhs
+pair_getvBoth
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+pair_getLhs
+Pair 値の取得 (lhs)
 
 %prm
 (self)
-modvar self : Pair インスタンス
+inst self : Pair インスタンス
 
 %inst
-first の値を取得して返します。
+lhs の値を取得して返します。
 
 %href
-Pair_get
-Pair_getv
-Pair_getFirst
-Pair_getSecond
-Pair_getvFirst
-Pair_getvSecond
+pair_get
+pair_getv
+pair_getLhs
+pair_getRhs
+pair_getvLhs
+pair_getvRhs
+pair_getvBoth
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_getSecond
-Pair 値の取得[second]
+pair_getRhs
+Pair 値の取得 (rhs)
 
 %prm
 (self)
-modvar self : Pair インスタンス
+inst self : Pair インスタンス
 
 %inst
-second の値を取得して返します。
+rhs の値を取得して返します。
 
 %href
-Pair_get
-Pair_getv
-Pair_getFirst
-Pair_getSecond
-Pair_getvFirst
-Pair_getvSecond
+pair_get
+pair_getv
+pair_getLhs
+pair_getRhs
+pair_getvLhs
+pair_getvRhs
+pair_getvBoth
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-Pair_swap
+pair_vartype
+Pair 型の取得
+
+%prm
+(self, idx)
+inst self : Pair インスタンス
+int  idx  : 要素番号
+
+%inst
+ペアの片方の要素の値の型を返します。
+
+%href
+pair_vartype
+pair_vartypeLhs
+pair_vartypeRhs
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+pair_vartypeLhs
+Pair 型の取得 (lhs)
+
+%prm
+(self)
+inst self : ペア
+
+%inst
+ペアの要素 lhs の値の型を返します。
+
+%href
+pair_vartype
+pair_vartypeLhs
+pair_vartypeRhs
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+pair_vartypeRhs
+Pair 型の取得 (rhs)
+
+%prm
+(self)
+inst self : ペア
+
+%inst
+ペアの要素 rhs の値の型を返します。
+
+%href
+pair_vartype
+pair_vartypeLhs
+pair_vartypeRhs
+
+%group
+メンバ関数::取得系
+
+;--------------------
+%index
+pair_swap
 Pair 要素の交換
 
 %prm
 self
-modvar self : Pair インスタンス
+inst self : Pair インスタンス
 
 %inst
-first と second の値を交換します。
+lhs と rhs の値を交換します。
 
 %href
 
@@ -401,15 +611,15 @@ first と second の値を交換します。
 
 ;--------------------
 %index
-Pair_clear
+pair_clear
 Pair 消去 [i]
 
 %prm
 self
-modvar self : Pair インスタンス
+inst self : Pair インスタンス
 
 %inst
-first と second を初期値( int(0) )にする統一関数です。
+lhs と rhs を共に初期値 (int(0)) にする統一関数です。
 
 %href
 
@@ -418,16 +628,16 @@ first と second を初期値( int(0) )にする統一関数です。
 
 ;--------------------
 %index
-Pair_copy
+pair_copy
 Pair 複写 [i]
 
 %prm
-self, mvFrom
-modvar self   : Pair インスタンス
-modvar mvFrom : 〃
+self, src
+inst self : Pair インスタンス
+inst src  : 〃
 
 %inst
-self の first, second それぞれに、mvFrom の first, second を格納する統一関数です。
+self の <lhs, rhs> それぞれに、src の <lhs, rhs> を格納する統一関数です。
 
 %href
 
@@ -436,13 +646,13 @@ self の first, second それぞれに、mvFrom の first, second を格納する統一関数です
 
 ;--------------------
 %index
-Pair_chain
-Pair 連結 [i]
+pair_chain
+Pair 連結 [i] [!E]
 
 %prm
-self, mvFrom
-modvar self   : Pair インスタンス
-modvar mvFrom : 〃
+self, src
+inst self : Pair インスタンス
+inst src  : 〃
 
 %inst
 Pair に統一関数「連結(chain)」はありません。
@@ -454,16 +664,16 @@ Pair に統一関数「連結(chain)」はありません。
 
 ;--------------------
 %index
-Pair_exchange
+pair_exchange
 Pair コンテナ交換 [i]
 
 %prm
-self, mv2
-modvar self : Pair インスタンス
-modvar mv2  : 〃
+self, obj
+inst self : Pair インスタンス
+inst obj  : 〃
 
 %inst
-self と mv2 のすべての要素を交換する統一関数です。
+self と obj のすべての要素を交換する統一関数です。
 
 %href
 
@@ -472,15 +682,16 @@ self と mv2 のすべての要素を交換する統一関数です。
 
 ;--------------------
 %index
-Pair_size
+pair_size
 Pair 要素数 [i]
 
 %prm
 (self)
-modvar self : Pair インスタンス
+inst self : Pair インスタンス
 
 %inst
-ペアの要素数を返す統一関数です。必ず 2 を返します。
+ペアの要素数を返す統一関数です。
+仕様上、必ず 2 を返します。
 
 %href
 
@@ -489,13 +700,13 @@ modvar self : Pair インスタンス
 
 ;--------------------
 %index
-Pair_iterInit
+pair_iterInit
 Pair 反復子::初期化
 
 %prm
 self, vIt
-modvar self : Pair インスタンス
-var    vIt  : 反復情報
+inst self : Pair インスタンス
+var  vIt  : 反復情報
 
 %inst
 ペアの反復子を初期化する統一関数です。
@@ -503,31 +714,65 @@ var    vIt  : 反復情報
 @ alg_iter が内部で使用するだけです。
 
 %href
-Pair_iterInit
-Pair_iterNext
+pair_iterInit
+pair_iterNext
 
 %group
 メンバ関数::反復子操作系
 
 ;--------------------
 %index
-Pair_iterNext
+pair_iterNext
 Pair 反復子::更新
 
 %prm
 (self, vIt, iterData)
-modvar self  : Pair インスタンス
-var vIt      : Pair の反復子
-var iterData : 反復情報
+inst self     : Pair インスタンス
+var  vIt      : Pair の反復子
+var  iterData : 反復情報
 
 %inst
-ペアの反復子を更新します。戻り値が偽( false == 0 )の場合、繰り返しを行わずに終了します。
+ペアの反復子を更新します。返値が偽( false == 0 )の場合、繰り返しを行わずに終了します。
 
 @ alg_iter が内部で使用するだけです。
 
 %href
-Pair_iterInit
-Pair_iterNext
+pair_iterInit
+pair_iterNext
 
 %group
 メンバ関数::反復子操作系
+
+;--------------------
+%index
+PairIdx_Lhs
+Pair 要素番号 定数 (lhs)
+
+%prm
+
+%inst
+ペアの lhs の要素番号を表す定数です。
+
+%href
+;PairIdx_Lhs
+PairIdx_Rhs
+
+%group
+メンバ定数::要素番号
+
+;--------------------
+%index
+PairIdx_Rhs
+Pair 要素番号 定数 (rhs)
+
+%prm
+
+%inst
+ペアの rhs の要素番号を表す定数です。
+
+%href
+PairIdx_Lhs
+;PairIdx_Rhs
+
+%group
+メンバ定数::要素番号

@@ -1,8 +1,8 @@
 // 双方向連結リスト - 循環
 // Double linked list (circularly)
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_DOUBLE_LINKED_LIST_AS__
-#define __ABSTRACT_DATA_STRUCTURE_DOUBLE_LINKED_LIST_AS__
+#ifndef IG_ABSTRACT_DATA_STRUCTURE_DOUBLE_LINKED_LIST_AS
+#define IG_ABSTRACT_DATA_STRUCTURE_DOUBLE_LINKED_LIST_AS
 
 #include "dlinkvalue.as"
 
@@ -14,6 +14,8 @@
 #define mIter mIter_v(mIter_c)
 
 #define VAR_TEMP stt_temp@abdata_dlinklist
+
+#define global DLList_IterDataType 4
 
 // @ すべての値はメンバ mValue が管理。
 // @ 要素の順番は、DLValue の持つリンクで操作する。
@@ -36,7 +38,7 @@
 //------------------------------------------------
 
 //##########################################################
-//        繰返子操作系
+//        反復子操作系
 //##########################################################
 //------------------------------------------------
 // 先頭に移動
@@ -53,17 +55,17 @@
 	return
 	
 //------------------------------------------------
-// 繰返子を p2 個戻す
+// 反復子を p2 個戻す
 //------------------------------------------------
 #modfunc DLList_back int p2
-	FTM_DLList_iter( mIter = DLV_getPrev( mValue(mIter) ) )
+	repeat p2 : mIter = DLV_getPrev( mValue(mIter) ) : loop
 	return
 	
 //------------------------------------------------
-// 繰返子を p2 個進める
+// 反復子を p2 個進める
 //------------------------------------------------
 #modfunc DLList_skip int p2
-	FTM_DLList_iter( mIter = DLV_getNext( mValue(mIter) ) )
+	repeat p2 : mIter = DLV_getNext( mValue(mIter) ) : loop
 	return
 	
 //------------------------------------------------
@@ -74,7 +76,7 @@
 	return
 	
 //------------------------------------------------
-// 繰返子の初期化
+// 反復子の初期化
 //------------------------------------------------
 #modfunc DLList_iterClear
 	mIter       = mTop
@@ -83,7 +85,7 @@
 	return
 	
 //------------------------------------------------
-// 繰返子スタックを push
+// 反復子スタックを push
 //------------------------------------------------
 #modfunc DLList_iterNew
 	mIter_c          ++			// カウントを増加
@@ -91,7 +93,7 @@
 	return
 	
 //------------------------------------------------
-// 繰返子スタックを pop
+// 反復子スタックを pop
 //------------------------------------------------
 #modfunc DLList_iterDelete
 	if ( mIter_c > 0 ) {
@@ -100,7 +102,7 @@
 	return
 	
 //------------------------------------------------
-// 繰返子の更新 ( while の条件に使う )
+// 反復子の更新 ( while の条件に使う )
 //------------------------------------------------
 #modcfunc DLList_iterCheck var vIt
 	if ( mIter == mTop ) {
@@ -129,14 +131,14 @@
 	return mIter == mLast
 	
 //------------------------------------------------
-// [i] 繰返子初期化
+// [i] 反復子初期化
 //------------------------------------------------
 #modfunc DLList_iterInit var iterData
 	DLList_iterNew thismod
 	return
 	
 //------------------------------------------------
-// [i] 繰返子更新
+// [i] 反復子更新
 //------------------------------------------------
 #modcfunc DLList_iterNext var vIt, var iterData
 	return DLList_iterCheck(thismod, vIt)
@@ -321,7 +323,7 @@
 	mCntValue = 0		// 要素数
 	mTop      = 0		// 先頭の要素番号
 	mLast     = 0		// 最後の要素番号
-	mIter_v   = 0		// 繰返子
+	mIter_v   = 0		// 反復子
 	mIter_c   = 0		// カウンタ
 	return
 	
@@ -377,7 +379,7 @@
 	return now
 	
 //------------------------------------------------
-// 繰返子に p2 回操作を加える
+// 反復子に p2 回操作を加える
 // @private
 // @template macro
 //------------------------------------------------

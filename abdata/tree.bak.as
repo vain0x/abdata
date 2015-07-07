@@ -1,7 +1,7 @@
 // Tree - 木構造
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_TREE_AS__
-#define __ABSTRACT_DATA_STRUCTURE_TREE_AS__
+#ifndef IG_ABSTRACT_DATA_STRUCTURE_TREE_AS
+#define IG_ABSTRACT_DATA_STRUCTURE_TREE_AS
 
 #include "mod_pvalptr.as"
 #include "mod_shiftArray.as"
@@ -20,7 +20,7 @@
 //##############################################################################
 //                ノード・モジュール
 //##############################################################################
-#module abdata_tree mValue, mName, mChildren, mIdParent, mCntChildren,  mIter_v, mIter_c
+#module abdata_tree mValue, mName, mChildren, mIdParent, mcntChildren,  mIter_v, mIter_c
 
 #define VAR_TEMP stt_temp@abdata_tree
 
@@ -107,20 +107,25 @@
 			TNode_getInstance node, idParent
 		}
 	loop
-	return 
+	return
+	
+// 親ノードのIdを変更する
+#modfunc TNodeMod_setParent int tnId
+	midParent = tnId
+	return
 	
 // 子ノードIdを追加する
 #modfunc TNodeMod_addChildId int tnId
-	mChildren( mCntChildren ) = tnId
-	mCntChildren ++
-	return mCntChildren - 1
+	mChildren( mcntChildren ) = tnId
+	mcntChildren ++
+	return mcntChildren - 1
 	
 // 子ノードを削除する
 #modfunc TNodeMod_removeChild int nIdx
 	delmod TNInstance( mChildren(nIdx) )		// 破棄
 	
 	ArrayRemove mChildren, nIdx
-	mCntChildren --
+	mcntChildren --
 	return
 	
 // 子ノードのインデックスを得る
@@ -133,7 +138,7 @@
 		getstr sName, sName, 1
 		nIdx = int(sName)
 		
-		if ( nIdx < 0 || mCntChildren <= nIdx ) {		// 子ノードの範囲外である場合
+		if ( nIdx < 0 || mcntChildren <= nIdx ) {		// 子ノードの範囲外である場合
 			nIdx = -1
 		}
 		return nIdx
@@ -191,8 +196,8 @@
  * ノードの値は初期値で int 型の 0 です。
  * 
  * ※この命令で作成される p1 は、実際には struct 型ではありませんが、
- *   varuse が使用できない、vartype が "int" の値を返す、などの違いはありますが、
- *   モジュール変数 modvar として扱っています。
+ * 　Node_* 系の命令・関数は、これをモジュール変数 (modvar) として受け取ります。
+ * 　なお、varuse が使用できない、vartype が "int" の値を返す、などの違いがあります。
  * 
  * @prm p1 = modvar       : ノードId を得る変数
  * @prm p2 = str ("root") : ノード名
@@ -202,11 +207,14 @@
 #define global TRootMod_new(%1="root") TNodeMod_new  %1, TNID_PARENT_OF_ROOT
 #define global TNodeMod_new(%1,%2) newmod stt_allInsts@abdata_tree, abdata_tree@, %1, %2
 
-#deffunc TNode_new array aryTnId, str _name, int parentId,  local id_new, local nIdx
-	
+#deffunc TNode_new array aryTnId, str _name, int parentId,  local id_new
 	TNodeMod_new _name, parentId
 	id_new = stat
-	nIdx   = -1
+	TNode_addNode aryTnId, id_new
+	return stat
+	
+#deffunc TNode_addNode array aryTnId, int id_new,  local nIdx
+	nIdx = -1
 	
 	// 使われていない要素を探す
 	foreach aryTnId
@@ -281,8 +289,9 @@
  */
 #define global ctype TNode_cntChildren(%1) TNodeMod_cntChildren( TNInstance(%1) )
 #modcfunc TNodeMod_cntChildren
-	return mCntChildren
+	return mcntChildren
 	
+#define global TNode_empty  TNode_cntChildren
 #define global TNode_size   TNode_cntChildren
 #define global TNode_count  TNode_cntChildren
 #define global TNode_length TNode_cntChildren
@@ -296,7 +305,7 @@
  */
 #define global ctype TNode_isRoot(%1) TNodeMod_isRoot( TNInstance(%1) )
 #modcfunc TNodeMod_isRoot
-	return mIdParent == TNID_PARENT_OF_ROOT
+	return ( mIdParent == TNID_PARENT_OF_ROOT )
 	
 /**
  * 親ノードのIdを得る
@@ -319,9 +328,11 @@
 #defcfunc TNode_getRoot int _thisId,  local thisId
 	thisId = _thisId
 	
-	while ( TNode_isRoot( thisId ) == false )
+	repeat
+		if ( TNode_isRoot( thisId ) ) { break }
 		thisId = TNode_getParent( thisId )
-	wend
+	loop
+	
 	return thisId
 	
 /**
@@ -335,8 +346,38 @@
 #define global ctype TNode_getName(%1) TNodeMod_getName( TNInstance(%1) )
 
 /**
+ * 子ノード(部分木)を追加する
+ * p1 に部分木を、子ノードとして追加します。
+ * 追加する木 p2 が Root だった場合、複写せずにそのまま繋げます。
+ * Root で無かった場合は、複写したものを連結します。
+ * 子ノードのモジュール変数を取得するには、
+ * TNode_getChild 命令を使用してください。
+ * 
+ * @prm p1 = modvar	: 親ノードのモジュール変数
+ * @prm p2 = modvar : 部分木
+ * @return = int    : 追加した子ノードのノードId
+ */
+#define global TNode_addSubTree(%1,%2) TNodeMod_addSubTree TNInstance(%1), %2, %1
+
+#modfunc TNodeMod_addSubTree int subTreeId, int thisId,  local id_new, local srcId, local tmpNode
+	if ( TNode_isRoot(subTreeId) ) {
+		TNodeMod_setParent  TNInstance(subTreeId), thisId
+		srcId = subTreeId
+	} else {
+		TRoot_new  tmpNode, TNode_getName(subTreeId)
+		TNode_copy tmpNode, subTreeId
+		srcId = tmpNode
+		assert
+	}
+	
+	TNode_addNode mChildren, srcId
+	id_new = mChildren( stat )
+	mcntChildren ++
+	return id_new
+	
+/**
  * 子ノードを追加する
- * p1 の子ノードを新規作成します。
+ * 子ノードを新規作成し、p1 に追加します。
  * 子ノードのモジュール変数を取得するには、
  * TNode_getChild 命令を使用してください。
  * 
@@ -349,7 +390,7 @@
 #modfunc TNodeMod_addChild str _name, int thisId,  local id_new
 	TNode_new mChildren, _name, thisId
 	id_new =  mChildren( stat )
-	mCntChildren ++
+	mcntChildren ++
 	return id_new
 	
 /**
@@ -463,7 +504,7 @@
 #define global TNode_clear(%1) TNodeMod_clear TNInstance(%1)
 #modfunc TNodeMod_clear
 	// 子孫ノードを削除
-	if ( mCntChildren ) {
+	if ( mcntChildren ) {
 		foreach mChildren
 			if ( IsTnIdValid( mChildren(cnt) ) ) {
 				TNode_clear mChildren(cnt)
@@ -474,7 +515,7 @@
 	
 	mValue       = 0
 	mChildren    = TNID_DISABLE
-	mCntChildren = 0
+	mcntChildren = 0
 	mIter_v      = 0
 	mIter_c      = -1
 	
@@ -503,7 +544,7 @@
 //*/
 
 //##########################################################
-//        繰返子
+//        反復子 (iterator)
 //##########################################################
 #define global TNode_iterNew(%1) TNodeMod_iterNew TNInstance(%1)
 #modfunc TNodeMod_iterNew
@@ -527,14 +568,15 @@
 		mIter ++
 		
 		// これ以上子ノードはない
-		if ( mIter >= mCntChildren ) {
+		if ( mIter >= mcntChildren ) {
+		;	vIterId = TNID_DISABLE		// default で TNID_DISABLE なので代入する必要はない
 			return
 			
 		// まだ子ノードがある
 		} else {
 			vIterId = mChildren(mIter)
 			if ( IsTnIdValid(vIterId) == false ) {
-				TNodeMod_iterCheckCore thismod, vIterId
+				TNodeMod_iterCheckCore thismod, vIterId		// 同じ処理を繰り返す
 			}
 		}
 	}
@@ -553,14 +595,14 @@
 	return true
 	
 //------------------------------------------------
-// [i] 繰返子初期化
+// [i] 反復子初期化
 //------------------------------------------------
 #deffunc TNode_iterInit int thisId, var iterData
 	TNode_iterNew thisId
 	return
 	
 //------------------------------------------------
-// [i] 繰返子更新
+// [i] 反復子更新
 //------------------------------------------------
 #defcfunc TNode_iterNext int thisId, var vIt, var iterData
 	return TNode_iterCheck(thisId, vIt)
@@ -582,11 +624,12 @@
 	while ( TNode_iterCheck(fromId, itId) )
 		
 		stmp = TNode_getName(itId)
-		TNode_getv       itId, value
-		TNode_addChild thisId, stmp			// 同名の子ノードを追加
+		TNode_getv itId, value
+		
+		TNode_addChild thisId, stmp		// 同名の子ノードを追加
 		childId = stat
-		TNode_setv     childId, value		// 保持する値をコピー
-		TNode_chain    childId, itId		// 孫レベルノードを連結
+		TNode_setv  childId, value		// 保持する値をコピー
+		TNode_chain childId, itId		// 孫レベルノードを連結
 		
 	wend
 	return
@@ -601,6 +644,7 @@
  */
 #deffunc TNode_copy int thisId, int fromId
 	TNode_clear thisId
+	TNode_set   thisId, TNode_get(fromId)
 	TNode_chain thisId, fromId
 	return
 	
@@ -637,7 +681,9 @@
 #ifdef _DEBUG
 //-------- デバッグ時 --------
 
+//------------------------------------------------
 // ノード名を再帰的に出力する
+//------------------------------------------------
 #deffunc TNode_dbglog int _thisId, int nest,  local thisId, local itId, local stmp
 	thisId = _thisId
 	if ( isTnIdValid(thisId) == false ) { return }
@@ -678,41 +724,49 @@ TRootMod_new ""
 //##############################################################################
 //               サンプル・スクリプト
 //##############################################################################
-#if 0
+#if 1
 	
-	TRoot_new mtr
-	TNode_set mtr, "親"
+	TRoot_new tr
+	TNode_set tr, "親"
 	
 	for i, 0, 3
 		name = "c"+ i
-		TNode_addChild mtr, name
-		TNode_set stat, TNode_get(mtr) +" - 子("+ i +")"
+		TNode_addChild tr, name
+		TNode_set stat, TNode_get(tr) +" - 子("+ i +")"
 		
 		repeat 5
 			name = "cc"+ cnt
 			
-			mchild = TNode_getChild( mtr, "c"+ i )
+			child = TNode_getChild( tr, "c"+ i )
 			
-			TNode_addChild mchild, name
-			TNode_set stat, TNode_get(mchild) +" - 孫("+ cnt +")"
+			TNode_addChild child, name
+			TNode_set stat, TNode_get(child) +" - 孫("+ cnt +")"
 		loop
 		
 	next
 	
-	for i, 0,  TNode_cntChildren( mtr )
-		repeat TNode_cntChildren( TNChild(mtr, "c"+ i) )
-			mes TNode_get( TNChild( TNChild(mtr, "c"+ i), "cc"+ cnt) )
+	for i, 0,  TNode_cntChildren( tr )
+		repeat TNode_cntChildren( TNChild(tr, "c"+ i) )
+			mes TNode_get( TNChild( TNChild(tr, "c"+ i), "cc"+ cnt) )
 ;			mes TNode_get( TNChildHier( mtr, "c"+ i +"/cc"+ cnt ) )		// '/' で階層表現
 		loop
 	next
 	
 	pos 300, 10
-	TNode_dbglog mtr
+	TNode_dbglog tr
 	
-	TRoot_new    mtr2, "root2"
-;	TNode_chain  mtr2, mtr
-	TNode_copy   mtr2, mtr
-	TNode_dbglog mtr2
+	TRoot_new    tr2, "root2"
+	TNode_chain  tr2, tr
+;	TNode_copy   tr2, tr
+	TNode_dbglog tr2
+	
+	TNode_addSubTree tr, tr2
+	TNode_dbglog tr
+	
+	logmes ""
+	assert
+	TNode_addSubTree tr, tr2
+	TNode_dbglog tr
 	
 	stop
 

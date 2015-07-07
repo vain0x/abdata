@@ -1,7 +1,7 @@
 // pvalptr module
 
-#ifndef __PVALPTR_MODULE_AS__
-#define __PVALPTR_MODULE_AS__
+#ifndef IG_PVALPTR_MODULE_AS
+#define IG_PVALPTR_MODULE_AS
 
 #module pvalptr_module
 #define prmstack 207
