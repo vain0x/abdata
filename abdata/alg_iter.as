@@ -1,11 +1,10 @@
 // Algorithm::Iterator - 繰返子
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_ITER_AS__
-#define __ABSTRACT_DATA_STRUCTURE_ITER_AS__
+#ifndef __ABSTRACT_DATA_STRUCTURE_ALGORITHM_ITERATOR_AS__
+#define __ABSTRACT_DATA_STRUCTURE_ALGORITHM_ITERATOR_AS__
 
 #module abdata_iter mInst, mIterData
 
-#define mv modvar abdata_iter@
 #define global ctype ITER_INST_NAME(%1)       IN_ITER_MODULE(%1_the_iter_instance)
 #define global ctype ITER_INST_INDEX_NAME(%1) IN_ITER_MODULE(%1_the_iter_instance_index_plus_1)
 #define global ctype IN_ITER_MODULE(%1) %1@abdata_iter
@@ -28,7 +27,7 @@
 // [@] インスタンスへの参照
 //------------------------------------------------
 #define ctype Iter_refInstance(%1) stt_refInst_var@abdata_iter.(Iter_refInstance_core(%1))
-#defcfunc     Iter_refInstance_core mv
+#modcfunc     Iter_refInstance_core
 	dup stt_refInst_var@abdata_iter, mInst
 	return 0
 	
@@ -36,7 +35,7 @@
 // [@] 繰返子情報への参照
 //------------------------------------------------
 #define ctype Iter_refIterData(%1) stt_refIterData_var@abdata_iter.(Iter_refIterData_core(%1))
-#defcfunc     Iter_refIterData_core mv
+#modcfunc     Iter_refIterData_core
 	dup stt_refIterData_var@abdata_iter, mIterData
 	return 0
 	
@@ -64,12 +63,18 @@
 	
 #global
 
+//------------------------------------------------
+// 公開マクロ群
+//------------------------------------------------
 #define global IterateBegin(%1,%2,%3=it)  %tabdata_iterate %i0 %s1 Iter_new %1, %2 : IterateCnt = -1 : while ( Iter_next(%1, %2, %3) ) : IterateCnt ++
 #define global IterateEnd                 %tabdata_iterate wend : Iter_delete %o  %o0
 #define global IterateCnt                 %tabdata_iterate %p1
 #define global ctype Iterate(%1,%2,%3=it) %tabdata_iterate_2 \
 	IterateBegin %1, %2, %3 : gosub *%i : IterateEnd : if 0 : *%o
 
+//##############################################################################
+//        サンプル・スクリプト
+//##############################################################################
 #if 0
 
 #include "list.as"

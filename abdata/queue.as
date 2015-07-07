@@ -1,168 +1,172 @@
-// キュー - Queue ( FILO & LIFO )
+// Queue - キュー ( FILO & LIFO )
 
 #ifndef __ABSTRACT_DATA_STRUCTURE_QUEUE_AS__
 #define __ABSTRACT_DATA_STRUCTURE_QUEUE_AS__
 
-#include "list.as"
+#include "deque.as"
 
-#module abdata_queue mList
+//##############################################################################
+//                Queue
+//##############################################################################
 
-#define VAR_TEMP stt_temp@abdata_queue
-#define mv modvar abdata_queue@
+// @abdata_queue という使い方はできない ( @abdata_deque に置換されない )
+#define global abdata_queue abdata_deque
 
-#define ctype numrg(%1,%2,%3) (((%2) <= (%1)) && ((%1) <= (%3)))
-#define true  1
-#define false 0
+//##############################################################################
+//                構築・解体
+//##############################################################################
 
-#define ctype STR_ERR_OVER_RANGE(%1) "Error! [@abdata_queue] 要素番号範囲外エラー("+ (%1) +")"
+#define global Queue_new    Deque_new
+#define global Queue_delete Deque_delete
+
+//------------------------------------------------
+// [i] 構築
+//------------------------------------------------
+//------------------------------------------------
+// [i] 解体
+//------------------------------------------------
 
 //##############################################################################
 //                メンバ命令・関数
 //##############################################################################
-#modfunc Queue_dupList@abdata_queue var vRefList
-	dup vRefList, mList
-	return
-	
-//################################################
+
+//##########################################################
+//        取得系
+//##########################################################
+//------------------------------------------------
+// 値の取得 ( 命令形式 )
+//------------------------------------------------
+#define global Queue_getv Deque_getv
+
+#define global Queue_peekv Queue_getv
+
+//------------------------------------------------
+// 値の取得 ( 関数形式 )
+//------------------------------------------------
+#define global Queue_get Deque_get
+
+#define global Queue_peek Queue_get
+
+//------------------------------------------------
+// 参照化 ( 命令形式 )
+//------------------------------------------------
+#define global Queue_dup Deque_dup
+
+//------------------------------------------------
+// 参照化 ( 関数形式 )
+//------------------------------------------------
+#define global Queue_ref Deque_ref
+
+//------------------------------------------------
+// 先頭・末尾の値の取り出し
+// 
+// @ get 処理 >> const な操作
+// @ pop 処理 >> 要素は取り除かれる
+//------------------------------------------------
+#define global Queue_get_front  Deque_get_front
+#define global Queue_getv_front Deque_getv_front
+#define global Queue_pop_front  Deque_pop_front
+#define global Queue_popv_front Deque_popv_front
+;#define global Queue_get_back   Deque_get_back
+;#define global Queue_getv_back  Deque_getv_back
+;#define global Queue_pop_back   Deque_pop_back
+;#define global Queue_popv_back  Deque_popv_back
+
+#define global Queue_popv Deque_popv_front
+#define global Queue_pop  Deque_pop_front
+
+//##########################################################
+//        操作系
+//##########################################################
+//------------------------------------------------
+// データ置換
+//------------------------------------------------
+#define global Queue_set  Deque_set
+#define global Queue_setv Deque_setv
+
+//------------------------------------------------
+// 挿入
+//------------------------------------------------
+#define global Queue_insert  Deque_insert
+#define global Queue_insertv Deque_insertv
+
+//------------------------------------------------
+// 先頭・最後尾への追加
+//------------------------------------------------
+#define global Queue_double_front Deque_double_front
+#define global Queue_double_back  Deque_double_back
+;#define global Queue_push_front   Deque_push_front
+;#define global Queue_pushv_front  Deque_pushv_front
+#define global Queue_push_back    Deque_push_back
+#define global Queue_pushv_back   Deque_pushv_back
+
+#define global Queue_add         Queue_push
+#define global Queue_push        Deque_push_back
+#define global Queue_pushv       Deque_pushv_back
+
+//------------------------------------------------
+// 除去
+//------------------------------------------------
+#define global Queue_remove  Deque_remove_front
+
+//------------------------------------------------
+// 順序操作
+//------------------------------------------------
+;#define global Queue_move        Deque_move
+;#define global Queue_swap        Deque_swap
+;#define global Queue_swap_front  Deque_swap_front
+;#define global Queue_swap_back   Deque_swap_back
+;#define global Queue_rotate      Deque_rotate
+;#define global Queue_rotate_back Deque_rotate_back
+;#define global Queue_reverse     Deque_reverse
+
+//##########################################################
+//        コンテナ操作
+//##########################################################
+//------------------------------------------------
+// [i] コンテナ操作
+//------------------------------------------------
+#define global Queue_clear    Deque_clear
+#define global Queue_chain    Deque_chain
+#define global Queue_copy     Deque_copy
+#define global Queue_exchange Deque_exchange
+
+//##########################################################
+//        反復子操作
+//##########################################################
+//------------------------------------------------
+// [i] 反復子操作
+//------------------------------------------------
+#define global Queue_iterInit Deque_iterInit
+#define global Queue_iterNext Deque_iterNext
+
+//##########################################################
 //        雑多系
-//################################################
+//##########################################################
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
-#defcfunc Queue_size mv
-	return List_size( mList )
-	
-#define global Queue_n Queue_size
+#define global Queue_size   Deque_size
+#define global Queue_n      Queue_size
+#define global Queue_count  Queue_size
+#define global Queue_length Queue_size
 
 //------------------------------------------------
 // 範囲チェック
 //------------------------------------------------
-#defcfunc Queue_isValid mv, int i
-	return List_isValid(mList, i)
-	
-//################################################
-//        取得系
-//################################################
-//------------------------------------------------
-// 値返し ( 命令形式 )
-//------------------------------------------------
-#modfunc Queue_peekv var result, int i
-	if ( Queue_isValid(thismod, i) == false ) { logmes STR_ERR_OVER_RANGE(i) : return }
-	List_getv mList, result, i
-	return
-	
-//------------------------------------------------
-// 値返し ( 関数形式 )
-//------------------------------------------------
-#defcfunc Queue_peek mv, int i
-	Queue_peekv thismod, VAR_TEMP, i
-	return VAR_TEMP
-	
-//------------------------------------------------
-// pop ( 命令形式 )
-//------------------------------------------------
-#modfunc Queue_popv var result
-	List_getv   mList, result, 0
-	List_remove mList,         0
-	return
-	
-//------------------------------------------------
-// pop ( 関数形式 )
-//------------------------------------------------
-#defcfunc Queue_pop mv
-	Queue_popv thismod, VAR_TEMP
-	return VAR_TEMP
-	
-//################################################
-//        設定系
-//################################################
+#define global Queue_isValid Deque_isValid
 
-//################################################
-//        操作系
-//################################################
-//------------------------------------------------
-// 最後尾への追加
-//------------------------------------------------
-#define global Queue_push(%1,%2) VAR_TEMP@abdata_queue = %2 : Queue_pushv %1,VAR_TEMP@abdata_queue
-#modfunc Queue_pushv var v_value
-	List_insertv mList, v_value, -1
-	return
-	
-#define global Queue_push_back Queue_push
-	
-//################################################
-//        その他
-//################################################
-//------------------------------------------------
-// [i] 完全消去
-//------------------------------------------------
-#modfunc Queue_clear
-	List_clear mList
-	return
-	
-//------------------------------------------------
-// [i] 連結
-//------------------------------------------------
-#modfunc Queue_chain var mv_from,  local fromList
-	Queue_dupList mv_from, fromList
-	List_chain    mList,   fromList
-	return
-	
-//------------------------------------------------
-// [i] 複写
-//------------------------------------------------
-#modfunc Queue_copy var mv_from,  local fromList
-	Queue_dupList mv_from, fromList
-	List_copy     mList,   fromList
-	return
-	
-//------------------------------------------------
-// [i] 連結
-//------------------------------------------------
-#modfunc Queue_exchange var mv2,  local fromList
-	Queue_dupList mv2,   fromList
-	List_exchange mList, fromList
-	return
-	
-//################################################
+//##########################################################
+//        静的メンバ命令・関数
+//##########################################################
+
+//##########################################################
 //        デバッグ用
-//################################################
-#ifdef _DEBUG
-
+//##########################################################
 //------------------------------------------------
-// キューの内容を全部表示
+// 全要素の出力
 //------------------------------------------------
-#modfunc Queue_dbglog
-	List_dbglog mList
-	return
-	
-#else
-
-#define global Queue_dbglog(%1) :
-
-#endif
-//##############################################################################
-//                コンストラクタ・デストラクタ
-//##############################################################################
-//------------------------------------------------
-// [i] コンストラクタ
-//------------------------------------------------
-#define global Queue_new(%1) newmod %1, abdata_queue@
-#modinit
-	List_new mList
-	return
-	
-#define global Queue_init Queue_new
-	
-//------------------------------------------------
-// [i] デストラクタ
-//------------------------------------------------
-#define global Queue_delete(%1) delmod %1
-#modterm
-	List_delete mList
-	return
-	
-#global
+#define global Queue_dbglog Deque_dbglog
 
 //##############################################################################
 //                サンプル・スクリプト
@@ -172,7 +176,7 @@
 	Queue_new q
 	repeat 2
 		mes "loop "+ cnt
-	
+		
 		repeat 8
 			Queue_push q, (1 << cnt)
 		loop

@@ -22,7 +22,6 @@
 //##############################################################################
 #module abdata_tree mValue, mName, mChildren, mIdParent, mCntChildren,  mIter_v, mIter_c
 
-#define mv modvar abdata_tree@
 #define VAR_TEMP stt_temp@abdata_tree
 
 #define ctype LOWORD(%1) ((%1) & 0xFFFF)
@@ -89,15 +88,15 @@
 	return nIdx
 	
 // ノード名を返す
-#defcfunc TNodeMod_getName mv
+#modcfunc TNodeMod_getName
 	return mName
 	
 // 親ノードのId を返す
-#defcfunc TNodeMod_getParent mv
+#modcfunc TNodeMod_getParent
 	return midParent
 	
 // ルートノードのId を返す
-#defcfunc TNodeMod_getRoot mv,  local node, local idParent
+#modcfunc TNodeMod_getRoot  local node, local idParent
 	node = thismod
 	
 	repeat
@@ -125,7 +124,7 @@
 	return
 	
 // 子ノードのインデックスを得る
-#defcfunc TNodeMod_getChildIdx mv, str _name,  local sName, local nIdx
+#modcfunc TNodeMod_getChildIdx str _name,  local sName, local nIdx
 	sName =  TNode_toRegularName(_name)
 	nIdx  = -1
 	
@@ -152,11 +151,11 @@
 	return nIdx
 	
 // 子ノードは存在するかどうか
-#defcfunc TNodeMod_existsChild mv, str _name
+#modcfunc TNodeMod_existsChild str _name
 	return TNodeMod_getChildIdx(thismod, _name) >= 0
 	
 // 子ノードのツリーIdを得る
-#defcfunc TNodeMod_getChild mv, str _name,  local nIdx
+#modcfunc TNodeMod_getChild str _name,  local nIdx
 	nIdx = TNodeMod_getChildIdx(thismod, _name)
 	if ( nIdx >= 0 ) {
 		return mChildren(nIdx)
@@ -253,7 +252,7 @@
  * @return = any	: ノードの値
  */
 #define global ctype TNode_get(%1) TNodeMod_get(TNInstance(%1))
-#defcfunc TNodeMod_get mv
+#modcfunc TNodeMod_get
 	return mValue
 	
 /**
@@ -265,7 +264,7 @@
  * @return = int	: 型タイプ値
  */
 #define global ctype TNode_getValueType(%1) TNodeMod_getValueType( TNInstance(%1) )
-#defcfunc TNodeMod_getValueType mv
+#modcfunc TNodeMod_getValueType
 	return vartype(mValue)
 	
 /**
@@ -277,14 +276,16 @@
  * @prm p1 = modvar	: モジュール変数
  * @return = int	: 子ノードの数
  * 
+ * @ TNode_size(), TNode_count(), TNode_length() と同じ。
  * @! この数は length(mChildren) とは違うので注意
- * @  TNode_size でもＯＫです。
  */
 #define global ctype TNode_cntChildren(%1) TNodeMod_cntChildren( TNInstance(%1) )
-#defcfunc TNodeMod_cntChildren mv
+#modcfunc TNodeMod_cntChildren
 	return mCntChildren
 	
-#define global TNode_size TNode_cntChildren
+#define global TNode_size   TNode_cntChildren
+#define global TNode_count  TNode_cntChildren
+#define global TNode_length TNode_cntChildren
 	
 /**
  * ルートノードであるか
@@ -294,7 +295,7 @@
  * @return = bool	: ルートノードなら真、そうでないなら偽
  */
 #define global ctype TNode_isRoot(%1) TNodeMod_isRoot( TNInstance(%1) )
-#defcfunc TNodeMod_isRoot mv
+#modcfunc TNodeMod_isRoot
 	return mIdParent == TNID_PARENT_OF_ROOT
 	
 /**
@@ -496,9 +497,11 @@
 	delmod      thismod
 	return
 	
-;#modterm
-;	return
-	
+/*
+#modterm
+	return
+//*/
+
 //##########################################################
 //        繰返子
 //##########################################################
@@ -538,7 +541,7 @@
 	return
 	
 #define global ctype TNode_iterCheck(%1,%2) TNodeMod_iterCheck(TNInstance(%1), %2)
-#defcfunc TNodeMod_iterCheck mv, var vIterId
+#modcfunc TNodeMod_iterCheck var vIterId
 	vIterId = TNID_DISABLE
 	
 	TNodeMod_iterCheckCore thismod, vIterId

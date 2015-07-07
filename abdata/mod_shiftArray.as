@@ -5,7 +5,9 @@
 
 #module shift_array_mod
 
+//------------------------------------------------
 // ‘}“ü ( “I‚Èˆ— )
+//------------------------------------------------
 #deffunc ArrayInsert array arr, int idx
 	
 	// ‘}“ü‚³‚ê‚éêŠ‚ğ‹ó‚¯‚é
@@ -15,7 +17,9 @@
 	
 	return
 	
+//------------------------------------------------
 // íœ ( “I‚Èˆ— )
+//------------------------------------------------
 #deffunc ArrayRemove array arr, int idx
 	
 	// íœ‚³‚ê‚éêŠ‚ğÁ‚· ( ‘¼‚Ì’l‚Åã‘‚«‚·‚é )
@@ -25,7 +29,9 @@
 	
 	return
 	
+//------------------------------------------------
 // ˆÚ“®
+//------------------------------------------------
 #deffunc ArrayMove array arr, int from, int to,  local temp
 	if ( from == to ) { return }
 	
@@ -45,7 +51,9 @@
 	
 	return
 	
+//------------------------------------------------
 // ŒğŠ·
+//------------------------------------------------
 #deffunc ArraySwap array arr, int pos1, int pos2,  local temp
 	if ( pos1 == pos2 ) { return }
 	temp      = arr(pos1)
@@ -53,18 +61,34 @@
 	arr(pos2) = temp
 	return
 	
+//------------------------------------------------
 // „‰ñ
-#deffunc ArrayRotate array arr,  local temp
+//------------------------------------------------
+#deffunc ArrayRotate array arr, int step,  local temp
+	if ( step >= 0 ) {
+		ArrayMove arr, 0, length(arr) - 1
+	} else {
+		ArrayMove arr,    length(arr) - 1, 0
+	}
+	return
 	
-	// Å‰‚Ì—v‘f‚Ì’l‚ğ•Û‘¶‚·‚é
-	temp = arr(0)
+// ‹t‰ñ“]
+#define global ArrayRotateBack(%1) ArrayRotate %1, -1
+
+//------------------------------------------------
+// ”½“]
+//------------------------------------------------
+#define global ArrayReverse(%1,%2=-1) ArrayReverse_ %1,%2
+#deffunc ArrayReverse_ array arr, int _lenArray,  local lenArray
+	if ( _lenArray < 0 ) {
+		lenArray = length(arr)
+	} else {
+		lenArray = _lenArray
+	}
 	
-	// „‰ñ‚·‚é
-	for i, 0, length(arr) - 1
-		arr(i) = arr(i + 1)
-	next
-	
-	arr(length(arr) - 1) = temp		// Å‰‚Ì’l
+	repeat lenArray / 2
+		ArraySwap arr, cnt, lenArray - cnt - 1
+	loop
 	
 	return
 	

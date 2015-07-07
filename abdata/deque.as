@@ -1,23 +1,23 @@
-// List - リスト
+// Deque - 双方向キュー
 
-#ifndef __ABSTRACT_DATA_STRUCTURE_LIST_AS__
-#define __ABSTRACT_DATA_STRUCTURE_LIST_AS__
+#ifndef __ABSTRACT_DATA_STRUCTURE_DEQUE_AS__
+#define __ABSTRACT_DATA_STRUCTURE_DEQUE_AS__
 
 #include "container.as"
 
 //##############################################################################
-//                List
+//                Deque
 //##############################################################################
 
-// @abdata_list という使い方はできない ( @abdata_container に置換されない )
-#define global abdata_list abdata_container
+// @abdata_deque という使い方はできない ( @abdata_container に置換されない )
+#define global abdata_deque abdata_container
 
 //##############################################################################
 //                構築・解体
 //##############################################################################
 
-#define global List_new    Container_new
-#define global List_delete Container_delete
+#define global Deque_new    Container_new
+#define global Deque_delete Container_delete
 
 //------------------------------------------------
 // [i] 構築
@@ -36,24 +36,24 @@
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
-#define global List_getv Container_getv
-#define global List_popv Container_popv
+#define global Deque_getv Container_getv
+#define global Deque_popv Container_popv
 
 //------------------------------------------------
 // 値の取得 ( 関数形式 )
 //------------------------------------------------
-#define global List_get Container_get
-#define global List_pop Container_pop
+#define global Deque_get Container_get
+#define global Deque_pop Container_pop
 
 //------------------------------------------------
 // 参照化 ( 命令形式 )
 //------------------------------------------------
-#define global List_dup Container_dup
+#define global Deque_dup Container_dup
 
 //------------------------------------------------
 // 参照化 ( 関数形式 )
 //------------------------------------------------
-#define global List_ref Container_ref
+#define global Deque_ref Container_ref
 
 //------------------------------------------------
 // 先頭・末尾の値の取り出し
@@ -61,14 +61,14 @@
 // @ get 処理 >> const な操作
 // @ pop 処理 >> 要素は取り除かれる
 //------------------------------------------------
-;#define global List_get_front  Container_get_front
-;#define global List_get_back   Container_get_back
-;#define global List_getv_front Container_getv_front
-;#define global List_getv_back  Container_getv_back
-;#define global List_pop_front  Container_pop_front
-;#define global List_pop_back   Container_pop_back
-;#define global List_popv_front Container_popv_front
-;#define global List_popv_back  Container_popv_back
+#define global Deque_get_front  Container_get_front
+#define global Deque_get_back   Container_get_back
+#define global Deque_getv_front Container_getv_front
+#define global Deque_getv_back  Container_getv_back
+#define global Deque_pop_front  Container_pop_front
+#define global Deque_pop_back   Container_pop_back
+#define global Deque_popv_front Container_popv_front
+#define global Deque_popv_back  Container_popv_back
 
 //##########################################################
 //        操作系
@@ -76,41 +76,46 @@
 //------------------------------------------------
 // データ置換
 //------------------------------------------------
-#define global List_set  Container_set
-#define global List_setv Container_setv
+#define global Deque_set  Container_set
+#define global Deque_setv Container_setv
 
 //------------------------------------------------
 // 挿入
 //------------------------------------------------
-#define global List_insert  Container_insert
-#define global List_insertv Container_insertv
+#define global Deque_insert  Container_insert
+#define global Deque_insertv Container_insertv
 
 //------------------------------------------------
 // 先頭・最後尾への追加
 //------------------------------------------------
-;#define global List_push_front  Container_push_front
-;#define global List_push_back   Container_push_back
-;#define global List_pushv_front Container_pushv_front
-;#define global List_pushv_back  Container_pushv_back
-;#define global List_push        Container_push
-;#define global List_pushv       Container_pushv
-#define global List_add         Container_add
+#define global Deque_double_front Container_double_front
+#define global Deque_double_back  Container_double_back
+#define global Deque_push_front   Container_push_front
+#define global Deque_push_back    Container_push_back
+#define global Deque_pushv_front  Container_pushv_front
+#define global Deque_pushv_back   Container_pushv_back
+#define global Deque_push         Container_push
+#define global Deque_pushv        Container_pushv
+#define global Deque_add          Container_add
 
 //------------------------------------------------
 // 除去
 //------------------------------------------------
-#define global List_remove       Container_remove
-;#define global List_remove_front Container_remove_front
-;#define global List_remove_back  Container_remove_back
+#define global Deque_remove       Container_remove
+#define global Deque_remove_front Container_remove_front
+#define global Deque_remove_back  Container_remove_back
 
 //------------------------------------------------
 // 順序操作
 //------------------------------------------------
-#define global List_move        Container_move
-#define global List_swap        Container_swap
-#define global List_rotate      Container_rotate
-#define global List_rotate_back Container_rotate_back
-#define global List_reverse     Container_reverse
+
+;#define global Deque_move        Container_move
+;#define global Deque_swap        Container_swap
+#define global Deque_swap_front  Container_swap_front
+#define global Deque_swap_back   Container_swap_back
+#define global Deque_rotate      Container_rotate
+#define global Deque_rotate_back Container_rotate_back
+#define global Deque_reverse     Container_reverse
 
 //##########################################################
 //        コンテナ操作
@@ -118,10 +123,10 @@
 //------------------------------------------------
 // [i] コンテナ操作
 //------------------------------------------------
-#define global List_clear    Container_clear
-#define global List_chain    Container_chain
-#define global List_copy     Container_copy
-#define global List_exchange Container_exchange
+#define global Deque_clear    Container_clear
+#define global Deque_chain    Container_chain
+#define global Deque_copy     Container_copy
+#define global Deque_exchange Container_exchange
 
 //##########################################################
 //        反復子操作
@@ -129,8 +134,8 @@
 //------------------------------------------------
 // [i] 反復子操作
 //------------------------------------------------
-#define global List_iterInit Container_iterInit
-#define global List_iterNext Container_iterNext
+#define global Deque_iterInit Container_iterInit
+#define global Deque_iterNext Container_iterNext
 
 //##########################################################
 //        雑多系
@@ -138,15 +143,15 @@
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
-#define global List_size   Container_size
-#define global List_count  List_size
-#define global List_length List_size
-#define global List_n      List_size
+#define global Deque_size   Container_size
+#define global Deque_count  Deque_size
+#define global Deque_length Deque_size
+#define global Deque_n      Deque_size
 
 //------------------------------------------------
 // 範囲チェック
 //------------------------------------------------
-#define global List_isValid Container_isValid
+#define global Deque_isValid Container_isValid
 
 //##########################################################
 //        静的メンバ命令・関数
@@ -158,27 +163,25 @@
 //------------------------------------------------
 // 全要素の出力
 //------------------------------------------------
-#define global List_dbglog Container_dbglog
+#define global Deque_dbglog Container_dbglog
 
 //##############################################################################
 //                サンプル・スクリプト
 //##############################################################################
 #if 0
 
-	List_new    list
-	List_add    list, "Hello, world!"
-	List_add    list, 100
-	List_add    list, M_PI
-	List_dbglog list
+	Deque_new    deque
+	Deque_add    deque, "Hello, world!"
+	Deque_add    deque, 100
+	Deque_add    deque, M_PI
+	Deque_dbglog deque
 	
-	List_move   list, 1, 2
-	List_dbglog list
+	Deque_push_front deque, 0x7FFFFFFF
+	Deque_dbglog     deque
 	
-	List_insert list, 0x7FFFFFFF, 0
-	List_dbglog list
+	logmes "[deque] pop-back: "+ Deque_pop_back(deque)
 	
-	List_reverse list
-	List_dbglog  list
+	Deque_dbglog deque
 	
 	stop
 	

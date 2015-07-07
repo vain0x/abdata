@@ -4,132 +4,40 @@
 #ifndef __ABSTRACT_DATA_STRUCTURE_DOUBLE_LINKED_LIST_AS__
 #define __ABSTRACT_DATA_STRUCTURE_DOUBLE_LINKED_LIST_AS__
 
-#include "dlinkvalue.as"		// 双方向リンク付き要素
+#include "dlinkvalue.as"
 
-//##################################################################################################
-//                        Double Linked List
-//##################################################################################################
+//##############################################################################
+//                  Double Linked List
+//##############################################################################
 #module abdata_dlinklist mValue, mCntValue, mTop, mLast, mIter_v, mIter_c, mbIterStart
 
-#define mv modvar abdata_dlinklist@
 #define mIter mIter_v(mIter_c)
 
 #define VAR_TEMP stt_temp@abdata_dlinklist
 
-// すべての値はメンバ mValue が管理。
-// 要素の順番は、DLValue の持つリンクで操作する。
+// @ すべての値はメンバ mValue が管理。
+// @ 要素の順番は、DLValue の持つリンクで操作する。
 
+//##########################################################
+//        構築・解体
+//##########################################################
 #define global DLList_new(%1)    newmod %1, abdata_dlinklist@
 #define global DLList_delete(%1) delmod %1
 
-//##############################################################################
-//                内部関数
-//##############################################################################
 //------------------------------------------------
-// リンクを辿って n 番目の要素の番号を取得
-// @private
+// [i] 構築
 //------------------------------------------------
-#defcfunc DLList_followLink mv, int n, local now
-	now = mTop
-	repeat n
-		now = DLV_getNext( mValue(now) )
-	loop
-	return now
+#modinit
+	DLList_clear thismod
+	return
 	
 //------------------------------------------------
-// 繰返子に p2 回操作を加える
-// @private
-// @template macro
+// [i] 解体
 //------------------------------------------------
-#define ctype FTM_DLList_iter(%1) repeat p2 : %1 : loop
 
-//------------------------------------------------
-// 先頭に追加する
-// @private
-//------------------------------------------------
-#modfunc DLList_insTop var p2, local now
-	
-	// アイテムを追加する
-	DLV_new mValue, p2, mTop, mLast		// 追加する
-	now = stat
-	
-	// リンクを修整する
-	DLV_setNext mValue(mLast), now
-	DLV_setPrev mValue(mTop),  now
-	
-	mTop = now
-	mCntValue ++
-	return
-	
-//------------------------------------------------
-// 項目を挿入する ( 挿入位置を指定する )
-// @private
-//------------------------------------------------
-#modfunc DLList_insertItem var p2, int p3, local nxt, local prv, local now
-	
-	if ( mCntValue > 0 ) {
-		if ( p3 < 0 ) {					// 先頭に追加する
-			DLList_insTop thismod, p2
-			return
-			
-		} else : if ( p3 == mTop ) {	// 最後に追加する
-			prv = mLast
-			nxt = mTop
-			
-		} else {
-			nxt = p3
-			prv = DLV_getPrev( mValue(nxt) )	// 前のリンクは取得できる
-		}
-	} else {
-		nxt = p3
-		prv = 0
-	}
-	
-	// アイテムを追加する
-	DLV_new mValue, p2, nxt, prv
-	now = stat
-	
-	// リンクを修整する
-	DLV_setNext mValue(prv), now
-	DLV_setPrev mValue(nxt), now
-	
-	if ( nxt == mTop ) {			// 最後に挿入した場合
-		mLast = now
-	}
-	
-	mCntValue ++
-	return
-	
-//------------------------------------------------
-// 項目を削除する ( 削除位置を指定する )
-// @private
-//------------------------------------------------
-#modfunc DLList_removeItem int now,  local nxt, local prv
-	
-	// 前後のリンクを保存する
-	nxt = DLV_getNext( mValue(now) )
-	prv = DLV_getPrev( mValue(now) )
-	
-	// 削除する
-	DLV_delete mValue(now)
-	mCntValue --
-	if ( mCntValue <= 0 ) {
-		mTop  = 0
-		mLast = 0
-		return
-	}
-	
-	// リンクを修整する
-	DLV_setNext mValue(prv), nxt
-	DLV_setPrev mValue(nxt), prv
-	
-	if ( now == mTop  ) { mTop  = nxt }		// 先頭を削除した場合
-	if ( now == mLast ) { mLast = prv }		// 最後を削除した場合
-	return
-	
-//##############################################################################
-//                繰返子操作系関数群
-//##############################################################################
+//##########################################################
+//        繰返子操作系
+//##########################################################
 //------------------------------------------------
 // 先頭に移動
 //------------------------------------------------
@@ -194,7 +102,7 @@
 //------------------------------------------------
 // 繰返子の更新 ( while の条件に使う )
 //------------------------------------------------
-#defcfunc DLList_iterCheck mv, var vIt
+#modcfunc DLList_iterCheck var vIt
 	if ( mIter == mTop ) {
 		if ( mbIterStart ) {
 			mbIterStart = false
@@ -203,20 +111,21 @@
 			return false		// 一周した
 		}
 	}
-			DLV_dup      mValue(mIter), vIt		// 今指している場所を取得
-	mIter = DLV_getNext( mValue(mIter) )		// 次を指定する
+	
+	DLV_dup mValue(mIter), vIt				// 今指している場所を取得
+	mIter = DLV_getNext( mValue(mIter) )	// 次を指定する
 	return true
 	
 //------------------------------------------------
 // 先頭にいるか？
 //------------------------------------------------
-#defcfunc DLList_iterIsTop mv
+#modcfunc DLList_iterIsTop
 	return mIter == mTop
 	
 //------------------------------------------------
 // 終端にいるか？
 //------------------------------------------------
-#defcfunc DLList_iterIsLast mv
+#modcfunc DLList_iterIsLast
 	return mIter == mLast
 	
 //------------------------------------------------
@@ -229,12 +138,12 @@
 //------------------------------------------------
 // [i] 繰返子更新
 //------------------------------------------------
-#defcfunc DLList_iterNext mv, var vIt, var iterData
+#modcfunc DLList_iterNext var vIt, var iterData
 	return DLList_iterCheck(thismod, vIt)
 	
-//##############################################################################
-//                項目取得系関数群
-//##############################################################################
+//##########################################################
+//        項目取得系
+//##########################################################
 //------------------------------------------------
 // 次の要素を取得する
 //------------------------------------------------
@@ -264,7 +173,7 @@
 //------------------------------------------------
 // Sequential Access 関数形式
 //------------------------------------------------
-#defcfunc DLList_getSeqf mv, int bMove
+#modcfunc DLList_getSeqf int bMove
 	DLList_getSeq thismod, VAR_TEMP, bMove, 0
 	return VAR_TEMP
 	
@@ -275,20 +184,20 @@
 	if ( bDup == 0 ) {
 		DLV_getv mValue( DLList_followLink(thismod, p3) ), p2
 	} else {
-		DLV_dup mValue( DLList_followLink(thismod, p3) ), p2
+		DLV_dup  mValue( DLList_followLink(thismod, p3) ), p2
 	}
 	return
 	
 //------------------------------------------------
 // Random Access 関数形式
 //------------------------------------------------
-#defcfunc DLList_get mv, int p2
+#modcfunc DLList_get int p2
 	DLList_getv thismod, VAR_TEMP, p2, 0
 	return VAR_TEMP
 	
-//##############################################################################
-//                項目設定系関数群
-//##############################################################################
+//##########################################################
+//        項目設定系
+//##########################################################
 //------------------------------------------------
 // 今の要素を変更する
 //------------------------------------------------
@@ -394,16 +303,17 @@
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
-#defcfunc DLList_size mv
+#modcfunc DLList_size
 	return mCntValue
 	
-#define global DLList_n DLList_size
-
+#define global DLList_count  DLList_size
+#define global DLList_length DLList_size
+	
 //##############################################################################
 //                インターフェース関数
 //##############################################################################
 //------------------------------------------------
-// [i] 完全消去
+// [i] 消去
 //------------------------------------------------
 #modfunc DLList_clear
 	dim     mValue
@@ -416,19 +326,21 @@
 	return
 	
 //------------------------------------------------
-// [i] 連結する
+// [i] 連結
 //------------------------------------------------
 #modfunc DLList_chain var mv_from,  local it
 	// 全要素を同じ順番で挿入する
 	DLList_iterNew mv_from
+	
 	while ( DLList_iterCheck(mv_from, it) )
 		DLList_insert thismod, it, cnt
 	wend
+	
 	DLList_iterDelete mv_from
 	return
 	
 //------------------------------------------------
-// [i] 複製する
+// [i] 複写
 //------------------------------------------------
 #modfunc DLList_copy var mv_from,  local it
 	DLList_clear thismod
@@ -436,7 +348,7 @@
 	return
 	
 //------------------------------------------------
-// [i] 交換する
+// [i] コンテナ交換
 //------------------------------------------------
 #modfunc DLList_exchange var mv2,  local mvTemp
 	DLList_new  mvTemp
@@ -451,19 +363,112 @@
 //------------------------------------------------
 
 //##############################################################################
-//                コンストラクタ・デストラクタ
+//                内部関数
 //##############################################################################
 //------------------------------------------------
-// [i] コンストラクタ
+// リンクを辿って n 番目の要素の番号を取得
+// @private
 //------------------------------------------------
-#modinit
-	DLList_clear thismod
+#modcfunc DLList_followLink int n, local now
+	now = mTop
+	repeat n
+		now = DLV_getNext( mValue(now) )
+	loop
+	return now
+	
+//------------------------------------------------
+// 繰返子に p2 回操作を加える
+// @private
+// @template macro
+//------------------------------------------------
+#define ctype FTM_DLList_iter(%1) repeat p2 : %1 : loop
+
+//------------------------------------------------
+// 先頭に追加する
+// @private
+//------------------------------------------------
+#modfunc DLList_insTop var p2, local now
+	
+	// アイテムを追加する
+	DLV_new mValue, p2, mTop, mLast		// 追加する
+	now = stat
+	
+	// リンクを修整する
+	DLV_setNext mValue(mLast), now
+	DLV_setPrev mValue(mTop),  now
+	
+	mTop = now
+	mCntValue ++
 	return
 	
 //------------------------------------------------
-// [i] デストラクタ
+// 項目を挿入する
+// @private
+// @ 挿入位置を指定する
 //------------------------------------------------
-
+#modfunc DLList_insertItem var p2, int p3, local nxt, local prv, local now
+	
+	if ( mCntValue > 0 ) {
+		if ( p3 < 0 ) {					// 先頭に追加する
+			DLList_insTop thismod, p2
+			return
+			
+		} else : if ( p3 == mTop ) {	// 最後に追加する
+			prv = mLast
+			nxt = mTop
+			
+		} else {
+			nxt = p3
+			prv = DLV_getPrev( mValue(nxt) )	// 前のリンクは取得できる
+		}
+	} else {
+		nxt = p3
+		prv = 0
+	}
+	
+	// アイテムを追加する
+	DLV_new mValue, p2, nxt, prv
+	now = stat
+	
+	// リンクを修整する
+	DLV_setNext mValue(prv), now
+	DLV_setPrev mValue(nxt), now
+	
+	if ( nxt == mTop ) {			// 最後に挿入した場合
+		mLast = now
+	}
+	
+	mCntValue ++
+	return
+	
+//------------------------------------------------
+// 項目を削除する
+// @private
+// @ 削除位置を指定する
+//------------------------------------------------
+#modfunc DLList_removeItem int now,  local nxt, local prv
+	
+	// 前後のリンクを保存する
+	nxt = DLV_getNext( mValue(now) )
+	prv = DLV_getPrev( mValue(now) )
+	
+	// 削除する
+	DLV_delete mValue(now)
+	mCntValue --
+	if ( mCntValue <= 0 ) {
+		mTop  = 0
+		mLast = 0
+		return
+	}
+	
+	// リンクを修整する
+	DLV_setNext mValue(prv), nxt
+	DLV_setPrev mValue(nxt), prv
+	
+	if ( now == mTop  ) { mTop  = nxt }		// 先頭を削除した場合
+	if ( now == mLast ) { mLast = prv }		// 最後を削除した場合
+	return
+	
 //##############################################################################
 //                デバッグ用
 //##############################################################################
@@ -508,7 +513,7 @@
 	screen 0, 320, 240
 	syscolor 15 : boxf
 	
-	font "ＭＳ ゴシック", 12
+	font msgothic, 12
 	
 	pos 20, 20
 	

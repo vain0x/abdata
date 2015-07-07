@@ -3,12 +3,10 @@
 #ifndef __ABSTRACT_DATA_STRUCTURE_ARGUMENT_STACK_AS__
 #define __ABSTRACT_DATA_STRUCTURE_ARGUMENT_STACK_AS__
 
-//##################################################################################################
+//##############################################################################
 //        Value Sturct for Argument Stack
-//##################################################################################################
+//##############################################################################
 #module abdata_argvalue mVar, mbRef
-
-#define mv modvar abdata_argvalue@
 
 //------------------------------------------------
 // 参照で取得
@@ -42,7 +40,7 @@
 //------------------------------------------------
 // 参照渡しか？
 //------------------------------------------------
-#defcfunc argvalue_isByRef mv
+#modcfunc argvalue_isByRef
 	return mbRef
 	
 //------------------------------------------------
@@ -66,7 +64,6 @@
 //##################################################################################################
 #module abdata_argstack mValue, mCntValue
 
-#define mv modvar abdata_argstack@
 #define VAR_TEMP stt_temp@abdata_argstack
 
 //------------------------------------------------
@@ -104,7 +101,7 @@
 	argvalue_delete mValue(mCntValue)			// 取得した項目を削除
 	return
 	
-#defcfunc ArgStack_pop mv
+#modcfunc ArgStack_pop
 	ArgStack_popv thismod, VAR_TEMP
 	return VAR_TEMP
 	
@@ -116,26 +113,28 @@
 	argvalue_get mValue( mCntValue - p2 - 1 ), variable
 	return
 	
-#defcfunc ArgStack_peek mv, int p2
+#modcfunc ArgStack_peek int p2
 	ArgStack_peekv thismod, VAR_TEMP, p2
 	return VAR_TEMP
 	
 //------------------------------------------------
 // 参照渡しか？
 //------------------------------------------------
-#defcfunc ArgStack_isByRef mv, int p2
+#modcfunc ArgStack_isByRef int p2
 	if ( ( mCntValue - p2 ) <= 0 || p2 < 0 ) { logmes "UnderFlow (ArgStack_valIsByRef)" : return }
 	return argvalue_isByRef( mValue( mCntValue - p2 - 1 ) )
 	
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
-#defcfunc ArgStack_n mv
+#modcfunc ArgStack_n
 	return mCntValue
 	
-#define global ArgStack_size ArgStack_n
+#define global ArgStack_size   ArgStack_n
+#define global ArgStack_count  ArgStack_n
+#define global ArgStack_length ArgStack_n
 
-// { clear, copy, chain, exchange } は未実装
+// 統一関数 clear, copy, chain, exchange は未実装
 
 #global
 
@@ -159,6 +158,7 @@ callcount = -1
 dim prmof(cntargs), 8
 
 #module _prm
+
 #defcfunc argv int p1
 	if ( ( argc - p1 - 1 ) < 0 ) { return 0 }
 	ArgStack_peekv prmof_s(starg), argval_core, argc - p1 - 1

@@ -5,47 +5,63 @@
 
 #include "mod_pvalptr.as"
 
-#module DLinkValue mVal, mLinkNext, mLinkPrev
+#module abdata_dlinkvalue mValue, mLinkNext, mLinkPrev
 
-#define mv modvar DLinkValue@
+#define global DLV_new(%1,%2,%3=0,%4=0) newmod %1, abdata_dlinkvalue@,%2,%3,%4
+#define global DLV_delete(%1) delmod %1
 
-#modfunc DLV_setv var p2
-	mVal = p2
-	return
-	
-#modfunc DLV_setNext int nxt
-	mLinkNext = nxt
-	return
-	
-#modfunc DLV_setPrev int prv
-	mLinkPrev = prv
-	return
-	
+//##############################################################################
+//                ç\ízÅEâëÃ
+//##############################################################################
+//------------------------------------------------
+// ç\íz
+//------------------------------------------------
 #modinit var p2, int nxt, int prv
 	DLV_setv     thismod, p2
 	DLV_setNext  thismod, nxt
 	DLV_setPrev  thismod, prv
 	return getaptr(thismod)
 	
+//##############################################################################
+//                ÉÅÉìÉoä÷êî
+//##############################################################################
+//*--------------------------------------------------------*
+//        éÊìæån
+//*--------------------------------------------------------*
 #modfunc DLV_getv var p2
-	p2 = mVal
+	p2 = mValue
 	return
 	
-#modfunc DLV_dup var p2
-	dup p2, mVal
-	return
+#modcfunc DLV_get
+	return mValue
 	
-#defcfunc DLV_getValueType mv
-	return vartype(mVal)
+#modcfunc DLV_getValueType
+	return vartype(mValue)
 	
-#defcfunc DLV_getNext mv
-	return mLinkNext
-	
-#defcfunc DLV_getPrev mv
+#modcfunc DLV_getPrev
 	return mLinkPrev
 	
-#define global DLV_new(%1,%2,%3=0,%4=0) newmod %1,DLinkValue@,%2,%3,%4
-#define global DLV_delete(%1) delmod %1
+#modcfunc DLV_getNext
+	return mLinkNext
+	
+#modfunc DLV_dup var p2
+	dup p2, mValue
+	return
+	
+//*--------------------------------------------------------*
+//        ê›íËån
+//*--------------------------------------------------------*
+#modfunc DLV_setv var p2
+	mValue = p2
+	return
+	
+#modfunc DLV_setPrev int prv
+	mLinkPrev = prv
+	return
+	
+#modfunc DLV_setNext int nxt
+	mLinkNext = nxt
+	return
 	
 #global
 
