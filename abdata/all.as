@@ -8,10 +8,10 @@
 #include "deque.as"
 #include "stack.as"
 #include "queue.as"
-#include "dlinklist.as"
 #include "tnode.as"
 #include "pair.as"
 #include "unor.as"
-#include "dictionary.as"
+;#include "dictionary.as"
+;#include "dlinklist.as"
 
 #endif
