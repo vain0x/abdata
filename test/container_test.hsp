@@ -1,0 +1,151 @@
+#include "../abdata/container.as"
+
+#module
+#defcfunc make_iota_container int n,  local self
+	self = new_container()
+	repeat n
+		container_push_back self, cnt
+	loop
+	return self
+#global
+
+	randomize
+
+	//\’zƒeƒXƒg
+	
+	int_var = 0
+	double_var = M_PI
+	str_var = "container_test"
+	
+	container_new con0
+	container_new con1, 1, double_var
+	container_new con2, 7, str_var
+	
+	assert container_size(con0) == 0
+	assert container_size(con1) == 1
+	assert container_get(con1, cnt) == double_var
+	assert container_size(con2) == 7
+	repeat container_size(con2)
+		assert container_get(con2, cnt) == str_var
+	loop
+	
+	//—v‘f’Ç‰Á
+	
+	//push_back
+	container_new con, 3, str_var
+	container_push_back con, M_PI
+	assert container_size(con) == 4
+	assert container_get(con, 3) == M_PI
+	repeat 3
+		assert container_get(con, cnt) == str_var
+	loop
+	container_delete con
+	
+	//push_front
+	con = make_iota_container(4)
+	container_push_front con, M_PI
+	assert container_size(con) == 5
+	assert container_get(con, 0) == M_PI
+	repeat 4, 1
+		assert container_get(con, cnt) == cnt - 1
+	loop
+	
+	//insert mid
+	con = make_iota_container(5)
+	container_insert con, M_PI, 2
+	assert container_size(con) == 6
+	repeat 2
+		assert container_get(con, cnt) == cnt
+	loop
+	assert container_get(con, 2) == M_PI
+	repeat 3, 3
+		assert container_get(con, cnt) == cnt - 1
+	loop
+	
+	//pushvŒn
+	
+	//—v‘f‚Ì”{‰Á
+	
+	//œ‹
+	con = make_iota_container(4)
+	container_remove con, 2
+	assert container_size(con) == 4 - 1
+	
+	expected = 0, 1, 3
+	repeat 3
+		assert container_get(con, cnt) == expected(cnt)
+	loop
+	
+	//QÆ‰»
+	con = make_iota_container(4)
+	container_clone con, r, 2
+	assert r == 2
+	r = 99
+	assert container_get(con, 2) == 99
+	
+	//‘‚«Š·‚¦
+	con = make_iota_container(4)
+	container_set con, str_var, 2
+	assert container_size(con) == 4
+	assert container_get(con, 0) == 0
+	assert container_get(con, 1) == 1
+	assert container_get(con, 2) == str_var
+	assert container_get(con, 3) == 3
+	
+	//ˆÚ“®AŒğŠ·A„‰ñA”½“]
+	
+	//Á‹
+	con = make_iota_container(3)
+	container_clear con
+	assert container_size(con) == 0
+	
+	//˜AŒ‹
+	con0 = make_iota_container(3)
+	con1 = make_iota_container(4)
+	container_chain con0, con1
+	assert container_size(con0) == 3+4
+	repeat 3
+		assert container_get(con0, cnt) == cnt
+	loop
+	repeat 4
+		assert container_get(con0, 3 + cnt) == container_get(con1, cnt)
+	loop
+	
+	//“ü‚ê‘Ö‚¦ exchange
+	
+	//®—ñ
+	//’·‚³0
+	con0 = make_iota_container(0)
+	container_sort con0
+	assert container_size(con0) == 0
+	
+	//—”
+	con1 = new_container(5)
+	repeat container_size(con1)
+		container_set con1, rnd(1000)
+	loop
+	container_sort con1
+	assert container_size(con1) == 5
+	repeat container_size(con1) - 1
+		assert container_get(con1, cnt) <= container_get(con1, cnt + 1)
+	loop
+	
+	//•¡”‚ÌŒ^
+	con2 = new_container()
+	container_push_back con2, "b"
+	container_push_back con2, 5
+	container_push_back con2, 1
+	container_push_back con2, "a"
+	container_sort con2
+	assert container_get(con2, 0) == "a"
+	assert container_get(con2, 1) == "b"
+	assert container_get(con2, 2) == 1
+	assert container_get(con2, 3) == 5
+	
+	//“Yš”ÍˆÍƒ`ƒFƒbƒN
+	con = make_iota_container(3)
+	repeat 9, -3
+		assert container_isValid(con, cnt) == (0 <= cnt && cnt < 3)
+	loop
+	
+	logmes "Container test completed."
