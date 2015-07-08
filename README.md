@@ -88,6 +88,12 @@
 ## 更新履歴
 ### 2015/07/08 (Wed)
 * Git を導入。
+* README を更新。
+* 簡単なテストを追加。
+* いくつかの関数名を変更した。
+  * swap -> locate_swap
+  * move -> relocate
+  * exchange -> swap
 
 ### 2011 04/04 (Mon)
 * abAssert を追加し、要素範囲外の時には assert で止まるようにした。
