@@ -546,44 +546,6 @@
 	
 #global
 
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-	
-	ContainerImpl_new    vSt
-	ContainerImpl_add    vSt, "Hello, world!"
-	ContainerImpl_add    vSt, 100
-	ContainerImpl_add    vSt, M_PI
-	ContainerImpl_dbglog vSt
-	ContainerImpl_move   vSt, 1, 2
-	ContainerImpl_dbglog vSt
-	
-	ContainerImpl_insert vSt, 0x7FFFFFFF, 0
-	ContainerImpl_insert vSt, 0x7FFF, 12
-	ContainerImpl_dbglog vSt
-	
-	ContainerImpl_reverse vSt
-	ContainerImpl_dbglog  vSt
-	
-	// 整列
-	ContainerImpl_add    vSt, 39
-	ContainerImpl_add    vSt, 18782
-	ContainerImpl_add    vSt, 2943
-	ContainerImpl_add    vSt, "ABCD包囲網"
-	ContainerImpl_add    vSt, "Extra Strings"
-	ContainerImpl_add    vSt, sqrt(2)
-	ContainerImpl_add    vSt, sqrt(8)
-	ContainerImpl_add    vSt, sqrt(3)
-	ContainerImpl_dbglog vSt
-	
-	ContainerImpl_sort   vSt, SortMode_Decending
-	ContainerImpl_dbglog vSt
-	
-	stop
-	
-#endif
-
 #endif
 
 /******

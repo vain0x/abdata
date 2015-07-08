@@ -405,28 +405,6 @@
 	
 #global
 
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-
-	unorImpl_new    vSt
-	unorImpl_add    vSt, "str", "Hello, world!"
-	unorImpl_add    vSt, "int", 100
-	unorImpl_add    vSt, "double", M_PI
-	unorImpl_add    vSt, "日本語", "Japanese"
-	unorImpl_add    vSt, "英語",   "English"
-	unorImpl_add    vSt, "____"			// 要素の既定値は int(0)
-	unorImpl_dbglog vSt
-	
-	unorImpl_set    vSt, "str", "hoge-piyo-foo-bar"
-	unorImpl_remove vSt, "____"
-	unorImpl_dbglog vSt
-	
-	stop
-	
-#endif
-
 #endif
 
 /******

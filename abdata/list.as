@@ -179,32 +179,4 @@
 //------------------------------------------------
 #define global list_dbglog Container_dbglog
 
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-	
-;	obj = new_list()
-	list_new    obj
-	list_add    obj, "Hello, world!"
-	list_add    obj, 100
-	list_add    obj, M_PI
-	list_dbglog obj
-	
-	list_move   obj, 1, 2
-	list_dbglog obj
-	
-	list_insert obj, 0x7FFFFFFF, 0
-	list_dbglog obj
-	
-	list_reverse obj
-	list_dbglog  obj
-	
-	list_sort    obj
-	list_dbglog  obj
-	
-	stop
-	
-#endif
-
 #endif

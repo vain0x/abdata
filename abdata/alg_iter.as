@@ -10,7 +10,7 @@
 
 #define global ctype structure_name(%1) %1
 #define global ctype structure_method(%1,%2) %1%2
-#define ctype ARG_TEMP(%1) st_tmp_%1@abdata_iter
+#define ctype ARG_TEMP(%1) argtmp_alg_iter_%1@__abdata
 
 #define global ctype inIterMod(%1) %1@abdata_iter
 #define global ctype ITER_INST_NAME(%1)      inIterMod(%1_inst)
@@ -111,39 +111,5 @@
 #define global IterateCnt                 %tabdata_iterate (IterateCnt_)
 #define global ctype Iterate(%1,%2,%3=it) %tabdata_iterate_2 \
 	IterateBegin %1, %2, %3 : gosub *%i : IterateEnd : if 0 : *%o
-
-//##############################################################################
-//        サンプル・スクリプト
-//##############################################################################
-#if 0
-
-#include "list.as"
-	
-	// とりあえず要素追加
-	list_new obj
-	repeat 10
-		list_add obj, strf("#%02d value;", cnt)
-	loop
-	
-//	＊記述方法、其の壱 ― 生 ―		// 非推奨
-;	iter_new obj, list
-;	while ( iter_next( obj, list, it ) )
-;		mes it
-;	wend
-;	iter_delete obj, list
-	
-//	＊記述方法、其の弐 ― 汎用 ―
-	IterateBegin obj, list		// structure は構造名 (ここではマクロなので置換される)。第三引数に it 変数を指定できる。
-		mes it						// 変数 it が、その周回での値(データ)を表す。
-	IterateEnd
-	
-//	＊記述方法、其の参 ― 奇妙 ―
-;	Iterate( obj, list ) {
-;		mes it						// 強制脱出不可能
-;		return						// return が必須！ ( 忘れると一度しか実行されない )
-;	}
-	stop
-	
-#endif
 
 #endif

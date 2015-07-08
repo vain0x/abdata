@@ -1,0 +1,19 @@
+
+#include "../abdata/unor.as"
+
+	unor_new    vSt
+;	unor_new    vSt
+	unor_add    vSt, "str", "Hello, world!"
+	unor_add    vSt, "int", 100
+	unor_add    vSt, "double", M_PI
+	unor_add    vSt, "“ú–{Œê", "Japanese"
+	unor_add    vSt, "‰pŒê",   "English"
+	unor_add    vSt, "____"			// —v‘f‚ÌŠù’è’l‚Í int(0)
+	unor_dbglog vSt
+	
+	unor_set    vSt, "str", "hoge-piyo-foo-bar"
+	unor_remove vSt, "____"
+	unor_dbglog vSt
+	
+	stop
+	

@@ -175,26 +175,4 @@
 //------------------------------------------------
 #define global deque_dbglog Container_dbglog
 
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-
-	deque_new    deq
-	deque_add    deq, "Hello, world!"
-	deque_add    deq, 100
-	deque_add    deq, M_PI
-	deque_dbglog deq
-	
-	deque_push_front deq, 0x7FFFFFFF
-	deque_dbglog     deq
-	
-	logmes "[deque] pop-back: "+ deque_pop_back(deq)
-	
-	deque_dbglog deq
-	
-	stop
-	
-#endif
-
 #endif

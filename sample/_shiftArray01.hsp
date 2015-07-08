@@ -1,0 +1,70 @@
+#include "../abdata/mod_shiftArray.as"
+
+#module
+#define global output(%1,%2) _output %1, %2, "%2"
+#deffunc _output str ps1, array pa2, str ps3
+	mes ps1
+	foreach pa2
+		mes ps3 + strf("(%d) = ", cnt) + pa2(cnt)
+	loop
+	return
+#global
+
+	dim a, 6
+	
+	// ‰Šú’l‚ğİ’è‚·‚é
+	foreach a
+		a(cnt) = cnt
+	loop
+	
+	//######## —v‘f‚Ì‘}“ü ###########################
+	// ‘}“üæ‚Ì”Ô†
+	p = 0
+	
+	ArrayInsert a, p
+	
+	// ‘}“ü‚·‚é
+	a(p) = 100
+	
+	// •\¦
+	pos 20, 20
+	output "Array Insert", a
+	
+	//######## —v‘f‚ÌˆÚ“® ###########################
+	p = 3	// ˆÚ“®Œ³‚Ì”Ô†
+	t = 1	// ˆÚ“®æ‚Ì”Ô†
+	
+	ArrayMove a, p, t
+	
+	// •\¦
+	pos 140, 20
+	output "Array Move", a
+	
+	//######## —v‘f‚ÌŒğŠ· ###########################
+	// ŒğŠ·‚·‚é—v‘f‚Q‚Â
+	p = 4, 2
+	
+	ArraySwap a, p(0), p(1)
+	
+	// •\¦
+	pos 260, 20
+	output "Array Swap", a
+	
+	//######## —v‘f‚Ì„‰ñ ###########################
+	ArrayRotate a
+	
+	// •\¦
+	pos 380, 20
+	output "Array Rotate", a
+	
+	//######## —v‘f‚Ìíœ ###########################
+	// íœ‚·‚é”Ô†
+	p = 3
+	
+	ArrayRemove a, p
+	
+	// •\¦
+	pos 500, 20
+	output "Array Remove", a		// (5) ‚Ííœ‚³‚ê‚½cŠ[
+	
+	stop

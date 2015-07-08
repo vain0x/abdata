@@ -183,15 +183,3 @@
 #define global stack_dbglog deque_dbglog
 
 #endif
-
-#if 0
-
-	stack_new  stk
-	stack_push stk, 1
-	stack_push stk, 2
-	mes stack_peek(stk)
-	mes stack_pop(stk)
-	mes stack_peek(stk)
-	stop
-	
-#endif

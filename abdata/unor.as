@@ -218,28 +218,5 @@
 #define global unor_dbglog(%1) unorImpl_dbglog_ abdataInsts(%1), "%1"
 
 ;	unor_new unorNull
-	
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-
-	unor_new    vSt
-;	unor_new    vSt
-	unor_add    vSt, "str", "Hello, world!"
-	unor_add    vSt, "int", 100
-	unor_add    vSt, "double", M_PI
-	unor_add    vSt, "日本語", "Japanese"
-	unor_add    vSt, "英語",   "English"
-	unor_add    vSt, "____"			// 要素の既定値は int(0)
-	unor_dbglog vSt
-	
-	unor_set    vSt, "str", "hoge-piyo-foo-bar"
-	unor_remove vSt, "____"
-	unor_dbglog vSt
-	
-	stop
-	
-#endif
 
 #endif
