@@ -1,0 +1,5 @@
+
+#include "container_test.hsp"
+#include "unor_test.hsp"
+
+	logmes "All test completed."

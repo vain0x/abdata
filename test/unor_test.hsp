@@ -1,0 +1,77 @@
+#include "../abdata/unor.as"
+
+#module
+#defcfunc make_iota_unor int n,  local self
+	self = new_unor()
+	repeat n
+		unor_add self, "#" + cnt, cnt
+	loop
+	return self
+#global
+
+	//’Ç‰Á
+	
+	un = new_unor()
+	assert unor_size(un) == 0
+	
+	unor_add un, "#0", "val0"
+	assert unor_size(un) == 1
+	assert unor_get(un, "#0") == "val0"
+	
+	unor_add un, "#1", 1
+	assert unor_size(un) == 2
+	assert unor_get(un, "#0") == "val0"
+	assert unor_get(un, "#1") == 1
+	
+	//’Ç‰Á‚É¸”s
+	unor_add un, "#1", -1
+	assert unor_size(un) == 2
+	assert unor_get(un, "#1") == 1
+	
+	//‘‚«Š·‚¦
+	
+	unor_set un, "#1", -1
+	assert unor_size(un) == 2
+	assert unor_get(un, "#1") == -1
+	
+	//œ‹
+	
+	un = make_iota_unor(5)
+	assert unor_size(un) == 5
+	unor_remove un, "#2"
+	assert unor_size(un) == 5 - 1
+	repeat 5
+		if ( cnt == 2 ) {
+			assert unor_exists(un, "#2") == 0
+		} else {
+			assert unor_get(un, "#" + cnt) == cnt
+		}
+	loop
+	
+	//Á‹
+	
+	un = make_iota_unor(3)
+	unor_clear un
+	assert unor_size(un) == 0
+	
+	//˜AŒ‹
+	
+	un0 = make_iota_unor(3)
+	un1 = new_unor()
+	repeat 4
+		unor_add un1, "@" + cnt, double(cnt)
+	loop
+	unor_chain un0, un1
+	assert unor_size(un0) == 3 + 4
+	repeat 3
+		assert unor_get(un0, "#" + cnt) == cnt
+	loop
+	repeat 4
+		assert unor_get(un0, "@" + cnt) == double(cnt)
+	loop
+	
+	//‹¤—LQÆ‚Å‚Í‚È‚¢‚±‚Æ
+	unor_set un0, "@3", M_PI
+	assert unor_get(un1, "@3") == double(3)
+	
+	logmes "Unor test completed."
