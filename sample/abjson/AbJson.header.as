@@ -3,6 +3,10 @@
 
 // “à•”ƒwƒbƒ_
 
+#define true 1
+#define false 0
+#define NULL 0
+
 #define _b_dbgout true ;* 0
 #if     _b_dbgout
  #define ctype dbgout(%1) logmes ( "" + (%1) )
