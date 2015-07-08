@@ -8,10 +8,6 @@
 //##############################################################################
 //                abdata:deque
 //##############################################################################
-
-// @abdata_deque ‚Æ‚¢‚¤Žg‚¢•û‚Í‚Å‚«‚È‚¢ ( @abdata_container ‚É’uŠ·‚³‚ê‚È‚¢ )
-#define global abdata_deque abdata_container
-
 #define global Deque_ClsName "deque"
 #define global dequeNull abdataNull
 

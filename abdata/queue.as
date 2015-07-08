@@ -10,9 +10,6 @@
 //                queue
 //##############################################################################
 
-// @abdata_queue ‚Æ‚¢‚¤Žg‚¢•û‚Í‚Å‚«‚È‚¢ ( @abdata_deque ‚É’uŠ·‚³‚ê‚È‚¢ )
-#define global abdata_queue abdata_deque
-
 #define global Queue_ClsName "queue"
 #define global queueNull dequeNull
 

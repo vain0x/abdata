@@ -10,9 +10,6 @@
 //                abdata::stack
 //##############################################################################
 
-// @abdata_stack ‚Æ‚¢‚¤Žg‚¢•û‚Í‚Å‚«‚È‚¢ ( @abdata_deque ‚É’uŠ·‚³‚ê‚È‚¢ )
-#define global abdata_stack abdata_deque
-
 #define global Stack_ClsName "stack"
 #define global stackNull dequeNull
 

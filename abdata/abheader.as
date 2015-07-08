@@ -6,9 +6,8 @@
 #ifdef _DEBUG
 
 // Œx‰ñ”ğ
-	dim abdataInsts_var
-	dim stt_allinsts@abdata_impl
-	dim stt_nullinst@abdata_impl
+	dim stt_allinsts@__abdata
+	dim stt_nullinst@__abdata
 	dim stt_zero@
 
  #define global abAssert(%1 = 0, %2 = "") if ( false == (%1) ) { if ( "" != (%2) ) { logmes "[Error] abdata: " + (%2) } : assert }	// abdata “à•”‚Åg—p‚·‚é assert –½—ß
@@ -24,10 +23,10 @@
 #endif
 
 #ifndef abdataInsts
- #define global ctype abdataInsts(%1) stt_allinsts@abdata_impl(%1)
+ #define global ctype abdataInsts(%1) stt_allinsts@__abdata(%1)
 #endif
 
-#define global abdataInsts_var stt_allinsts@abdata_impl
-#define global abdataNull      stt_nullinst@abdata_impl //=0
+#define global abdataInsts_var stt_allinsts@__abdata
+#define global abdataNull      stt_nullinst@__abdata //=0
 
 #endif

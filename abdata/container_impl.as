@@ -15,8 +15,7 @@
 #module abdata_con_impl mCnt, mElems, midlist
 ; abdata_container_impl ‚ÍŽ¯•ÊŽq’·‚ÌŒÀŠE‚ð’´‚¦‚Ä‚¢‚é‚½‚ß
 
-;#define       VAR_TEMP stt_temp@abdata_con_impl	// –¢Žg—p
-#define ctype ARG_TEMP(%1) stt_temp_%1_arg@abdata_con_impl
+#define ctype ARG_TEMP(%1) con_impl_argtmp_%1@__abdata
 
 #define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
 #define true  1

@@ -42,7 +42,7 @@
 //------------------------------------------------
 #module abdata_tnode
 
-#define ctype ARG_TEMP(%1) st_temp_%1_arg@abdata_tnode
+#define ctype ARG_TEMP(%1) argtmp_tnode_%1@__abdata
 
 #define global tnode_new(%1, %2 = stt_zero@, %3 = stt_zero@) \
 	ARG_TEMP@abdata_tnode(1) = (%2) :\

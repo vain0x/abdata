@@ -17,9 +17,7 @@
 #define true  1
 #define false 0
 
-#define ctype ARG_TEMP(%1) st_temp_%1_arg@abdata_pair_impl
-;#define VAR_TEMP  stt_temp1@abdata_pair_impl
-;#define VAR_TEMP2 stt_temp2@abdata_pair_impl
+#define ctype ARG_TEMP(%1) pair_argtmp_%1@__abdata
 
 //------------------------------------------------
 // —v‘f‚Ì idx ’l

@@ -22,7 +22,7 @@
 #module abdata_unor_impl mlistKey, mlistValue
 ;, mbMutual
 
-#define ctype ARG_TEMP(%1) st_temp_%1_arg@abdata_unor_impl
+#define ctype ARG_TEMP(%1) unor_impl_argtmp_%1@__abdata
 ;#define MAX_HASH 53
 
 #define ctype operate_strcmp(%1,%2,%3) ( (%1) != (%3) %2 0 )

@@ -10,9 +10,6 @@
 //                abdata::list
 //##############################################################################
 
-// @abdata_list ‚Æ‚¢‚¤Žg‚¢•û‚Í‚Å‚«‚È‚¢ ( @abdata_container ‚É’uŠ·‚³‚ê‚È‚¢ )
-#define global abdata_list abdata_container
-
 #define global listNull abdataNull
 
 #define global List_ClsName "list"
