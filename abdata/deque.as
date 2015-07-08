@@ -89,10 +89,10 @@
 //------------------------------------------------
 // ‡˜‘€ì
 //------------------------------------------------
-;#define global deque_move        Container_move
-;#define global deque_swap        Container_swap
-#define global deque_swap_front  Container_swap_front
-#define global deque_swap_back   Container_swap_back
+;#define global deque_loc_move        Container_loc_move
+;#define global deque_loc_swap        Container_loc_swap
+#define global deque_loc_swap_front  Container_loc_swap_front
+#define global deque_loc_swap_back   Container_loc_swap_back
 #define global deque_rotate      Container_rotate
 #define global deque_rotate_back Container_rotate_back
 #define global deque_reverse     Container_reverse
@@ -103,7 +103,7 @@
 #define global deque_clear    Container_clear
 #define global deque_chain    Container_chain
 #define global deque_copy     Container_copy
-#define global deque_exchange Container_exchange
+#define global deque_swap Container_swap
 
 //------------------------------------------------
 // [i] ”½•œq‘€ì

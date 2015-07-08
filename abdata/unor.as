@@ -101,7 +101,7 @@
 //------------------------------------------------
 // [i] ŒğŠ·
 //------------------------------------------------
-#define global unor_exchange(%1,%2) unorImpl_exchange abdataInsts(%1), abdataInsts(%2)
+#define global unor_swap(%1,%2) unorImpl_swap abdataInsts(%1), abdataInsts(%2)
 
 //------------------------------------------------
 // [i] ”½•œq::‰Šú‰»

@@ -94,8 +94,8 @@
 //------------------------------------------------
 // ‡˜‘€ì
 //------------------------------------------------
-#define global list_move        Container_move
-#define global list_swap        Container_swap
+#define global list_loc_move        Container_loc_move
+#define global list_loc_swap        Container_loc_swap
 #define global list_rotate      Container_rotate
 #define global list_rotate_back Container_rotate_back
 #define global list_reverse     Container_reverse
@@ -107,7 +107,7 @@
 #define global list_clear    Container_clear
 #define global list_chain    Container_chain
 #define global list_copy     Container_copy
-#define global list_exchange Container_exchange
+#define global list_swap Container_swap
 
 //------------------------------------------------
 // [i] ”½•œq‘€ì

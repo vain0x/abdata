@@ -145,7 +145,7 @@
 //------------------------------------------------
 // [i] ƒRƒ“ƒeƒiŒðŠ·
 //------------------------------------------------
-#modfunc dict_exchange var mv2,  local mvTemp
+#modfunc dict_swap var mv2,  local mvTemp
 	dict_new  mvTemp
 	dict_copy mvTemp,  thismod
 	dict_copy thismod, mv2

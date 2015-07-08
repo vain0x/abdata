@@ -406,7 +406,7 @@ inst self : 連想配列
 unor_clear
 unor_chain
 unor_copy
-unor_exchange
+unor_swap
 
 %group
 メンバ関数::コンテナ操作系
@@ -430,7 +430,7 @@ inst src  : 〃
 unor_clear
 unor_chain
 unor_copy
-unor_exchange
+unor_swap
 
 %group
 メンバ関数::コンテナ操作系
@@ -452,14 +452,14 @@ inst src  : 〃
 unor_clear
 unor_chain
 unor_copy
-unor_exchange
+unor_swap
 
 %group
 メンバ関数::コンテナ操作系
 
 ;--------------------
 %index
-unor_exchange
+unor_swap
 Unor コンテナ交換 [i]
 
 %prm
@@ -474,7 +474,7 @@ inst obj  : 〃
 unor_clear
 unor_chain
 unor_copy
-unor_exchange
+unor_swap
 
 %group
 メンバ関数::コンテナ操作系

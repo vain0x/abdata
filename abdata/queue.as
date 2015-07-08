@@ -85,10 +85,10 @@
 //------------------------------------------------
 // èáèòëÄçÏ
 //------------------------------------------------
-;#define global queue_move        deque_move
-;#define global queue_swap        deque_swap
-;#define global queue_swap_front  deque_swap_front
-;#define global queue_swap_back   deque_swap_back
+;#define global queue_loc_move        deque_loc_move
+;#define global queue_loc_swap        deque_loc_swap
+;#define global queue_loc_swap_front  deque_loc_swap_front
+;#define global queue_loc_swap_back   deque_loc_swap_back
 ;#define global queue_rotate      deque_rotate
 ;#define global queue_rotate_back deque_rotate_back
 ;#define global queue_reverse     deque_reverse
@@ -99,7 +99,7 @@
 #define global queue_clear    deque_clear
 #define global queue_chain    deque_chain
 #define global queue_copy     deque_copy
-#define global queue_exchange deque_exchange
+#define global queue_swap deque_swap
 
 //------------------------------------------------
 // [i] îΩïúéqëÄçÏ

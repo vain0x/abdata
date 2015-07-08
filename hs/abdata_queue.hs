@@ -385,7 +385,7 @@ inst src  : V
 
 ;--------------------
 %index
-queue_exchange
+queue_swap
 Queue ƒRƒ“ƒeƒiŒğŠ· [i]
 
 %prm

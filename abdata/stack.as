@@ -96,15 +96,15 @@
 //------------------------------------------------
 // 順序操作
 //------------------------------------------------
-;#define global stack_move        deque_move
-;#define global stack_swap        deque_swap
-;#define global stack_swap_front  deque_swap_front
-#define global stack_swap_back   deque_swap_back
+;#define global stack_loc_move        deque_loc_move
+;#define global stack_loc_swap        deque_loc_swap
+;#define global stack_loc_swap_front  deque_loc_swap_front
+#define global stack_loc_swap_back   deque_loc_swap_back
 ;#define global stack_rotate      deque_rotate
 ;#define global stack_rotate_back deque_rotate_back
 ;#define global stack_reverse     deque_reverse
 
-#define global stack_swap        stack_swap_back		// 一番上の2つの要素の交換
+#define global stack_loc_swap        stack_loc_swap_back		// 一番上の2つの要素の交換
 
 //------------------------------------------------
 // [i] コンテナ操作
@@ -112,7 +112,7 @@
 #define global stack_clear    deque_clear
 #define global stack_chain    deque_chain
 #define global stack_copy     deque_copy
-#define global stack_exchange deque_exchange
+#define global stack_swap deque_swap
 
 //------------------------------------------------
 // [i] 反復子操作

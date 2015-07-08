@@ -325,7 +325,7 @@
 //------------------------------------------------
 // [i] ƒRƒ“ƒeƒiŒðŠ·
 //------------------------------------------------
-#modfunc DLList_exchange var mv2,  local mvTemp
+#modfunc DLList_swap var mv2,  local mvTemp
 	DLList_new  mvTemp
 	DLList_copy mvTemp,  thismod
 	DLList_copy thismod, mv2

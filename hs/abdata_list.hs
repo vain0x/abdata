@@ -457,7 +457,7 @@ list_remove
 
 ;--------------------
 %index
-list_move
+list_loc_move
 List 要素の移動
 
 %prm
@@ -478,7 +478,7 @@ int  to   : 移動後の要素番号
 
 ;--------------------
 %index
-list_swap
+list_loc_swap
 List 要素の交換
 
 %prm
@@ -611,7 +611,7 @@ list_chain
 
 ;--------------------
 %index
-list_exchange
+list_swap
 List コンテナ交換 [i]
 
 %prm

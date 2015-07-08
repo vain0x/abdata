@@ -79,7 +79,7 @@
 // —v‘fŒğŠ·
 // @ lhs ‚Æ rhs ‚ğŒğŠ·‚·‚é
 //------------------------------------------------
-#define global pair_swap(%1) pairImpl_swap abdataInsts(%1)
+#define global pair_loc_swap(%1) pairImpl_loc_swap abdataInsts(%1)
 
 //------------------------------------------------
 // [i] Š®‘SÁ‹
@@ -94,7 +94,7 @@
 //------------------------------------------------
 // [i] ŒğŠ·
 //------------------------------------------------
-#define global pair_exchange(%1,%2) pairImpl_exchange abdataInsts(%1), abdataInsts(%2)
+#define global pair_swap(%1,%2) pairImpl_swap abdataInsts(%1), abdataInsts(%2)
 
 //------------------------------------------------
 // [i] ”½•œq::‰Šú‰»

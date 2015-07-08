@@ -252,7 +252,7 @@
 //------------------------------------------------
 // 移動
 //------------------------------------------------
-#modfunc ContainerImpl_move int iSrc, int iDst
+#modfunc ContainerImpl_loc_move int iSrc, int iDst
 	abAssert ( ContainerImpl_size(thismod) >= 2 ), "move には少なくとも2要素が必要"		// 最低でも2つの要素がないと、move は意味がない
 	
 	ArrayMove midlist, ContainerImpl_getRealIndex(thismod, iSrc), ContainerImpl_getRealIndex(thismod, iDst)
@@ -261,14 +261,14 @@
 //------------------------------------------------
 // 交換
 //------------------------------------------------
-#modfunc ContainerImpl_swap int iPos1, int iPos2
+#modfunc ContainerImpl_loc_swap int iPos1, int iPos2
 	abAssert ( ContainerImpl_size(thismod) >= 2 ), "swap には少なくとも2要素が必要"		// 最低でも2つの要素がないと、swap は意味がない
 	
 	ArraySwap midlist, ContainerImpl_getRealIndex(thismod, iPos1), ContainerImpl_getRealIndex(thismod, iPos2)
 	return
 	
-#define global ContainerImpl_swap_front(%1) ContainerImpl_swap %1,  0,  1
-#define global ContainerImpl_swap_back(%1)  ContainerImpl_swap %1, -2, -1
+#define global ContainerImpl_loc_swap_front(%1) ContainerImpl_loc_swap %1,  0,  1
+#define global ContainerImpl_loc_swap_back(%1)  ContainerImpl_loc_swap %1, -2, -1
 
 //------------------------------------------------
 // 巡回
@@ -328,7 +328,7 @@
 //------------------------------------------------
 // [i] 交換
 //------------------------------------------------
-#modfunc ContainerImpl_exchange var obj2,  local tmp
+#modfunc ContainerImpl_swap var obj2,  local tmp
 	ContainerImpl_new  tmp
 	ContainerImpl_copy tmp,  thismod
 	ContainerImpl_copy thismod, obj2

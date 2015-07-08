@@ -1151,7 +1151,7 @@ Container_remove_back
 
 ;--------------------
 %index
-Container_move
+Container_loc_move
 Container 要素の移動
 
 %prm
@@ -1166,10 +1166,10 @@ int  to   : 移動後の要素番号
 ※要素値の複写は発生しないので、低コストな処理です。
 
 %href
-Container_move
-Container_swap
-Container_swap_front
-Container_swap_back
+Container_loc_move
+Container_loc_swap
+Container_loc_swap_front
+Container_loc_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
@@ -1180,7 +1180,7 @@ Container_sort
 
 ;--------------------
 %index
-Container_swap
+Container_loc_swap
 Container 要素の交換
 
 %prm
@@ -1195,10 +1195,10 @@ int  pos2 : 〃
 ※要素値の複写は発生しないので、低コストな処理です。
 
 %href
-Container_move
-Container_swap
-Container_swap_front
-Container_swap_back
+Container_loc_move
+Container_loc_swap
+Container_loc_swap_front
+Container_loc_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
@@ -1209,7 +1209,7 @@ Container_sort
 
 ;--------------------
 %index
-Container_swap_front
+Container_loc_swap_front
 Container 要素の交換 ( 先頭 )
 
 %prm
@@ -1222,10 +1222,10 @@ inst self : 汎用コンテナ
 ※要素値の複写は発生しないので、低コストな処理です。
 
 %href
-Container_move
-Container_swap
-Container_swap_front
-Container_swap_back
+Container_loc_move
+Container_loc_swap
+Container_loc_swap_front
+Container_loc_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
@@ -1236,7 +1236,7 @@ Container_sort
 
 ;--------------------
 %index
-Container_swap_back
+Container_loc_swap_back
 Container 要素の交換 ( 末尾 )
 
 %prm
@@ -1249,10 +1249,10 @@ inst self : 汎用コンテナ
 ※要素値の複写は発生しないので、低コストな処理です。
 
 %href
-Container_move
-Container_swap
-Container_swap_front
-Container_swap_back
+Container_loc_move
+Container_loc_swap
+Container_loc_swap_front
+Container_loc_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
@@ -1274,10 +1274,10 @@ inst self : 汎用コンテナ
 汎用コンテナの要素をすべて、一つ前にずらします。つまり、先頭の要素を末尾に移動させる処理です。
 
 %href
-Container_move
-Container_swap
-Container_swap_front
-Container_swap_back
+Container_loc_move
+Container_loc_swap
+Container_loc_swap_front
+Container_loc_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
@@ -1299,10 +1299,10 @@ inst self : 汎用コンテナ
 汎用コンテナの要素をすべて、一つ後ろにずらします。つまり、末尾の要素を先頭に移動させる処理で、Container_rotate の丁度逆です。
 
 %href
-Container_move
-Container_swap
-Container_swap_front
-Container_swap_back
+Container_loc_move
+Container_loc_swap
+Container_loc_swap_front
+Container_loc_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
@@ -1326,10 +1326,10 @@ inst self : 汎用コンテナ
 (ex) [1, 2, 3, 4] を反転すると [4, 3, 2, 1] になる。
 
 %href
-Container_move
-Container_swap
-Container_swap_front
-Container_swap_back
+Container_loc_move
+Container_loc_swap
+Container_loc_swap_front
+Container_loc_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
@@ -1362,10 +1362,10 @@ SortMode_Decending => 降順
 
 (ex) [1, 3, e, "a", 2, "b", π] を整列すると ["a", "b", e, π, 1, 2, 3] になる。
 %href
-Container_move
-Container_swap
-Container_swap_front
-Container_swap_back
+Container_loc_move
+Container_loc_swap
+Container_loc_swap_front
+Container_loc_swap_back
 Container_rotate
 Container_rotate_back
 Container_reverse
@@ -1429,7 +1429,7 @@ inst src  : 〃
 
 ;--------------------
 %index
-Container_exchange
+Container_swap
 Container コンテナ交換 [i]
 
 %prm

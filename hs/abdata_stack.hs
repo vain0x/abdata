@@ -377,7 +377,7 @@ inst src  : V
 
 ;--------------------
 %index
-stack_exchange
+stack_swap
 Stack ƒRƒ“ƒeƒiŒğŠ· [i]
 
 %prm

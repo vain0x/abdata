@@ -190,7 +190,7 @@
 //------------------------------------------------
 // [i] ŒðŠ·
 //------------------------------------------------
-#modfunc Ordlist_exchange var mv2,  local mvTemp
+#modfunc Ordlist_swap var mv2,  local mvTemp
 	
 	if ( Ordlist_vartype(thismod) != Ordlist_vartype(mv2) ) {
 		return

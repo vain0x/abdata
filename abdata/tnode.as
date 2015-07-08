@@ -138,7 +138,7 @@
 #define global tnode_clear(%1) list_clear %1 : tnode_resetElems %1
 #define global tnode_chain(%1,%2) logmes {"[Error!] tnode_chain %1,%2 ‚Í‚Å‚«‚Ü‚¹‚ñI"}
 #define global tnode_copy     list_copy
-#define global tnode_exchange list_exchange
+#define global tnode_swap list_swap
 
 //------------------------------------------------
 // [i] ”½•œq‘€ì

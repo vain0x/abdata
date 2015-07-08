@@ -846,7 +846,7 @@ deque_remove_back
 
 ;--------------------
 %index
-deque_swap_front
+deque_loc_swap_front
 Deque 前方要素2つの交換
 
 %prm
@@ -857,8 +857,8 @@ inst self : 双方向キュー
 双方向キューの先頭にある2つの要素を交換します。
 
 %href
-deque_swap_front
-deque_swap_back
+deque_loc_swap_front
+deque_loc_swap_back
 deque_rotate
 deque_rotate_back
 deque_reverse
@@ -868,7 +868,7 @@ deque_reverse
 
 ;--------------------
 %index
-deque_swap_back
+deque_loc_swap_back
 Deque 前方要素2つの交換
 
 %prm
@@ -879,8 +879,8 @@ inst self : 双方向キュー
 双方向キューの末尾にある2つの要素を交換します。
 
 %href
-deque_swap_front
-deque_swap_back
+deque_loc_swap_front
+deque_loc_swap_back
 deque_rotate
 deque_rotate_back
 deque_reverse
@@ -901,8 +901,8 @@ inst self : 双方向キュー
 双方向キューの要素をすべて、一つ前にずらします。つまり、先頭の要素を末尾に移動させる処理です。
 
 %href
-deque_swap_front
-deque_swap_back
+deque_loc_swap_front
+deque_loc_swap_back
 deque_rotate
 deque_rotate_back
 deque_reverse
@@ -923,8 +923,8 @@ inst self : 双方向キュー
 双方向キューの要素をすべて、一つ後ろにずらします。つまり、末尾の要素を先頭に移動させる処理で、deque_rotate の丁度逆です。
 
 %href
-deque_swap_front
-deque_swap_back
+deque_loc_swap_front
+deque_loc_swap_back
 deque_rotate
 deque_rotate_back
 deque_reverse
@@ -947,8 +947,8 @@ inst self : 双方向キュー
 (ex) [1, 2, 3, 4] を反転すると [4, 3, 2, 1] になる。
 
 %href
-deque_swap_front
-deque_swap_back
+deque_loc_swap_front
+deque_loc_swap_back
 deque_rotate
 deque_rotate_back
 deque_reverse
@@ -1011,7 +1011,7 @@ inst src  : 〃
 
 ;--------------------
 %index
-deque_exchange
+deque_swap
 Deque コンテナ交換 [i]
 
 %prm

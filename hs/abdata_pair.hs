@@ -594,7 +594,7 @@ pair_vartypeRhs
 
 ;--------------------
 %index
-pair_swap
+pair_loc_swap
 Pair 要素の交換
 
 %prm
@@ -664,7 +664,7 @@ Pair に統一関数「連結(chain)」はありません。
 
 ;--------------------
 %index
-pair_exchange
+pair_swap
 Pair コンテナ交換 [i]
 
 %prm

@@ -132,7 +132,7 @@
 // —v‘fŒðŠ·
 // @ lhs ‚Æ rhs ‚ðŒðŠ·‚·‚é
 //------------------------------------------------
-#modfunc pairImpl_swap  local tmpLhs, local tmpRhs
+#modfunc pairImpl_loc_swap  local tmpLhs, local tmpRhs
 	pairImpl_getvLhs thismod, tmpLhs
 	pairImpl_getvRhs thismod, tmpRhs
 	pairImpl_setvLhs thismod, tmpRhs
@@ -173,7 +173,7 @@
 //------------------------------------------------
 // [i] ŒðŠ·
 //------------------------------------------------
-#modfunc pairImpl_exchange var mv2,  local tmp
+#modfunc pairImpl_swap var mv2,  local tmp
 	pairImpl_new  tmp
 	pairImpl_copy tmp, thismod
 	pairImpl_copy thismod, mv2

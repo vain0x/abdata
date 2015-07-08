@@ -131,14 +131,14 @@
 //------------------------------------------------
 // ˆÚ“®
 //------------------------------------------------
-#define global Container_move(%1, %2, %3) ContainerImpl_move abdataInsts(%1), %2, %3
+#define global Container_loc_move(%1, %2, %3) ContainerImpl_loc_move abdataInsts(%1), %2, %3
 
 //------------------------------------------------
 // ŒğŠ·
 //------------------------------------------------
-#define global Container_swap(%1, %2, %3) ContainerImpl_swap       abdataInsts(%1), %2, %3
-#define global Container_swap_front(%1)   ContainerImpl_swap_front abdataInsts(%1)
-#define global Container_swap_back(%1)    ContainerImpl_swap_back  abdataInsts(%1)
+#define global Container_loc_swap(%1, %2, %3) ContainerImpl_loc_swap       abdataInsts(%1), %2, %3
+#define global Container_loc_swap_front(%1)   ContainerImpl_loc_swap_front abdataInsts(%1)
+#define global Container_loc_swap_back(%1)    ContainerImpl_loc_swap_back  abdataInsts(%1)
 
 //------------------------------------------------
 // „‰ñ
@@ -173,7 +173,7 @@
 //------------------------------------------------
 // [i] ŒğŠ·
 //------------------------------------------------
-#define global Container_exchange(%1,%2) ContainerImpl_exchange abdataInsts(%1), abdataInsts(%2)
+#define global Container_swap(%1,%2) ContainerImpl_swap abdataInsts(%1), abdataInsts(%2)
 
 //------------------------------------------------
 // ®—ñ
