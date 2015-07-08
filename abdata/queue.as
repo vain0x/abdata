@@ -1,52 +1,26 @@
-// queue - キュー ( FILO & LIFO )
-
 #ifndef IG_ABDATA_QUEUE_AS
 #define IG_ABDATA_QUEUE_AS
 
 #include "abheader.as"
 #include "deque.as"
 
-//##############################################################################
-//                queue
-//##############################################################################
-
 #define global Queue_ClsName "queue"
 #define global queueNull dequeNull
-
-//##############################################################################
-//                構築・解体
-//##############################################################################
 
 #define global new_queue    new_deque
 #define global queue_new    deque_new
 #define global queue_delete deque_delete
 
 //------------------------------------------------
-// [i] 構築
-//------------------------------------------------
-//------------------------------------------------
-// [i] 解体
-//------------------------------------------------
-
-//##############################################################################
-//                メンバ命令・関数
-//##############################################################################
-
-//##########################################################
-//        取得系
-//##########################################################
-//------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
 #define global queue_getv deque_getv
-
 #define global queue_peekv queue_getv
 
 //------------------------------------------------
 // 値の取得 ( 関数形式 )
 //------------------------------------------------
 #define global queue_get deque_get
-
 #define global queue_peek queue_get
 
 //------------------------------------------------
@@ -69,10 +43,6 @@
 #define global queue_getv_front deque_getv_front
 #define global queue_pop_front  deque_pop_front
 #define global queue_popv_front deque_popv_front
-;#define global queue_get_back   deque_get_back
-;#define global queue_getv_back  deque_getv_back
-;#define global queue_pop_back   deque_pop_back
-;#define global queue_popv_back  deque_popv_back
 
 #define global queue_popv deque_popv_front
 #define global queue_pop  deque_pop_front
@@ -81,12 +51,8 @@
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
 #define global queue_vartype       Container_vartype_front
-;#define global queue_vartype_front Container_vartype_front
-;#define global queue_vartype_back  Container_vartype_back
+#define global queue_vartype_front Container_vartype_front
 
-//##########################################################
-//        操作系
-//##########################################################
 //------------------------------------------------
 // データ置換
 //------------------------------------------------
@@ -104,8 +70,6 @@
 //------------------------------------------------
 #define global queue_double_front deque_double_front
 #define global queue_double_back  deque_double_back
-;#define global queue_push_front   deque_push_front
-;#define global queue_pushv_front  deque_pushv_front
 #define global queue_push_back    deque_push_back
 #define global queue_pushv_back   deque_pushv_back
 
@@ -129,9 +93,6 @@
 ;#define global queue_rotate_back deque_rotate_back
 ;#define global queue_reverse     deque_reverse
 
-//##########################################################
-//        コンテナ操作
-//##########################################################
 //------------------------------------------------
 // [i] コンテナ操作
 //------------------------------------------------
@@ -140,18 +101,12 @@
 #define global queue_copy     deque_copy
 #define global queue_exchange deque_exchange
 
-//##########################################################
-//        反復子操作
-//##########################################################
 //------------------------------------------------
 // [i] 反復子操作
 //------------------------------------------------
 #define global queue_iterInit deque_iterInit
 #define global queue_iterNext deque_iterNext
 
-//##########################################################
-//        雑多系
-//##########################################################
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
@@ -165,13 +120,6 @@
 //------------------------------------------------
 #define global queue_isValid deque_isValid
 
-//##########################################################
-//        静的メンバ命令・関数
-//##########################################################
-
-//##########################################################
-//        デバッグ用
-//##########################################################
 //------------------------------------------------
 // 全要素の出力
 //------------------------------------------------

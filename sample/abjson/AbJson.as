@@ -1,7 +1,7 @@
-// json (abdata)
-
 #ifndef        IG_ABDATA_JSON_HEADER_AS
 #define global IG_ABDATA_JSON_HEADER_AS
+
+// json on abdata
 
 //------------------------------------------------
 // ’è”F’l‚Ìí—Ş

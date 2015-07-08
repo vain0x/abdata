@@ -1,41 +1,17 @@
-// list - リスト
-
 #ifndef IG_ABDATA_LIST_AS
 #define IG_ABDATA_LIST_AS
 
 #include "abheader.as"
 #include "container.as"
 
-//##############################################################################
-//                abdata::list
-//##############################################################################
-
 #define global listNull abdataNull
 
 #define global List_ClsName "list"
-
-//##############################################################################
-//                構築・解体
-//##############################################################################
 
 #define global new_list    new_Container
 #define global list_new    Container_new
 #define global list_delete Container_delete
 
-//------------------------------------------------
-// [i] 構築
-//------------------------------------------------
-//------------------------------------------------
-// [i] 解体
-//------------------------------------------------
-
-//##############################################################################
-//                メンバ命令・関数
-//##############################################################################
-
-//##########################################################
-//        取得系
-//##########################################################
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
@@ -64,25 +40,22 @@
 // @ get 処理 >> const な操作
 // @ pop 処理 >> 要素は取り除かれる
 //------------------------------------------------
-;#define global list_get_front  Container_get_front
-;#define global list_get_back   Container_get_back
-;#define global list_getv_front Container_getv_front
-;#define global list_getv_back  Container_getv_back
-;#define global list_pop_front  Container_pop_front
-;#define global list_pop_back   Container_pop_back
-;#define global list_popv_front Container_popv_front
-;#define global list_popv_back  Container_popv_back
+#define global list_get_front  Container_get_front
+#define global list_get_back   Container_get_back
+#define global list_getv_front Container_getv_front
+#define global list_getv_back  Container_getv_back
+#define global list_pop_front  Container_pop_front
+#define global list_pop_back   Container_pop_back
+#define global list_popv_front Container_popv_front
+#define global list_popv_back  Container_popv_back
 
 //------------------------------------------------
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
 #define global list_vartype       Container_vartype
-;#define global list_vartype_front Container_vartype_front
-;#define global list_vartype_back  Container_vartype_back
+#define global list_vartype_front Container_vartype_front
+#define global list_vartype_back  Container_vartype_back
 
-//##########################################################
-//        操作系
-//##########################################################
 //------------------------------------------------
 // データ置換
 //------------------------------------------------
@@ -98,20 +71,20 @@
 //------------------------------------------------
 // 先頭・最後尾への追加
 //------------------------------------------------
-;#define global list_push_front  Container_push_front
-;#define global list_push_back   Container_push_back
-;#define global list_pushv_front Container_pushv_front
-;#define global list_pushv_back  Container_pushv_back
-;#define global list_push        Container_push
-;#define global list_pushv       Container_pushv
+#define global list_push_front  Container_push_front
+#define global list_push_back   Container_push_back
+#define global list_pushv_front Container_pushv_front
+#define global list_pushv_back  Container_pushv_back
+#define global list_push        Container_push
+#define global list_pushv       Container_pushv
 #define global list_add         Container_add
 
 //------------------------------------------------
 // 除去
 //------------------------------------------------
 #define global list_remove       Container_remove
-;#define global list_remove_front Container_remove_front
-;#define global list_remove_back  Container_remove_back
+#define global list_remove_front Container_remove_front
+#define global list_remove_back  Container_remove_back
 
 //------------------------------------------------
 // 要素数設定
@@ -128,9 +101,6 @@
 #define global list_reverse     Container_reverse
 #define global list_sort        Container_sort
 
-//##########################################################
-//        コンテナ操作
-//##########################################################
 //------------------------------------------------
 // [i] コンテナ操作
 //------------------------------------------------
@@ -139,18 +109,12 @@
 #define global list_copy     Container_copy
 #define global list_exchange Container_exchange
 
-//##########################################################
-//        反復子操作
-//##########################################################
 //------------------------------------------------
 // [i] 反復子操作
 //------------------------------------------------
 #define global list_iterInit Container_iterInit
 #define global list_iterNext Container_iterNext
 
-//##########################################################
-//        雑多系
-//##########################################################
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
@@ -164,13 +128,6 @@
 //------------------------------------------------
 #define global list_isValid Container_isValid
 
-//##########################################################
-//        静的メンバ命令・関数
-//##########################################################
-
-//##########################################################
-//        デバッグ用
-//##########################################################
 //------------------------------------------------
 // 全要素の出力
 //------------------------------------------------

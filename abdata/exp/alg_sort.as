@@ -1,8 +1,7 @@
-// Algorithm::Sort ®—ñ
-
 #ifndef IG_ABDATA_ALGORITHM_SORT_AS
 #define IG_ABDATA_ALGORITHM_SORT_AS
 
+// ®—ñƒAƒ‹ƒSƒŠƒYƒ€
 // –¢À‘•
 
 #include "alg_iter.as"

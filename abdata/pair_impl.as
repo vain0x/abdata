@@ -1,17 +1,12 @@
-// pair - ペア (実装)
-
 #ifndef IG_ABDATA_PAIR_IMPL_AS
 #define IG_ABDATA_PAIR_IMPL_AS
 
-// @ pair
-// @ 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
+// ちょうど2つの要素からなるコンテナ
+// 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
 
 #include "abelem.as"
 #include "mod_pvalptr.as"
 
-//##############################################################################
-//                abdata::pair (<lhs, rhs>)
-//##############################################################################
 #module abdata_pair_impl mValue
 
 #define true  1

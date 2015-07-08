@@ -10,7 +10,9 @@
 	dim stt_nullinst@__abdata
 	dim stt_zero@
 
- #define global abAssert(%1 = 0, %2 = "") if ( false == (%1) ) { if ( "" != (%2) ) { logmes "[Error] abdata: " + (%2) } : assert }	// abdata 内部で使用する assert 命令
+// abdata 内部で使用する assert 命令
+ #define global abAssert(%1 = 0, %2 = "") \
+	if ( false == (%1) ) { if ( "" != (%2) ) { logmes "[Error] abdata: " + (%2) } : assert }
 
 #else //defined(_DEBUG)
 

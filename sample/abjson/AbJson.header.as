@@ -1,7 +1,7 @@
-// json (abdata)
-
 #ifndef IG_ABDATA_JSON_HEADER_INNER_AS
 #define IG_ABDATA_JSON_HEADER_INNER_AS
+
+// “à•”ƒwƒbƒ_
 
 #define _b_dbgout true ;* 0
 #if     _b_dbgout
