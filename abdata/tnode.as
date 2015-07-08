@@ -1,5 +1,3 @@
-// tnode - 木構造(1)
-
 #ifndef IG_ABDATA_TREE_NODE_AS
 #define IG_ABDATA_TREE_NODE_AS
 
@@ -17,9 +15,6 @@
 #include "list.as"
 #include "alg_iter.as"
 
-//##############################################################################
-//                abdata::tnode<1>
-//##############################################################################
 #define global TNode_ClsName "tnode"
 #define global tnodeNull listNull
 
@@ -34,15 +29,12 @@
 #define global tnode_count  tnode_size
 #define global tnode_length tnode_size
 
-//##############################################################################
-//                構築・解体
-//##############################################################################
 //------------------------------------------------
 // 構築
 //------------------------------------------------
 #module abdata_tnode
 
-#define ctype ARG_TEMP(%1) st_temp_%1_arg@abdata_tnode
+#define ctype ARG_TEMP(%1) argtmp_tnode_%1@__abdata
 
 #define global tnode_new(%1, %2 = stt_zero@, %3 = stt_zero@) \
 	ARG_TEMP@abdata_tnode(1) = (%2) :\
@@ -79,13 +71,6 @@
 //------------------------------------------------
 #define global tnode_delete list_delete
 
-//##############################################################################
-//                メンバ命令・関数
-//##############################################################################
-
-//##########################################################
-//        取得系
-//##########################################################
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
@@ -135,9 +120,6 @@
 #define global ctype tnode_vartype(%1)     tnode_vartype_( %1, TNIdx_Value )
 #define global ctype tnode_vartypeChd(%1)  tnode_vartype_( %1, TNIdx_Chd )
 
-//##########################################################
-//        操作系
-//##########################################################
 //------------------------------------------------
 // データ置換
 //------------------------------------------------
@@ -151,14 +133,6 @@
 #define global tnode_setvChd(%1,%2) tnode_setv_ %1, %2, TNIdx_Chd
 
 //------------------------------------------------
-// 挿入, 端への追加, 除去, 順序操作
-//------------------------------------------------
-// @ なし
-
-//##########################################################
-//        コンテナ操作
-//##########################################################
-//------------------------------------------------
 // [i] コンテナ操作
 //------------------------------------------------
 #define global tnode_clear(%1) list_clear %1 : tnode_resetElems %1
@@ -166,39 +140,24 @@
 #define global tnode_copy     list_copy
 #define global tnode_exchange list_exchange
 
-//##########################################################
-//        反復子操作
-//##########################################################
 //------------------------------------------------
 // [i] 反復子操作
 //------------------------------------------------
 #define global tnode_iterInit list_iterInit
 #define global tnode_iterNext list_iterNext
 
-//##########################################################
-//        雑多系
-//##########################################################
 //------------------------------------------------
 // 範囲チェック
 //------------------------------------------------
 #define global ctype tnode_isValid(%1, %2) ( 0 <= (%2) && (%2) < tnode_size(%1) )
 
-//##########################################################
-//        静的メンバ命令・関数
-//##########################################################
-
-//##########################################################
-//        デバッグ用
-//##########################################################
 #module
 
 #ifdef _DEBUG
-//-------- デバッグ時 --------
 
 //------------------------------------------------
-// ノード名を再帰的に出力する
+// ノード名を再帰的にデバッグ出力する
 //------------------------------------------------
-;#define global tnode_dbglog list_dbglog
 #deffunc tnode_dbglog int self, int nest,  local thisId, local it, local stmp
 	sdim stmp, nest * 2 + 512
 	
@@ -220,12 +179,11 @@
 	
 	return
 	
-#else
-//-------- 非デバッグ時 --------
+#else //definded(_DEBUG)
 
 #define tnode_dbglog(%1, %2) :
 
-#endif
+#endif //defined(_DEBUG)
 
 #global
 
@@ -277,57 +235,6 @@
  #define global ctype tnxSize(%1) list_size( tnode_getChd(%1) )
  #define global tnxCount  tnxSize
  #define global tnxLength tnxLength
-#endif
-
-;	tnode_new tnodeNull
-
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-
-	tnode_new root, "親", new_list()
-	
-	for i, 0, 3
-		
-		tnode_new   chd, "子(" + i + ")", new_list()
-		tnx_addChd root, chd
-		
-		repeat 5
-		;	chd = list_get( tnode_getChd(root), i )
-			
-			tnode_new  grandChd, "孫(" + cnt + ")", new_list()
-			tnx_addChd chd, grandChd
-		loop
-		
-	next
-	
-	for i, 0, tnxSize(root)
-	;	chd = list_get( tnode_getChd(root), i )
-		repeat tnxSize( tnxChd(root, i) )
-			mes tnode_get( tnxChd( tnxChd(root, i), cnt ) )
-		loop
-	next
-	
-	pos 300, 10
-	tnode_dbglog root
-	stop
-	/*
-	tnode_new  root2, "root2"
-	tnx_addChd root2, tr
-;	tnode_copy root2, tr
-	TNode_dbglog root2
-	
-	TNode_addSubTree tr, tr2
-	TNode_dbglog tr
-	
-	logmes ""
-	assert
-	TNode_addSubTree tr, tr2
-	TNode_dbglog tr
-	
-	stop
-	//*/
 #endif
 
 #endif

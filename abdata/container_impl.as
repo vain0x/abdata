@@ -1,22 +1,15 @@
-// Container Impl - 汎用コンテナ (実装)
-
 #ifndef IG_ABDATA_CONTAINER_IMPL_AS
 #define IG_ABDATA_CONTAINER_IMPL_AS
 
 #include "abheader.as"
-#include "abelem.as"				// 簡易要素型
-#include "mod_shiftArray.as"		// 配列操作モジュール
-;#include "mod_getnextaddindex.as"	// 次に追加される要素番号
-#include "mod_pvalptr.as"			// 〃
+#include "abelem.as"
+#include "mod_shiftArray.as"
+#include "mod_pvalptr.as"
 
-//##############################################################################
-//                ContainerImpl
-//##############################################################################
 #module abdata_con_impl mCnt, mElems, midlist
 ; abdata_container_impl は識別子長の限界を超えているため
 
-;#define       VAR_TEMP stt_temp@abdata_con_impl	// 未使用
-#define ctype ARG_TEMP(%1) stt_temp_%1_arg@abdata_con_impl
+#define ctype ARG_TEMP(%1) con_impl_argtmp_%1@__abdata
 
 #define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
 #define true  1
@@ -24,13 +17,9 @@
 
 #define ctype STR_ERR_OVER_RANGE(%1) "Error! [abdata コンテナ] 要素番号範囲外エラー(" + (%1) + ")"
 
-// SortMode
 #enum global SortMode_Ascending = 0		// 昇順
 #enum global SortMode_Decending = 1
 
-//##############################################################################
-//                構築・解体
-//##############################################################################
 #define global ContainerImpl_new(%1, %2 = 0, %3 = stt_zero@) newmod %1, abdata_con_impl@, %2, %3
 #define global ContainerImpl_delete(%1) delmod %1
 
@@ -62,34 +51,6 @@
 	
 	return getaptr(thismod)
 	
-//------------------------------------------------
-// 構築者
-//------------------------------------------------
-;#deffunc new_Container array mvArr_Container
-;	ContainerImpl_new mvArr_Container
-;	return
-	
-//------------------------------------------------
-// [i] 解体
-//------------------------------------------------
-#modterm
-;	ContainerImpl_clear thismod
-	return
-	
-//------------------------------------------------
-// 解体者
-//------------------------------------------------
-;#deffunc delete_Container var mvContainer
-;	ContainerImpl_delete mvContainer
-;	return
-	
-//##############################################################################
-//                メンバ命令・関数
-//##############################################################################
-
-//################################################
-//        取得系
-//################################################
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
@@ -159,9 +120,6 @@
 #define global ctype ContainerImpl_vartype_front(%1) ContainerImpl_vartype(%1, 0)
 #define global ctype ContainerImpl_vartype_back(%1)  ContainerImpl_vartype(%1, -1)
 
-//################################################
-//        設定系
-//################################################
 //------------------------------------------------
 // 値の設定
 //------------------------------------------------
@@ -177,9 +135,6 @@
 	
 	return
 	
-//################################################
-//        操作系
-//################################################
 //------------------------------------------------
 // 挿入
 // 
@@ -335,9 +290,6 @@
 	ArrayReverse midlist, iBgn, iEnd
 	return
 	
-//##########################################################
-//        コンテナ操作
-//##########################################################
 //------------------------------------------------
 // [i] 完全消去
 //------------------------------------------------
@@ -449,9 +401,6 @@
 	
 	return
 	
-//##########################################################
-//        反復子操作
-//##########################################################
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
@@ -472,9 +421,6 @@
 	ContainerImpl_getv thismod, vIt, iterData
 	return true
 	
-//##########################################################
-//        雑多系
-//##########################################################
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
@@ -512,13 +458,6 @@
 	
 	return i
 	
-//##############################################################################
-//                静的メンバ命令・関数
-//##############################################################################
-
-//##############################################################################
-//                デバッグ用
-//##############################################################################
 #ifdef _DEBUG
 
 //------------------------------------------------
@@ -538,51 +477,13 @@
 	logmes ""
 	return
 	
-#else
+#else //defined(_DEBUG)
 
 #define global ContainerImpl_dbglog(%1) :
 
-#endif
+#endif //defined(_DEBUG)
 	
 #global
-
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-	
-	ContainerImpl_new    vSt
-	ContainerImpl_add    vSt, "Hello, world!"
-	ContainerImpl_add    vSt, 100
-	ContainerImpl_add    vSt, M_PI
-	ContainerImpl_dbglog vSt
-	ContainerImpl_move   vSt, 1, 2
-	ContainerImpl_dbglog vSt
-	
-	ContainerImpl_insert vSt, 0x7FFFFFFF, 0
-	ContainerImpl_insert vSt, 0x7FFF, 12
-	ContainerImpl_dbglog vSt
-	
-	ContainerImpl_reverse vSt
-	ContainerImpl_dbglog  vSt
-	
-	// 整列
-	ContainerImpl_add    vSt, 39
-	ContainerImpl_add    vSt, 18782
-	ContainerImpl_add    vSt, 2943
-	ContainerImpl_add    vSt, "ABCD包囲網"
-	ContainerImpl_add    vSt, "Extra Strings"
-	ContainerImpl_add    vSt, sqrt(2)
-	ContainerImpl_add    vSt, sqrt(8)
-	ContainerImpl_add    vSt, sqrt(3)
-	ContainerImpl_dbglog vSt
-	
-	ContainerImpl_sort   vSt, SortMode_Decending
-	ContainerImpl_dbglog vSt
-	
-	stop
-	
-#endif
 
 #endif
 

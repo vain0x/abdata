@@ -1,25 +1,18 @@
-// pair - ペア (実装)
-
 #ifndef IG_ABDATA_PAIR_IMPL_AS
 #define IG_ABDATA_PAIR_IMPL_AS
 
-// @ pair
-// @ 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
+// ちょうど2つの要素からなるコンテナ
+// 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
 
 #include "abelem.as"
 #include "mod_pvalptr.as"
 
-//##############################################################################
-//                abdata::pair (<lhs, rhs>)
-//##############################################################################
 #module abdata_pair_impl mValue
 
 #define true  1
 #define false 0
 
-#define ctype ARG_TEMP(%1) st_temp_%1_arg@abdata_pair_impl
-;#define VAR_TEMP  stt_temp1@abdata_pair_impl
-;#define VAR_TEMP2 stt_temp2@abdata_pair_impl
+#define ctype ARG_TEMP(%1) pair_argtmp_%1@__abdata
 
 //------------------------------------------------
 // 要素の idx 値
@@ -242,16 +235,5 @@
 #endif
 	
 #global
-
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-
-	pairImpl_new pair
-	
-	stop
-	
-#endif
 
 #endif

@@ -1,15 +1,11 @@
-// JSON “Ç‚İ‚İƒNƒ‰ƒX (using abdata)
-
 #ifndef IG_MODULECLASS_ABDATA_JSON_READER_AS
 #define IG_MODULECLASS_ABDATA_JSON_READER_AS
 
+// json š‹å‰ğÍŠí
+
 #include "Mo/mod_array.as"
 #include "Mo/strutil.as"
-;#include "extendTab.as"
 
-//##############################################################################
-//                  ’è‹`•” : MCAbJsonLexer
-//##############################################################################
 #module MCAbJsonLexer mSrc, tktype, tkstr, tklen, idx, cntToken, tktypelist, tkstrlist
 
 #include "Mo/ctype.as"

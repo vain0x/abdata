@@ -6,13 +6,15 @@
 // 反復アルゴリズム (foreach)
 // @ _continue は更新を行う。
 
+#ifndef _cat
+ #define global ctype _cat(%1,%2)%1%2
+#endif
+
 #module abdata_iter mInst, mIterData
 
-#define global ctype structure_name(%1) %1
-#define global ctype structure_method(%1,%2) %1%2
-#define ctype ARG_TEMP(%1) st_tmp_%1@abdata_iter
+#define ctype ARG_TEMP(%1) %1_iter_argtmp@__abdata
 
-#define global ctype inIterMod(%1) %1@abdata_iter
+#define global ctype inIterMod(%1) %1_iter_@__abdata
 #define global ctype ITER_INST_NAME(%1)      inIterMod(%1_inst)
 #define global ctype ITER_INST_IDX_NAME(%1)  inIterMod(%1_inst_idx_plus_1)
 #define global ctype ITER_INST_REAL(%1)      ITER_INST_NAME(%1).(ITER_INST_IDX(%1))
@@ -48,17 +50,17 @@
 // 
 // @ インスタンスの型がまちまちなので、一旦代入してから使うべし。
 //------------------------------------------------
-#define ctype iter_refInst(%1) stt_refInst_var@abdata_iter(iter_refInst_core(%1))
+#define ctype iter_refInst(%1) ARG_TEMP@abdata_iter(refInst)(iter_refInst_core(%1))
 #modcfunc     iter_refInst_core
-	dup stt_refInst_var@abdata_iter, mInst
+	dup ARG_TEMP@abdata_iter(refInst), mInst
 	return 0
 	
 //------------------------------------------------
 // [@] 反復子情報への参照
 //------------------------------------------------
-#define ctype iter_refData(%1) stt_refData_var@abdata_iter(iter_refData_core(%1))
+#define ctype iter_refData(%1) ARG_TEMP@abdata_iter(refData)(iter_refData_core(%1))
 #modcfunc     iter_refData_core
-	dup stt_refData_var@abdata_iter, mIterData
+	dup ARG_TEMP@abdata_iter(refData), mIterData
 	return 0
 	
 //------------------------------------------------
@@ -105,45 +107,11 @@
 //------------------------------------------------
 // 公開マクロ群
 //------------------------------------------------
-#define global IterateBegin(%1,%2,%3=it)  %tabdata_iterate %i0 %s1 iter_new %1, %2 : IterateCnt_ = -1 : while ( iter_next(%1, %2, %3) ) : IterateCnt_ ++
+#define global IterateBegin(%1,%2,%3=it)  %tabdata_iterate %i0 %s1 iter_new %1, %2 : IterateCntRef__ = -1 : while ( iter_next(%1, %2, %3) ) : IterateCntRef__ ++
 #define global IterateEnd                 %tabdata_iterate wend : iter_delete %o  %o0
-#define global IterateCnt_                %tabdata_iterate %p1		// 使用不可
-#define global IterateCnt                 %tabdata_iterate (IterateCnt_)
+#define global IterateCntRef__            %tabdata_iterate _cat(%p1,@__abdata)
+#define global IterateCnt                 %tabdata_iterate (IterateCntRef__)
 #define global ctype Iterate(%1,%2,%3=it) %tabdata_iterate_2 \
 	IterateBegin %1, %2, %3 : gosub *%i : IterateEnd : if 0 : *%o
-
-//##############################################################################
-//        サンプル・スクリプト
-//##############################################################################
-#if 0
-
-#include "list.as"
-	
-	// とりあえず要素追加
-	list_new obj
-	repeat 10
-		list_add obj, strf("#%02d value;", cnt)
-	loop
-	
-//	＊記述方法、其の壱 ― 生 ―		// 非推奨
-;	iter_new obj, list
-;	while ( iter_next( obj, list, it ) )
-;		mes it
-;	wend
-;	iter_delete obj, list
-	
-//	＊記述方法、其の弐 ― 汎用 ―
-	IterateBegin obj, list		// structure は構造名 (ここではマクロなので置換される)。第三引数に it 変数を指定できる。
-		mes it						// 変数 it が、その周回での値(データ)を表す。
-	IterateEnd
-	
-//	＊記述方法、其の参 ― 奇妙 ―
-;	Iterate( obj, list ) {
-;		mes it						// 強制脱出不可能
-;		return						// return が必須！ ( 忘れると一度しか実行されない )
-;	}
-	stop
-	
-#endif
 
 #endif

@@ -1,0 +1,29 @@
+
+#include "../abdata/alg_iter.as"
+#include "../abdata/list.as"
+	
+	// とりあえず要素追加
+	list_new obj
+	repeat 10
+		list_add obj, strf("#%02d value;", cnt)
+	loop
+	
+//	＊記述方法、其の壱 ― 生 ―		// 非推奨
+;	iter_new obj, list
+;	while ( iter_next( obj, list, it ) )
+;		mes it
+;	wend
+;	iter_delete obj, list
+	
+//	＊記述方法、其の弐 ― 汎用 ―
+	IterateBegin obj, list		// structure は構造名 (ここではマクロなので置換される)。第三引数に it 変数を指定できる。
+		mes it						// 変数 it が、その周回での値(データ)を表す。
+	IterateEnd
+	
+//	＊記述方法、其の参 ― 奇妙 ―
+;	Iterate( obj, list ) {
+;		mes it						// 強制脱出不可能
+;		return						// return が必須！ ( 忘れると一度しか実行されない )
+;	}
+	stop
+	

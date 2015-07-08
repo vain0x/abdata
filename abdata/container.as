@@ -1,5 +1,3 @@
-// Container Wrapper - 汎用コンテナ (ラッパ)
-
 #ifndef IG_ABDATA_CONTAINER_WRAPPER_AS
 #define IG_ABDATA_CONTAINER_WRAPPER_AS
 
@@ -7,21 +5,13 @@
 #include "container_impl.as"
 #include "mod_nullmod.as"
 
-//##############################################################################
-//                Container
-//##############################################################################
 #define global Container_ClsName "Container"
-
 #define global ContainerNull abdataNull
 
-//##############################################################################
-//                構築・解体
-//##############################################################################
 #define global Container_new(%1, %2 = 0, %3 = stt_zero@) Container_new_impl %1, %2, %3
 #define global Container_delete(%1) ContainerImpl_delete abdataInsts(%1)
 
 #module
-
 //------------------------------------------------
 // 一時コンテナ・オブジェクトの生成
 //------------------------------------------------
@@ -38,7 +28,6 @@
 	
 	// 新要素生成
 	ContainerImpl_new abdataInsts_var, num, vDefault : self = stat
-	
 	return
 	
 #define global ctype new_Container(%1 = 0, %2 = stt_zero@) new_Container_(%1, %2)
@@ -52,13 +41,6 @@
 	
 #global
 
-//##############################################################################
-//                メンバ命令・関数
-//##############################################################################
-
-//################################################
-//        取得系
-//################################################
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
@@ -103,18 +85,12 @@
 #define global ctype Container_vartype_front(%1) ContainerImpl_vartype_front( abdataInsts(%1) )
 #define global ctype Container_vartype_back(%1)  ContainerImpl_vartype_back( abdataInsts(%1) )
 
-//################################################
-//        設定系
-//################################################
 //------------------------------------------------
 // 値の設定
 //------------------------------------------------
 #define global Container_set(%1, %2, %3 = 0)  ContainerImpl_set  abdataInsts(%1), %2, %3
 #define global Container_setv(%1, %2, %3 = 0) ContainerImpl_setv abdataInsts(%1), %2, %3
 
-//################################################
-//        操作系
-//################################################
 //------------------------------------------------
 // 挿入
 //------------------------------------------------
@@ -179,9 +155,6 @@
 //------------------------------------------------
 #define global Container_reverse(%1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_reverse abdataInsts(%1), %2, %3
 
-//##########################################################
-//        コンテナ操作
-//##########################################################
 //------------------------------------------------
 // [i] 完全消去
 //------------------------------------------------
@@ -212,9 +185,6 @@
 //------------------------------------------------
 #define global Container_sort(%1, %2 = SortMode_Ascending) ContainerImpl_sort abdataInsts(%1), %2
 
-//##########################################################
-//        反復子操作
-//##########################################################
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
@@ -225,9 +195,6 @@
 //------------------------------------------------
 #define global ctype Container_iterNext(%1,%2,%3) ContainerImpl_iterNext( abdataInsts(%1), %2, %3 )
 
-//##########################################################
-//        雑多系
-//##########################################################
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
@@ -247,82 +214,17 @@
 //------------------------------------------------
 // #modcfunc local Container_getRealIndex int idx
 
-//##########################################################
-//        演算
-//##########################################################
 //------------------------------------------------
 // 要素比較
 //------------------------------------------------
 #define global ctype Container_opCmpElem(%1,%2,%3) ContainerImpl_opCmpElem(abdataInsts(%1), %2, %3)
-
-//##############################################################################
-//                静的メンバ命令・関数
-//##############################################################################
-//------------------------------------------------
-// 一般的な比較演算
-// 
-// @(condition): lhs, rhs の型は一致する
-//------------------------------------------------
-// #defcfunc opCompare@abdata_con_impl var lhs, var rhs
-
-//##############################################################################
-//                デバッグ用
-//##############################################################################
-/*
-#ifdef _DEBUG
-//*/
 
 //------------------------------------------------
 // デバッグ出力
 //------------------------------------------------
 #define global Container_dbglog(%1) ContainerImpl_dbglog_ abdataInsts(%1), "%1"
 
-/*
-#else
-
-#define global Container_dbglog(%1) :
-
-#endif
-//*/
-
 	Container_new ContainerNull		// null := abdataInsts[0]
-	
-//##############################################################################
-//                サンプル・スクリプト
-//##############################################################################
-#if 0
-
-	Container_new    vSt
-	Container_add    vSt, "Hello, world!"
-	Container_add    vSt, 100
-	Container_add    vSt, M_PI
-	Container_dbglog vSt
-	Container_move   vSt, 1, 2
-	Container_dbglog vSt
-	
-	Container_insert vSt, 0x7FFFFFFF, 0
-	Container_dbglog vSt
-	
-	Container_reverse vSt
-	Container_dbglog  vSt
-	
-	// 整列
-	Container_add    vSt, 39
-	Container_add    vSt, 18782
-	Container_add    vSt, 2943
-	Container_add    vSt, "ABCD包囲網"
-	Container_add    vSt, "Extra Strings"
-	Container_add    vSt, sqrt(2)
-	Container_add    vSt, sqrt(8)
-	Container_add    vSt, sqrt(3)
-	Container_dbglog vSt
-	
-	Container_sort   vSt, ;SortMode_Decending
-	Container_dbglog vSt
-	
-	stop
-	
-#endif
 
 #endif
 
