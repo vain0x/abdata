@@ -62,9 +62,20 @@
 		assert container_get(con, cnt) == cnt - 1
 	loop
 	
-	//pushvŒn
+	//insert after last
+	con = make_iota_container(3)
+	container_insert con, 7, 7
+	assert container_size(con) == 8
+	repeat 8
+		if ( cnt < 3 || cnt == 7 ) {
+			assert container_get(con, cnt) == cnt
+		} else {
+			assert container_get(con, cnt) == stt_zero@
+		}
+	loop
 	
-	//—v‘f‚Ì”{‰Á
+	//pushvŒn: –¢À‘•
+	//—v‘f‚Ì”{‰Á: –¢À‘•
 	
 	//œ‹
 	con = make_iota_container(4)
