@@ -3,8 +3,8 @@
 抽象データ構造を提供するモジュールです。
 
 ## 内容
-* <./abdata/all.as>: すべてのヘッダを一括で \#include します。
-* <./sample>: 簡単なサンプルです。
+* [all.as](./abdata/all.as) : すべてのヘッダを一括で \#include します。
+* [sample](./sample) : 簡単なサンプルです。
 
 ### コンテナ
 * pair: ペア
@@ -79,8 +79,9 @@
 
 アルゴリズム関数を提供するファイルには、接頭辞 alg_ が付いています。
 
-* 反復アルゴリズム <./abdata/alg_iter.as>
-  * いわゆる `foreach` 
+* 反復アルゴリズム
+  * <./abdata/alg_iter.as>
+  * `foreach` のようなもの。コンテナ内の各要素についてループを行います。
 
 ## リンク
 * プログラ広場 <http://prograpark.ninja-web.net/>
