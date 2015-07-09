@@ -4,3 +4,6 @@
 # hsp temporary file
 hsptmp
 obj
+
+# temporary backup file
+*.bak
