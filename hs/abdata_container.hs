@@ -6,8 +6,8 @@ abdata_container
 uedai
 
 %date
-2010 07/17 (Sat)	// ÅIXV _dup ‚ğ _clone ‚Ö•ÏX, new_Container ’Ç‰Á
-2010 06/25 (Fri)	// Container_Sort ’Ç‰Á
+2010 07/17 (Sat)	// ÅIXV _dup ‚ğ _clone ‚Ö•ÏX, new_container ’Ç‰Á
+2010 06/25 (Fri)	// container_Sort ’Ç‰Á
 2009 10/04 (Sun)	// 
 2009 08/31 (Mon)	// ì¬
 
@@ -25,47 +25,47 @@ http://prograpark.ninja-web.net/
 
 ;--------------------
 %index
-new_Container
-Container \’z (ˆê)
+new_container
+container \’z (ˆê)
 
 %prm
 ()
 
 %inst
-”Ä—pƒRƒ“ƒeƒi (Container) ‚ğ®’†‚Å\’z‚µ‚Ü‚·B
+”Ä—pƒRƒ“ƒeƒi (container) ‚ğ®’†‚Å\’z‚µ‚Ü‚·B
 
 %href
-new_Container
-Container_new
-Container_delete
+new_container
+container_new
+container_delete
 
 %group
 \’zŠÖ”
 
 ;--------------------
 %index
-Container_new
-Container \’z
+container_new
+container \’z
 
 %prm
 self
 inst self : ”Ä—pƒRƒ“ƒeƒi‚ğ\’z‚·‚é•Ï”
 
 %inst
-”Ä—pƒRƒ“ƒeƒi (Container) ‚ğ\’z‚µ‚Ü‚·B
+”Ä—pƒRƒ“ƒeƒi (container) ‚ğ\’z‚µ‚Ü‚·B
 
 %href
-new_Container
-Container_new
-Container_delete
+new_container
+container_new
+container_delete
 
 %group
 \’zŠÖ”
 
 ;--------------------
 %index
-Container_delete
-Container ‰ğ‘Ì
+container_delete
+container ‰ğ‘Ì
 
 %prm
 self
@@ -77,17 +77,17 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ©“®‚ÅŒÄ‚Ño‚³‚ê‚é‚½‚ßA’ÊíAŒÄ‚Ño‚·•K—v‚Í‚ ‚è‚Ü‚¹‚ñB
 
 %href
-new_Container
-Container_new
-Container_delete
+new_container
+container_new
+container_delete
 
 %group
 ‰ğ‘ÌŠÖ”
 
 ;--------------------
 %index
-Container_clone
-Container QÆ‰»
+container_clone
+container QÆ‰»
 
 %prm
 self, vRef, i
@@ -99,30 +99,30 @@ int  i    : —v‘f”Ô†
 vRef ‚ğA”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f [i] ‚ÌQÆ ( ƒNƒ[ƒ“ ) ‚É‚µ‚Ü‚·B‚Â‚Ü‚èAdup –½—ß‚Ì‚æ‚¤‚Èˆ—‚Å‚·B
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_ref
-Container QÆ
+container_ref
+container QÆ
 
 %prm
 (self, idx)
@@ -133,34 +133,34 @@ int  idx  : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f [idx] ‚ÌQÆ‚ğ•Ô‚µ‚Ü‚· (‹[—“I‚É)B‚±‚ÌŠÖ”‚ÍA‘ã“ü•¶‚Ì¶•Ó‚Æ‚µ‚Ä‚Ì‚İg—p‚Å‚«‚Ü‚·B
 
 %sample
-	Container_ref( idx ) = 10
-	Container_ref( idx ) = "string"	// Œ^‚Ì•ÏŠ·‚Í‚Å‚«‚Ü‚¹‚ñ
+	container_ref( idx ) = 10
+	container_ref( idx ) = "string"	// Œ^‚Ì•ÏŠ·‚Í‚Å‚«‚Ü‚¹‚ñ
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_get
-Container ’l‚Ìæ“¾
+container_get
+container ’l‚Ìæ“¾
 
 %prm
 (self, idx)
@@ -173,30 +173,30 @@ int  idx  : —v‘f”Ô†
 ¦ pop ‘€ì‚Å‚Í‚È‚¢‚Ì‚ÅA—v‘f‚ª”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚é‚Æ‚¢‚¤‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñB
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_get_front
-Container ’l‚Ìæ“¾ ( æ“ª )
+container_get_front
+container ’l‚Ìæ“¾ ( æ“ª )
 
 %prm
 (self)
@@ -208,30 +208,30 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ¦ pop ‘€ì‚Å‚Í‚È‚¢‚Ì‚ÅA—v‘f‚ª”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚é‚Æ‚¢‚¤‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñB
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_get_back
-Container ’l‚Ìæ“¾ ( ––”ö )
+container_get_back
+container ’l‚Ìæ“¾ ( ––”ö )
 
 %prm
 (self)
@@ -243,30 +243,30 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ¦ pop ‘€ì‚Å‚Í‚È‚¢‚Ì‚ÅA—v‘f‚ª”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚é‚Æ‚¢‚¤‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñB
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_getv
-Container ’l‚Ìæ“¾ ( •Ï” )
+container_getv
+container ’l‚Ìæ“¾ ( •Ï” )
 
 %prm
 self, result, idx
@@ -280,30 +280,30 @@ int  idx    : —v‘f”Ô†
 ¦ pop ‘€ì‚Å‚Í‚È‚¢‚Ì‚ÅA—v‘f‚ª”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚é‚Æ‚¢‚¤‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñB
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_getv_front
-Container ’l‚Ìæ“¾ ( æ“ªA•Ï” )
+container_getv_front
+container ’l‚Ìæ“¾ ( æ“ªA•Ï” )
 
 %prm
 self, result
@@ -316,30 +316,30 @@ var  result : –ß‚è’l‚ğŠi”[‚·‚é•Ï”
 ¦ pop ‘€ì‚Å‚Í‚È‚¢‚Ì‚ÅA—v‘f‚ª”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚é‚Æ‚¢‚¤‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñB
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_getv_back
-Container ’l‚Ìæ“¾ ( ––”öA•Ï” )
+container_getv_back
+container ’l‚Ìæ“¾ ( ––”öA•Ï” )
 
 %prm
 self, result
@@ -352,30 +352,30 @@ var  result : –ß‚è’l‚ğŠi”[‚·‚é•Ï”
 ¦ pop ‘€ì‚Å‚Í‚È‚¢‚Ì‚ÅA—v‘f‚ª”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚é‚Æ‚¢‚¤‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñB
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_pop
-Container ’l‚Ìæ“¾
+container_pop
+container ’l‚Ìæ“¾
 
 %prm
 self, idx
@@ -386,32 +386,32 @@ int  i    : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f [idx] ‚Ì’l‚ğæ“¾‚µA•Ô‚µ‚Ü‚·Bæ‚èo‚µ‚½’l‚Í”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚Ü‚·B
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
-Container_remove
+container_remove
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_pop_front
-Container ’l‚Ìæ“¾ ( æ“ª )
+container_pop_front
+container ’l‚Ìæ“¾ ( æ“ª )
 
 %prm
 self
@@ -421,32 +421,32 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ”Ä—pƒRƒ“ƒeƒi‚Ìæ“ª‚Ì—v‘f‚Ì’l‚ğæ“¾‚µA•Ô‚µ‚Ü‚·Bæ‚èo‚µ‚½’l‚Í”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚Ü‚·B
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
-Container_remove
+container_remove
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_pop_back
-Container ’l‚Ìæ“¾ ( ––”ö )
+container_pop_back
+container ’l‚Ìæ“¾ ( ––”ö )
 
 %prm
 self
@@ -456,32 +456,32 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚Ì—v‘f‚Ì’l‚ğæ“¾‚µA•Ô‚µ‚Ü‚·Bæ‚èo‚µ‚½’l‚Í”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚Ü‚·B
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
-Container_remove
+container_remove
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_popv
-Container ’l‚Ìæ“¾ ( •Ï” )
+container_popv
+container ’l‚Ìæ“¾ ( •Ï” )
 
 %prm
 self, vResult, int idx
@@ -493,32 +493,32 @@ int  idx     : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f [idx] ‚Ì’l‚ğæ“¾‚µAvResult ‚ÉŠi”[‚µ‚Ü‚·Bæ‚èo‚µ‚½’l‚Í”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚Ü‚·B
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
-Container_remove
+container_remove
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_popv_front
-Container ’l‚Ìæ“¾ ( æ“ªA•Ï” )
+container_popv_front
+container ’l‚Ìæ“¾ ( æ“ªA•Ï” )
 
 %prm
 self, vResult
@@ -529,32 +529,32 @@ var  vResult : –ß‚è’l‚ğŠi”[‚·‚é•Ï”
 ”Ä—pƒRƒ“ƒeƒi‚Ìæ“ª‚Ì—v‘f‚Ì’l‚ğæ“¾‚µAvResult ‚ÉŠi”[‚µ‚Ü‚·Bæ‚èo‚µ‚½’l‚Í”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚Ü‚·B
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
-Container_remove
+container_remove
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_popv_back
-Container ’l‚Ìæ“¾ ( ––”öA•Ï” )
+container_popv_back
+container ’l‚Ìæ“¾ ( ––”öA•Ï” )
 
 %prm
 self, vResult
@@ -565,32 +565,32 @@ var  vResult : –ß‚è’l‚ğŠi”[‚·‚é•Ï”
 ”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚Ì—v‘f‚Ì’l‚ğæ“¾‚µAvResult ‚ÉŠi”[‚µ‚Ü‚·Bæ‚èo‚µ‚½’l‚Í”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚©‚ê‚Ü‚·B
 
 %href
-Container_clone
-Container_ref
+container_clone
+container_ref
 
-Container_get
-Container_get_front
-Container_get_back
-Container_getv
-Container_getv_front
-Container_getv_back
+container_get
+container_get_front
+container_get_back
+container_getv
+container_getv_front
+container_getv_back
 
-Container_pop
-Container_pop_front
-Container_pop_back
-Container_popv
-Container_popv_front
-Container_popv_back
+container_pop
+container_pop_front
+container_pop_back
+container_popv
+container_popv_front
+container_popv_back
 
-Container_remove
+container_remove
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_vartype
-Container Œ^‚Ìæ“¾
+container_vartype
+container Œ^‚Ìæ“¾
 
 %prm
 (self, idx)
@@ -601,17 +601,17 @@ int  idx  : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f [i] ‚Ì’l‚ÌŒ^‚ğ•Ô‚µ‚Ü‚·B
 
 %href
-Container_vartype
-Container_vartype_front
-Container_vartype_back
+container_vartype
+container_vartype_front
+container_vartype_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_vartype_front
-Container Œ^‚Ìæ“¾ ( æ“ª )
+container_vartype_front
+container Œ^‚Ìæ“¾ ( æ“ª )
 
 %prm
 (self)
@@ -621,17 +621,17 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ”Ä—pƒRƒ“ƒeƒi‚Ìæ“ª‚Ì—v‘f‚Ì’l‚ÌŒ^‚ğ•Ô‚µ‚Ü‚·B
 
 %href
-Container_vartype
-Container_vartype_front
-Container_vartype_back
+container_vartype
+container_vartype_front
+container_vartype_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_vartype_back
-Container Œ^‚Ìæ“¾ ( ––”ö )
+container_vartype_back
+container Œ^‚Ìæ“¾ ( ––”ö )
 
 %prm
 (self)
@@ -641,17 +641,17 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚Ì—v‘f‚Ì’l‚ÌŒ^‚ğ•Ô‚µ‚Ü‚·B
 
 %href
-Container_vartype
-Container_vartype_front
-Container_vartype_back
+container_vartype
+container_vartype_front
+container_vartype_back
 
 %group
 ƒƒ“ƒoŠÖ”::æ“¾Œn
 
 ;--------------------
 %index
-Container_set
-Container ’l‚Ì•ÏX
+container_set
+container ’l‚Ì•ÏX
 
 %prm
 self, value, idx = 0
@@ -663,32 +663,32 @@ int  idx   : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f [i] ‚Ì’l‚ğ value ‚É•ÏX‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_setv
-Container ’l‚Ì•ÏX ( •Ï” )
+container_setv
+container ’l‚Ì•ÏX ( •Ï” )
 
 %prm
 self, vValue, idx
@@ -700,32 +700,32 @@ int  idx    : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f [idx] ‚ÉAvValue ‚Ì’l‚ğİ’è‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_insert
-Container —v‘f‚Ì‘}“ü
+container_insert
+container —v‘f‚Ì‘}“ü
 
 %prm
 self, value, idx = 0
@@ -736,35 +736,35 @@ int  idx   : V‚½‚È—v‘f‚Ì”Ô†
 %inst
 ”Ä—pƒRƒ“ƒeƒi‚Ì [idx] ‚ÉAV‚µ‚¢—v‘f‚ğ‘}“ü‚µ‚Ü‚·Bidx ‚ğÈ—ª‚·‚é ( idx == 0 ‚É‚·‚é ) ‚ÆA”Ä—pƒRƒ“ƒeƒi‚Ìæ“ª‚É’Ç‰Á‚³‚ê‚Ü‚·B
 
-idx ‚Í‘¼‚Ìƒƒ“ƒo‚Ì‚»‚ê‚Æˆá‚¢Auidx >= Container_size(...)v‚ğ‹–‰Â‚µ‚Ü‚·B‚±‚Ìê‡‚ÍA—v‘f‚ğ––”ö‚É’Ç‰Á‚·‚é‚Æ‚¢‚¤AContainer_push_back ‚Æ“¯‚¶ˆ—‚É‚È‚è‚Ü‚·B
+idx ‚Í‘¼‚Ìƒƒ“ƒo‚Ì‚»‚ê‚Æˆá‚¢Auidx >= container_size(...)v‚ğ‹–‰Â‚µ‚Ü‚·B‚±‚Ìê‡‚ÍA—v‘f‚ğ––”ö‚É’Ç‰Á‚·‚é‚Æ‚¢‚¤Acontainer_push_back ‚Æ“¯‚¶ˆ—‚É‚È‚è‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_insertv
-Container —v‘f‚Ì‘}“ü ( •Ï” )
+container_insertv
+container —v‘f‚Ì‘}“ü ( •Ï” )
 
 %prm
 self, vValue, idx
@@ -776,32 +776,32 @@ int  idx    : V‚µ‚¢—v‘f‚Ì”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì [idx] ‚ÉV‚µ‚¢—v‘f‚ğ‘}“ü‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_double
-Container —v‘f‚Ì”{‰»
+container_double
+container —v‘f‚Ì”{‰»
 
 %prm
 self, idx
@@ -812,32 +812,32 @@ int  idx  : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì [idx] ‚Ì—v‘f‚Ì’¼Œã‚ÉA“¯‚¶’l‚Ì—v‘f‚ğ‘}“ü‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_double_front
-Container —v‘f‚Ì”{‰» ( æ“ª )
+container_double_front
+container —v‘f‚Ì”{‰» ( æ“ª )
 
 %prm
 self, idx
@@ -848,32 +848,32 @@ int  idx  : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ìæ“ª‚Ì—v‘f‚Ì’¼Œã‚ÉA“¯‚¶’l‚Ì—v‘f‚ğ‘}“ü‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_double_back
-Container —v‘f‚Ì”{‰» ( ––”ö )
+container_double_back
+container —v‘f‚Ì”{‰» ( ––”ö )
 
 %prm
 self, idx
@@ -884,32 +884,32 @@ int  idx  : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚Ì—v‘f‚Ì’¼Œã‚ÉA“¯‚¶’l‚Ì—v‘f‚ğ‘}“ü‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_push_front
-Container —v‘f‚Ì’Ç‰Á ( æ“ª )
+container_push_front
+container —v‘f‚Ì’Ç‰Á ( æ“ª )
 
 %prm
 self, value
@@ -920,32 +920,32 @@ any  value : ’Ç‰Á‚·‚é—v‘f‚Ì’l
 ”Ä—pƒRƒ“ƒeƒi‚Ìæ“ª‚É—v‘f‚ğ’Ç‰Á‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_push_back
-Container —v‘f‚Ì’Ç‰Á ( ––”ö )
+container_push_back
+container —v‘f‚Ì’Ç‰Á ( ––”ö )
 
 %prm
 self, value
@@ -955,35 +955,35 @@ any  value : ’Ç‰Á‚·‚é—v‘f‚Ì’l
 %inst
 ”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚É—v‘f‚ğ’Ç‰Á‚µ‚Ü‚·B
 
-¦ Container_add ‚Æ“¯‚¶B
+¦ container_add ‚Æ“¯‚¶B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_pushv_front
-Container —v‘f‚Ì’Ç‰Á ( æ“ªA•Ï” )
+container_pushv_front
+container —v‘f‚Ì’Ç‰Á ( æ“ªA•Ï” )
 
 %prm
 self, vValue
@@ -994,32 +994,32 @@ var  vValue : ’Ç‰Á‚·‚é—v‘f‚Ì’l‚ğŠi”[‚µ‚½•Ï”
 ”Ä—pƒRƒ“ƒeƒi‚Ìæ“ª‚É—v‘f‚ğ’Ç‰Á‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_pushv_back
-Container —v‘f‚Ì’Ç‰Á ( ––”öA•Ï” )
+container_pushv_back
+container —v‘f‚Ì’Ç‰Á ( ––”öA•Ï” )
 
 %prm
 self, vValue
@@ -1030,32 +1030,32 @@ var  vValue : ’Ç‰Á‚·‚é—v‘f‚Ì’l‚ğŠi”[‚µ‚½•Ï”
 ”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚É—v‘f‚ğ’Ç‰Á‚µ‚Ü‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_add
-Container —v‘f‚Ì’Ç‰Á ( ––”ö )
+container_add
+container —v‘f‚Ì’Ç‰Á ( ––”ö )
 
 %prm
 self, value
@@ -1063,35 +1063,35 @@ inst self  : ”Ä—pƒRƒ“ƒeƒi
 any  value : ’Ç‰Á‚·‚é—v‘f‚Ì’l
 
 %inst
-”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚É—v‘f‚ğ’Ç‰Á‚·‚éAContainer_push_back ‚Æ“¯‚¶“®ì‚Å‚·B
+”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚É—v‘f‚ğ’Ç‰Á‚·‚éAcontainer_push_back ‚Æ“¯‚¶“®ì‚Å‚·B
 
 %href
-Container_set
-Container_setv
+container_set
+container_setv
 
-Container_insert
-Container_insertv
+container_insert
+container_insertv
 
-Container_double
-Container_double_front
-Container_double_back
+container_double
+container_double_front
+container_double_back
 
-; Container_push
-Container_push_front
-Container_push_back
-; Container_pushv
-Container_pushv_front
-Container_pushv_back
+; container_push
+container_push_front
+container_push_back
+; container_pushv
+container_pushv_front
+container_pushv_back
 
-Container_add
+container_add
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_remove
-Container —v‘f‚Ìœ‹
+container_remove
+container —v‘f‚Ìœ‹
 
 %prm
 self, idx
@@ -1102,17 +1102,17 @@ int  idx  : —v‘f”Ô†
 ”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f [i] ‚ğ”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚«‚Ü‚·B
 
 %href
-Container_remove
-Container_remove_front
-Container_remove_back
+container_remove
+container_remove_front
+container_remove_back
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_remove_front
-Container —v‘f‚Ìœ‹ ( æ“ª )
+container_remove_front
+container —v‘f‚Ìœ‹ ( æ“ª )
 
 %prm
 self
@@ -1122,17 +1122,17 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ”Ä—pƒRƒ“ƒeƒi‚Ìæ“ª‚Ì—v‘f‚ğA”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚«‚Ü‚·B
 
 %href
-Container_remove
-Container_remove_front
-Container_remove_back
+container_remove
+container_remove_front
+container_remove_back
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_remove_back
-Container —v‘f‚Ìœ‹ ( ––”ö )
+container_remove_back
+container —v‘f‚Ìœ‹ ( ––”ö )
 
 %prm
 self
@@ -1142,17 +1142,17 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ”Ä—pƒRƒ“ƒeƒi‚Ì––”ö‚Ì—v‘f‚ğA”Ä—pƒRƒ“ƒeƒi‚©‚çæ‚èœ‚«‚Ü‚·B
 
 %href
-Container_remove
-Container_remove_front
-Container_remove_back
+container_remove
+container_remove_front
+container_remove_back
 
 %group
 ƒƒ“ƒoŠÖ”::‘€ìŒn
 
 ;--------------------
 %index
-Container_loc_move
-Container —v‘f‚ÌˆÚ“®
+container_loc_move
+container —v‘f‚ÌˆÚ“®
 
 %prm
 self, from, to
@@ -1166,22 +1166,22 @@ int  to   : ˆÚ“®Œã‚Ì—v‘f”Ô†
 ¦—v‘f’l‚Ì•¡Ê‚Í”­¶‚µ‚È‚¢‚Ì‚ÅA’áƒRƒXƒg‚Èˆ—‚Å‚·B
 
 %href
-Container_loc_move
-Container_loc_swap
-Container_loc_swap_front
-Container_loc_swap_back
-Container_rotate
-Container_rotate_back
-Container_reverse
-Container_sort
+container_loc_move
+container_loc_swap
+container_loc_swap_front
+container_loc_swap_back
+container_rotate
+container_rotate_back
+container_reverse
+container_sort
 
 %group
 ƒƒ“ƒoŠÖ”::‡˜‘€ìŒn
 
 ;--------------------
 %index
-Container_loc_swap
-Container —v‘f‚ÌŒğŠ·
+container_loc_swap
+container —v‘f‚ÌŒğŠ·
 
 %prm
 self, pos1, pos2
@@ -1195,22 +1195,22 @@ int  pos2 : V
 ¦—v‘f’l‚Ì•¡Ê‚Í”­¶‚µ‚È‚¢‚Ì‚ÅA’áƒRƒXƒg‚Èˆ—‚Å‚·B
 
 %href
-Container_loc_move
-Container_loc_swap
-Container_loc_swap_front
-Container_loc_swap_back
-Container_rotate
-Container_rotate_back
-Container_reverse
-Container_sort
+container_loc_move
+container_loc_swap
+container_loc_swap_front
+container_loc_swap_back
+container_rotate
+container_rotate_back
+container_reverse
+container_sort
 
 %group
 ƒƒ“ƒoŠÖ”::‡˜‘€ìŒn
 
 ;--------------------
 %index
-Container_loc_swap_front
-Container —v‘f‚ÌŒğŠ· ( æ“ª )
+container_loc_swap_front
+container —v‘f‚ÌŒğŠ· ( æ“ª )
 
 %prm
 self
@@ -1222,22 +1222,22 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ¦—v‘f’l‚Ì•¡Ê‚Í”­¶‚µ‚È‚¢‚Ì‚ÅA’áƒRƒXƒg‚Èˆ—‚Å‚·B
 
 %href
-Container_loc_move
-Container_loc_swap
-Container_loc_swap_front
-Container_loc_swap_back
-Container_rotate
-Container_rotate_back
-Container_reverse
-Container_sort
+container_loc_move
+container_loc_swap
+container_loc_swap_front
+container_loc_swap_back
+container_rotate
+container_rotate_back
+container_reverse
+container_sort
 
 %group
 ƒƒ“ƒoŠÖ”::‡˜‘€ìŒn
 
 ;--------------------
 %index
-Container_loc_swap_back
-Container —v‘f‚ÌŒğŠ· ( ––”ö )
+container_loc_swap_back
+container —v‘f‚ÌŒğŠ· ( ––”ö )
 
 %prm
 self
@@ -1249,22 +1249,22 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ¦—v‘f’l‚Ì•¡Ê‚Í”­¶‚µ‚È‚¢‚Ì‚ÅA’áƒRƒXƒg‚Èˆ—‚Å‚·B
 
 %href
-Container_loc_move
-Container_loc_swap
-Container_loc_swap_front
-Container_loc_swap_back
-Container_rotate
-Container_rotate_back
-Container_reverse
-Container_sort
+container_loc_move
+container_loc_swap
+container_loc_swap_front
+container_loc_swap_back
+container_rotate
+container_rotate_back
+container_reverse
+container_sort
 
 %group
 ƒƒ“ƒoŠÖ”::‡˜‘€ìŒn
 
 ;--------------------
 %index
-Container_rotate
-Container —v‘f‚Ì„‰ñ
+container_rotate
+container —v‘f‚Ì„‰ñ
 
 %prm
 self
@@ -1274,47 +1274,47 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f‚ğ‚·‚×‚ÄAˆê‚Â‘O‚É‚¸‚ç‚µ‚Ü‚·B‚Â‚Ü‚èAæ“ª‚Ì—v‘f‚ğ––”ö‚ÉˆÚ“®‚³‚¹‚éˆ—‚Å‚·B
 
 %href
-Container_loc_move
-Container_loc_swap
-Container_loc_swap_front
-Container_loc_swap_back
-Container_rotate
-Container_rotate_back
-Container_reverse
-Container_sort
+container_loc_move
+container_loc_swap
+container_loc_swap_front
+container_loc_swap_back
+container_rotate
+container_rotate_back
+container_reverse
+container_sort
 
 %group
 ƒƒ“ƒoŠÖ”::‡˜‘€ìŒn
 
 ;--------------------
 %index
-Container_rotate_back
-Container —v‘f‚Ì„‰ñ ( ‹t‰ñ“] )
+container_rotate_back
+container —v‘f‚Ì„‰ñ ( ‹t‰ñ“] )
 
 %prm
 self
 inst self : ”Ä—pƒRƒ“ƒeƒi
 
 %inst
-”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f‚ğ‚·‚×‚ÄAˆê‚ÂŒã‚ë‚É‚¸‚ç‚µ‚Ü‚·B‚Â‚Ü‚èA––”ö‚Ì—v‘f‚ğæ“ª‚ÉˆÚ“®‚³‚¹‚éˆ—‚ÅAContainer_rotate ‚Ì’š“x‹t‚Å‚·B
+”Ä—pƒRƒ“ƒeƒi‚Ì—v‘f‚ğ‚·‚×‚ÄAˆê‚ÂŒã‚ë‚É‚¸‚ç‚µ‚Ü‚·B‚Â‚Ü‚èA––”ö‚Ì—v‘f‚ğæ“ª‚ÉˆÚ“®‚³‚¹‚éˆ—‚ÅAcontainer_rotate ‚Ì’š“x‹t‚Å‚·B
 
 %href
-Container_loc_move
-Container_loc_swap
-Container_loc_swap_front
-Container_loc_swap_back
-Container_rotate
-Container_rotate_back
-Container_reverse
-Container_sort
+container_loc_move
+container_loc_swap
+container_loc_swap_front
+container_loc_swap_back
+container_rotate
+container_rotate_back
+container_reverse
+container_sort
 
 %group
 ƒƒ“ƒoŠÖ”::‡˜‘€ìŒn
 
 ;--------------------
 %index
-Container_reverse
-Container —v‘f‡‚Ì”½“]
+container_reverse
+container —v‘f‡‚Ì”½“]
 
 %prm
 self
@@ -1326,22 +1326,22 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 (ex) [1, 2, 3, 4] ‚ğ”½“]‚·‚é‚Æ [4, 3, 2, 1] ‚É‚È‚éB
 
 %href
-Container_loc_move
-Container_loc_swap
-Container_loc_swap_front
-Container_loc_swap_back
-Container_rotate
-Container_rotate_back
-Container_reverse
-Container_sort
+container_loc_move
+container_loc_swap
+container_loc_swap_front
+container_loc_swap_back
+container_rotate
+container_rotate_back
+container_reverse
+container_sort
 
 %group
 ƒƒ“ƒoŠÖ”::‡˜‘€ìŒn
 
 ;--------------------
 %index
-Container_sort
-Container ®—ñ
+container_sort
+container ®—ñ
 
 %prm
 self [, mode = SortMode_Ascending]
@@ -1362,22 +1362,22 @@ SortMode_Decending => ~‡
 
 (ex) [1, 3, e, "a", 2, "b", ƒÎ] ‚ğ®—ñ‚·‚é‚Æ ["a", "b", e, ƒÎ, 1, 2, 3] ‚É‚È‚éB
 %href
-Container_loc_move
-Container_loc_swap
-Container_loc_swap_front
-Container_loc_swap_back
-Container_rotate
-Container_rotate_back
-Container_reverse
-Container_sort
+container_loc_move
+container_loc_swap
+container_loc_swap_front
+container_loc_swap_back
+container_rotate
+container_rotate_back
+container_reverse
+container_sort
 
 %group
 ƒƒ“ƒoŠÖ”::‡˜‘€ìŒn
 
 ;--------------------
 %index
-Container_clear
-Container Á‹ [i]
+container_clear
+container Á‹ [i]
 
 %prm
 self
@@ -1393,8 +1393,8 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 
 ;--------------------
 %index
-Container_chain
-Container ˜AŒ‹ [i]
+container_chain
+container ˜AŒ‹ [i]
 
 %prm
 self, src
@@ -1411,8 +1411,8 @@ inst src  : V
 
 ;--------------------
 %index
-Container_copy
-Container •¡Ê [i]
+container_copy
+container •¡Ê [i]
 
 %prm
 self, src
@@ -1420,7 +1420,7 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 inst src  : V
 
 %inst
-”Ä—pƒRƒ“ƒeƒi src ‚ğ•¡Ê‚·‚é“ˆêŠÖ”‚Å‚·BŒ³X‚ ‚Á‚½”Ä—pƒRƒ“ƒeƒi‚Í Container_clear ‚É‚æ‚Á‚ÄÁ‹‚³‚ê‚Ü‚·B
+”Ä—pƒRƒ“ƒeƒi src ‚ğ•¡Ê‚·‚é“ˆêŠÖ”‚Å‚·BŒ³X‚ ‚Á‚½”Ä—pƒRƒ“ƒeƒi‚Í container_clear ‚É‚æ‚Á‚ÄÁ‹‚³‚ê‚Ü‚·B
 
 %href
 
@@ -1429,8 +1429,8 @@ inst src  : V
 
 ;--------------------
 %index
-Container_swap
-Container ƒRƒ“ƒeƒiŒğŠ· [i]
+container_swap
+container ƒRƒ“ƒeƒiŒğŠ· [i]
 
 %prm
 self, obj2
@@ -1447,8 +1447,8 @@ self ‚Æ obj2 ‚ÉŠÜ‚Ü‚ê‚é‚·‚×‚Ä‚Ì—v‘f‚ğŒğŠ·‚µ‚Ü‚·B‚»‚ê‚¼‚ê‚Ì—v‘f‚Ì‡”Ô‚ÍˆÛ‚³‚ê‚
 
 ;--------------------
 %index
-Container_iter_init
-Container ”½•œq::‰Šú‰» [i]
+container_iter_init
+container ”½•œq::‰Šú‰» [i]
 
 %prm
 self, iterData
@@ -1461,16 +1461,16 @@ var iterData : ”½•œî•ñ
 @ alg_iter ‚ª“à•”‚Åg—p‚·‚é‚¾‚¯‚Å‚·B
 
 %href
-Container_iter_init
-Container_iter_next
+container_iter_init
+container_iter_next
 
 %group
 ƒƒ“ƒoŠÖ”::”½•œq‘€ìŒn
 
 ;--------------------
 %index
-Container_iter_next
-Container ”½•œq::XV [i]
+container_iter_next
+container ”½•œq::XV [i]
 
 %prm
 (self, vIt, iterData)
@@ -1484,16 +1484,16 @@ var iterData : ”½•œî•ñ
 @ alg_iter ‚ª“à•”‚Åg—p‚·‚é‚¾‚¯‚Å‚·B
 
 %href
-Container_iter_init
-Container_iter_next
+container_iter_init
+container_iter_next
 
 %group
 ƒƒ“ƒoŠÖ”::”½•œq‘€ìŒn
 
 ;--------------------
 %index
-Container_size
-Container —v‘f” [i]
+container_size
+container —v‘f” [i]
 
 %prm
 (self)
@@ -1503,7 +1503,7 @@ inst self : ”Ä—pƒRƒ“ƒeƒi
 ”Ä—pƒRƒ“ƒeƒi‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Ì”‚ğ•Ô‚·“ˆêŠÖ”‚Å‚·B
 
 %note
-Container_count, Container_length ‚Æ“¯ˆêB
+container_count, container_length ‚Æ“¯ˆêB
 
 %href
 
@@ -1512,8 +1512,8 @@ Container_count, Container_length ‚Æ“¯ˆêB
 
 ;--------------------
 %index
-Container_isValid
-Container —v‘f”Ô†‚ª—LŒø‚©‚Ç‚¤‚©
+container_isValid
+container —v‘f”Ô†‚ª—LŒø‚©‚Ç‚¤‚©
 
 %prm
 (self, idx)
@@ -1531,8 +1531,8 @@ int  idx  : —v‘f”Ô†
 
 ;--------------------
 %index
-Container_dbglog
-Container ƒfƒoƒbƒOo—Í
+container_dbglog
+container ƒfƒoƒbƒOo—Í
 
 %prm
 self

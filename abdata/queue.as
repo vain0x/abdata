@@ -50,8 +50,8 @@
 //------------------------------------------------
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
-#define global queue_vartype       Container_vartype_front
-#define global queue_vartype_front Container_vartype_front
+#define global queue_vartype       container_vartype_front
+#define global queue_vartype_front container_vartype_front
 
 //------------------------------------------------
 // データ置換

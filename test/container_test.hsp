@@ -181,4 +181,4 @@
 		assert container_isValid(con, cnt) == (0 <= cnt && cnt < 3)
 	loop
 	
-	logmes "Container test completed."
+	logmes "container test completed."

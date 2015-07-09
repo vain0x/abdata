@@ -6,31 +6,31 @@
 #define global Deque_ClsName "deque"
 #define global dequeNull abdataNull
 
-#define global new_deque    new_Container
-#define global deque_new    Container_new
-#define global deque_delete Container_delete
+#define global new_deque    new_container
+#define global deque_new    container_new
+#define global deque_delete container_delete
 
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
-#define global deque_getv Container_getv
-#define global deque_popv Container_popv
+#define global deque_getv container_getv
+#define global deque_popv container_popv
 
 //------------------------------------------------
 // 値の取得 ( 関数形式 )
 //------------------------------------------------
-#define global deque_get Container_get
-#define global deque_pop Container_pop
+#define global deque_get container_get
+#define global deque_pop container_pop
 
 //------------------------------------------------
 // 参照化 ( 命令形式 )
 //------------------------------------------------
-#define global deque_clone Container_clone
+#define global deque_clone container_clone
 
 //------------------------------------------------
 // 参照化 ( 関数形式 )
 //------------------------------------------------
-#define global deque_ref Container_ref
+#define global deque_ref container_ref
 
 //------------------------------------------------
 // 先頭・末尾の値の取り出し
@@ -38,95 +38,95 @@
 // @ get 処理 >> const な操作
 // @ pop 処理 >> 要素は取り除かれる
 //------------------------------------------------
-#define global deque_get_front  Container_get_front
-#define global deque_get_back   Container_get_back
-#define global deque_getv_front Container_getv_front
-#define global deque_getv_back  Container_getv_back
-#define global deque_pop_front  Container_pop_front
-#define global deque_pop_back   Container_pop_back
-#define global deque_popv_front Container_popv_front
-#define global deque_popv_back  Container_popv_back
+#define global deque_get_front  container_get_front
+#define global deque_get_back   container_get_back
+#define global deque_getv_front container_getv_front
+#define global deque_getv_back  container_getv_back
+#define global deque_pop_front  container_pop_front
+#define global deque_pop_back   container_pop_back
+#define global deque_popv_front container_popv_front
+#define global deque_popv_back  container_popv_back
 
 //------------------------------------------------
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
-#define global deque_vartype       Container_vartype
-#define global deque_vartype_front Container_vartype_front
-#define global deque_vartype_back  Container_vartype_back
+#define global deque_vartype       container_vartype
+#define global deque_vartype_front container_vartype_front
+#define global deque_vartype_back  container_vartype_back
 
 //------------------------------------------------
 // データ置換
 //------------------------------------------------
-#define global deque_set  Container_set
-#define global deque_setv Container_setv
+#define global deque_set  container_set
+#define global deque_setv container_setv
 
 //------------------------------------------------
 // 挿入
 //------------------------------------------------
-#define global deque_insert  Container_insert
-#define global deque_insertv Container_insertv
+#define global deque_insert  container_insert
+#define global deque_insertv container_insertv
 
 //------------------------------------------------
 // 先頭・最後尾への追加
 //------------------------------------------------
-#define global deque_double_front Container_double_front
-#define global deque_double_back  Container_double_back
-#define global deque_push_front   Container_push_front
-#define global deque_push_back    Container_push_back
-#define global deque_pushv_front  Container_pushv_front
-#define global deque_pushv_back   Container_pushv_back
-#define global deque_push         Container_push
-#define global deque_pushv        Container_pushv
-#define global deque_add          Container_add
+#define global deque_double_front container_double_front
+#define global deque_double_back  container_double_back
+#define global deque_push_front   container_push_front
+#define global deque_push_back    container_push_back
+#define global deque_pushv_front  container_pushv_front
+#define global deque_pushv_back   container_pushv_back
+#define global deque_push         container_push
+#define global deque_pushv        container_pushv
+#define global deque_add          container_add
 
 //------------------------------------------------
 // 除去
 //------------------------------------------------
-#define global deque_remove       Container_remove
-#define global deque_remove_front Container_remove_front
-#define global deque_remove_back  Container_remove_back
+#define global deque_remove       container_remove
+#define global deque_remove_front container_remove_front
+#define global deque_remove_back  container_remove_back
 
 //------------------------------------------------
 // 順序操作
 //------------------------------------------------
-;#define global deque_loc_move        Container_loc_move
-;#define global deque_loc_swap        Container_loc_swap
-#define global deque_loc_swap_front  Container_loc_swap_front
-#define global deque_loc_swap_back   Container_loc_swap_back
-#define global deque_rotate      Container_rotate
-#define global deque_rotate_back Container_rotate_back
-#define global deque_reverse     Container_reverse
+;#define global deque_loc_move        container_loc_move
+;#define global deque_loc_swap        container_loc_swap
+#define global deque_loc_swap_front  container_loc_swap_front
+#define global deque_loc_swap_back   container_loc_swap_back
+#define global deque_rotate      container_rotate
+#define global deque_rotate_back container_rotate_back
+#define global deque_reverse     container_reverse
 
 //------------------------------------------------
 // [i] コンテナ操作
 //------------------------------------------------
-#define global deque_clear    Container_clear
-#define global deque_chain    Container_chain
-#define global deque_copy     Container_copy
-#define global deque_swap Container_swap
+#define global deque_clear    container_clear
+#define global deque_chain    container_chain
+#define global deque_copy     container_copy
+#define global deque_swap container_swap
 
 //------------------------------------------------
 // [i] 反復子操作
 //------------------------------------------------
-#define global deque_iter_init Container_iter_init
-#define global deque_iter_next Container_iter_next
+#define global deque_iter_init container_iter_init
+#define global deque_iter_next container_iter_next
 
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
-#define global deque_size   Container_size
+#define global deque_size   container_size
 #define global deque_count  deque_size
 #define global deque_length deque_size
-#define global deque_empty  Container_empty
+#define global deque_empty  container_empty
 
 //------------------------------------------------
 // 範囲チェック
 //------------------------------------------------
-#define global deque_isValid Container_isValid
+#define global deque_isValid container_isValid
 
 //------------------------------------------------
 // 全要素の出力
 //------------------------------------------------
-#define global deque_dbglog Container_dbglog
+#define global deque_dbglog container_dbglog
 
 #endif

@@ -20,8 +20,8 @@
 #enum global SortMode_Ascending = 0		// 昇順
 #enum global SortMode_Decending = 1
 
-#define global ContainerImpl_new(%1, %2 = 0, %3 = stt_zero@) newmod %1, abdata_con_impl@, %2, %3
-#define global ContainerImpl_delete(%1) delmod %1
+#define global containerImpl_new(%1, %2 = 0, %3 = stt_zero@) newmod %1, abdata_con_impl@, %2, %3
+#define global containerImpl_delete(%1) delmod %1
 
 //------------------------------------------------
 // [i] 構築
@@ -46,36 +46,36 @@
 //------------------------------------------------
 // 値の取得 ( 命令形式 )
 //------------------------------------------------
-#modfunc ContainerImpl_getv_ var result, int _i, int bRemove,  local i
+#modfunc containerImpl_getv_ var result, int _i, int bRemove,  local i
 	
-	i = ContainerImpl_getRealIndex(thismod, _i)
+	i = containerImpl_getRealIndex(thismod, _i)
 	
 	abelem_getv mElems( midlist(i) ), result
 	
 	if ( bRemove ) {
-		ContainerImpl_remove thismod, i
+		containerImpl_remove thismod, i
 	}
 	
 	return
 	
-#define global ContainerImpl_getv(%1,%2,%3=0) ContainerImpl_getv_ %1, %2, %3, 0
-#define global ContainerImpl_popv(%1,%2,%3=0) ContainerImpl_getv_ %1, %2, %3, 1
+#define global containerImpl_getv(%1,%2,%3=0) containerImpl_getv_ %1, %2, %3, 0
+#define global containerImpl_popv(%1,%2,%3=0) containerImpl_getv_ %1, %2, %3, 1
 
 //------------------------------------------------
 // 値の取得 ( 関数形式 )
 //------------------------------------------------
-#modcfunc ContainerImpl_get_ int i, int bRemove,  local tmp
-	ContainerImpl_getv_ thismod, tmp, i, bRemove
+#modcfunc containerImpl_get_ int i, int bRemove,  local tmp
+	containerImpl_getv_ thismod, tmp, i, bRemove
 	return tmp
 	
-#define global ctype ContainerImpl_get(%1,%2=0) ContainerImpl_get_(%1, %2, 0)
-#define global ctype ContainerImpl_pop(%1,%2=0) ContainerImpl_get_(%1, %2, 1)
+#define global ctype containerImpl_get(%1,%2=0) containerImpl_get_(%1, %2, 0)
+#define global ctype containerImpl_pop(%1,%2=0) containerImpl_get_(%1, %2, 1)
 
 //------------------------------------------------
 // 参照化 ( 命令形式 )
 //------------------------------------------------
-#modfunc ContainerImpl_clone var vRef, int i
-	abelem_clone mElems( midlist( ContainerImpl_getRealIndex(thismod, i) ) ), vRef
+#modfunc containerImpl_clone var vRef, int i
+	abelem_clone mElems( midlist( containerImpl_getRealIndex(thismod, i) ) ), vRef
 	return
 	
 //------------------------------------------------
@@ -83,9 +83,9 @@
 //------------------------------------------------
 	dim ARG_TEMP@abdata_con_impl(ref)		// 警告対策
 	
-#define global ctype ContainerImpl_ref(%1,%2=0) ARG_TEMP@abdata_con_impl(ref)( ContainerImpl_ref_(%1,%2) )
-#modcfunc ContainerImpl_ref_ int i
-	ContainerImpl_clone thismod, ARG_TEMP@abdata_con_impl(ref), i
+#define global ctype containerImpl_ref(%1,%2=0) ARG_TEMP@abdata_con_impl(ref)( containerImpl_ref_(%1,%2) )
+#modcfunc containerImpl_ref_ int i
+	containerImpl_clone thismod, ARG_TEMP@abdata_con_impl(ref), i
 	return 0
 	
 //------------------------------------------------
@@ -94,31 +94,31 @@
 // @ get 処理 >> const な操作
 // @ pop 処理 >> 要素は取り除かれる
 //------------------------------------------------
-#define global ctype ContainerImpl_get_front(%1)     ContainerImpl_get(%1, 0)
-#define global ctype ContainerImpl_get_back(%1)      ContainerImpl_get(%1, -1)
-#define global       ContainerImpl_getv_front(%1,%2) ContainerImpl_getv %1, %2, 0
-#define global       ContainerImpl_getv_back(%1,%2)  ContainerImpl_getv %1, %2, -1
-#define global ctype ContainerImpl_pop_front(%1)     ContainerImpl_pop(%1, 0)
-#define global ctype ContainerImpl_pop_back(%1)      ContainerImpl_pop(%1, -1)
-#define global       ContainerImpl_popv_front(%1,%2) ContainerImpl_popv %1, %2, 0
-#define global       ContainerImpl_popv_back(%1,%2)  ContainerImpl_popv %1, %2, -1
+#define global ctype containerImpl_get_front(%1)     containerImpl_get(%1, 0)
+#define global ctype containerImpl_get_back(%1)      containerImpl_get(%1, -1)
+#define global       containerImpl_getv_front(%1,%2) containerImpl_getv %1, %2, 0
+#define global       containerImpl_getv_back(%1,%2)  containerImpl_getv %1, %2, -1
+#define global ctype containerImpl_pop_front(%1)     containerImpl_pop(%1, 0)
+#define global ctype containerImpl_pop_back(%1)      containerImpl_pop(%1, -1)
+#define global       containerImpl_popv_front(%1,%2) containerImpl_popv %1, %2, 0
+#define global       containerImpl_popv_back(%1,%2)  containerImpl_popv %1, %2, -1
 
 //------------------------------------------------
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
-#modcfunc ContainerImpl_vartype int i
-	return abelem_vartype( mElems(midlist(ContainerImpl_getRealIndex(thismod, i))) )
+#modcfunc containerImpl_vartype int i
+	return abelem_vartype( mElems(midlist(containerImpl_getRealIndex(thismod, i))) )
 	
-#define global ctype ContainerImpl_vartype_front(%1) ContainerImpl_vartype(%1, 0)
-#define global ctype ContainerImpl_vartype_back(%1)  ContainerImpl_vartype(%1, -1)
+#define global ctype containerImpl_vartype_front(%1) containerImpl_vartype(%1, 0)
+#define global ctype containerImpl_vartype_back(%1)  containerImpl_vartype(%1, -1)
 
 //------------------------------------------------
 // 値の設定
 //------------------------------------------------
-#define global ContainerImpl_set(%1,%2,%3=0) ARG_TEMP@abdata_con_impl(set) = %2 : ContainerImpl_setv %1, ARG_TEMP@abdata_con_impl(set), %3
-#modfunc ContainerImpl_setv var vValue, int i,  local iv
+#define global containerImpl_set(%1,%2,%3=0) ARG_TEMP@abdata_con_impl(set) = %2 : containerImpl_setv %1, ARG_TEMP@abdata_con_impl(set), %3
+#modfunc containerImpl_setv var vValue, int i,  local iv
 	
-	iv = midlist( ContainerImpl_getRealIndex(thismod, i) )
+	iv = midlist( containerImpl_getRealIndex(thismod, i) )
 	
 	// 適切に型を変換する
 	abelem_changeVartype mElems(iv), vartype(vValue)
@@ -136,15 +136,15 @@
 // @	( i >= mCnt ) => ([i] まで要素を自動拡張)
 // @ };
 //------------------------------------------------
-#define global ContainerImpl_insert(%1,%2,%3=0) ARG_TEMP@abdata_con_impl(insert) = %2 : ContainerImpl_insertv %1, ARG_TEMP@abdata_con_impl(insert), %3
-#modfunc ContainerImpl_insertv var vValue, int _i,  local i, local id
+#define global containerImpl_insert(%1,%2,%3=0) ARG_TEMP@abdata_con_impl(insert) = %2 : containerImpl_insertv %1, ARG_TEMP@abdata_con_impl(insert), %3
+#modfunc containerImpl_insertv var vValue, int _i,  local i, local id
 	i = _i
 	if ( _i < 0 ) {
 		i += mCnt
 	} else : if ( _i > mCnt ) {
 		logmes "abdata 要素を自動拡張 [" + mCnt + ", " + _i + "]"
 		repeat _i - mCnt, mCnt
-			ContainerImpl_insertv thismod, stt_zero@, cnt
+			containerImpl_insertv thismod, stt_zero@, cnt
 		loop
 		i = _i
 	} else {
@@ -165,32 +165,32 @@
 //------------------------------------------------
 // 要素の倍化
 //------------------------------------------------
-#modfunc ContainerImpl_double int _i,  local i, local temp
-	i = ContainerImpl_getRealIndex( thismod, _i )
+#modfunc containerImpl_double int _i,  local i, local temp
+	i = containerImpl_getRealIndex( thismod, _i )
 	
-	ContainerImpl_getv    thismod, temp, i
-	ContainerImpl_insertv thismod, temp, i
+	containerImpl_getv    thismod, temp, i
+	containerImpl_insertv thismod, temp, i
 	return
 	
 //------------------------------------------------
 // 先頭・最後尾への追加
 //------------------------------------------------
-#define global ContainerImpl_double_front(%1)   ContainerImpl_double  %1, 0
-#define global ContainerImpl_double_back(%1)    ContainerImpl_double  %1, (-1)
-#define global ContainerImpl_push_front(%1,%2)  ContainerImpl_insert  %1, %2, 0
-#define global ContainerImpl_pushv_front(%1,%2) ContainerImpl_insertv %1, %2, 0
-#define global ContainerImpl_push_back(%1,%2)   ContainerImpl_insert  %1, %2, ContainerImpl_size(%1)
-#define global ContainerImpl_pushv_back(%1,%2)  ContainerImpl_insertv %1, %2, ContainerImpl_size(%1)
-#define global ContainerImpl_push               ContainerImpl_push_back
-#define global ContainerImpl_pushv              ContainerImpl_pushv_back
-#define global ContainerImpl_add                ContainerImpl_push_back
+#define global containerImpl_double_front(%1)   containerImpl_double  %1, 0
+#define global containerImpl_double_back(%1)    containerImpl_double  %1, (-1)
+#define global containerImpl_push_front(%1,%2)  containerImpl_insert  %1, %2, 0
+#define global containerImpl_pushv_front(%1,%2) containerImpl_insertv %1, %2, 0
+#define global containerImpl_push_back(%1,%2)   containerImpl_insert  %1, %2, containerImpl_size(%1)
+#define global containerImpl_pushv_back(%1,%2)  containerImpl_insertv %1, %2, containerImpl_size(%1)
+#define global containerImpl_push               containerImpl_push_back
+#define global containerImpl_pushv              containerImpl_pushv_back
+#define global containerImpl_add                containerImpl_push_back
 
 //------------------------------------------------
 // 除去
 //------------------------------------------------
-#modfunc ContainerImpl_remove int _i,  local i, local ivRemoved
+#modfunc containerImpl_remove int _i,  local i, local ivRemoved
 	
-	i         = ContainerImpl_getRealIndex(thismod, _i)
+	i         = containerImpl_getRealIndex(thismod, _i)
 	ivRemoved = midlist(i)
 	
 	// i 番目を詰める ( 実質的除去 )
@@ -202,24 +202,24 @@
 	abelem_delete mElems( ivRemoved )
 	return
 	
-#define global ContainerImpl_remove_front(%1) ContainerImpl_remove %1, 0
-#define global ContainerImpl_remove_back(%1)  ContainerImpl_remove %1, (-1)
+#define global containerImpl_remove_front(%1) containerImpl_remove %1, 0
+#define global containerImpl_remove_back(%1)  containerImpl_remove %1, (-1)
 
 //------------------------------------------------
 // 要素数の設定
 // 
 // @result: 元の要素数
 //------------------------------------------------
-#define global ContainerImpl_resize(%1, %2, %3) \
+#define global containerImpl_resize(%1, %2, %3) \
 	containerImpl_resize_ (%1), (%2), (%3)
 
-#modfunc ContainerImpl_resize_ int newlen, var initValue,  local dif
+#modfunc containerImpl_resize_ int newlen, var initValue,  local dif
 	dif = newlen - mCnt
 	
 	// 減少
 	if ( dif < 0 ) {
 		if ( newlen <= 0 ) {
-			ContainerImpl_clear thismod
+			containerImpl_clear thismod
 			
 		} else {
 			// 要素 [newlen] 以降を除去
@@ -244,48 +244,48 @@
 //------------------------------------------------
 // 移動
 //------------------------------------------------
-#modfunc ContainerImpl_loc_move int iSrc, int iDst
-	abAssert ( ContainerImpl_size(thismod) >= 2 ), "move には少なくとも2要素が必要"		// 最低でも2つの要素がないと、move は意味がない
+#modfunc containerImpl_loc_move int iSrc, int iDst
+	abAssert ( containerImpl_size(thismod) >= 2 ), "move には少なくとも2要素が必要"		// 最低でも2つの要素がないと、move は意味がない
 	
-	stdarray_loc_move midlist, ContainerImpl_getRealIndex(thismod, iSrc), ContainerImpl_getRealIndex(thismod, iDst)
+	stdarray_loc_move midlist, containerImpl_getRealIndex(thismod, iSrc), containerImpl_getRealIndex(thismod, iDst)
 	return
 	
 //------------------------------------------------
 // 交換
 //------------------------------------------------
-#modfunc ContainerImpl_loc_swap int iPos1, int iPos2
-	abAssert ( ContainerImpl_size(thismod) >= 2 ), "swap には少なくとも2要素が必要"		// 最低でも2つの要素がないと、swap は意味がない
+#modfunc containerImpl_loc_swap int iPos1, int iPos2
+	abAssert ( containerImpl_size(thismod) >= 2 ), "swap には少なくとも2要素が必要"		// 最低でも2つの要素がないと、swap は意味がない
 	
-	stdarray_loc_swap midlist, ContainerImpl_getRealIndex(thismod, iPos1), ContainerImpl_getRealIndex(thismod, iPos2)
+	stdarray_loc_swap midlist, containerImpl_getRealIndex(thismod, iPos1), containerImpl_getRealIndex(thismod, iPos2)
 	return
 	
-#define global ContainerImpl_loc_swap_front(%1) ContainerImpl_loc_swap %1,  0,  1
-#define global ContainerImpl_loc_swap_back(%1)  ContainerImpl_loc_swap %1, -2, -1
+#define global containerImpl_loc_swap_front(%1) containerImpl_loc_swap %1,  0,  1
+#define global containerImpl_loc_swap_back(%1)  containerImpl_loc_swap %1, -2, -1
 
 //------------------------------------------------
 // 巡回
 //------------------------------------------------
-#modfunc ContainerImpl_rotateImpl int iBgn, int _iEnd, int dir,  local iEnd
-	if ( _iEnd == stdarray_index_of_end ) { iEnd = ContainerImpl_size(thismod) } else { iEnd = _iEnd }
+#modfunc containerImpl_rotateImpl int iBgn, int _iEnd, int dir,  local iEnd
+	if ( _iEnd == stdarray_index_of_end ) { iEnd = containerImpl_size(thismod) } else { iEnd = _iEnd }
 	stdarray_rotate_step midlist, iBgn, iEnd, dir
 	return
 	
-#define global ContainerImpl_rotate(     %1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_rotateImpl %1, %2, %3,  1
-#define global ContainerImpl_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_rotateImpl %1, %2, %3, -1
+#define global containerImpl_rotate(     %1, %2 = 0, %3 = stdarray_index_of_end) containerImpl_rotateImpl %1, %2, %3,  1
+#define global containerImpl_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) containerImpl_rotateImpl %1, %2, %3, -1
 
 //------------------------------------------------
 // 反転
 //------------------------------------------------
-#define global ContainerImpl_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_reverse_ %1, %2, %3
-#modfunc ContainerImpl_reverse_ int iBgn, int _iEnd,  local iEnd
-	if ( _iEnd == stdarray_index_of_end ) { iEnd = ContainerImpl_size(thismod) } else { iEnd = _iEnd }
+#define global containerImpl_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) containerImpl_reverse_ %1, %2, %3
+#modfunc containerImpl_reverse_ int iBgn, int _iEnd,  local iEnd
+	if ( _iEnd == stdarray_index_of_end ) { iEnd = containerImpl_size(thismod) } else { iEnd = _iEnd }
 	stdarray_reverse midlist, iBgn, iEnd
 	return
 	
 //------------------------------------------------
 // [i] 完全消去
 //------------------------------------------------
-#modfunc ContainerImpl_clear
+#modfunc containerImpl_clear
 	
 	// 全要素を解放する
 	foreach mElems
@@ -301,31 +301,31 @@
 //------------------------------------------------
 // [i] 連結
 //------------------------------------------------
-#modfunc ContainerImpl_chain var src,  local tmp, local offset
+#modfunc containerImpl_chain var src,  local tmp, local offset
 	offset = mCnt
- 	repeat ContainerImpl_size( src )
-		ContainerImpl_getv       src, tmp, cnt
-		ContainerImpl_insert thismod, tmp, cnt + offset
+ 	repeat containerImpl_size( src )
+		containerImpl_getv       src, tmp, cnt
+		containerImpl_insert thismod, tmp, cnt + offset
 	loop
 	return
 	
 //------------------------------------------------
 // [i] 複写
 //------------------------------------------------
-#modfunc ContainerImpl_copy var src
-	ContainerImpl_clear thismod
-	ContainerImpl_chain thismod, src
+#modfunc containerImpl_copy var src
+	containerImpl_clear thismod
+	containerImpl_chain thismod, src
 	return
 	
 //------------------------------------------------
 // [i] 交換
 //------------------------------------------------
-#modfunc ContainerImpl_swap var obj2,  local tmp
-	ContainerImpl_new  tmp
-	ContainerImpl_copy tmp,  thismod
-	ContainerImpl_copy thismod, obj2
-	ContainerImpl_copy obj2,    tmp
-	ContainerImpl_delete tmp
+#modfunc containerImpl_swap var obj2,  local tmp
+	containerImpl_new  tmp
+	containerImpl_copy tmp,  thismod
+	containerImpl_copy thismod, obj2
+	containerImpl_copy obj2,    tmp
+	containerImpl_delete tmp
 	return
 	
 //------------------------------------------------
@@ -336,12 +336,12 @@
 // @	2. 同じ型 => 不等号による比較で整列
 // @prm mode : SortMode_* (default: SortMode_Ascening)
 //------------------------------------------------
-#modfunc ContainerImpl_sort int mode,  \
+#modfunc containerImpl_sort int mode,  \
 	local arrTmp, local arrDst, local len, \
 	local p, local p1, local e1, local p2, local e2, local sizeSegment, local sizeSegMerged, \
 	local cmp
 	
-	len = ContainerImpl_size(thismod)
+	len = containerImpl_size(thismod)
 	dim     arrDst, len
 	foreach arrDst
 		arrDst(cnt) = cnt
@@ -396,37 +396,37 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#modfunc ContainerImpl_iter_init var iterData
+#modfunc containerImpl_iter_init var iterData
 	iterData = -1
 	return
 	
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#modcfunc ContainerImpl_iter_next var vIt, var iterData
+#modcfunc containerImpl_iter_next var vIt, var iterData
 	iterData ++
 	
-	if ( ContainerImpl_isValid(thismod, iterData) == false ) {
+	if ( containerImpl_isValid(thismod, iterData) == false ) {
 		return false
 	}
 	
-	ContainerImpl_getv thismod, vIt, iterData
+	containerImpl_getv thismod, vIt, iterData
 	return true
 	
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
-#modcfunc ContainerImpl_size
+#modcfunc containerImpl_size
 	return mCnt
 	
-#define global ContainerImpl_count  ContainerImpl_size
-#define global ContainerImpl_length ContainerImpl_size
-#define global ctype ContainerImpl_empty(%1) ( ContainerImpl_size(%1) == 0 )
+#define global containerImpl_count  containerImpl_size
+#define global containerImpl_length containerImpl_size
+#define global ctype containerImpl_empty(%1) ( containerImpl_size(%1) == 0 )
 
 //------------------------------------------------
 // 範囲チェック
 //------------------------------------------------
-#modcfunc ContainerImpl_isValid int i
+#modcfunc containerImpl_isValid int i
 	if ( numrg(i, 0, mCnt - 1) ) {					// 有効範囲か
 		if ( varuse( mElems(midlist(i)) ) ) {		// 有効な要素番号か
 			return true
@@ -438,7 +438,7 @@
 // 実際の要素番号を得る
 // @private
 //------------------------------------------------
-#modcfunc ContainerImpl_getRealIndex@abdata_con_impl int _i,  local i
+#modcfunc containerImpl_getRealIndex@abdata_con_impl int _i,  local i
 	i = _i
 	
 	// 循環参照
@@ -455,15 +455,15 @@
 //------------------------------------------------
 // デバッグ出力
 //------------------------------------------------
-#define global ContainerImpl_dbglog(%1) ContainerImpl_dbglog_ %1, "%1"
+#define global containerImpl_dbglog(%1) containerImpl_dbglog_ %1, "%1"
 
-#modfunc ContainerImpl_dbglog_ str _ident,  local ident
+#modfunc containerImpl_dbglog_ str _ident,  local ident
 	ident = _ident
 	
 	logmes "["+ strtrim(ident, 0, ' ') +"] debug-log"
 	
-	repeat ContainerImpl_size(thismod)
-		logmes strf("#%2d: ", cnt) + ContainerImpl_get(thismod, cnt)
+	repeat containerImpl_size(thismod)
+		logmes strf("#%2d: ", cnt) + containerImpl_get(thismod, cnt)
 	loop
 	
 	logmes ""
@@ -471,7 +471,7 @@
 	
 #else //defined(_DEBUG)
 
-#define global ContainerImpl_dbglog(%1) :
+#define global containerImpl_dbglog(%1) :
 
 #endif //defined(_DEBUG)
 	

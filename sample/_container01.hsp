@@ -1,31 +1,31 @@
 #include "../abdata/container.as"
 
-	Container_new    vSt
-	Container_add    vSt, "Hello, world!"
-	Container_add    vSt, 100
-	Container_add    vSt, M_PI
-	Container_dbglog vSt
-	Container_move   vSt, 1, 2
-	Container_dbglog vSt
+	container_new    vSt
+	container_add    vSt, "Hello, world!"
+	container_add    vSt, 100
+	container_add    vSt, M_PI
+	container_dbglog vSt
+	container_move   vSt, 1, 2
+	container_dbglog vSt
 	
-	Container_insert vSt, 0x7FFFFFFF, 0
-	Container_dbglog vSt
+	container_insert vSt, 0x7FFFFFFF, 0
+	container_dbglog vSt
 	
-	Container_reverse vSt
-	Container_dbglog  vSt
+	container_reverse vSt
+	container_dbglog  vSt
 	
 	// ®—ñ
-	Container_add    vSt, 39
-	Container_add    vSt, 18782
-	Container_add    vSt, 2943
-	Container_add    vSt, "ABCD•ïˆÍ–Ô"
-	Container_add    vSt, "Extra Strings"
-	Container_add    vSt, sqrt(2)
-	Container_add    vSt, sqrt(8)
-	Container_add    vSt, sqrt(3)
-	Container_dbglog vSt
+	container_add    vSt, 39
+	container_add    vSt, 18782
+	container_add    vSt, 2943
+	container_add    vSt, "ABCD•ïˆÍ–Ô"
+	container_add    vSt, "Extra Strings"
+	container_add    vSt, sqrt(2)
+	container_add    vSt, sqrt(8)
+	container_add    vSt, sqrt(3)
+	container_dbglog vSt
 	
-	Container_sort   vSt, ;SortMode_Decending
-	Container_dbglog vSt
+	container_sort   vSt, ;SortMode_Decending
+	container_dbglog vSt
 	
 	stop

@@ -58,9 +58,9 @@
 //------------------------------------------------
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
-#define global stack_vartype       Container_vartype_back
-;#define global stack_vartype_front Container_vartype_front
-;#define global stack_vartype_back  Container_vartype_back
+#define global stack_vartype       container_vartype_back
+;#define global stack_vartype_front container_vartype_front
+;#define global stack_vartype_back  container_vartype_back
 
 //------------------------------------------------
 // データ置換
