@@ -27,7 +27,7 @@
 //------------------------------------------------
 // 挿入 ( 的な処理 )
 //------------------------------------------------
-#deffunc stdarray_insert_room array self, int idx
+#deffunc stdarray_insert_room array self, int idx,  local i
 	
 	// 挿入される場所を空ける
 	for i, length(self), idx, -1
@@ -39,7 +39,7 @@
 //------------------------------------------------
 // 削除 ( 的な処理 )
 //------------------------------------------------
-#deffunc stdarray_erase array self, int idx
+#deffunc stdarray_erase array self, int idx,  local i
 	
 	// 削除される場所を消す ( 他の値で上書きする )
 	for i, idx, length(self) - 1
@@ -51,7 +51,7 @@
 //------------------------------------------------
 // 移動
 //------------------------------------------------
-#deffunc stdarray_loc_move array self, int from, int to,  local temp, local dir
+#deffunc stdarray_loc_move array self, int from, int to,  local temp, local dir, local i
 	if ( from == to ) { return }
 	
 	// 移動元の値を保存する

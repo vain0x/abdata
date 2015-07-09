@@ -3,9 +3,9 @@
 #ifndef IG_GET_NEXT_ADD_INDEX_AS
 #define IG_GET_NEXT_ADD_INDEX_AS
 
-#module gnai_mod
+#module
 
-#defcfunc GetNextAddIndex array ary
+#defcfunc GetNextAddIndex array ary,  local n
 	n = -1
 	repeat length(ary)
 		if ( varuse(ary(cnt)) == 0 ) {
