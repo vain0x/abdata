@@ -1,3 +1,22 @@
+## TODO
+* unor_exists → unor_key_exists 
+* isValid の snake_case 化
+* 最大最小検索
+  * min_element, max_element, minmax_element
+* 2分探索
+  * binary_search, lower_bound, upper_bound, equal_range
+* 整列
+  * sort
+    * stable_sort (merge_sort) だけでいいと思う。
+* 重複除去
+  * unique & erase
+* 置換
+  * replace
+* コンテナの構造的比較
+* unor の実装の改良
+* より安全なテスト
+* knowbug での拡張表示
+
 ## 更新履歴
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。
