@@ -5,15 +5,15 @@
 
 #module shift_array_mod
 
-#define global ArrayRangeEndDefault (-127)
+#define global stdarray_index_of_end (-127)
 
 //------------------------------------------------
 // ”z—ñ‹æŠÔ‚Ì³‹K‰» @private
 // 
 // @result: ”½“]‹æŠÔ‚©”Û‚©
 //------------------------------------------------
-#deffunc ArrayRangeRegularize@shift_array_mod array self, array range,  local tmp
-	if ( range(1) == ArrayRangeEndDefault ) { range(1) = length(self) }
+#deffunc stdarray_regularize_range@shift_array_mod array self, array range,  local tmp
+	if ( range(1) == stdarray_index_of_end ) { range(1) = length(self) }
 	
 	if ( range(0) > range(1) ) {		// ‹æŠÔ‚ª‹t => —¼•û + 1 ‚µ‚ÄŒğŠ·
 		tmp      = range(0) + 1
@@ -27,7 +27,7 @@
 //------------------------------------------------
 // ‘}“ü ( “I‚Èˆ— )
 //------------------------------------------------
-#deffunc ArrayInsert array self, int idx
+#deffunc stdarray_insert_room array self, int idx
 	
 	// ‘}“ü‚³‚ê‚éêŠ‚ğ‹ó‚¯‚é
 	for i, length(self), idx, -1
@@ -39,7 +39,7 @@
 //------------------------------------------------
 // íœ ( “I‚Èˆ— )
 //------------------------------------------------
-#deffunc ArrayRemove array self, int idx
+#deffunc stdarray_erase array self, int idx
 	
 	// íœ‚³‚ê‚éêŠ‚ğÁ‚· ( ‘¼‚Ì’l‚Åã‘‚«‚·‚é )
 	for i, idx, length(self) - 1
@@ -51,7 +51,7 @@
 //------------------------------------------------
 // ˆÚ“®
 //------------------------------------------------
-#deffunc ArrayMove array self, int from, int to,  local temp, local dir
+#deffunc stdarray_loc_move array self, int from, int to,  local temp, local dir
 	if ( from == to ) { return }
 	
 	// ˆÚ“®Œ³‚Ì’l‚ğ•Û‘¶‚·‚é
@@ -73,7 +73,7 @@
 //------------------------------------------------
 // ŒğŠ·
 //------------------------------------------------
-#deffunc ArraySwap array self, int pos1, int pos2,  local temp
+#deffunc stdarray_loc_swap array self, int pos1, int pos2,  local temp
 	if ( pos1 == pos2 ) { return }
 	temp       = self(pos1)
 	self(pos1) = self(pos2)
@@ -87,20 +87,20 @@
 // @prm step         : „‰ñ•ûŒü
 // @prm [iBgn, iEnd) : „‰ñ‘ÎÛ‚Ì‹æŠÔ
 //------------------------------------------------
-#deffunc ArrayRotateImpl array self, int iBgn, int iEnd, int dir,  local range
+#deffunc stdarray_rotate_step array self, int iBgn, int iEnd, int dir,  local range
 	range = iBgn, iEnd
-	ArrayRangeRegularize self, range
+	stdarray_regularize_range self, range
 	
 	if ( dir >= 0 ^ stat ) {		// ”½“]‹æŠÔ => ‹t•ûŒü‚É Rotate
-		ArrayMove self, range(0), range(1) - 1
+		stdarray_loc_move self, range(0), range(1) - 1
 	} else {
-		ArrayMove self,           range(1) - 1, range(0)
+		stdarray_loc_move self,           range(1) - 1, range(0)
 	}
 	return
 	
 // ‹t‰ñ“]
-#define global ArrayRotate(    %1, %2 = 0, %3 = ArrayRangeEndDefault) ArrayRotateImpl %1, %2, %3,  1
-#define global ArrayRotateBack(%1, %2 = 0, %3 = ArrayRangeEndDefault) ArrayRotateImpl %1, %2, %3, -1
+#define global stdarray_rotate(    %1, %2 = 0, %3 = stdarray_index_of_end) stdarray_rotate_step %1, %2, %3,  1
+#define global stdarray_rotateBack(%1, %2 = 0, %3 = stdarray_index_of_end) stdarray_rotate_step %1, %2, %3, -1
 
 //------------------------------------------------
 // ”½“]
@@ -108,14 +108,14 @@
 // @prm this
 // @prm [iBgn, iEnd) : ”½“]‘ÎÛ‚Ì‹æŠÔ
 //------------------------------------------------
-#define global ArrayReverse(%1, %2 = 0, %3 = ArrayRangeEndDefault) ArrayReverse_ %1, %2, %3
-#deffunc ArrayReverse_ array self, int iBgn, int iEnd,  local range
+#define global stdarray_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) stdarray_reverse_ %1, %2, %3
+#deffunc stdarray_reverse_ array self, int iBgn, int iEnd,  local range
 	range = iBgn, iEnd
-	ArrayRangeRegularize self, range
+	stdarray_regularize_range self, range
 	if ( stat ) { return }			// ”½“]‹æŠÔ => ”½“]‚µ‚Ä‚à–ß‚é‚Ì‚Åˆ—‚·‚é•K—v‚È‚µ
 	
 	repeat (range(1) - range(0)) / 2
-		ArraySwap self, range(0) + cnt, range(1) - cnt - 1
+		stdarray_loc_swap self, range(0) + cnt, range(1) - cnt - 1
 	loop
 	
 	return

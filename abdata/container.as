@@ -143,17 +143,17 @@
 //------------------------------------------------
 // „‰ñ
 //------------------------------------------------
-#define global Container_rotate(%1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_rotate abdataInsts(%1), %2, %3
+#define global Container_rotate(%1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_rotate abdataInsts(%1), %2, %3
 
 //------------------------------------------------
 // „‰ñ ( ‹t‰ñ“] )
 //------------------------------------------------
-#define global Container_rotate_back(%1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_rotate_back abdataInsts(%1), %2, %3
+#define global Container_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_rotate_back abdataInsts(%1), %2, %3
 
 //------------------------------------------------
 // ”½“]
 //------------------------------------------------
-#define global Container_reverse(%1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_reverse abdataInsts(%1), %2, %3
+#define global Container_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_reverse abdataInsts(%1), %2, %3
 
 //------------------------------------------------
 // [i] Š®‘SÁ‹

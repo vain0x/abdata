@@ -115,7 +115,7 @@
 #modfunc Ordlist_addv_byIndex@abdata_ordlist var vValue, int i
 	
 	// [i] ‚ğ‹ó‚¯‚é
-	ArrayInsert midlist, i
+	stdarray_insert_room midlist, i
 	
 	// —v‘f‚ğ’Ç‰Á
 	abelem_new mElems, vValue
@@ -143,7 +143,7 @@
 	ivRemoved = midlist(i)
 	
 	// i ”Ô–Ú‚ğ‹l‚ß‚é ( À¿“Iœ‹ )
-	ArrayRemove midlist, i
+	stdarray_erase midlist, i
 	midlist( length(midlist) - 1 ) = -1		// cŠ[‚ğ–³Œø—v‘f‚É‚·‚é
 	mCnt --
 	

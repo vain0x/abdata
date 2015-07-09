@@ -1,4 +1,7 @@
 ## 更新履歴
+### 2015/07/09 (Thu)
+* 
+
 ### 2015/07/08 (Wed)
 * Git を導入。
 * README を更新。
@@ -12,6 +15,7 @@
   * setSize -> resize
   * iterInit -> iter_init
   * iterNext -> iter_next
+* mod_shiftArray も snake_case にした。
 
 ### 2011 04/04 (Mon)
 * abAssert を追加し、要素範囲外の時には assert で止まるようにした。

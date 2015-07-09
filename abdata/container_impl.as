@@ -152,7 +152,7 @@
 	}
 	
 	// i ”Ô–Ú‚ğ‹ó‚¯‚é
-	ArrayInsert midlist, i
+	stdarray_insert_room midlist, i
 	
 	// V‹K’l‚ğ’Ç‰Á
 ;	id         = GetNextAddIndex( mElems )
@@ -194,7 +194,7 @@
 	ivRemoved = midlist(i)
 	
 	// i ”Ô–Ú‚ğ‹l‚ß‚é ( À¿“Iœ‹ )
-	ArrayRemove midlist, i
+	stdarray_erase midlist, i
 	midlist( length(midlist) - 1 ) = -1		// cŠ[‚ğ–³Œø—v‘f‚É‚·‚é
 	mCnt --
 	
@@ -247,7 +247,7 @@
 #modfunc ContainerImpl_loc_move int iSrc, int iDst
 	abAssert ( ContainerImpl_size(thismod) >= 2 ), "move ‚É‚Í­‚È‚­‚Æ‚à2—v‘f‚ª•K—v"		// Å’á‚Å‚à2‚Â‚Ì—v‘f‚ª‚È‚¢‚ÆAmove ‚ÍˆÓ–¡‚ª‚È‚¢
 	
-	ArrayMove midlist, ContainerImpl_getRealIndex(thismod, iSrc), ContainerImpl_getRealIndex(thismod, iDst)
+	stdarray_loc_move midlist, ContainerImpl_getRealIndex(thismod, iSrc), ContainerImpl_getRealIndex(thismod, iDst)
 	return
 	
 //------------------------------------------------
@@ -256,7 +256,7 @@
 #modfunc ContainerImpl_loc_swap int iPos1, int iPos2
 	abAssert ( ContainerImpl_size(thismod) >= 2 ), "swap ‚É‚Í­‚È‚­‚Æ‚à2—v‘f‚ª•K—v"		// Å’á‚Å‚à2‚Â‚Ì—v‘f‚ª‚È‚¢‚ÆAswap ‚ÍˆÓ–¡‚ª‚È‚¢
 	
-	ArraySwap midlist, ContainerImpl_getRealIndex(thismod, iPos1), ContainerImpl_getRealIndex(thismod, iPos2)
+	stdarray_loc_swap midlist, ContainerImpl_getRealIndex(thismod, iPos1), ContainerImpl_getRealIndex(thismod, iPos2)
 	return
 	
 #define global ContainerImpl_loc_swap_front(%1) ContainerImpl_loc_swap %1,  0,  1
@@ -266,20 +266,20 @@
 // „‰ñ
 //------------------------------------------------
 #modfunc ContainerImpl_rotateImpl int iBgn, int _iEnd, int dir,  local iEnd
-	if ( _iEnd == ArrayRangeEndDefault ) { iEnd = ContainerImpl_size(thismod) } else { iEnd = _iEnd }
-	ArrayRotateImpl midlist, iBgn, iEnd, dir
+	if ( _iEnd == stdarray_index_of_end ) { iEnd = ContainerImpl_size(thismod) } else { iEnd = _iEnd }
+	stdarray_rotate_step midlist, iBgn, iEnd, dir
 	return
 	
-#define global ContainerImpl_rotate(     %1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_rotateImpl %1, %2, %3,  1
-#define global ContainerImpl_rotate_back(%1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_rotateImpl %1, %2, %3, -1
+#define global ContainerImpl_rotate(     %1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_rotateImpl %1, %2, %3,  1
+#define global ContainerImpl_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_rotateImpl %1, %2, %3, -1
 
 //------------------------------------------------
 // ”½“]
 //------------------------------------------------
-#define global ContainerImpl_reverse(%1, %2 = 0, %3 = ArrayRangeEndDefault) ContainerImpl_reverse_ %1, %2, %3
+#define global ContainerImpl_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) ContainerImpl_reverse_ %1, %2, %3
 #modfunc ContainerImpl_reverse_ int iBgn, int _iEnd,  local iEnd
-	if ( _iEnd == ArrayRangeEndDefault ) { iEnd = ContainerImpl_size(thismod) } else { iEnd = _iEnd }
-	ArrayReverse midlist, iBgn, iEnd
+	if ( _iEnd == stdarray_index_of_end ) { iEnd = ContainerImpl_size(thismod) } else { iEnd = _iEnd }
+	stdarray_reverse midlist, iBgn, iEnd
 	return
 	
 //------------------------------------------------

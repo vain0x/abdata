@@ -21,7 +21,7 @@
 	// ‘}“üæ‚Ì”Ô†
 	p = 0
 	
-	ArrayInsert a, p
+	stdarray_insert_room a, p
 	
 	// ‘}“ü‚·‚é
 	a(p) = 100
@@ -34,7 +34,7 @@
 	p = 3	// ˆÚ“®Œ³‚Ì”Ô†
 	t = 1	// ˆÚ“®æ‚Ì”Ô†
 	
-	ArrayMove a, p, t
+	stdarray_loc_move a, p, t
 	
 	// •\¦
 	pos 140, 20
@@ -44,14 +44,14 @@
 	// ŒğŠ·‚·‚é—v‘f‚Q‚Â
 	p = 4, 2
 	
-	ArraySwap a, p(0), p(1)
+	stdarray_loc_swap a, p(0), p(1)
 	
 	// •\¦
 	pos 260, 20
 	output "Array Swap", a
 	
 	//######## —v‘f‚Ì„‰ñ ###########################
-	ArrayRotate a
+	stdarray_rotate a
 	
 	// •\¦
 	pos 380, 20
@@ -61,7 +61,7 @@
 	// íœ‚·‚é”Ô†
 	p = 3
 	
-	ArrayRemove a, p
+	stdarray_erase a, p
 	
 	// •\¦
 	pos 500, 20
