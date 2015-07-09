@@ -82,9 +82,9 @@
 //------------------------------------------------
 // œ‹
 //------------------------------------------------
-#define global deque_remove       container_remove
-#define global deque_remove_front container_remove_front
-#define global deque_remove_back  container_remove_back
+#define global deque_erase       container_erase
+#define global deque_erase_front container_erase_front
+#define global deque_erase_back  container_erase_back
 
 //------------------------------------------------
 // ‡˜‘€ì

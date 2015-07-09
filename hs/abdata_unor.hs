@@ -372,7 +372,7 @@ unor_setv
 
 ;--------------------
 %index
-unor_remove
+unor_erase
 Unor —v‘f‚Ìíœ
 
 %prm

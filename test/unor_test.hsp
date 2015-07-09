@@ -38,7 +38,7 @@
 	
 	un = make_iota_unor(5)
 	assert unor_size(un) == 5
-	unor_remove un, "#2"
+	unor_erase un, "#2"
 	assert unor_size(un) == 5 - 1
 	repeat 5
 		if ( cnt == 2 ) {

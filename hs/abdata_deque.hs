@@ -220,7 +220,7 @@ deque_pop_back
 deque_popv_front
 deque_popv_back
 
-deque_remove
+deque_erase
 
 %group
 メンバ関数::取得系
@@ -248,7 +248,7 @@ deque_pop_back
 deque_popv_front
 deque_popv_back
 
-deque_remove
+deque_erase
 
 %group
 メンバ関数::取得系
@@ -277,7 +277,7 @@ deque_pop_back
 deque_popv_front
 deque_popv_back
 
-deque_remove
+deque_erase
 
 %group
 メンバ関数::取得系
@@ -306,7 +306,7 @@ deque_pop_back
 deque_popv_front
 deque_popv_back
 
-deque_remove
+deque_erase
 
 %group
 メンバ関数::取得系
@@ -808,7 +808,7 @@ deque_add
 
 ;--------------------
 %index
-deque_remove_front
+deque_erase_front
 Deque 要素の除去 ( 先頭 )
 
 %prm
@@ -819,15 +819,15 @@ inst self : 双方向キュー
 双方向キューの先頭の要素を、双方向キューから取り除きます。
 
 %href
-deque_remove_front
-deque_remove_back
+deque_erase_front
+deque_erase_back
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-deque_remove_back
+deque_erase_back
 Deque 要素の除去 ( 末尾 )
 
 %prm
@@ -838,8 +838,8 @@ inst self : 双方向キュー
 双方向キューの末尾の要素を、双方向キューから取り除きます。
 
 %href
-deque_remove_front
-deque_remove_back
+deque_erase_front
+deque_erase_back
 
 %group
 メンバ関数::操作系

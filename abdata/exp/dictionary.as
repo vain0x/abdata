@@ -104,7 +104,7 @@
 //------------------------------------------------
 // —v‘f‚Ìœ‹
 //------------------------------------------------
-#modfunc dict_remove str key
+#modfunc dict_erase str key
 	mdict->"Remove" key
 	return
 	

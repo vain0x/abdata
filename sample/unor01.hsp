@@ -12,7 +12,7 @@
 	unor_dbglog vSt
 	
 	unor_set    vSt, "str", "hoge-piyo-foo-bar"
-	unor_remove vSt, "____"
+	unor_erase vSt, "____"
 	unor_dbglog vSt
 	
 	stop

@@ -80,8 +80,8 @@
 // 
 // @+ ‘¶İ‚µ‚È‚¢—v‘f‚Íœ‹‚µ‚È‚¢
 //------------------------------------------------
-#define global unor_remove(%1,%2) unorImpl_remove abdataInsts(%1), %2
-;#define global unor_remove_byIndex_(%1,%2) unorImpl_remove_byIndex_ abdataInsts(%1), %2
+#define global unor_erase(%1,%2) unorImpl_erase abdataInsts(%1), %2
+;#define global unor_erase_byIndex_(%1,%2) unorImpl_erase_byIndex_ abdataInsts(%1), %2
 
 //------------------------------------------------
 // [i] Š®‘SÁ‹

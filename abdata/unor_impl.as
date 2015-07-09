@@ -48,7 +48,7 @@
 	list_getv mlistValue, result, i
 	
 	if ( bRemove ) {
-		unorImpl_remove_by_index_ thismod, i
+		unorImpl_erase_by_index_ thismod, i
 	}
 	return
 	
@@ -144,17 +144,17 @@
 // 
 // @+ ë∂ç›ÇµÇ»Ç¢óvëfÇÕèúãéÇµÇ»Ç¢
 //------------------------------------------------
-#modfunc unorImpl_remove str key,  local i
+#modfunc unorImpl_erase str key,  local i
 	
 	i = unorImpl_getIndex(thismod, key, true)
 	if ( i < 0 ) { return }
 	
-	unorImpl_remove_by_index_ thismod, i
+	unorImpl_erase_by_index_ thismod, i
 	return
 	
-#modfunc unorImpl_remove_by_index_ int i
-	list_remove mlistKey,   i
-	list_remove mlistValue, i
+#modfunc unorImpl_erase_by_index_ int i
+	list_erase mlistKey,   i
+	list_erase mlistValue, i
 	return
 	
 //------------------------------------------------

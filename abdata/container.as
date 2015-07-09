@@ -119,9 +119,9 @@
 //------------------------------------------------
 // œ‹
 //------------------------------------------------
-#define global container_remove(%1, %2)   containerImpl_remove       abdataInsts(%1), %2
-#define global container_remove_front(%1) containerImpl_remove_front abdataInsts(%1)
-#define global container_remove_back(%1)  containerImpl_remove_back  abdataInsts(%1)
+#define global container_erase(%1, %2)   containerImpl_erase       abdataInsts(%1), %2
+#define global container_erase_front(%1) containerImpl_erase_front abdataInsts(%1)
+#define global container_erase_back(%1)  containerImpl_erase_back  abdataInsts(%1)
 
 //------------------------------------------------
 // —v‘f”İ’è

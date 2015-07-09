@@ -314,7 +314,7 @@ queue_vartype
 
 ;--------------------
 %index
-queue_remove
+queue_erase
 Queue 要素の除去
 
 %prm
@@ -325,7 +325,7 @@ inst self  : キュー
 キューの先頭の要素を取り除きます。
 
 %href
-;queue_remove
+;queue_erase
 
 %group
 メンバ関数::コンテナ操作系

@@ -53,7 +53,7 @@
 	abelem_getv mElems( midlist(i) ), result
 	
 	if ( bRemove ) {
-		containerImpl_remove thismod, i
+		containerImpl_erase thismod, i
 	}
 	
 	return
@@ -188,7 +188,7 @@
 //------------------------------------------------
 // èúãé
 //------------------------------------------------
-#modfunc containerImpl_remove int _i,  local i, local ivRemoved
+#modfunc containerImpl_erase int _i,  local i, local ivRemoved
 	
 	i         = containerImpl_getRealIndex(thismod, _i)
 	ivRemoved = midlist(i)
@@ -202,8 +202,8 @@
 	abelem_delete mElems( ivRemoved )
 	return
 	
-#define global containerImpl_remove_front(%1) containerImpl_remove %1, 0
-#define global containerImpl_remove_back(%1)  containerImpl_remove %1, (-1)
+#define global containerImpl_erase_front(%1) containerImpl_erase %1, 0
+#define global containerImpl_erase_back(%1)  containerImpl_erase %1, (-1)
 
 //------------------------------------------------
 // óvëfêîÇÃê›íË

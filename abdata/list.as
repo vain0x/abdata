@@ -82,9 +82,9 @@
 //------------------------------------------------
 // œ‹
 //------------------------------------------------
-#define global list_remove       container_remove
-#define global list_remove_front container_remove_front
-#define global list_remove_back  container_remove_back
+#define global list_erase       container_erase
+#define global list_erase_front container_erase_front
+#define global list_erase_back  container_erase_back
 
 //------------------------------------------------
 // —v‘f”İ’è

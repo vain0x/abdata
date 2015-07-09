@@ -221,7 +221,7 @@ list_getv
 list_pop
 list_popv
 
-list_remove
+list_erase
 
 %group
 メンバ関数::取得系
@@ -250,7 +250,7 @@ list_getv
 list_pop
 list_popv
 
-list_remove
+list_erase
 
 %group
 メンバ関数::取得系
@@ -438,7 +438,7 @@ list_add
 
 ;--------------------
 %index
-list_remove
+list_erase
 List 要素の除去
 
 %prm
@@ -450,7 +450,7 @@ int  idx  : 要素番号
 リストの要素 [i] をリストから取り除きます。
 
 %href
-list_remove
+list_erase
 
 %group
 メンバ関数::操作系

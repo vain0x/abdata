@@ -60,7 +60,7 @@
 	abelem_getv mElems( midlist(i) ), result
 	
 	if ( bRemove ) {
-		Ordlist_remove_byIndex thismod, i
+		Ordlist_erase_byIndex thismod, i
 	}
 	
 	return
@@ -132,13 +132,13 @@
 //------------------------------------------------
 // èúãé
 //------------------------------------------------
-#modfunc Ordlist_remove var key
+#modfunc Ordlist_erase var key
 	
-	Ordlist_remove_byIndex thismod, Ordlist_getIndex(thismod, key)
+	Ordlist_erase_byIndex thismod, Ordlist_getIndex(thismod, key)
 	
 	return
 	
-#modfunc Ordlist_remove_byIndex@abdata_ordlist int i,  local ivRemoved
+#modfunc Ordlist_erase_byIndex@abdata_ordlist int i,  local ivRemoved
 	
 	ivRemoved = midlist(i)
 	

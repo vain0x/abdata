@@ -403,7 +403,7 @@ container_popv
 container_popv_front
 container_popv_back
 
-container_remove
+container_erase
 
 %group
 メンバ関数::取得系
@@ -438,7 +438,7 @@ container_popv
 container_popv_front
 container_popv_back
 
-container_remove
+container_erase
 
 %group
 メンバ関数::取得系
@@ -473,7 +473,7 @@ container_popv
 container_popv_front
 container_popv_back
 
-container_remove
+container_erase
 
 %group
 メンバ関数::取得系
@@ -510,7 +510,7 @@ container_popv
 container_popv_front
 container_popv_back
 
-container_remove
+container_erase
 
 %group
 メンバ関数::取得系
@@ -546,7 +546,7 @@ container_popv
 container_popv_front
 container_popv_back
 
-container_remove
+container_erase
 
 %group
 メンバ関数::取得系
@@ -582,7 +582,7 @@ container_popv
 container_popv_front
 container_popv_back
 
-container_remove
+container_erase
 
 %group
 メンバ関数::取得系
@@ -1090,7 +1090,7 @@ container_add
 
 ;--------------------
 %index
-container_remove
+container_erase
 container 要素の除去
 
 %prm
@@ -1102,16 +1102,16 @@ int  idx  : 要素番号
 汎用コンテナの要素 [i] を汎用コンテナから取り除きます。
 
 %href
-container_remove
-container_remove_front
-container_remove_back
+container_erase
+container_erase_front
+container_erase_back
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-container_remove_front
+container_erase_front
 container 要素の除去 ( 先頭 )
 
 %prm
@@ -1122,16 +1122,16 @@ inst self : 汎用コンテナ
 汎用コンテナの先頭の要素を、汎用コンテナから取り除きます。
 
 %href
-container_remove
-container_remove_front
-container_remove_back
+container_erase
+container_erase_front
+container_erase_back
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-container_remove_back
+container_erase_back
 container 要素の除去 ( 末尾 )
 
 %prm
@@ -1142,9 +1142,9 @@ inst self : 汎用コンテナ
 汎用コンテナの末尾の要素を、汎用コンテナから取り除きます。
 
 %href
-container_remove
-container_remove_front
-container_remove_back
+container_erase
+container_erase_front
+container_erase_back
 
 %group
 メンバ関数::操作系

@@ -101,7 +101,7 @@
 	
 	//œ‹
 	con = make_iota_container(4)
-	container_remove con, 2
+	container_erase con, 2
 	assert container_size(con) == 4 - 1
 	
 	expected = 0, 1, 3

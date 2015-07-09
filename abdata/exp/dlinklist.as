@@ -248,7 +248,7 @@
 //------------------------------------------------
 #modfunc DLList_delNow  local prv
 	prv   = DLV_getPrev( mValue(mIter) )
-	DLList_removeItem thismod, mIter
+	DLList_eraseItem thismod, mIter
 	mIter = prv
 	return
 	
@@ -263,7 +263,7 @@
 //------------------------------------------------
 // Random Access
 //------------------------------------------------
-#modfunc DLList_remove int p2,  local now, local nxt, local prv
+#modfunc DLList_erase int p2,  local now, local nxt, local prv
 	
 	// 削除される場所を探す
 	if ( p2 >= mCntValue || p2 < 0 ) {
@@ -273,7 +273,7 @@
 	}
 	
 	// 削除する
-	DLList_removeItem thismod, now
+	DLList_eraseItem thismod, now
 	return
 	
 #define global DLList_cntValue !!"DLList_cntValue()は廃止。DLList_size()に移行せよ。"!!
@@ -414,7 +414,7 @@
 // @private
 // @ 削除位置を指定する
 //------------------------------------------------
-#modfunc DLList_removeItem int now,  local nxt, local prv
+#modfunc DLList_eraseItem int now,  local nxt, local prv
 	
 	// 前後のリンクを保存する
 	nxt = DLV_getNext( mValue(now) )
@@ -518,7 +518,7 @@
 			swbreak
 			
 		case '-'
-			DLList_remove mDLList, prm
+			DLList_erase mDLList, prm
 			gosub *disp
 			swbreak
 			
