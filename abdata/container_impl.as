@@ -30,18 +30,10 @@
 // @prm vDefault : 確保する値の初期値
 //------------------------------------------------
 #modinit int num, var vDefault
-	
-	// メンバ変数の初期化
-	abelem_new mElems, vDefault
-	midlist  = 0
-	mCnt     = 0
-	
-	// コンストラクト処理
 	if ( num <= 0 ) {
-		abelem_delete mElems(0)		// 要素 0 にする
+		dimtype mElems, 5
 		
 	} else {
-		// 連続確保
 		repeat num
 			abelem_new mElems, vDefault
 			midlist(cnt) = cnt
@@ -218,14 +210,14 @@
 // 
 // @result: 元の要素数
 //------------------------------------------------
-#modfunc ContainerImpl_setSize int newlen,  local dif
+#define global ContainerImpl_resize(%1, %2, %3) \
+	containerImpl_resize_ (%1), (%2), (%3)
+
+#modfunc ContainerImpl_resize_ int newlen, var initValue,  local dif
 	dif = newlen - mCnt
 	
-	if ( dif == 0 ) {
-		;
-		
 	// 減少
-	} elsif ( dif < 0 ) {
+	if ( dif < 0 ) {
 		if ( newlen <= 0 ) {
 			ContainerImpl_clear thismod
 			
@@ -238,10 +230,10 @@
 		}
 		
 	// 増加
-	} else {
+	} else : if ( dif > 0 ) {
 		// 新要素を dif 個生成し、末尾に追加する
 		repeat dif, newlen - dif
-			abelem_new mElems, stt_zero@
+			abelem_new mElems, initValue
 			midlist(cnt) = stat	;id
 		loop
 	}
@@ -404,14 +396,14 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#modfunc ContainerImpl_iterInit var iterData
+#modfunc ContainerImpl_iter_init var iterData
 	iterData = -1
 	return
 	
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#modcfunc ContainerImpl_iterNext var vIt, var iterData
+#modcfunc ContainerImpl_iter_next var vIt, var iterData
 	iterData ++
 	
 	if ( ContainerImpl_isValid(thismod, iterData) == false ) {

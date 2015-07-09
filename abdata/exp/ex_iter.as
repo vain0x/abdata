@@ -93,12 +93,12 @@
 // 前後へ移動
 //------------------------------------------------
 #define global iterImpl_prev(%1, %2) iterImpl_initAccess %1 : %2_iterPrev iterImpl_getInstance(%1), %1
-#define global iterImpl_next(%1, %2) iterImpl_initAccess %1 : %2_iterNext iterImpl_getInstance(%1), %1
+#define global iterImpl_next(%1, %2) iterImpl_initAccess %1 : %2_iter_next iterImpl_getInstance(%1), %1
 
 //------------------------------------------------
 // [i] 初期化
 //------------------------------------------------
-#define global iterImpl_clear(%1, %2) iterImpl_initAccess %1 : %2_iterInit iterImpl_getInstance(%1), iterImpl_getInitVar(%1)
+#define global iterImpl_clear(%1, %2) iterImpl_initAccess %1 : %2_iter_init iterImpl_getInstance(%1), iterImpl_getInitVar(%1)
 
 //------------------------------------------------
 // ダミー命令・関数

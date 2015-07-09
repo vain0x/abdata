@@ -89,7 +89,7 @@
 //------------------------------------------------
 // —v‘f”İ’è
 //------------------------------------------------
-#define global list_setSize     Container_setSize
+#define global list_resize     Container_resize
 
 //------------------------------------------------
 // ‡˜‘€ì
@@ -112,8 +112,8 @@
 //------------------------------------------------
 // [i] ”½•œq‘€ì
 //------------------------------------------------
-#define global list_iterInit Container_iterInit
-#define global list_iterNext Container_iterNext
+#define global list_iter_init Container_iter_init
+#define global list_iter_next Container_iter_next
 
 //------------------------------------------------
 // [i] —v‘f”

@@ -700,7 +700,7 @@ inst self : Pair インスタンス
 
 ;--------------------
 %index
-pair_iterInit
+pair_iter_init
 Pair 反復子::初期化
 
 %prm
@@ -714,15 +714,15 @@ var  vIt  : 反復情報
 @ alg_iter が内部で使用するだけです。
 
 %href
-pair_iterInit
-pair_iterNext
+pair_iter_init
+pair_iter_next
 
 %group
 メンバ関数::反復子操作系
 
 ;--------------------
 %index
-pair_iterNext
+pair_iter_next
 Pair 反復子::更新
 
 %prm
@@ -737,8 +737,8 @@ var  iterData : 反復情報
 @ alg_iter が内部で使用するだけです。
 
 %href
-pair_iterInit
-pair_iterNext
+pair_iter_init
+pair_iter_next
 
 %group
 メンバ関数::反復子操作系

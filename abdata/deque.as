@@ -108,8 +108,8 @@
 //------------------------------------------------
 // [i] ”½•œq‘€ì
 //------------------------------------------------
-#define global deque_iterInit Container_iterInit
-#define global deque_iterNext Container_iterNext
+#define global deque_iter_init Container_iter_init
+#define global deque_iter_next Container_iter_next
 
 //------------------------------------------------
 // [i] —v‘f”

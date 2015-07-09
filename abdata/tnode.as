@@ -143,8 +143,8 @@
 //------------------------------------------------
 // [i] 反復子操作
 //------------------------------------------------
-#define global tnode_iterInit list_iterInit
-#define global tnode_iterNext list_iterNext
+#define global tnode_iter_init list_iter_init
+#define global tnode_iter_next list_iter_next
 
 //------------------------------------------------
 // 範囲チェック

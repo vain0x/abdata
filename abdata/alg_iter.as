@@ -69,7 +69,7 @@
 // @ ref (inst) 用の変数の型を合わせるために、dummy_func() をループを始める前に処理させている。
 //------------------------------------------------
 #define global ctype iter_next(%1, %2, %3 = it) \
-	( dummy_func@abdata_iter(ITER_INST(%1)) || %2_iterNext(ITER_INST(%1), %3, ITER_DATA(%1)) )
+	( dummy_func@abdata_iter(ITER_INST(%1)) || %2_iter_next(ITER_INST(%1), %3, ITER_DATA(%1)) )
 	
 #deffunc dummy_sttm@abdata_iter var x
 	return
@@ -87,7 +87,7 @@
 	ITER_INST_IDX_VAR(%1) ++ :\
 	newmod ITER_INST_NAME(%1), abdata_iter@, ARG_TEMP@abdata_iter(new_src) :\
 	dummy_sttm@abdata_iter ITER_INST(%1) /* ref 用の変数の型を合わせる */ :\
-	%2_iterInit ITER_INST(%1), ITER_DATA(%1)
+	%2_iter_init ITER_INST(%1), ITER_DATA(%1)
 	
 #modinit var inst
 	mInst     = inst

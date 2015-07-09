@@ -156,14 +156,14 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#modfunc dict_iterInit var iterData
+#modfunc dict_iter_init var iterData
 	iterData = -1
 	return
 	
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#modcfunc dict_iterNext var vIt, var iterData,  local keylist, local key
+#modcfunc dict_iter_next var vIt, var iterData,  local keylist, local key
 	iterData ++
 	
 	if ( iterData >= dict_size(thismod) ) {

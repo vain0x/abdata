@@ -106,12 +106,12 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#define global unor_iterInit(%1,%2) unorImpl_iterInit abdataInsts(%1), %2
+#define global unor_iter_init(%1,%2) unorImpl_iter_init abdataInsts(%1), %2
 
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#define global ctype unor_iterNext(%1,%2,%3) unorImpl_iterNext( abdataInsts(%1), %2, %3 )
+#define global ctype unor_iter_next(%1,%2,%3) unorImpl_iter_next( abdataInsts(%1), %2, %3 )
 
 //------------------------------------------------
 // [i] 要素数

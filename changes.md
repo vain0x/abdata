@@ -3,10 +3,15 @@
 * Git を導入。
 * README を更新。
 * 簡単なテストを追加。
-* いくつかの関数名を変更した。
+* 命名規則として、識別子は基本的に snake_case にすることにした。
+  * 実装詳細の識別子はめんどくさいのでそのまま残す。
+* 公開される関数名をいくつか変更した。
   * swap -> locate_swap
   * move -> relocate
   * exchange -> swap
+  * setSize -> resize
+  * iterInit -> iter_init
+  * iterNext -> iter_next
 
 ### 2011 04/04 (Mon)
 * abAssert を追加し、要素範囲外の時には assert で止まるようにした。

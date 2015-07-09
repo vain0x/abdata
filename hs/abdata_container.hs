@@ -1447,7 +1447,7 @@ self ‚Æ obj2 ‚ÉŠÜ‚Ü‚ê‚é‚·‚×‚Ä‚Ì—v‘f‚ğŒğŠ·‚µ‚Ü‚·B‚»‚ê‚¼‚ê‚Ì—v‘f‚Ì‡”Ô‚ÍˆÛ‚³‚ê‚
 
 ;--------------------
 %index
-Container_iterInit
+Container_iter_init
 Container ”½•œq::‰Šú‰» [i]
 
 %prm
@@ -1461,15 +1461,15 @@ var iterData : ”½•œî•ñ
 @ alg_iter ‚ª“à•”‚Åg—p‚·‚é‚¾‚¯‚Å‚·B
 
 %href
-Container_iterInit
-Container_iterNext
+Container_iter_init
+Container_iter_next
 
 %group
 ƒƒ“ƒoŠÖ”::”½•œq‘€ìŒn
 
 ;--------------------
 %index
-Container_iterNext
+Container_iter_next
 Container ”½•œq::XV [i]
 
 %prm
@@ -1484,8 +1484,8 @@ var iterData : ”½•œî•ñ
 @ alg_iter ‚ª“à•”‚Åg—p‚·‚é‚¾‚¯‚Å‚·B
 
 %href
-Container_iterInit
-Container_iterNext
+Container_iter_init
+Container_iter_next
 
 %group
 ƒƒ“ƒoŠÖ”::”½•œq‘€ìŒn

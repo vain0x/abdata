@@ -207,14 +207,14 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#modfunc Ordlist_iterInit var iterData
+#modfunc Ordlist_iter_init var iterData
 	iterData = -1
 	return
 	
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#modcfunc Ordlist_iterNext var vIt, var iterData,  local idx
+#modcfunc Ordlist_iter_next var vIt, var iterData,  local idx
 	iterData ++
 	
 	if ( iterData >= mCnt ) {

@@ -117,8 +117,8 @@
 //------------------------------------------------
 // [i] ”½•œq‘€ì
 //------------------------------------------------
-#define global stack_iterInit deque_iterInit
-#define global stack_iterNext deque_iterNext
+#define global stack_iter_init deque_iter_init
+#define global stack_iter_next deque_iter_next
 
 //------------------------------------------------
 // [i] —v‘f”

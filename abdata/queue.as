@@ -104,8 +104,8 @@
 //------------------------------------------------
 // [i] ”½•œq‘€ì
 //------------------------------------------------
-#define global queue_iterInit deque_iterInit
-#define global queue_iterNext deque_iterNext
+#define global queue_iter_init deque_iter_init
+#define global queue_iter_next deque_iter_next
 
 //------------------------------------------------
 // [i] —v‘f”

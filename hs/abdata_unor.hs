@@ -481,7 +481,7 @@ unor_swap
 
 ;--------------------
 %index
-unor_iterInit
+unor_iter_init
 Unor 反復子::初期化 [i]
 
 %prm
@@ -493,15 +493,15 @@ var  iterData : 反復子情報
 連想配列の反復子を初期化する統一関数です。
 
 %href
-unor_iterInit
-unor_iterNext
+unor_iter_init
+unor_iter_next
 
 %group
 メンバ関数::反復子操作系
 
 ;--------------------
 %index
-unor_iterNext
+unor_iter_next
 Unor 反復子::更新 [i]
 
 %prm
@@ -516,8 +516,8 @@ var  iterData : 反復子情報
 it 変数 vIt には、キーの文字列が格納されます。
 
 %href
-unor_iterInit
-unor_iterNext
+unor_iter_init
+unor_iter_next
 
 %group
 メンバ関数::反復子操作系

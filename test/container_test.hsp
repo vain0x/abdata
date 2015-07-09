@@ -81,7 +81,7 @@
 	
 	//to extend
 	con = make_iota_container(3)
-	container_setSize con, 5, str_var
+	container_resize con, 5, str_var
 	assert container_size(con) == 5
 	repeat 5
 		if ( cnt < 3 ) {
@@ -93,7 +93,7 @@
 	
 	//to truncate
 	con = make_iota_container(5)
-	container_setSize con, 2
+	container_resize con, 2
 	assert container_size(con) == 2
 	repeat 2
 		assert container_get(con, cnt) == cnt

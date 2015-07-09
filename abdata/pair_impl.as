@@ -164,14 +164,14 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#modfunc pairImpl_iterInit var iterData
+#modfunc pairImpl_iter_init var iterData
 	iterData = -1
 	return
 	
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#modcfunc pairImpl_iterNext var vIt, var iterData
+#modcfunc pairImpl_iter_next var vIt, var iterData
 	iterData ++
 	
 	if ( 0 <= iterData && iterData < pairImpl_size(thismod) ) {

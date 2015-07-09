@@ -126,7 +126,7 @@
 //------------------------------------------------
 // 要素数設定
 //------------------------------------------------
-#define global Container_setSize(%1, %2)  ContainerImpl_setSize abdataInsts(%1), %2
+#define global Container_resize(%1, %2, %3 = stt_zero@)  ContainerImpl_resize abdataInsts(%1), %2, %3
 
 //------------------------------------------------
 // 移動
@@ -188,12 +188,12 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#define global Container_iterInit(%1,%2) ContainerImpl_iterInit abdataInsts(%1), %2
+#define global Container_iter_init(%1,%2) ContainerImpl_iter_init abdataInsts(%1), %2
 
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#define global ctype Container_iterNext(%1,%2,%3) ContainerImpl_iterNext( abdataInsts(%1), %2, %3 )
+#define global ctype Container_iter_next(%1,%2,%3) ContainerImpl_iter_next( abdataInsts(%1), %2, %3 )
 
 //------------------------------------------------
 // [i] 要素数

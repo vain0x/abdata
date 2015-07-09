@@ -124,14 +124,14 @@
 //------------------------------------------------
 // [i] 反復子初期化
 //------------------------------------------------
-#modfunc DLList_iterInit var iterData
+#modfunc DLList_iter_init var iterData
 	DLList_iterNew thismod
 	return
 	
 //------------------------------------------------
 // [i] 反復子更新
 //------------------------------------------------
-#modcfunc DLList_iterNext var vIt, var iterData
+#modcfunc DLList_iter_next var vIt, var iterData
 	return DLList_iterCheck(thismod, vIt)
 	
 //------------------------------------------------

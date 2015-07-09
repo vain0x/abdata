@@ -1029,7 +1029,7 @@ self と obj に含まれるすべての要素を交換します。それぞれの要素の順番は維持されま
 
 ;--------------------
 %index
-deque_iterInit
+deque_iter_init
 Deque 反復子::初期化 [i]
 
 %prm
@@ -1043,15 +1043,15 @@ var  iterData : 反復情報
 @ alg_iter が内部で使用するだけです。
 
 %href
-deque_iterInit
-deque_iterNext
+deque_iter_init
+deque_iter_next
 
 %group
 メンバ関数::反復子操作系
 
 ;--------------------
 %index
-deque_iterNext
+deque_iter_next
 Deque 反復子::更新 [i]
 
 %prm
@@ -1066,8 +1066,8 @@ var  iterData : 反復情報
 @ alg_iter が内部で使用するだけです。
 
 %href
-deque_iterInit
-deque_iterNext
+deque_iter_init
+deque_iter_next
 
 %group
 メンバ関数::反復子操作系

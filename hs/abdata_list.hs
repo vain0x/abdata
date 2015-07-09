@@ -629,7 +629,7 @@ self と obj に含まれるすべての要素を交換します。それぞれの要素の順番は維持されま
 
 ;--------------------
 %index
-list_iterInit
+list_iter_init
 List 反復子::初期化 [i]
 
 %prm
@@ -643,15 +643,15 @@ var  iterData : 反復情報
 @ alg_iter が内部で使用するだけです。
 
 %href
-list_iterInit
-list_iterNext
+list_iter_init
+list_iter_next
 
 %group
 メンバ関数::反復子操作系
 
 ;--------------------
 %index
-list_iterNext
+list_iter_next
 List 反復子::更新 [i]
 
 %prm
@@ -666,8 +666,8 @@ var iterData : 反復情報
 @ alg_iter が内部で使用するだけです。
 
 %href
-list_iterInit
-list_iterNext
+list_iter_init
+list_iter_next
 
 %group
 メンバ関数::反復子操作系

@@ -99,12 +99,12 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#define global pair_iterInit(%1,%2) pairImpl_iterInit abdataInsts(%1), %2
+#define global pair_iter_init(%1,%2) pairImpl_iter_init abdataInsts(%1), %2
 
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#define global ctype pair_iterNext(%1,%2,%3) pairImpl_iterNext( abdataInsts(%1), %2, %3 )
+#define global ctype pair_iter_next(%1,%2,%3) pairImpl_iter_next( abdataInsts(%1), %2, %3 )
 
 //------------------------------------------------
 // デバッグ出力

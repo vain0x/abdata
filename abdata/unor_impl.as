@@ -198,15 +198,15 @@
 //------------------------------------------------
 // [i] 反復子::初期化
 //------------------------------------------------
-#modfunc unorImpl_iterInit var iterData
-	list_iterInit mlistKey, iterData
+#modfunc unorImpl_iter_init var iterData
+	list_iter_init mlistKey, iterData
 	return
 	
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
-#modcfunc unorImpl_iterNext var vIt, var iterData
-	return list_iterNext( mlistKey, vIt, iterData )
+#modcfunc unorImpl_iter_next var vIt, var iterData
+	return list_iter_next( mlistKey, vIt, iterData )
 	
 //------------------------------------------------
 // [i] 要素数
