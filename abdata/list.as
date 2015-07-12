@@ -119,9 +119,9 @@
 // [i] 要素数
 //------------------------------------------------
 #define global list_size   container_size
-#define global list_count  list_size
 #define global list_length list_size
 #define global list_empty  container_empty
+#define global list_count  container_count
 
 //------------------------------------------------
 // 範囲チェック

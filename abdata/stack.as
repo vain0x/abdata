@@ -124,9 +124,9 @@
 // [i] 要素数
 //------------------------------------------------
 #define global stack_size   deque_size
-#define global stack_count  stack_size
 #define global stack_length stack_size
 #define global stack_empty  deque_empty
+#define global stack_count  deque_count
 
 //------------------------------------------------
 // 範囲チェック

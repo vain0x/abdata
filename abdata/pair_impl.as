@@ -25,7 +25,6 @@
 //------------------------------------------------
 #define global ctype pairImpl_size(%1)  2
 #define global ctype pairImpl_empty(%1) 0
-#define global pairImpl_count  pairImpl_size
 #define global pairImpl_length pairImpl_size
 
 #define global pairImpl_new(%1, %2 = stt_zero@, %3 = stt_zero@) \
@@ -113,6 +112,16 @@
 	abelem_setv mValue(PairImplIdx_Rhs), rhs
 	return
 	
+//------------------------------------------------
+// êîÇ¶è„Ç∞
+//------------------------------------------------
+#modcfunc pairImpl_count var value,  local lhs, local rhs, local count
+	pairImpl_cloneLhs thismod, lhs
+	pairImpl_cloneRhs thismod, rhs
+	if ( lhs == value ) { count ++ }
+	if ( rhs == value ) { count ++ }
+	return count
+
 //------------------------------------------------
 // óvëfåä∑
 // @ lhs Ç∆ rhs Çåä∑Ç∑ÇÈ

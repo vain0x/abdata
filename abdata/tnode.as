@@ -26,7 +26,6 @@
 //------------------------------------------------
 #define global ctype tnode_size (%1) 2	// list_size
 #define global ctype tnode_empty(%1) 0	// false
-#define global tnode_count  tnode_size
 #define global tnode_length tnode_size
 
 //------------------------------------------------

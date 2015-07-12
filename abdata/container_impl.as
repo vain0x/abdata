@@ -419,9 +419,18 @@
 #modcfunc containerImpl_size
 	return mCnt
 	
-#define global containerImpl_count  containerImpl_size
 #define global containerImpl_length containerImpl_size
 #define global ctype containerImpl_empty(%1) ( containerImpl_size(%1) == 0 )
+
+//------------------------------------------------
+// 数え上げ
+//------------------------------------------------
+#modcfunc containerImpl_count var value,  local count, local ref
+	repeat mCnt
+		containerImpl_clone thismod, ref, cnt
+		if ( ref == value ) { count ++ }
+	loop
+	return count
 
 //------------------------------------------------
 // 範囲チェック

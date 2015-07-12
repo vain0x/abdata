@@ -685,8 +685,27 @@ inst self : List インスタンス
 リストに含まれる要素の数を返す統一関数です。
 
 %note
-list_count, list_length と同一。
+list_length と同一。
 
+%href
+
+%group
+メンバ関数
+
+;--------------------
+%index
+list_count
+List 要素の数え上げ
+
+%prm
+(self)
+inst self : List インスタンス
+var val : 数える値
+
+%inst
+リストに含まれる、値が val の要素の数を返す関数です。
+
+%note
 %href
 
 %group

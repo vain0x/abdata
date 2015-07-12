@@ -111,9 +111,9 @@
 // [i] 要素数
 //------------------------------------------------
 #define global queue_size   deque_size
-#define global queue_count  queue_size
 #define global queue_length queue_size
 #define global queue_empty  deque_empty
+#define global queue_count  deque_count
 
 //------------------------------------------------
 // 範囲チェック

@@ -18,7 +18,7 @@
 //------------------------------------------------
 #define global ctype pair_size(%1)  pairImpl_size ( abdataInsts(%1) )
 #define global ctype pair_empty(%1) pairImpl_empty( abdataInsts(%1) )
-#define global pair_count  pair_size
+#define global ctype pair_count(%1, %2) pairImpl_count(abdataInsts(%1), %2)
 #define global pair_length pair_size
 
 //------------------------------------------------

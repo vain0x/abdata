@@ -74,4 +74,13 @@
 	unor_set un0, "@3", M_PI
 	assert unor_get(un1, "@3") == double(3)
 	
+	//”‚¦ã‚°
+	un = make_iota_unor(3)
+	unor_add un, "#3", "2"
+	two_str = "2"
+	assert unor_count_value(un, two_str) == 2
+	assert unor_count_value(un, stt_zero) == 1
+	assert unor_count_key(un, "#2") == 1
+	assert unor_count_key(un, "#4") == 0
+	
 	logmes "Unor test completed."

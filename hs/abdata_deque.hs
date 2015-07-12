@@ -1085,7 +1085,7 @@ inst self : 双方向キュー
 双方向キューに含まれる要素の数を返す統一関数です。
 
 %note
-deque_count, deque_length と同一。
+deque_length と同一。
 
 %href
 

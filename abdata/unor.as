@@ -118,8 +118,10 @@
 //------------------------------------------------
 #define global ctype unor_size(%1)  unorImpl_size(abdataInsts(%1))
 #define global ctype unor_empty(%1) unorImpl_empty(abdataInsts(%1))
-#define global unor_count  unor_size
 #define global unor_length unor_size
+
+#define global ctype unor_count_key(%1, %2) unorImpl_count_key(abdataInsts(%1), %2)
+#define global ctype unor_count_value(%1, %2) unorImpl_count_value(abdataInsts(%1), %2)
 
 //------------------------------------------------
 // ÉLÅ[ÇÃóLñ≥

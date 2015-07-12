@@ -115,9 +115,9 @@
 // [i] 要素数
 //------------------------------------------------
 #define global deque_size   container_size
-#define global deque_count  deque_size
 #define global deque_length deque_size
 #define global deque_empty  container_empty
+#define global deque_count  container_count
 
 //------------------------------------------------
 // 範囲チェック

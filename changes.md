@@ -1,10 +1,10 @@
 ## TODO
 * unor_exists → unor_key_exists 
-* isValid の snake_case 化
+* snake_case へのし忘れ
+  * isValid
+  * getLhs など
 * 最大最小検索
   * min_element, max_element, minmax_element
-* 2分探索
-  * binary_search, lower_bound, upper_bound, equal_range
 * 整列
   * sort
     * stable_sort (merge_sort) だけでいいと思う。
@@ -12,6 +12,7 @@
   * unique & erase
 * 置換
   * replace
+* コンテナのメンバ関数の補完
 * コンテナの構造的比較
 * unor の実装の改良
 * より安全なテスト
@@ -22,6 +23,9 @@
 * ヘッダ <abdata/arrayLen.as> を追加した。
   * 標準配列とその長さをペアで管理する。
   * 2分探索アルゴリズムをサポートしている。
+* `_count` 関数が、与えられた値をもつ要素の個数を数えるようになった。
+  * 以前は `_size` や `_length` 関数に置換されていた。
+  * std::map::count と std::count の挙動が違うので困る。
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。

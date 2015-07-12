@@ -214,10 +214,18 @@
 #modcfunc unorImpl_size
 	return list_size( mlistKey )
 	
-#define global unorImpl_count  unorImpl_size
 #define global unorImpl_length unorImpl_size
 #define global ctype unorImpl_empty(%1) ( unorImpl_size(%1) == 0 )
 
+//------------------------------------------------
+// êîÇ¶è„Ç∞
+//------------------------------------------------
+#modcfunc unorImpl_count_key str key
+	return ( unorImpl_getIndex( thismod, key, true ) >= 0 )
+	
+#modcfunc unorImpl_count_value var value
+	return list_count(mlistValue, value)
+	
 //------------------------------------------------
 // ÉLÅ[ÇÃóLñ≥
 //------------------------------------------------

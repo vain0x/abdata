@@ -200,7 +200,7 @@
 //------------------------------------------------
 #define global ctype container_size(%1)  containerImpl_size (abdataInsts(%1))
 #define global ctype container_empty(%1) containerImpl_empty(abdataInsts(%1))
-#define global container_count  container_size
+#define global ctype container_count(%1, %2)  containerImpl_count(abdataInsts(%1), %2)
 #define global container_length container_size
 
 //------------------------------------------------

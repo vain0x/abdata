@@ -1503,8 +1503,27 @@ inst self : 汎用コンテナ
 汎用コンテナに含まれる要素の数を返す統一関数です。
 
 %note
-container_count, container_length と同一。
+container_length と同一。
 
+%href
+
+%group
+メンバ関数
+
+;--------------------
+%index
+container_count
+container 要素の数え上げ
+
+%prm
+(self)
+inst self : 汎用コンテナ
+var val : 数える値
+
+%inst
+汎用コンテナに含まれる、値 val に等しい要素の数を返す関数です。
+
+%note
 %href
 
 %group

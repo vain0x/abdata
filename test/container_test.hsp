@@ -181,4 +181,14 @@
 		assert container_isValid(con, cnt) == (0 <= cnt && cnt < 3)
 	loop
 	
+	//”‚¦ã‚°
+	con = new_container()
+	container_push_back con, "1"
+	container_push_back con, "a"
+	container_push_back con, 1
+	container_push_back con, 4
+	one_int = 1
+	assert container_count(con, one_int) == 2
+	assert container_count(con, stt_zero) == 0
+	
 	logmes "container test completed."

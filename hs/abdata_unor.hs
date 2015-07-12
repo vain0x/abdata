@@ -534,10 +534,8 @@ inst self : 連想配列
 %inst
 連想配列に含まれる要素の数を返す統一関数です。
 
-unor_count を推奨しておきます。
-
 %note
-unor_count, unor_length と同じ。
+unor_length と同じ。
 
 %href
 
@@ -546,8 +544,27 @@ unor_count, unor_length と同じ。
 
 ;--------------------
 %index
-unor_exists
-Unor キーの有無
+unor_count_value
+Unor 要素の数え上げ
+
+%prm
+(self)
+inst self : 連想配列
+var val : 数える値
+
+%inst
+連想配列に含まれる、値 val を持つ要素の数を返す統数です。
+
+%note
+%href
+
+%group
+メンバ関数
+
+;--------------------
+%index
+unor_key
+Unor キーの数え上げ
 
 %prm
 (self, key)
@@ -555,7 +572,7 @@ inst self : 連想配列
 str  key  : キー
 
 %inst
-指定キーが存在するかどうかを返します。存在する場合は真 (!= 0) を、存在しない場合は偽 (= 0) を返します。
+指定したキーの数を返します。キーの重複は許されていないので、存在する場合は 1、存在しない場合は 0 となります。
 
 %href
 
