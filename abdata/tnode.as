@@ -213,8 +213,8 @@
 
 #ifdef pair_new
  #define global ctype tnbChd(%1,%2=0) pair_get   ( tnode_getChd(%1), %2 )
- #define global ctype tnbChdLhs(%1)   pair_getLhs( tnode_getChd(%1) )
- #define global ctype tnbChdRhs(%1)   pair_getRhs( tnode_getChd(%1) )
+ #define global ctype tnbChdLhs(%1)   pair_get_lhs( tnode_getChd(%1) )
+ #define global ctype tnbChdRhs(%1)   pair_get_rhs( tnode_getChd(%1) )
 #endif
 
 #ifdef list_new

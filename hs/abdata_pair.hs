@@ -107,15 +107,15 @@ int  idx   : 要素番号
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::操作系
@@ -137,22 +137,22 @@ int  idx    : 要素番号
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-pair_setLhs
+pair_set_lhs
 Pair 値を設定 (lhs)
 
 %prm
@@ -166,22 +166,22 @@ any  value : 設定する値
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-pair_setRhs
+pair_set_rhs
 Pair 値を設定 (lhs)
 
 %prm
@@ -195,22 +195,22 @@ any  value : 設定する値
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-pair_setBoth
+pair_set_both
 Pair 値の変更 (両方)
 
 %prm
@@ -225,22 +225,22 @@ any  valueRhs : rhs 値
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::操作系
 
 ;--------------------
 %index
-pair_setvBoth
+pair_setv_both
 Pair 値の変更 (両方) (変数)
 
 %prm
@@ -255,15 +255,15 @@ var  vRhs : rhs 値
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::操作系
@@ -285,22 +285,22 @@ vRef を、片方のクローンにします。
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_cloneLhs
+pair_clone_lhs
 Pair クローン化 (lhs)
 
 %prm
@@ -314,22 +314,22 @@ vRef を lhs のクローンにします。
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_cloneRhs
+pair_clone_rhs
 Pair クローン化 (rhs)
 
 %prm
@@ -343,15 +343,15 @@ vRef を rhs のクローンにします。
 %href
 pair_set
 pair_setv
-pair_setLhs
-pair_setRhs
+pair_set_lhs
+pair_set_rhs
 
-pair_setBoth
-pair_setvBoth
+pair_set_both
+pair_setv_both
 
 pair_clone
-pair_cloneLhs
-pair_cloneRhs
+pair_clone_lhs
+pair_clone_rhs
 
 %group
 メンバ関数::取得系
@@ -373,11 +373,11 @@ int  idx     : 要素番号
 %href
 pair_get
 pair_getv
-pair_getLhs
-pair_getRhs
-pair_getvLhs
-pair_getvRhs
-pair_getvBoth
+pair_get_lhs
+pair_get_rhs
+pair_getv_lhs
+pair_getv_rhs
+pair_getv_both
 
 %group
 メンバ関数::取得系
@@ -398,18 +398,18 @@ int  idx  : 要素番号
 %href
 pair_get
 pair_getv
-pair_getLhs
-pair_getRhs
-pair_getvLhs
-pair_getvRhs
-pair_getvBoth
+pair_get_lhs
+pair_get_rhs
+pair_getv_lhs
+pair_getv_rhs
+pair_getv_both
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_getvLhs
+pair_getv_lhs
 Pair 値の取得 (lhs) ( 変数 )
 
 %prm
@@ -423,18 +423,18 @@ lhs の値を vResult に格納します。
 %href
 pair_get
 pair_getv
-pair_getLhs
-pair_getRhs
-pair_getvLhs
-pair_getvRhs
-pair_getvBoth
+pair_get_lhs
+pair_get_rhs
+pair_getv_lhs
+pair_getv_rhs
+pair_getv_both
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_getvRhs
+pair_getv_rhs
 Pair 値の取得 (rhs) ( 変数 )
 
 %prm
@@ -448,18 +448,18 @@ rhs の値を vResult に格納します。
 %href
 pair_get
 pair_getv
-pair_getLhs
-pair_getRhs
-pair_getvLhs
-pair_getvRhs
-pair_getvBoth
+pair_get_lhs
+pair_get_rhs
+pair_getv_lhs
+pair_getv_rhs
+pair_getv_both
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_getvBoth
+pair_getv_both
 Pair 値の取得 (both) ( 変数 )
 
 %prm
@@ -474,18 +474,18 @@ lhs, rhs の値をそれぞれ vResultLhs, vResultRhs に格納します。
 %href
 pair_get
 pair_getv
-pair_getLhs
-pair_getRhs
-pair_getvLhs
-pair_getvRhs
-pair_getvBoth
+pair_get_lhs
+pair_get_rhs
+pair_getv_lhs
+pair_getv_rhs
+pair_getv_both
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_getLhs
+pair_get_lhs
 Pair 値の取得 (lhs)
 
 %prm
@@ -498,18 +498,18 @@ lhs の値を取得して返します。
 %href
 pair_get
 pair_getv
-pair_getLhs
-pair_getRhs
-pair_getvLhs
-pair_getvRhs
-pair_getvBoth
+pair_get_lhs
+pair_get_rhs
+pair_getv_lhs
+pair_getv_rhs
+pair_getv_both
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_getRhs
+pair_get_rhs
 Pair 値の取得 (rhs)
 
 %prm
@@ -522,11 +522,11 @@ rhs の値を取得して返します。
 %href
 pair_get
 pair_getv
-pair_getLhs
-pair_getRhs
-pair_getvLhs
-pair_getvRhs
-pair_getvBoth
+pair_get_lhs
+pair_get_rhs
+pair_getv_lhs
+pair_getv_rhs
+pair_getv_both
 
 %group
 メンバ関数::取得系
@@ -546,15 +546,15 @@ int  idx  : 要素番号
 
 %href
 pair_vartype
-pair_vartypeLhs
-pair_vartypeRhs
+pair_vartype_lhs
+pair_vartype_rhs
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_vartypeLhs
+pair_vartype_lhs
 Pair 型の取得 (lhs)
 
 %prm
@@ -566,15 +566,15 @@ inst self : ペア
 
 %href
 pair_vartype
-pair_vartypeLhs
-pair_vartypeRhs
+pair_vartype_lhs
+pair_vartype_rhs
 
 %group
 メンバ関数::取得系
 
 ;--------------------
 %index
-pair_vartypeRhs
+pair_vartype_rhs
 Pair 型の取得 (rhs)
 
 %prm
@@ -586,8 +586,8 @@ inst self : ペア
 
 %href
 pair_vartype
-pair_vartypeLhs
-pair_vartypeRhs
+pair_vartype_lhs
+pair_vartype_rhs
 
 %group
 メンバ関数::取得系

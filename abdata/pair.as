@@ -41,39 +41,39 @@
 //------------------------------------------------
 #define global       pair_getv(%1,%2,%3=0)   pairImpl_getv abdataInsts(%1), %2, %3
 #define global ctype pair_get(%1,%2=0)       pairImpl_get( abdataInsts(%1), %2 )
-#define global       pair_getvLhs(%1,%2)     pairImpl_getvLhs  abdataInsts(%1), %2
-#define global       pair_getvRhs(%1,%2)     pairImpl_getvRhs  abdataInsts(%1), %2
-#define global       pair_getvBoth(%1,%2,%3) pairImpl_getvBoth abdataInsts(%1), %2, %3
+#define global       pair_getv_lhs(%1,%2)     pairImpl_getv_lhs  abdataInsts(%1), %2
+#define global       pair_getv_rhs(%1,%2)     pairImpl_getv_rhs  abdataInsts(%1), %2
+#define global       pair_getv_both(%1,%2,%3) pairImpl_getv_both abdataInsts(%1), %2, %3
 
-#define global ctype pair_getLhs(%1)         pairImpl_getLhs(abdataInsts(%1))
-#define global ctype pair_getRhs(%1)         pairImpl_getRhs(abdataInsts(%1))
+#define global ctype pair_get_lhs(%1)         pairImpl_get_lhs(abdataInsts(%1))
+#define global ctype pair_get_rhs(%1)         pairImpl_get_rhs(abdataInsts(%1))
 
 //------------------------------------------------
 // 参照化 ( 命令形式 )
 //------------------------------------------------
 #define global pair_clone(%1,%2,%3=0) pairImpl_clone    abdataInsts(%1), %2, %3
-#define global pair_cloneLhs(%1,%2)   pairImpl_cloneLhs abdataInsts(%1), %2
-#define global pair_cloneRhs(%1,%2)   pairImpl_cloneRhs abdataInsts(%1), %2
+#define global pair_clone_lhs(%1,%2)   pairImpl_clone_lhs abdataInsts(%1), %2
+#define global pair_clone_rhs(%1,%2)   pairImpl_clone_rhs abdataInsts(%1), %2
 
 //------------------------------------------------
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
 #define global ctype pair_vartype(%1,%2) pairImpl_vartype(abdataInsts(%1), %2)
-#define global ctype pair_vartypeLhs(%1) pairImpl_vartypeLhs(abdataInsts(%1))
-#define global ctype pair_vartypeRhs(%1) pairImpl_vartypeRhs(abdataInsts(%1))
+#define global ctype pair_vartype_lhs(%1) pairImpl_vartype_lhs(abdataInsts(%1))
+#define global ctype pair_vartype_rhs(%1) pairImpl_vartype_rhs(abdataInsts(%1))
 
 //------------------------------------------------
 // 値の設定
 //------------------------------------------------
 #define global pair_set(%1,%2,%3=0) pairImpl_set    abdataInsts(%1), %2, %3		// (%3 := idx)
-#define global pair_setLhs(%1,%2)   pairImpl_setLhs abdataInsts(%1), %2
-#define global pair_setRhs(%1,%2)   pairImpl_setRhs abdataInsts(%1), %2
+#define global pair_set_lhs(%1,%2)   pairImpl_set_lhs abdataInsts(%1), %2
+#define global pair_set_rhs(%1,%2)   pairImpl_set_rhs abdataInsts(%1), %2
 
-#define global pair_setvLhs(%1,%2) pairImpl_setvLhs abdataInsts(%1), %2
-#define global pair_setvRhs(%1,%2) pairImpl_setvRhs abdataInsts(%1), %2
+#define global pair_setv_lhs(%1,%2) pairImpl_setv_lhs abdataInsts(%1), %2
+#define global pair_setv_rhs(%1,%2) pairImpl_setv_rhs abdataInsts(%1), %2
 
-#define global pair_setBoth(%1,%2,%3)  pairImpl_setBoth  abdataInsts(%1), %2, %3
-#define global pair_setvBoth(%1,%2,%3) pairImpl_setvBoth abdataInsts(%1), %2, %3
+#define global pair_set_both(%1,%2,%3)  pairImpl_set_both  abdataInsts(%1), %2, %3
+#define global pair_setv_both(%1,%2,%3) pairImpl_setv_both abdataInsts(%1), %2, %3
 
 //------------------------------------------------
 // 要素交換

@@ -54,16 +54,16 @@
 	pairImpl_getv thismod, tmp, idx
 	return tmp
 	
-#define global pairImpl_getvLhs(%1,%2) pairImpl_getv %1, %2, PairImplIdx_Lhs
-#define global pairImpl_getvRhs(%1,%2) pairImpl_getv %1, %2, PairImplIdx_Rhs
+#define global pairImpl_getv_lhs(%1,%2) pairImpl_getv %1, %2, PairImplIdx_Lhs
+#define global pairImpl_getv_rhs(%1,%2) pairImpl_getv %1, %2, PairImplIdx_Rhs
 
-#modfunc pairImpl_getvBoth var vResultLhs, var vResultRhs
-	pairImpl_getvLhs thismod, vResultLhs
-	pairImpl_getvRhs thismod, vResultRhs
+#modfunc pairImpl_getv_both var vResultLhs, var vResultRhs
+	pairImpl_getv_lhs thismod, vResultLhs
+	pairImpl_getv_rhs thismod, vResultRhs
 	return
 	
-#define global ctype pairImpl_getLhs(%1) pairImpl_get(%1, PairImplIdx_Lhs)
-#define global ctype pairImpl_getRhs(%1) pairImpl_get(%1, PairImplIdx_Rhs)
+#define global ctype pairImpl_get_lhs(%1) pairImpl_get(%1, PairImplIdx_Lhs)
+#define global ctype pairImpl_get_rhs(%1) pairImpl_get(%1, PairImplIdx_Rhs)
 
 //------------------------------------------------
 // クローンを作る
@@ -72,8 +72,8 @@
 	abelem_clone mValue(idx), vSrc
 	return
 	
-#define global pairImpl_cloneLhs(%1,%2) pairImpl_clone %1, %2, PairImplIdx_Lhs
-#define global pairImpl_cloneRhs(%1,%2) pairImpl_clone %1, %2, PairImplIdx_Rhs
+#define global pairImpl_clone_lhs(%1,%2) pairImpl_clone %1, %2, PairImplIdx_Lhs
+#define global pairImpl_clone_rhs(%1,%2) pairImpl_clone %1, %2, PairImplIdx_Rhs
 
 //------------------------------------------------
 // 型の取得 ( 関数形式 )
@@ -81,8 +81,8 @@
 #modcfunc pairImpl_vartype int idx
 	return abelem_vartype( mValue(idx) )
 	
-#define global ctype pairImpl_vartypeLhs(%1) pairImpl_vartype(%1, PairImplIdx_Lhs)
-#define global ctype pairImpl_vartypeRhs(%1) pairImpl_vartype(%1, PairImplIdx_Rhs)
+#define global ctype pairImpl_vartype_lhs(%1) pairImpl_vartype(%1, PairImplIdx_Lhs)
+#define global ctype pairImpl_vartype_rhs(%1) pairImpl_vartype(%1, PairImplIdx_Rhs)
 
 //------------------------------------------------
 // 値の設定
@@ -96,18 +96,18 @@
 	abelem_setv mValue(idx), dst
 	return
 	
-#define global pairImpl_setLhs(%1,%2) pairImpl_set %1, %2, PairImplIdx_Lhs
-#define global pairImpl_setRhs(%1,%2) pairImpl_set %1, %2, PairImplIdx_Rhs
+#define global pairImpl_set_lhs(%1,%2) pairImpl_set %1, %2, PairImplIdx_Lhs
+#define global pairImpl_set_rhs(%1,%2) pairImpl_set %1, %2, PairImplIdx_Rhs
 
-#define global pairImpl_setvLhs(%1,%2) pairImpl_setv %1, %2, PairImplIdx_Lhs
-#define global pairImpl_setvRhs(%1,%2) pairImpl_setv %1, %2, PairImplIdx_Rhs
+#define global pairImpl_setv_lhs(%1,%2) pairImpl_setv %1, %2, PairImplIdx_Lhs
+#define global pairImpl_setv_rhs(%1,%2) pairImpl_setv %1, %2, PairImplIdx_Rhs
 
-#define global pairImpl_setBoth(%1,%2,%3) \
+#define global pairImpl_set_both(%1,%2,%3) \
 	ARG_TEMP@abdata_pair_impl(set_lhs) = (%2) :\
 	ARG_TEMP@abdata_pair_impl(set_rhs) = (%3) :\
-	pairImpl_setvBoth %1, ARG_TEMP@abdata_pair_impl(set_lhs), ARG_TEMP@abdata_pair_impl(set_rhs)
+	pairImpl_setv_both %1, ARG_TEMP@abdata_pair_impl(set_lhs), ARG_TEMP@abdata_pair_impl(set_rhs)
 
-#modfunc pairImpl_setvBoth var lhs, var rhs
+#modfunc pairImpl_setv_both var lhs, var rhs
 	abelem_setv mValue(PairImplIdx_Lhs), lhs
 	abelem_setv mValue(PairImplIdx_Rhs), rhs
 	return
@@ -116,8 +116,8 @@
 // 数え上げ
 //------------------------------------------------
 #modcfunc pairImpl_count var value,  local lhs, local rhs, local count
-	pairImpl_cloneLhs thismod, lhs
-	pairImpl_cloneRhs thismod, rhs
+	pairImpl_clone_lhs thismod, lhs
+	pairImpl_clone_rhs thismod, rhs
 	if ( lhs == value ) { count ++ }
 	if ( rhs == value ) { count ++ }
 	return count
@@ -127,10 +127,10 @@
 // @ lhs と rhs を交換する
 //------------------------------------------------
 #modfunc pairImpl_loc_swap  local tmpLhs, local tmpRhs
-	pairImpl_getvLhs thismod, tmpLhs
-	pairImpl_getvRhs thismod, tmpRhs
-	pairImpl_setvLhs thismod, tmpRhs
-	pairImpl_setvRhs thismod, tmpLhs
+	pairImpl_getv_lhs thismod, tmpLhs
+	pairImpl_getv_rhs thismod, tmpRhs
+	pairImpl_setv_lhs thismod, tmpRhs
+	pairImpl_setv_rhs thismod, tmpLhs
 	return
 	
 //------------------------------------------------
@@ -150,8 +150,8 @@
 //------------------------------------------------
 #modfunc pairImpl_copy var src
 	pairImpl_clear  thismod
-	pairImpl_setLhs thismod, pairImpl_getLhs(src)
-	pairImpl_setRhs thismod, pairImpl_getRhs(src)
+	pairImpl_set_lhs thismod, pairImpl_get_lhs(src)
+	pairImpl_set_rhs thismod, pairImpl_get_rhs(src)
 	return
 	
 //------------------------------------------------
@@ -199,7 +199,7 @@
 
 #modfunc pairImpl_dbglog_ str _ident,  local ident, local lhs, local rhs
 	ident = _ident
-	pairImpl_getvBoth thismod, lhs, rhs
+	pairImpl_getv_both thismod, lhs, rhs
 	logmes "pair " + strtrim(ident, 0, ' ') + " = <" + lhs + ", " + rhs + ">\n"
 	return
 	

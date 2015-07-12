@@ -1,7 +1,4 @@
 ## TODO
-* unor_exists → unor_key_exists 
-* snake_case へのし忘れ
-  * getLhs など
 * 最大最小検索
   * min_element, max_element, minmax_element
 * 整列
@@ -28,6 +25,8 @@
 * `unor_exists()` を除去した。
   * `unor_count_key()` に置き換えられる。
 * `_isValid()` を `_is_valid()` に改名した。
+* pair のメンバ関数を snake_case にした。
+  * ``pair(Impl)?_(getv?|setv?|clone|ref|vartype)(Lhs|Rhs|Both)``
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。
