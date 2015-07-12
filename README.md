@@ -3,10 +3,10 @@
 抽象データ構造を提供するモジュールです。
 
 ## 内容
-* [all.as](./abdata/all.as) : すべてのヘッダを一括で \#include します。
-* [sample](./sample) : 簡単なサンプルです。
+* [abdata/all.as](abdata/all.as): すべてのヘッダを一括で \#include します。
+* [sample](sample): 簡単なサンプルです。
 
-* <abdata/backward_compatible.as> : 古い abdata をそこそこ動かせるヘッダ。
+* [abdata/backward_compatible.as](abdata/backward_compatible.as) : 古い abdata をそこそこ動かせるヘッダ。
 
 ### コンテナ
 * pair: ペア
@@ -31,16 +31,16 @@
   * 自動的には破棄されないので、必要に応じて delete を呼び出してください。
 
 * 要素数
-  * size(), count(), length()
+  * size(), length()
   * 要素の数を返します。
-  * 3つとも同じ関数です。
+  * 2つとも同じ関数です。
 * 要素の追加
   * insert
     * 指定した位置に要素を追加します。
   * push_front, push_back
     * それぞれ先頭、末尾に要素を追加します。
 * 要素の除去
-  * remove
+  * erase
     * 指定した位置の要素を除去します。
   * pop_front, pop_back
     * それぞれ先頭、末尾の要素を除去します。
@@ -55,13 +55,13 @@
     * 要素の値を取得します。
   * getv
     * 要素の値を、与えられた変数に代入します。
-  * dup
-    * 与えられた変数を、要素のクローン変数(dup)にします。
+  * clone
+    * 与えられた変数を、要素のクローン変数にします。(`dup` 命令で作成されるようなもの。)
   * vartype()
     * 要素の値の型を返します。
-* 要素の存在
-  * exists()
-  * 要素があるか否かを返します。
+* 要素の数え上げ
+  * count()
+    * 与えられた値を持つ要素の数を数えます。
 
 * 完全消去
   * clear
@@ -82,7 +82,7 @@
 アルゴリズム関数を提供するファイルには、接頭辞 alg_ が付いています。
 
 * 反復アルゴリズム
-  * <./abdata/alg_iter.as>
+  * [abdata/alg_iter.as](abdata/alg_iter.as)
   * `foreach` のようなもの。コンテナ内の各要素についてループを行います。
 
 ## リンク
