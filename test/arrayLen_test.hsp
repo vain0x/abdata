@@ -1,0 +1,88 @@
+#include "../abdata/arrayLen.as"
+
+#module
+
+#deffunc arrayLenTest_eq_ran array arr, int _value, int x_lb, int x_ub, \
+	local value, local eq_ran
+	
+	value = _value
+	arrayLen_equal_range arr, length(arr), value, eq_ran(0), eq_ran(1)
+	assert eq_ran(0) == x_lb
+	assert eq_ran(1) == x_ub
+	return
+	
+#deffunc arrayLenTest_sorted_insert \
+	array _arr, int _value, int can_dup, \
+	int x_lb, int x_ub, int x_c,        \
+	local arr, local len, local value, local lb, local ub
+	
+	arrayLen_copy arr, len,  _arr, length(_arr)
+	value = _value
+	arrayLenSorted_insert_v arr, len, value, can_dup
+	assert stat == x_c
+	
+	arrayLen_equal_range arr, len, value, lb, ub
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#deffunc arrayLenTest_sorted_erase array _arr, int _value, int max_count,  int x_lb, int x_ub, int x_c, \
+	local arr, local value, local lb, local ub
+	
+	arrayLen_copy arr, len,  _arr, length(_arr)
+	value = _value
+	arrayLenSorted_erase_v arr, len, value, max_count
+	assert stat == x_c
+	
+	arrayLen_equal_range arr, len, value, lb, ub
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#global
+
+	arr = 1, 3, 3, 5, 5, 5, 7, 8
+	arr_len = length(arr)
+	
+	//®—ñ«
+	arr_not_sorted = 1, 3, 3, 4, 2
+	arr_not_sorted_len = length(arr_not_sorted)
+	
+	assert arrayLen_is_sorted(arr, arr_len)
+	assert arrayLen_is_sorted(arr_not_sorted, arr_not_sorted_len) == 0
+	
+	//ŒŸõ
+	arrayLenTest_eq_ran arr, 0,   0, 0
+	arrayLenTest_eq_ran arr, 2,   1, 1
+	arrayLenTest_eq_ran arr, 3,   1, 3
+	arrayLenTest_eq_ran arr, 8,   7, 8
+	arrayLenTest_eq_ran arr, 9,   8, 8
+	
+	//®—ñÏ‚İ‚Ì”‚¦ã‚°
+	val = 0, 1, 3, 5
+	x_c = 0, 1, 2, 3
+	repeat 3
+		assert arrayLenSorted_count(arr, arr_len, val(cnt)) == x_c(cnt)
+	loop
+	
+	//®—ñÏ‚İ‘}“ü
+	//‘}“üŒã‚ÉA‘}“ü‚µ‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚èAÀÛ‰½ŒÂ‘}“ü‚³‚ê‚é‚©
+	arrayLenTest_sorted_insert arr, 0,  true,    0, 1,  1
+	arrayLenTest_sorted_insert arr, 1,  true,    0, 2,  1
+	arrayLenTest_sorted_insert arr, 1, false,    0, 1,  0
+	arrayLenTest_sorted_insert arr, 2,  true,    1, 2,  1
+	arrayLenTest_sorted_insert arr, 3,  true,    1, 4,  1
+	arrayLenTest_sorted_insert arr, 3, false,    1, 3,  0
+	arrayLenTest_sorted_insert arr, 9,  true,    8, 9,  1
+	arrayLenTest_sorted_insert arr, 9, false,    8, 9,  1
+	
+	//®—ñÏ‚İ‚Ìœ‹
+	//œ‹Œã‚ÉAœ‹‚³‚ê‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚èAÀÛ‰½ŒÂœ‹‚³‚ê‚é‚©
+	arrayLenTest_sorted_erase arr, 0,  1,    0, 0,  0
+	arrayLenTest_sorted_erase arr, 1,  1,    0, 0,  1
+	arrayLenTest_sorted_erase arr, 3,  1,    1, 2,  1
+	arrayLenTest_sorted_erase arr, 3, 99,    1, 1,  2
+	arrayLenTest_sorted_erase arr, 9, 99,    8, 8,  0
+	
+	logmes "arrayLen test completed."
+	

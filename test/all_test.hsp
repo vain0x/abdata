@@ -1,5 +1,6 @@
 
 #include "container_test.hsp"
 #include "unor_test.hsp"
+#include "arrayLen_test.hsp"
 
 	logmes "All test completed."

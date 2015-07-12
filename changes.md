@@ -18,6 +18,11 @@
 * knowbug での拡張表示
 
 ## 更新履歴
+### 2015/07/13 (Mon)
+* ヘッダ <abdata/arrayLen.as> を追加した。
+  * 標準配列とその長さをペアで管理する。
+  * 2分探索アルゴリズムをサポートしている。
+
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。
 
@@ -30,8 +35,8 @@
 * 公開される関数名をいくつか変更した。
   * remove -> erase
   * setSize -> resize
-  * swap -> locate_swap
-  * move -> relocate
+  * swap -> loc_swap
+  * move -> loc_move
   * exchange -> swap
   * iterInit -> iter_init
   * iterNext -> iter_next
