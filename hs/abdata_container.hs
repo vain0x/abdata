@@ -6,7 +6,7 @@ abdata_container
 uedai
 
 %date
-2010 07/17 (Sat)	// 最終更新 _dup を _clone へ変更, new_container 追加
+2010 07/17 (Sat)	// 最終更新 _dup を _clone へ変更, container_make 追加
 2010 06/25 (Fri)	// container_Sort 追加
 2009 10/04 (Sun)	// 
 2009 08/31 (Mon)	// 作成
@@ -25,7 +25,7 @@ http://prograpark.ninja-web.net/
 
 ;--------------------
 %index
-new_container
+container_make
 container 構築 (一時)
 
 %prm
@@ -35,7 +35,7 @@ container 構築 (一時)
 汎用コンテナ (container) を式中で構築します。
 
 %href
-new_container
+container_make
 container_new
 container_delete
 
@@ -55,7 +55,7 @@ inst self : 汎用コンテナを構築する変数
 汎用コンテナ (container) を構築します。
 
 %href
-new_container
+container_make
 container_new
 container_delete
 
@@ -77,7 +77,7 @@ inst self : 汎用コンテナ
 自動で呼び出されるため、通常、呼び出す必要はありません。
 
 %href
-new_container
+container_make
 container_new
 container_delete
 

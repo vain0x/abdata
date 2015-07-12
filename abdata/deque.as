@@ -6,7 +6,7 @@
 #define global Deque_ClsName "deque"
 #define global dequeNull abdataNull
 
-#define global new_deque    new_container
+#define global deque_make    container_make
 #define global deque_new    container_new
 #define global deque_delete container_delete
 

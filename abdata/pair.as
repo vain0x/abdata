@@ -30,7 +30,7 @@
 #define global pair_delete(%1) pairImpl_delete abdataInsts(%1)
 
 #module
-#define global ctype new_pair(%1 = stt_zero@, %2 = stt_zero@) new_pair_(%1, %2)
+#define global ctype pair_make(%1 = stt_zero@, %2 = stt_zero@) new_pair_(%1, %2)
 #defcfunc new_pair_ var lhs, var rhs,  local newObj
 	pair_new newObj, lhs, rhs
 	return newObj

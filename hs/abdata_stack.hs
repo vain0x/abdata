@@ -23,7 +23,7 @@ uedai
 
 ;--------------------
 %index
-new_stack
+stack_make
 Stack 構築 (一時)
 
 %prm
@@ -33,7 +33,7 @@ Stack 構築 (一時)
 新たなスタック (stack) を構築し、返します。
 
 %href
-new_stack
+stack_make
 stack_new
 stack_delete
 
@@ -53,7 +53,7 @@ var self : 構築先の変数
 スタック (stack) を構築します。
 
 %href
-new_stack
+stack_make
 stack_new
 stack_delete
 

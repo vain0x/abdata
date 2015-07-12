@@ -9,7 +9,7 @@
 #define global Stack_ClsName "stack"
 #define global stackNull dequeNull
 
-#define global new_stack    new_deque
+#define global stack_make    deque_make
 #define global stack_new    deque_new
 #define global stack_delete deque_delete
 

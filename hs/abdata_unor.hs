@@ -24,7 +24,7 @@ http://prograpark.ninja-web.net/
 
 ;--------------------
 %index
-new_unor
+unor_make
 Unor 構築 (一時)
 
 %prm
@@ -34,7 +34,7 @@ Unor 構築 (一時)
 新しく連想配列 (Unordered) を構築し、返します。
 
 %href
-new_unor
+unor_make
 unor_new
 unor_delete
 
@@ -54,7 +54,7 @@ var self : インスタンスを格納する変数
 連想配列を構築します。
 
 %href
-new_unor
+unor_make
 unor_new
 unor_delete
 
@@ -76,7 +76,7 @@ inst self : 連想配列
 この関数はプログラム終了時、自動で呼び出されるため、通常、呼び出す必要はありません。
 
 %href
-new_unor
+unor_make
 unor_new
 unor_delete
 

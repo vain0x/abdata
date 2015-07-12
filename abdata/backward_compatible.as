@@ -94,4 +94,13 @@
 #define global pair_vartypeRhs pair_vartype_rhs
 #define global pair_vartypeBoth pair_vartype_both
 
+#define global new_container container_make
+#define global new_list list_make
+#define global new_deque deque_make
+#define global new_stack stack_make
+#define global new_queue queue_make
+#define global new_tnode tnode_make
+#define global new_unor unor_make
+#define global new_pair pair_make
+
 #endif

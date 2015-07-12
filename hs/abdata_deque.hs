@@ -24,7 +24,7 @@ http://prograpark.ninja-web.net/
 
 ;--------------------
 %index
-new_deque
+deque_make
 Deque 構築 (一時)
 
 %prm
@@ -34,7 +34,7 @@ Deque 構築 (一時)
 新しい双方向キュー (Deque) を構築し、返します。
 
 %href
-new_deque
+deque_make
 deque_new
 deque_delete
 
@@ -54,7 +54,7 @@ inst self : モジュール変数
 双方向キュー (Deque) を構築します。
 
 %href
-new_deque
+deque_make
 deque_new
 deque_delete
 
@@ -76,7 +76,7 @@ inst self : モジュール変数
 プログラムの終了時に自動で呼び出されるため、通常、呼び出す必要はありません。
 
 %href
-new_deque
+deque_make
 deque_new
 deque_delete
 

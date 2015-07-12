@@ -184,7 +184,7 @@
 	dbgout( "object {" )
 	NextToken		// pop '{'
 	
-	members = new_list()
+	members = list_make()
 	
 	// parse Members
 	repeat
@@ -220,7 +220,7 @@
 	val = abjsonParser_Value( thismod )
 	
 	dbgout( "> pair" )
-	tnode_new node, AbJsonNodeName_Pair, new_pair( key, val )
+	tnode_new node, AbJsonNodeName_Pair, pair_make( key, val )
 	return node
 	
 //------------------------------------------------
@@ -233,7 +233,7 @@
 	dbgout( "array [" )
 	NextToken		// pop '['
 	
-	tnode_new node, AbJsonNodeName_Array, new_list()		// has List<Pair>
+	tnode_new node, AbJsonNodeName_Array, list_make()		// has List<Pair>
 	
 	// parse Elements
 	repeat

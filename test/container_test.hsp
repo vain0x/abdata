@@ -2,7 +2,7 @@
 
 #module
 #defcfunc make_iota_container int n,  local self
-	self = new_container()
+	self = container_make()
 	repeat n
 		container_push_back self, cnt
 	loop
@@ -153,7 +153,7 @@
 	assert container_size(con0) == 0
 	
 	//—”
-	con1 = new_container(5)
+	con1 = container_make(5)
 	repeat container_size(con1)
 		container_set con1, rnd(1000)
 	loop
@@ -164,7 +164,7 @@
 	loop
 	
 	//•¡”‚ÌŒ^
-	con2 = new_container()
+	con2 = container_make()
 	container_push_back con2, "b"
 	container_push_back con2, 5
 	container_push_back con2, 1
@@ -182,7 +182,7 @@
 	loop
 	
 	//”‚¦ã‚°
-	con = new_container()
+	con = container_make()
 	container_push_back con, "1"
 	container_push_back con, "a"
 	container_push_back con, 1

@@ -16,7 +16,7 @@
 // ç\ízé“
 //------------------------------------------------
 #module
-#defcfunc new_unor  local newOne
+#defcfunc unor_make  local newOne
 	unor_new newOne
 	return   newOne
 #global

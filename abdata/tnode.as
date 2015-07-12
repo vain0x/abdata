@@ -45,7 +45,7 @@
 	tnode_resetElemsv self, value, chd
 	return
 	
-#defcfunc new_tnode var value, var chd,   local newOne
+#defcfunc tnode_make var value, var chd,   local newOne
 	tnode_new newOne, value, chd
 	return newOne
 	

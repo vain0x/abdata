@@ -30,6 +30,7 @@
 * 破壊的変更をある程度修正する [abdata/backward_compatible.as](abdata/backward_compatible.as) を追加した。
   * `_swap` や `_count` のような上書きはどうしようもない。
   * 今後もサポートされる保証はない。
+* `new_CONTAINER()` を `CONTAINER_make()` に改名した。
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。

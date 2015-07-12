@@ -7,7 +7,7 @@
 #define global Queue_ClsName "queue"
 #define global queueNull dequeNull
 
-#define global new_queue    new_deque
+#define global queue_make    deque_make
 #define global queue_new    deque_new
 #define global queue_delete deque_delete
 

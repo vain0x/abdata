@@ -8,7 +8,7 @@
 
 #define global List_ClsName "list"
 
-#define global new_list    new_container
+#define global list_make    container_make
 #define global list_new    container_new
 #define global list_delete container_delete
 

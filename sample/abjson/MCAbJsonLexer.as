@@ -75,7 +75,7 @@
 	loop
 #endif
 	
-	tklist = new_list(), new_list()
+	tklist = list_make(), list_make()
 	repeat cntToken
 		list_add tklist(0), tktypelist(cnt)
 		list_add tklist(1), tkstrlist(cnt)

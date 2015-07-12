@@ -34,7 +34,7 @@ var self : Queue を構築する変数
 キュー (Queue) を構築します。
 
 %href
-new_queue
+queue_make
 queue_new
 queue_delete
 
@@ -54,7 +54,7 @@ inst self : キュー
 キュー (Queue) を解体します。すべての要素がキューから取り除かれ、キューとして無効になります。
 
 %href
-new_queue
+queue_make
 queue_new
 queue_delete
 

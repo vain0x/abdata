@@ -30,7 +30,7 @@
 	containerImpl_new abdataInsts_var, num, vDefault : self = stat
 	return
 	
-#define global ctype new_container(%1 = 0, %2 = stt_zero@) new_container_(%1, %2)
+#define global ctype container_make(%1 = 0, %2 = stt_zero@) new_container_(%1, %2)
 
 //------------------------------------------------
 // 一時コンテナ・オブジェクトの生成

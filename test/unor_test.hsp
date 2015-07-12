@@ -2,7 +2,7 @@
 
 #module
 #defcfunc make_iota_unor int n,  local self
-	self = new_unor()
+	self = unor_make()
 	repeat n
 		unor_add self, "#" + cnt, cnt
 	loop
@@ -11,7 +11,7 @@
 
 	//’Ç‰Á
 	
-	un = new_unor()
+	un = unor_make()
 	assert unor_size(un) == 0
 	
 	unor_add un, "#0", "val0"
@@ -57,7 +57,7 @@
 	//˜AŒ‹
 	
 	un0 = make_iota_unor(3)
-	un1 = new_unor()
+	un1 = unor_make()
 	repeat 4
 		unor_add un1, "@" + cnt, double(cnt)
 	loop

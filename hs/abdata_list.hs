@@ -23,7 +23,7 @@ uedai
 
 ;--------------------
 %index
-new_list
+list_make
 List 構築 (一時)
 
 %prm
@@ -33,7 +33,7 @@ List 構築 (一時)
 新しくリスト (List) を構築し、返します。
 
 %href
-new_list
+list_make
 list_new
 list_delete
 
@@ -53,7 +53,7 @@ var self : インスタンスを格納する変数
 リスト (List) を構築します。
 
 %href
-new_list
+list_make
 list_new
 list_delete
 
@@ -75,7 +75,7 @@ inst self : List インスタンス
 この関数はプログラム終了時に自動で呼び出されるため、通常、呼び出す必要はありません。
 
 %href
-new_list
+list_make
 list_new
 list_delete
 

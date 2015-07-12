@@ -25,7 +25,7 @@ http://prograpark.ninja-web.net/
 
 ;--------------------
 %index
-new_pair
+pair_make
 Pair 構築 (一時)
 
 %prm
@@ -37,7 +37,7 @@ var rhs  : 初期右値
 新しくペア (Pair) を構築し、返します。初期値は <lhs, rhs> です ( 省略可 )。どちらも、初期値が省略された要素は 0 が格納されます。
 
 %href
-new_pair
+pair_make
 pair_new
 pair_delete
 
@@ -61,7 +61,7 @@ any  rhs  : 初期右値
 ペアの要素番号は、lhs, rhs の順に 0, 1 で、この値は定数 PairIdx_Lhs, PairIdx_Rhs で得られます。
 
 %href
-new_pair
+pair_make
 pair_new
 pair_delete
 
@@ -83,7 +83,7 @@ inst self : Pair インスタンス
 この関数はプログラム終了時に自動で呼び出されるため、通常、呼び出す必要はありません。
 
 %href
-new_pair
+pair_make
 pair_new
 pair_delete
 

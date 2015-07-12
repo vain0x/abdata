@@ -1,6 +1,6 @@
 #include "../abdata/list.as"
 
-	obj = new_list()
+	obj = list_make()
 ;	list_new    obj
 	list_add    obj, "Hello, world!"
 	list_add    obj, 100

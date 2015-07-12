@@ -1,16 +1,16 @@
 #include "../abdata/tnode.as"
 
-	tnode_new root, "親", new_list()
+	tnode_new root, "親", list_make()
 	
 	for i, 0, 3
 		
-		tnode_new   chd, "子(" + i + ")", new_list()
+		tnode_new   chd, "子(" + i + ")", list_make()
 		tnx_addChd root, chd
 		
 		repeat 5
 		;	chd = list_get( tnode_getChd(root), i )
 			
-			tnode_new  grandChd, "孫(" + cnt + ")", new_list()
+			tnode_new  grandChd, "孫(" + cnt + ")", list_make()
 			tnx_addChd chd, grandChd
 		loop
 		
