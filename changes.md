@@ -26,6 +26,8 @@
 * `_count` 関数が、与えられた値をもつ要素の個数を数えるようになった。
   * 以前は `_size` や `_length` 関数に置換されていた。
   * std::map::count と std::count の挙動が違うので困る。
+* `unor_exists()` を除去した。
+  * `unor_count_key()` に置き換えられる。
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。

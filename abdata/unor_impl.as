@@ -227,12 +227,6 @@
 	return list_count(mlistValue, value)
 	
 //------------------------------------------------
-// キーの有無
-//------------------------------------------------
-#modcfunc unorImpl_exists str key
-	return ( unorImpl_getIndex( thismod, key, true ) >= 0 )
-	
-//------------------------------------------------
 // 実際の要素番号を得る
 // @private
 // @result:

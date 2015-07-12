@@ -124,11 +124,6 @@
 #define global ctype unor_count_value(%1, %2) unorImpl_count_value(abdataInsts(%1), %2)
 
 //------------------------------------------------
-// キーの有無
-//------------------------------------------------
-#define global ctype unor_exists(%1,%2) unorImpl_exists(abdataInsts(%1), %2)
-
-//------------------------------------------------
 // 実際の要素番号を得る
 // @private
 // @result:

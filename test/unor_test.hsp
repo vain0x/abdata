@@ -42,7 +42,7 @@
 	assert unor_size(un) == 5 - 1
 	repeat 5
 		if ( cnt == 2 ) {
-			assert unor_exists(un, "#2") == 0
+			assert unor_count_key(un, "#2") == 0
 		} else {
 			assert unor_get(un, "#" + cnt) == cnt
 		}
