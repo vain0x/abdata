@@ -14,6 +14,7 @@
 #define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
 #define true  1
 #define false 0
+#define int_max 0x7FFFFFFF
 
 #define ctype STR_ERR_OVER_RANGE(%1) "Error! [abdata コンテナ] 要素番号範囲外エラー(" + (%1) + ")"
 
@@ -188,23 +189,25 @@
 //------------------------------------------------
 // 除去
 //------------------------------------------------
-#modfunc containerImpl_erase int _i,  local i, local ivRemoved
-	
-	i         = containerImpl_getRealIndex(thismod, _i)
-	ivRemoved = midlist(i)
-	
-	// i 番目を詰める ( 実質的除去 )
-	stdarray_erase midlist, i
-	midlist( length(midlist) - 1 ) = -1		// 残骸を無効要素にする
-	mCnt --
-	
-	// mElems の方も解放
-	abelem_delete mElems( ivRemoved )
+#modfunc containerImpl_erase int _i,  local i
+	i = containerImpl_getRealIndex(thismod, _i)
+	containerImpl_erase_range thismod, i, i + 1
 	return
 	
 #define global containerImpl_erase_front(%1) containerImpl_erase %1, 0
 #define global containerImpl_erase_back(%1)  containerImpl_erase %1, (-1)
 
+#modfunc containerImpl_erase_range int lb, int ub
+	if ( ub <= lb ) { return }
+	repeat mCnt - ub, lb
+		if ( cnt < ub ) {
+			abelem_delete mElems(midlist(cnt))
+		}
+		midlist(cnt) = midlist(cnt + (ub - lb))
+	loop
+	mCnt -= (ub - lb)
+	return
+	
 //------------------------------------------------
 // 要素数の設定
 // 
@@ -406,6 +409,90 @@
 	// idx-list を変更
 	memcpy midlist, arrDst, len * 4
 	
+	return
+	
+//------------------------------------------------
+// 整列済みか？
+//------------------------------------------------
+#modcfunc containerImpl_is_sorted int sort_mode,  local is_sorted,  local clone1, local clone2
+	is_sorted = true
+	repeat limit(0, mCnt - 1, int_max)
+		containerImpl_clone thismod, clone1, cnt
+		containerImpl_clone thismod, clone2, cnt + 1
+		if ( opCompare(clone1, clone2) * (1 - 2 * sort_mode) > 0 ) {
+			is_sorted = false : break
+		}
+	loop
+	return is_sorted
+	
+//------------------------------------------------
+// 整列済みコンテナの、下界・上界をみつける
+//------------------------------------------------
+#modcfunc containerImpl_lu_bound_@abdata_con_impl var value, int sort_mode, int finds_upper, \
+	local lb, local ub, local mid, local mid_clone, local cmp
+	
+	assert containerImpl_is_sorted(thismod, sort_mode)
+	lb = -1 : ub = mCnt
+	repeat
+		if ( (ub - lb) <= 1 ) { break }
+		mid = lb + (ub - lb) / 2
+		containerImpl_clone thismod, mid_clone, mid
+		
+		cmp = opCompare(mid_clone, value) * (1 - 2 * sort_mode)
+		if ( ((finds_upper != 0) && cmp == 0) || cmp < 0 ) {
+			lb = mid
+		} else {
+			ub = mid
+		}
+	loop
+	return ub
+	
+#define global ctype containerImpl_lower_bound(%1, %2, %3 = SortMode_Ascending) containerImpl_lu_bound_@abdata_con_impl((%1), (%2), (%3), 0)
+#define global ctype containerImpl_upper_bound(%1, %2, %3 = SortMode_Ascending) containerImpl_lu_bound_@abdata_con_impl((%1), (%2), (%3), 1)
+
+#modfunc containerImpl_equal_range var value, var lb, var ub, int sort_mode
+	lb = containerImpl_lower_bound(thismod, value, sort_mode)
+	ub = containerImpl_upper_bound(thismod, value, sort_mode)
+	return
+	
+//------------------------------------------------
+// 整列済みコンテナの、適切な位置に要素を挿入する
+//
+// @param value: 挿入される要素の値
+// @param can_dup (true):
+// これが真なら、すでに value が含まれているときも、挿入する。
+//------------------------------------------------
+#define global containerImpl_sorted_insertv(%1, %2, %3 = true@abdata_con_impl, %4 = SortMode_Ascending) \
+	containerImpl_sorted_insertv_@abdata_con_impl (%1), (%2), (%3), (%4)
+
+#modfunc containerImpl_sorted_insertv_@abdata_con_impl \
+	var value, int can_dup, int sort_mode,  \
+	local lb, local clone
+	
+	lb = containerImpl_lower_bound(thismod, value, sort_mode)
+	if ( can_dup == false && lb != containerImpl_size(thismod) ) {
+		containerImpl_clone thismod, clone, lb
+		if ( opCompare(clone, value) == 0 ) { return }
+	}
+	containerImpl_insertv thismod, value, lb
+	return
+	
+//------------------------------------------------
+// 整列済みコンテナから、要素を除去する
+//
+// @param value: 除去すべき要素の値
+// @param max_count (∞): 除去される要素の個数の最大値
+//------------------------------------------------
+#define global containerImpl_sorted_erasev(%1, %2, %3 = int_max@abdata_con_impl, %4 = SortMode_Ascending) \
+	containerImpl_sorted_erasev_@abdata_con_impl (%1), (%2), (%3), (%4)
+	
+#modfunc containerImpl_sorted_erasev_@abdata_con_impl \
+	var value, int max_count, int sort_mode,  \
+	local lb, local ub
+	
+	containerImpl_equal_range thismod, value, lb, ub, sort_mode
+	ub = lb + limit(ub - lb, 0, max_count)
+	containerImpl_erase_range thismod, lb, ub
 	return
 	
 //------------------------------------------------

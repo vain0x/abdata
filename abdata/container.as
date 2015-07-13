@@ -191,6 +191,26 @@
 #define global container_sort(%1, %2 = SortMode_Ascending) containerImpl_sort abdataInsts(%1), %2
 
 //------------------------------------------------
+// ®—ñÏ‚İ
+//------------------------------------------------
+#define global ctype container_is_sorted(%1, %2 = SortMode_Ascending) containerImpl_is_sorted(abdataInsts(%1), %2)
+
+#define global ctype container_lower_bound(%1, %2, %3 = SortMode_Ascending) \
+	containerImpl_lower_bound(abdataInsts(%1), %2, %3)
+	
+#define global ctype container_upper_bound(%1, %2, %3 = SortMode_Ascending) \
+	containerImpl_upper_bound(abdataInsts(%1), %2, %3)
+	
+#define global container_equal_range(%1, %2, %3, %4, %5 = SortMode_Ascending) \
+	containerImpl_equal_range abdataInsts(%1), %2, %3, %4, %5
+	
+#define global container_sorted_insertv(%1, %2, %3 = true@abdata_con_impl, %4 = SortMode_Ascending) \
+	containerImpl_sorted_insertv abdataInsts(%1), %2, %3, %4
+	
+#define global container_sorted_erasev(%1, %2, %3 = int_max@abdata_con_impl, %4 = SortMode_Ascending) \
+	containerImpl_sorted_erasev abdataInsts(%1), %2, %3, %4
+
+//------------------------------------------------
 // [i] ”½•œq::‰Šú‰»
 //------------------------------------------------
 #define global container_iter_init(%1,%2) containerImpl_iter_init abdataInsts(%1), %2

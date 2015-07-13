@@ -102,6 +102,17 @@
 #define global list_sort        container_sort
 
 //------------------------------------------------
+// 整列済みリストへの操作
+//------------------------------------------------
+#define global list_is_sorted      container_is_sorted
+#define global list_lower_bound    container_lower_bound
+#define global list_upper_bound    container_upper_bound
+#define global list_equal_range    container_equal_range
+#define global list_sorted_insertv container_sorted_insertv
+#define global list_sorted_erasev  container_sorted_erasev
+#define global list_sorted_count   container_sorted_count
+
+//------------------------------------------------
 // [i] コンテナ操作
 //------------------------------------------------
 #define global list_clear    container_clear

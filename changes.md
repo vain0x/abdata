@@ -33,6 +33,9 @@
 * `new_CONTAINER()` を `CONTAINER_make()` に改名した。
 * 辞書順比較 `_lexicographical_compare()` を追加した。
   * container, list, pair, unor, arrayLen
+* 2分探索系のアルゴリズムを追加した。
+  * container, list
+  * _lower_bound(), _upper_bound(), _equal_range, _sorted_insertv, _sorted_erasev
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。
