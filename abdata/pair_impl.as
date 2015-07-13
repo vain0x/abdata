@@ -6,6 +6,7 @@
 
 #include "abelem.as"
 #include "mod_pvalptr.as"
+#include "mod_swap.as"
 
 #module abdata_pair_impl mValue
 
@@ -162,12 +163,12 @@
 //------------------------------------------------
 // [i] ŒðŠ·
 //------------------------------------------------
-#modfunc pairImpl_swap var mv2,  local tmp
-	pairImpl_new  tmp
-	pairImpl_copy tmp, thismod
-	pairImpl_copy thismod, mv2
-	pairImpl_copy   tmp,   tmp
-	pairImpl_delete tmp
+#modfunc pairImpl_swap var rhs
+	pairImpl_swap_impl@abdata_pair_impl rhs, mValue
+	return
+	
+#modfunc pairImpl_swap_impl@abdata_pair_impl array lhs_value
+	swap_array lhs_value, mValue
 	return
 	
 //------------------------------------------------

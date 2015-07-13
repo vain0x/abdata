@@ -48,4 +48,13 @@
 	assert pair_count(p2, one) == 1 
 	assert pair_count(p3, one) == 0
 	
+	//ŒğŠ·
+	pair_new p1, 1, 2
+	pair_new p2, "x", "y"
+	pair_swap p1, p2
+	assert pair_get_lhs(p1) == "x"
+	assert pair_get_rhs(p1) == "y"
+	assert pair_get_lhs(p2) == 1
+	assert pair_get_rhs(p2) == 2
+	
 	logmes "Pair test completed."
