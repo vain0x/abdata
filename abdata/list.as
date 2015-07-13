@@ -28,6 +28,7 @@
 // 参照化 ( 命令形式 )
 //------------------------------------------------
 #define global list_clone container_clone
+#define global list_clone_abelem container_clone_abelem
 
 //------------------------------------------------
 // 参照化 ( 関数形式 )

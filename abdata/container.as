@@ -58,6 +58,8 @@
 //------------------------------------------------
 #define global container_clone(%1,%2,%3=0) containerImpl_clone abdataInsts(%1), %2, %3
 
+#define global container_clone_abelem(%1, %2, %3) containerImpl_clone_abelem abdataInsts(%1), %2, %3
+
 //------------------------------------------------
 // QÆ‰» ( ŠÖ”Œ`® )
 //------------------------------------------------

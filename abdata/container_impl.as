@@ -80,6 +80,10 @@
 	abelem_clone mElems( midlist( containerImpl_getRealIndex(thismod, i) ) ), vRef
 	return
 	
+#modfunc containerImpl_clone_abelem var ref, int i
+	dup ref, mElems(midlist(i))
+	return
+	
 //------------------------------------------------
 // QÆ‰» ( ŠÖ”Œ`® )
 //------------------------------------------------
