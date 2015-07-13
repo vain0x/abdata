@@ -28,10 +28,18 @@
 	assert unor_size(un) == 2
 	assert unor_get(un, "#1") == 1
 	
-	//‘‚«Š·‚¦
+	//QÆ‰»
+	un = make_iota_unor(3)
 	
+	unor_clone un, "#1", r
+	assert r == 1
+	r = 99
+	assert unor_get(un, "#1") == 99
+	
+	//‘‚«Š·‚¦
+	un = make_iota_unor(3)
 	unor_set un, "#1", -1
-	assert unor_size(un) == 2
+	assert unor_size(un) == 3
 	assert unor_get(un, "#1") == -1
 	
 	//œ‹

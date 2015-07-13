@@ -85,12 +85,12 @@
 //------------------------------------------------
 // éQè∆âª ( ñΩóﬂå`éÆ )
 //------------------------------------------------
-#modfunc unorImpl_clone_by_index_ int i, var vRef
-	list_clone mlistValue, i, vRef
+#modfunc unorImpl_clone_by_index_ var vRef, int i
+	list_clone mlistValue, vRef, i
 	return
 	
 #modfunc unorImpl_clone str key, var vRef
-	unorImpl_clone_by_index_ thismod, unorImpl_getIndex( thismod, key ), vRef
+	unorImpl_clone_by_index_ thismod, vRef, unorImpl_getIndex( thismod, key )
 	return
 	
 #modfunc unorImpl_clone_kv_by_index_@abdata_unor_impl var key, var value, int i
