@@ -27,6 +27,9 @@
 * `_isValid()` を `_is_valid()` に改名した。
 * pair のメンバ関数を snake_case にした。
   * ``pair(Impl)?_(getv?|setv?|clone|ref|vartype)(Lhs|Rhs|Both)``
+* 破壊的変更をある程度修正する [abdata/backward_compatible.as](abdata/backward_compatible.as) を追加した。
+  * `_swap` や `_count` のような上書きはどうしようもない。
+  * 今後もサポートされる保証はない。
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。

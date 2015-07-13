@@ -6,6 +6,8 @@
 * [all.as](./abdata/all.as) : すべてのヘッダを一括で \#include します。
 * [sample](./sample) : 簡単なサンプルです。
 
+* <abdata/backward_compatible.as> : 古い abdata をそこそこ動かせるヘッダ。
+
 ### コンテナ
 * pair: ペア
 * list: リスト
