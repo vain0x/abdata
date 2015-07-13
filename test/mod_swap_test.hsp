@@ -1,0 +1,104 @@
+#include "../abdata/mod_swap.as"
+
+#module kls x_, id_
+#modinit int x
+	id_ = unique_id : unique_id ++
+	x_ = x
+	return
+	
+#modterm
+	instance_removed(id_) ++
+	return
+	
+#deffunc kls_all_instances_destructed
+	repeat unique_id
+		assert instance_removed(cnt) == 1
+	loop
+	return
+	
+#modcfunc kls_get_id
+	return id_
+	
+#modcfunc kls_get_x
+	return x_
+#global
+
+	randomize
+	
+	//swap_var
+	
+	//配列要素
+	a = 0, 1, 2, 3
+	swap_var a(1), a(2)
+	assert a(1) == 2
+	assert a(2) == 1
+	
+	//同じ要素
+	a = 0, 1, 2, 3
+	swap_var a(1), a(1)
+	assert a(1) == 1
+	
+	//型違い
+	x = 3
+	y = M_PI
+	swap_var x, y
+	assert vartype(x) == 3 && x == M_PI
+	assert vartype(y) == 4 && y == 3
+	
+	//swap_int
+	repeat 10000
+		x = rnd(0x7FFFFFFF) - rnd(0x7FFFFFFF) : x_bak = x
+		y = rnd(0x7FFFFFFF) - rnd(0x7FFFFFFF) : y_bak = y
+		
+		swap_int x, y
+		assert x == y_bak
+		assert y == x_bak
+	loop
+	
+	//swap_str
+	ss = "ss0", "hello"
+	ts = "ts0", "bye",  "ts2"
+	
+	swap_str ss(1), ts(1)
+	assert ss(1) == "bye"
+	assert ts(1) == "hello"
+	
+	swap_str ss(0), ts(2)
+	assert ss(0) == "ts2"
+	assert ts(2) == "ss0"
+	
+	//swap_fv
+	repeat 5, 1
+		newmod ps, kls, 100 * cnt
+	loop
+	
+	swap_fv ps(1), ps(2)
+	assert kls_get_id(ps(1)) == 2
+	assert kls_get_x (ps(1)) == 100 * 3
+	assert kls_get_id(ps(2)) == 1
+	assert kls_get_x (ps(2)) == 100 * 2
+	
+	//すべてのインスタンスが正常に解体されることを確認する
+	dim ps
+	kls_all_instances_destructed
+	
+	//swap_array
+	dim a1, 3, 2, 4
+	repeat 3 : i = cnt
+		repeat 2 : j = cnt
+			repeat 4
+				a1(i, j, cnt) = i * 3 + j * 2 + cnt
+			loop
+		loop
+	loop
+	a2 = "hello", "world"
+	
+	swap_array a1, a2
+	assert vartype(a1) == 2
+	assert length(a1) == 2
+	assert vartype(a2) == 4
+	assert length(a2) == 3
+	assert length2(a2) == 2
+	assert length3(a2) == 4
+	
+	logmes "mod_swap test completed."

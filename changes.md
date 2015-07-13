@@ -36,6 +36,7 @@
 * 2分探索系のアルゴリズムを追加した。
   * container, list
   * _lower_bound(), _upper_bound(), _equal_range, _sorted_insertv, _sorted_erasev
+* モジュール [abdata/mod_swap.as](abdata/mod_swap.as) を追加した。
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。
