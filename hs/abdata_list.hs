@@ -713,7 +713,7 @@ var val : ”‚¦‚é’l
 
 ;--------------------
 %index
-list_isValid
+list_is_valid
 List —v‘f”Ô†‚ª—LŒø‚©‚Ç‚¤‚©
 
 %prm

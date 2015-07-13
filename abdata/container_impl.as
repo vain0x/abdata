@@ -406,7 +406,7 @@
 #modcfunc containerImpl_iter_next var vIt, var iterData
 	iterData ++
 	
-	if ( containerImpl_isValid(thismod, iterData) == false ) {
+	if ( containerImpl_is_valid(thismod, iterData) == false ) {
 		return false
 	}
 	
@@ -435,7 +435,7 @@
 //------------------------------------------------
 // 範囲チェック
 //------------------------------------------------
-#modcfunc containerImpl_isValid int i
+#modcfunc containerImpl_is_valid int i
 	if ( numrg(i, 0, mCnt - 1) ) {					// 有効範囲か
 		if ( varuse( mElems(midlist(i)) ) ) {		// 有効な要素番号か
 			return true

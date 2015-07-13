@@ -82,7 +82,7 @@ inst self : キュー
 html{
 <!--
 %index
-queue_isValid
+queue_is_valid
 Queue オフセットが有効か
 
 %prm

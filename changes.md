@@ -1,7 +1,6 @@
 ## TODO
 * unor_exists → unor_key_exists 
 * snake_case へのし忘れ
-  * isValid
   * getLhs など
 * 最大最小検索
   * min_element, max_element, minmax_element
@@ -28,6 +27,7 @@
   * std::map::count と std::count の挙動が違うので困る。
 * `unor_exists()` を除去した。
   * `unor_count_key()` に置き換えられる。
+* `_isValid()` を `_is_valid()` に改名した。
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。

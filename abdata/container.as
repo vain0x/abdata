@@ -206,7 +206,7 @@
 //------------------------------------------------
 // 範囲チェック
 //------------------------------------------------
-#define global ctype container_isValid(%1,%2) containerImpl_isValid(abdataInsts(%1), %2)
+#define global ctype container_is_valid(%1,%2) containerImpl_is_valid(abdataInsts(%1), %2)
 
 //------------------------------------------------
 // 実際の要素番号を得る

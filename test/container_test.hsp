@@ -178,7 +178,7 @@
 	//添字範囲チェック
 	con = make_iota_container(3)
 	repeat 9, -3
-		assert container_isValid(con, cnt) == (0 <= cnt && cnt < 3)
+		assert container_is_valid(con, cnt) == (0 <= cnt && cnt < 3)
 	loop
 	
 	//数え上げ

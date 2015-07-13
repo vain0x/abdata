@@ -1096,7 +1096,7 @@ deque_length ‚Æ“¯ˆêB
 html{
 <!--
 %index
-deque_isValid
+deque_is_valid
 Deque —v‘f”Ô†‚ª—LŒø‚©‚Ç‚¤‚©
 
 %prm
