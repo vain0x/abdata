@@ -100,7 +100,7 @@
 // [i] ŒğŠ·
 //------------------------------------------------
 #define global ctype pair_lexicographical_compare(%1,%2) \
-	pairImpl_lexicographical_compare abdataInsts(%1), abdataInsts(%2)
+	pairImpl_lexicographical_compare(abdataInsts(%1), abdataInsts(%2))
 
 //------------------------------------------------
 // [i] ”½•œq::‰Šú‰»

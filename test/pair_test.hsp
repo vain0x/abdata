@@ -1,0 +1,51 @@
+#include "../abdata/pair.as"
+
+	//get
+	pair_new p, "l", "r"
+	assert pair_get_lhs(p) == "l"
+	assert pair_get_rhs(p) == "r"
+	
+	//set
+	pair_set_lhs p, "LHS"
+	assert pair_get_lhs(p) == "LHS"
+	
+	pair_set_rhs p, "RHS"
+	assert pair_get_rhs(p) == "RHS"
+	
+	pair_set_lhs p, 77
+	assert pair_get_lhs(p) == 77
+	
+	//QÆ‰»
+	pair_new p, "l", "r"
+	pair_clone p, lhs_ref, 0
+	pair_clone p, rhs_ref, 1
+	
+	lhs_ref = "LHS"
+	assert pair_get_lhs(p) == "LHS"
+	rhs_ref = "RHS"
+	assert pair_get_rhs(p) == "RHS"
+	
+	//”äŠr
+	pair_new p1, 10, 20
+	pair_new p2, 30, 10
+	assert pair_lexicographical_compare(p1, p1) == 0
+	assert pair_lexicographical_compare(p1, p2) < 0
+	assert
+	assert pair_lexicographical_compare(p2, p1) > 0
+	
+	//ˆÚ“®
+	pair_new p1, "l", "r"
+	pair_loc_swap p1
+	pair_new p2, "r", "l"
+	assert pair_lexicographical_compare(p1, p2) == 0
+	
+	//”‚¦ã‚°
+	pair_new p1, 1, 1
+	pair_new p2, 1, 2
+	pair_new p3, "3", "hel"
+	one = 1
+	assert pair_count(p1, one) == 2
+	assert pair_count(p2, one) == 1 
+	assert pair_count(p3, one) == 0
+	
+	logmes "Pair test completed."

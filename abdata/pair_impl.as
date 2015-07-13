@@ -177,7 +177,7 @@
 	assert pairImpl_size(thismod) == pairImpl_size(rhs)
 	repeat pairImpl_size(thismod)
 		pairImpl_clone thismod, lhs_clone, cnt
-		pairImpl_clone thismod, rhs_clone, cnt
+		pairImpl_clone     rhs, rhs_clone, cnt
 		cmp = opCompare(lhs_clone, rhs_clone)
 		if ( cmp ) { break }
 	loop
