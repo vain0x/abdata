@@ -31,6 +31,8 @@
   * `_swap` や `_count` のような上書きはどうしようもない。
   * 今後もサポートされる保証はない。
 * `new_CONTAINER()` を `CONTAINER_make()` に改名した。
+* 辞書順比較 `_lexicographical_compare()` を追加した。
+  * container, list, pair, unor, arrayLen
 
 ### 2015/07/09 (Thu)
 * mod_shiftArray も snake_case にした。

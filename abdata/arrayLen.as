@@ -52,6 +52,24 @@
 	return
 	
 /**
+* arrayLen ‚Ì«‘‡”äŠr
+//*/
+#defcfunc arrayLen_lexicographical_compare array lhs, int lhs_len, array rhs, int rhs_len, \
+	local cmp
+	
+	if ( lhs_len != rhs_len ) {
+		return lhs_len - rhs_len
+	}
+	if ( vartype(lhs) != vartype(rhs) ) {
+		return vartype(lhs) - vartype(rhs)
+	}
+	repeat lhs_len
+		cmp = opCompare(lhs(cnt), rhs(cnt))
+		if ( cmp != 0 ) { break }
+	loop
+	return cmp
+	
+/**
 * arrayLen ‚ÌAidx ”Ô–Ú‚ğ‹ó‚¯‚é (‰Šú‰»‚È‚µ)
 //*/
 #deffunc arrayLen_insert_no_init array self, var len, int idx

@@ -171,6 +171,19 @@
 	return
 	
 //------------------------------------------------
+// «‘‡”äŠr
+//------------------------------------------------
+#modcfunc pairImpl_lexicographical_compare var rhs,  local cmp, local lhs_clone, local rhs_clone
+	assert pairImpl_size(thismod) == pairImpl_size(rhs)
+	repeat pairImpl_size(thismod)
+		pairImpl_clone thismod, lhs_clone, cnt
+		pairImpl_clone thismod, rhs_clone, cnt
+		cmp = opCompare(lhs_clone, rhs_clone)
+		if ( cmp ) { break }
+	loop
+	return cmp
+	
+//------------------------------------------------
 // [i] ”½•œq::‰Šú‰»
 //------------------------------------------------
 #modfunc pairImpl_iter_init var iterData

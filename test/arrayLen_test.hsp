@@ -84,5 +84,15 @@
 	arrayLenTest_sorted_erase arr, 3, 99,    1, 1,  2
 	arrayLenTest_sorted_erase arr, 9, 99,    8, 8,  0
 	
+	//”äŠr
+	arrayLen_copy arr2, arr2_len,  arr, arr_len
+	arrayLen_copy arr3, arr3_len,  arr, arr_len
+	arr2(1) --
+	arr3(1) ++
+	assert arrayLen_lexicographical_compare(arr, arr_len,  arr,   arr_len) == 0
+	assert arrayLen_lexicographical_compare(arr, arr_len,  arr2, arr2_len) > 0
+	assert arrayLen_lexicographical_compare(arr, arr_len,  arr3, arr3_len) < 0
+	assert arrayLen_lexicographical_compare(arr, arr_len,  arr3, arr3_len - 1) > 0
+	
 	logmes "arrayLen test completed."
 	

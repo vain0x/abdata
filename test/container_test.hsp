@@ -191,4 +191,14 @@
 	assert container_count(con, one_int) == 2
 	assert container_count(con, stt_zero) == 0
 	
+	//«‘‡”äŠr
+	con1 = make_iota_container(4)
+	con2 = make_iota_container(4)
+	con3 = make_iota_container(5)
+	container_set con2, 99, 1
+	assert container_lexicographical_compare(con1, con1) == 0
+	assert container_lexicographical_compare(con1, con2) < 0
+	assert container_lexicographical_compare(con2, con3) < 0
+	assert container_lexicographical_compare(con3, con2) > 0
+	
 	logmes "container test completed."

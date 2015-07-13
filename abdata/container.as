@@ -176,6 +176,11 @@
 #define global container_swap(%1,%2) containerImpl_swap abdataInsts(%1), abdataInsts(%2)
 
 //------------------------------------------------
+// [i] «‘‡”äŠr
+//------------------------------------------------
+#define global ctype container_lexicographical_compare(%1, %2) containerImpl_lexicographical_compare(abdataInsts(%1), abdataInsts(%2))
+
+//------------------------------------------------
 // ®—ñ
 // 
 // @alg: (based: Merge-Sort)

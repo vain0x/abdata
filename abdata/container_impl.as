@@ -329,6 +329,21 @@
 	return
 	
 //------------------------------------------------
+// «‘‡”äŠr
+//------------------------------------------------
+#modcfunc containerImpl_lexicographical_compare var obj2,  local cmp, local lhs, local rhs
+	if ( mCnt != containerImpl_size(obj2) ) {
+		return mCnt - containerImpl_size(obj2)
+	}
+	repeat mCnt
+		containerImpl_clone thismod, lhs, cnt
+		containerImpl_clone    obj2, rhs, cnt
+		cmp = opCompare(lhs, rhs)
+		if ( cmp != 0 ) { break }
+	loop
+	return cmp
+	
+//------------------------------------------------
 // ®—ñ
 // 
 // @alg: (based: Merge-Sort)

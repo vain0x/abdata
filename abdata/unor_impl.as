@@ -93,6 +93,11 @@
 	unorImpl_clone_by_index_ thismod, unorImpl_getIndex( thismod, key ), vRef
 	return
 	
+#modfunc unorImpl_clone_kv_by_index_@abdata_unor_impl var key, var value, int i
+	list_clone mlistKey,     key, i
+	list_clone mlistValue, value, i
+	return
+	
 //------------------------------------------------
 // éQè∆âª ( ä÷êîå`éÆ )
 //------------------------------------------------
@@ -195,6 +200,25 @@
 	unorImpl_delete tmp
 	return
 	
+//------------------------------------------------
+// [i] é´èëèáî‰är
+//------------------------------------------------
+#modcfunc unorImpl_lexicographical_compare var obj,  local cmp,  local lhs_key, local lhs_val, local rhs_key, local rhs_val
+	cmp = (unorImpl_size(thismod) - unorImpl_size(obj))
+	if ( cmp ) { return cmp }
+	
+	repeat list_size(mlistKey)
+		unorImpl_clone_kv_by_index_ thismod, lhs_key, lhs_val, cnt
+		unorImpl_clone_kv_by_index_     obj, rhs_key, rhs_val, cnt
+		
+		cmp = (lhs_key != rhs_key)
+		if ( cmp ) { break }
+		
+		cmp = opCompare(lhs_val, rhs_val)
+		if ( cmp ) { break }
+	loop
+	return cmp
+
 //------------------------------------------------
 // [i] îΩïúéq::èâä˙âª
 //------------------------------------------------

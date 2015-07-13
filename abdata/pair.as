@@ -97,6 +97,12 @@
 #define global pair_swap(%1,%2) pairImpl_swap abdataInsts(%1), abdataInsts(%2)
 
 //------------------------------------------------
+// [i] ŒğŠ·
+//------------------------------------------------
+#define global ctype pair_lexicographical_compare(%1,%2) \
+	pairImpl_lexicographical_compare abdataInsts(%1), abdataInsts(%2)
+
+//------------------------------------------------
 // [i] ”½•œq::‰Šú‰»
 //------------------------------------------------
 #define global pair_iter_init(%1,%2) pairImpl_iter_init abdataInsts(%1), %2
