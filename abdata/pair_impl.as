@@ -174,12 +174,15 @@
 //------------------------------------------------
 // é´èëèáî‰är
 //------------------------------------------------
-#modcfunc pairImpl_lexicographical_compare var rhs,  local cmp, local lhs_clone, local rhs_clone
-	assert pairImpl_size(thismod) == pairImpl_size(rhs)
-	repeat pairImpl_size(thismod)
-		pairImpl_clone thismod, lhs_clone, cnt
-		pairImpl_clone     rhs, rhs_clone, cnt
-		cmp = opCompare(lhs_clone, rhs_clone)
+#modcfunc pairImpl_lexicographical_compare var rhs
+	return pairImpl_lexicographical_compare_impl@abdata_pair_impl(rhs, mValue)
+
+#modcfunc pairImpl_lexicographical_compare_impl@abdata_pair_impl array lhs_value, \
+	local cmp
+	
+	assert pairImpl_size(thismod) == 2
+	repeat 2
+		cmp = abelem_cmp(lhs_value(cnt), mValue(cnt))
 		if ( cmp ) { break }
 	loop
 	return cmp

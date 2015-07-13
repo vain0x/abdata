@@ -106,8 +106,8 @@
 //------------------------------------------------
 // [i] «‘‡”äŠr
 //------------------------------------------------
-#define global unor_lexicographical_compare(%1, %2) \
-	unorImpl_lexicographical_compare abdataInsts(%1), abdataInsts(%2)
+#define global ctype unor_lexicographical_compare(%1, %2) \
+	unorImpl_lexicographical_compare(abdataInsts(%1), abdataInsts(%2))
 
 //------------------------------------------------
 // [i] ”½•œq::‰Šú‰»

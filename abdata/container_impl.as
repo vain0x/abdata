@@ -341,14 +341,17 @@
 //------------------------------------------------
 // é´èëèáî‰är
 //------------------------------------------------
-#modcfunc containerImpl_lexicographical_compare var obj2,  local cmp, local lhs, local rhs
-	if ( mCnt != containerImpl_size(obj2) ) {
-		return mCnt - containerImpl_size(obj2)
+#modcfunc containerImpl_lexicographical_compare var rhs
+	return containerImpl_lexicographical_compare_impl@abdata_con_impl(rhs, mCnt, mElems, midlist)
+	
+#modcfunc containerImpl_lexicographical_compare_impl@abdata_con_impl int lhs_size, array lhs_elems, array lhs_idlist, \
+	local cmp
+	
+	if ( lhs_size != mCnt ) {
+		return lhs_size - mCnt
 	}
-	repeat mCnt
-		containerImpl_clone thismod, lhs, cnt
-		containerImpl_clone    obj2, rhs, cnt
-		cmp = opCompare(lhs, rhs)
+	repeat lhs_size
+		cmp = abelem_cmp(lhs_elems(lhs_idlist(cnt)), mElems(midlist(cnt)))
 		if ( cmp != 0 ) { break }
 	loop
 	return cmp
