@@ -91,4 +91,12 @@
 	assert unor_count_key(un, "#2") == 1
 	assert unor_count_key(un, "#4") == 0
 	
+	//ŒðŠ·
+	
+	un0 = make_iota_unor(3)
+	un1 = make_iota_unor(2)
+	unor_swap un0, un1
+	assert unor_size(un0) == 2
+	assert unor_size(un1) == 3
+	
 	logmes "Unor test completed."

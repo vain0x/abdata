@@ -14,6 +14,7 @@
 #include "list.as"
 #include "alg_iter.as"
 #include "mod_pvalptr.as"
+#include "mod_swap.as"
 
 #module abdata_unor_impl mlistKey, mlistValue
 
@@ -36,6 +37,14 @@
 	list_new mlistValue
 	
 	return getaptr(thismod)
+	
+//------------------------------------------------
+// ì‡ïîópÇÃì«Ç›èëÇ´
+//------------------------------------------------
+#modfunc unorImpl_clone_members@abdata_unor_impl array keys, array vals
+	dup keys, mlistKey
+	dup vals, mlistValue
+	return
 	
 //------------------------------------------------
 // ílÇÃéÊìæ ( ñΩóﬂå`éÆ )
@@ -192,12 +201,12 @@
 //------------------------------------------------
 // [i] åä∑
 //------------------------------------------------
-#modfunc unorImpl_swap var obj,  local tmp
-	unorImpl_new  tmp
-	unorImpl_copy tmp, thismod
-	unorImpl_copy thismod, obj
-	unorImpl_copy obj, tmp
-	unorImpl_delete tmp
+#modfunc unorImpl_swap var obj,  \
+	local keys, local vals,  local tmp_keys, local tmp_vals
+	
+	unorImpl_clone_members obj, keys, vals
+	swap_int mlistKey,   keys
+	swap_int mlistValue, vals
 	return
 	
 //------------------------------------------------
