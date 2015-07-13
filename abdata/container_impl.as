@@ -5,6 +5,7 @@
 #include "abelem.as"
 #include "mod_shiftArray.as"
 #include "mod_pvalptr.as"
+#include "mod_swap.as"
 
 #module abdata_con_impl mCnt, mElems, midlist
 ; abdata_container_impl ‚ÍŽ¯•ÊŽq’·‚ÌŒÀŠE‚ð’´‚¦‚Ä‚¢‚é‚½‚ß
@@ -323,12 +324,14 @@
 //------------------------------------------------
 // [i] ŒðŠ·
 //------------------------------------------------
-#modfunc containerImpl_swap var obj2,  local tmp
-	containerImpl_new  tmp
-	containerImpl_copy tmp,  thismod
-	containerImpl_copy thismod, obj2
-	containerImpl_copy obj2,    tmp
-	containerImpl_delete tmp
+#modfunc containerImpl_swap var rhs
+	containerImpl_swap_impl@abdata_con_impl rhs, mCnt, mElems, midlist
+	return
+	
+#modfunc containerImpl_swap_impl@abdata_con_impl array lhs_cnt, array lhs_elems, array lhs_idlist
+	swap_int   mCnt,    lhs_cnt
+	swap_array mElems,  lhs_elems
+	swap_array midlist, lhs_idlist
 	return
 	
 //------------------------------------------------

@@ -144,7 +144,12 @@
 		assert container_get(con0, 3 + cnt) == container_get(con1, cnt)
 	loop
 	
-	//“ü‚ê‘Ö‚¦ exchange
+	//ŒğŠ·
+	con0 = make_iota_container(3)
+	con1 = make_iota_container(4)
+	container_swap con0, con1
+	assert container_size(con0) == 4
+	assert container_size(con1) == 3
 	
 	//®—ñ
 	//’·‚³0
