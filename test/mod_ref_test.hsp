@@ -1,0 +1,57 @@
+#include "../abdata/mod_ref.as"
+
+#module refTestKls val_
+
+#modinit var val
+	val_ = val
+	return
+	
+#define global ctype refTestKls_ref(%1) \
+	ref_ref_expr_template_1(refTestKls_ref_,%1)
+	
+#modcfunc refTestKls_ref_ array ref_med
+	dup ref_med, val_
+	return 0
+	
+#modcfunc refTestKls_get
+	return val_
+	
+#global
+
+#module refTest
+
+#deffunc test_str@refTest var r, str x_value
+	assert vartype(r) == 2
+	assert r == x_value
+	return
+	
+#deffunc test_double@refTest var r, double x_value
+	assert vartype(r) == 3
+	assert r == x_value
+	return
+	
+#deffunc test_int@refTest var r, int x_value
+	assert vartype(r) == 4
+	assert r == x_value
+	return
+	
+#deffunc refTest_main
+
+	str_var = "hello"
+	double_var = M_PI
+	int_var = 103
+	
+	newmod vs, refTestKls, str_var
+	test_str refTestKls_ref(vs), str_var
+	
+	newmod vd, refTestKls, double_var
+	test_double refTestKls_ref(vd), double_var
+	
+	newmod vi, refTestKls, int_var
+	test_int refTestKls_ref(vi), int_var
+	return
+	
+#global
+
+	refTest_main
+	logmes "ref test completed."

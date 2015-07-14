@@ -15,6 +15,9 @@
 * knowbug での拡張表示
 
 ## 更新履歴
+### 2015/07/14 (Tue)
+* モジュール [abdata/mod_ref.as](abdata/mod_ref.as) を追加した。
+
 ### 2015/07/13 (Mon)
 * ヘッダ [abdata/arrayLen.as](abdata/arrayLen.as) を追加した。
   * 標準配列とその長さをペアで管理する。
