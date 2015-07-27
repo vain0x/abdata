@@ -12,7 +12,6 @@
 * pair: ペア
 * list: リスト
 * stack: スタック
-* queue: キュー
 * deque: 双方向キュー
 * tnode: 木構造 (擬似)
 * unor: 文字列からの連想配列
