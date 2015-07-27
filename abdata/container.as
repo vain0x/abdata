@@ -254,11 +254,3 @@
 	container_new containerNull		// null := abdataInsts[0]
 
 #endif
-
-/******
-	
-	すべてのインスタンスは、このモジュール内の静的変数 (配列) st_allinsts が管理する。
-	インスタンスは、実際には st_allinsts の配列要素で管理し、idx を利用したモジュール関数呼び出しは、
-	containerImpl_(modfunc) st_allinsts@...(idx), ... に変換される。
-	
-******/

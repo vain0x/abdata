@@ -600,20 +600,3 @@
 #global
 
 #endif
-
-/******
-	
-＠ index 管理
-	すべての要素は mElems に、無ソートの状態で保持する。
-	@ mElems の要素番号(idx)は変更されないので、実質的に参照(弱)として機能する。
-	リスト内での要素の順序は、int配列 midlist が持つ mElems への参照の順番が表す。
-	@ midlist には mElems の要素番号 (参照) を格納する。
-	@ つまり、このリストの要素 [i] は mElems[ midlist[i] ] で参照できる。
-	@ mElems の要素番号を「実体インデックス」(RealIndex),
-	@	midlist の要素番号を「要素インデックス」(ElemIndex)という。
-	
-	swap や insert は、midlist の数値の順番を変更するだけで、mElems 自体は動かさないので、
-	比較的軽い処理である。
-	@ インデックス・ソート (index sort)
-	
-******/

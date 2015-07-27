@@ -3,14 +3,6 @@
 #ifndef IG_ABDATA_UNOR_IMPL_AS
 #define IG_ABDATA_UNOR_IMPL_AS
 
-// @ unor
-// @ mlistKey   := key のリスト。この添字は mlistValue と共通する。
-// @ mlistValue := val のリスト。この添字は mlistKey   と共通する。
-// @ unor の要素番号 := mlistKey, mlistValue で共通する添字。要素を追加するごとに変化することも考えられる。
-// @	内部では、_getIndex() で取得する。
-// @	要素へのアクセスは、基本的に key を _getIndex() で変換する関数と、それに対応する _by_index_() 関数を使う。
-// @ key := 要素を特定するための、特定の文字列。str 型に限る。同じ文字列のキーは、1つの Unor に、高々1つ存在する。
-
 #include "list.as"
 #include "alg_iter.as"
 #include "mod_pvalptr.as"
@@ -386,10 +378,3 @@
 #global
 
 #endif
-
-/******
-	
-	mlistKey, mlistValue の要素番号が同じ要素が、キーと要素の組になる。
-	mlistKey は常に整列している。そのため、find_ex のような二分探索による絞り込みが可能。
-	
-******/
