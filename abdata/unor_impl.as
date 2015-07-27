@@ -15,6 +15,7 @@
 #include "alg_iter.as"
 #include "mod_pvalptr.as"
 #include "mod_swap.as"
+#include "mod_ref.as"
 
 #module abdata_unor_impl mlistKey, mlistValue
 
@@ -110,14 +111,15 @@
 //------------------------------------------------
 // QÆ‰» ( ŠÖ”Œ`® )
 //------------------------------------------------
-	dim ARG_TEMP@abdata_unor_impl(ref)		// Œx‘Îô
-#define global ctype unorImpl_ref(%1, %2 = "") ARG_TEMP@abdata_unor_impl(ref)( unorImpl_ref_(%1,%2) )
-#modcfunc unorImpl_ref_by_index_ int i
-	unorImpl_clone thismod, i, ARG_TEMP@abdata_unor_impl(ref)
+#define global ctype unorImpl_ref(%1, %2 = "") \
+	ref_ref_expr_template_2(unorImpl_ref_, %1, %2)
+
+#modcfunc unorImpl_ref_by_index_ array ref, int i
+	unorImpl_clone_by_index_ thismod, ref, i
 	return 0
 	
-#modcfunc unorImpl_ref_ str key
-	return unorImpl_ref_by_index_( thismod, unorImpl_getIndex(thismod, key) )
+#modcfunc unorImpl_ref_ array ref, str key
+	return unorImpl_ref_by_index_( thismod, ref, unorImpl_getIndex(thismod, key) )
 	
 //------------------------------------------------
 // Œ^‚Ìæ“¾ ( ŠÖ”Œ`® )

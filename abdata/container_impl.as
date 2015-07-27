@@ -6,6 +6,7 @@
 #include "mod_shiftArray.as"
 #include "mod_pvalptr.as"
 #include "mod_swap.as"
+#include "mod_ref.as"
 
 #module abdata_con_impl mCnt, mElems, midlist
 ; abdata_container_impl ‚Í¯•Êq’·‚ÌŒÀŠE‚ğ’´‚¦‚Ä‚¢‚é‚½‚ß
@@ -87,11 +88,11 @@
 //------------------------------------------------
 // QÆ‰» ( ŠÖ”Œ`® )
 //------------------------------------------------
-	dim ARG_TEMP@abdata_con_impl(ref)		// Œx‘Îô
-	
-#define global ctype containerImpl_ref(%1,%2=0) ARG_TEMP@abdata_con_impl(ref)( containerImpl_ref_(%1,%2) )
-#modcfunc containerImpl_ref_ int i
-	containerImpl_clone thismod, ARG_TEMP@abdata_con_impl(ref), i
+#define global ctype containerImpl_ref(%1, %2) \
+	ref_ref_expr_template_2(containerImpl_ref_, %1, %2)
+
+#modcfunc containerImpl_ref_ array ref, int i
+	containerImpl_clone thismod, ref, i
 	return 0
 	
 //------------------------------------------------
