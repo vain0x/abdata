@@ -116,6 +116,10 @@
 	r = 99
 	assert container_get(con, 2) == 99
 	
+	con = make_iota_container(3)
+	container_ref(con, 1) ++
+	assert container_get(con, 1) == 2
+	
 	//‘‚«Š·‚¦
 	con = make_iota_container(4)
 	container_set con, str_var, 2
