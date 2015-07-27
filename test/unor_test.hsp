@@ -36,6 +36,9 @@
 	r = 99
 	assert unor_get(un, "#1") == 99
 	
+	unor_ref(un, "#2") = 99
+	assert unor_get(un, "#2") == 99
+	
 	//‘‚«Š·‚¦
 	un = make_iota_unor(3)
 	unor_set un, "#1", -1
