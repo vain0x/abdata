@@ -18,7 +18,7 @@
 ### 2015/07/14 (Tue)
 * モジュール [abdata/mod_ref.as](abdata/mod_ref.as) を追加した。
   * `_ref()` の定義をわずかに一般化した。
-* ラッパモジュール `queue` を削除した。
+* ラッパモジュール `queue`, `deque` を削除した。
 
 ### 2015/07/13 (Mon)
 * ヘッダ [abdata/arrayLen.as](abdata/arrayLen.as) を追加した。
