@@ -63,7 +63,7 @@
 //------------------------------------------------
 // 参照化 ( 関数形式 )
 //------------------------------------------------
-#define global ctype container_ref(%1,%2=0) containerImpl_ref(abdataInsts(%1))
+#define global ctype container_ref(%1,%2=0) containerImpl_ref(abdataInsts(%1),%2)
 
 //------------------------------------------------
 // 先頭・末尾の値の取得
