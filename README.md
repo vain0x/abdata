@@ -2,6 +2,17 @@
 ## 概要
 抽象データ構造を提供するモジュールです。
 
+## 導入方法
+* [最新版](https://github.com/vain0/abdata/archive/master.zip)をダウンロードし、abdata フォルダを common フォルダの下に置く。
+* スクリプトの最初のほうに次のように書く。
+
+```hsp
+#include "common/abdata/all.hsp"
+```
+
+* abdata ライブラリの全ファイルは誰でも自由に使用、再配布可能。
+  * [NYSL (煮るなり焼くなり好きにしろライセンス)](http://www.kmonos.net/nysl/) に従う。
+
 ## 内容
 * [abdata/all.as](abdata/all.as): すべてのヘッダを一括で \#include します。
 * [sample](sample): 簡単なサンプルです。
