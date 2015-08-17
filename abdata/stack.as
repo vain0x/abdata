@@ -4,7 +4,8 @@
 #define IG_ABDATA_STACK_AS
 
 #include "abheader.as"
-#include "deque.as"
+#include "container.as"
+#include "backward_compatible.as"
 
 #define global Stack_ClsName "stack"
 #define global stackNull dequeNull
