@@ -66,23 +66,23 @@
 //
 // @result: î‰äríl { -1 (<), 0 (==), +1 (>) }
 //------------------------------------------------
-#modcfunc abelem_cmp var rhs,  local vt, local tmp
-
-	vt(0) = abelem_vartype( thismod )
-	vt(1) = abelem_vartype( rhs )
+#modcfunc abelem_cmp var rhs,  local lhs_ref, local rhs_ref
+	abelem_clone thismod, lhs_ref
+	abelem_clone rhs,     rhs_ref
+	return compare_v(lhs_ref, rhs_ref)
 	
-	// å^Ç≈î‰är
-	if ( vt(0) != vt(1) ) {
-		return ( vt(0) - vt(1) )
+#defcfunc compare_v@abdata_abelem var lhs, var rhs,  \
+	local vtype, local value
+	
+	vtype = vartype(lhs), vartype(rhs)
+	if ( (vtype(0) == vartype_double || vtype(0) == vartype_int) && (vtype(1) == vartype_double || vtype(1) == vartype_int) ) {
+		value = double(lhs) - rhs
+		return int(value / absf(value))
+	} elsif ( vtype(0) != vtype(1) ) {
+		return vtype(0) - vtype(1)
+	} else {
+		return lhs != rhs
 	}
-	
-	// ílÇ≈î‰är
-	dimtype tmp, vt(0), 2
-	abelem_getv thismod, tmp(0)
-	abelem_getv rhs,     tmp(1)
-	
-	return opCompare( tmp(0), tmp(1) )
-	
 #global
 
 #endif
