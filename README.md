@@ -1,13 +1,13 @@
 # abdata for HSP3
 ## 概要
-抽象データ構造を提供するモジュールです。
+抽象データ型を提供するモジュールです。
 
 ## 導入方法
 * [最新版](https://github.com/vain0/abdata/archive/master.zip)をダウンロードし、abdata フォルダを common フォルダの下に置く。
 * スクリプトの最初のほうに次のように書く。
 
 ```hsp
-#include "common/abdata/all.hsp"
+#include "abdata/all.hsp"
 ```
 
 * abdata ライブラリの全ファイルは誰でも自由に使用、再配布可能。
@@ -29,6 +29,8 @@
 
 ### コンテナの操作
 以下のような関数がサポートされます。ただしコンテナによっては定義されていないこともあります。詳しい仕様は実装を参照してください。
+
+関数の実際の名前は ``コンテナ名_関数名`` です。(例: `list_new`, `unor_make()`, ...)
 
 * 構築
   * new
