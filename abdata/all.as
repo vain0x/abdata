@@ -5,9 +5,9 @@
 
 #include "abelem.as"
 #include "list.as"
-#include "deque.as"
+;#include "deque.as"
 #include "stack.as"
-#include "queue.as"
+;#include "queue.as"
 #include "tnode.as"
 #include "pair.as"
 #include "unor.as"
