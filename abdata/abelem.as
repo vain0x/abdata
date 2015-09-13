@@ -78,7 +78,7 @@
 	if ( (vtype(0) == vartype_double || vtype(0) == vartype_int) && (vtype(1) == vartype_double || vtype(1) == vartype_int) ) {
 		value = double(lhs) - rhs
 		return int(value / absf(value))
-	} elsif ( vtype(0) != vtype(1) ) {
+	} else : if ( vtype(0) != vtype(1) ) {
 		return vtype(0) - vtype(1)
 	} else {
 		return lhs != rhs
