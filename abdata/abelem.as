@@ -69,14 +69,15 @@
 #modcfunc abelem_cmp var rhs,  local lhs_ref, local rhs_ref
 	abelem_clone thismod, lhs_ref
 	abelem_clone rhs,     rhs_ref
-	return compare_v(lhs_ref, rhs_ref)
+	return compare(lhs_ref, rhs_ref)
 	
-#defcfunc compare_v@abdata_abelem var lhs, var rhs,  \
+#defcfunc compare@abdata_abelem var lhs, var rhs,  \
 	local vtype, local value
 	
 	vtype = vartype(lhs), vartype(rhs)
 	if ( (vtype(0) == vartype_double || vtype(0) == vartype_int) && (vtype(1) == vartype_double || vtype(1) == vartype_int) ) {
 		value = double(lhs) - rhs
+		if ( absf(value) < 1e-9 ) { return 0 }
 		return int(value / absf(value))
 	} else : if ( vtype(0) != vtype(1) ) {
 		return vtype(0) - vtype(1)
