@@ -9,8 +9,6 @@
 
 #module abdata_unor_impl mlistKey, mlistValue
 
-#define ctype ARG_TEMP(%1) unor_impl_argtmp_%1@__abdata
-
 #define ctype operate_strcmp(%1,%2,%3) ( (%1) != (%3) %2 0 )
 #define true  1
 #define false 0
@@ -123,7 +121,9 @@
 //------------------------------------------------
 // ílÇÃê›íË
 //------------------------------------------------
-#define global unorImpl_set(%1, %2 = "" ,%3) ARG_TEMP@abdata_unor_impl(set) = %3 : unorImpl_setv %1, %2, ARG_TEMP@abdata_unor_impl(set)
+#define global unorImpl_set(%1, %2 = "" ,%3) %tabdata \
+	_cat(%i,@__tmp) = %3 :\
+	unorImpl_setv %1, %2, _cat(%o,@__tmp)
 
 #modfunc unorImpl_setv str key, var vValue
 	unorImpl_setv_by_index_ thismod, unorImpl_getIndex(thismod, key), vValue
@@ -138,7 +138,9 @@
 // 
 // @ ä˘ë∂Ç»ÇÁé∏îs
 //------------------------------------------------
-#define global unorImpl_add(%1, %2 = "", %3 = stt_zero@) ARG_TEMP@abdata_unor_impl(add) = %3 : unorImpl_addv %1, %2, ARG_TEMP@abdata_unor_impl(add)
+#define global unorImpl_add(%1, %2 = "", %3 = stt_zero@) %tabdata \
+	_cat(%i,@__tmp) = %3 :\
+	unorImpl_addv %1, %2, _cat(%o,@__tmp)
 
 #modfunc unorImpl_addv str key, var vValue
 	unorImpl_addValue thismod, key, vValue

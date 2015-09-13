@@ -13,8 +13,6 @@
 #define true  1
 #define false 0
 
-#define ctype ARG_TEMP(%1) pair_argtmp_%1@__abdata
-
 //------------------------------------------------
 // —v‘f‚Ì idx ’l
 //------------------------------------------------
@@ -28,11 +26,11 @@
 #define global ctype pairImpl_empty(%1) 0
 #define global pairImpl_length pairImpl_size
 
-#define global pairImpl_new(%1, %2 = stt_zero@, %3 = stt_zero@) \
-	ARG_TEMP@abdata_pair_impl(new_lhs) = %2 :\
-	ARG_TEMP@abdata_pair_impl(new_rhs) = %3 :\
-	newmod %1, abdata_pair_impl@, ARG_TEMP@abdata_pair_impl(new_lhs), ARG_TEMP@abdata_pair_impl(new_rhs)
-	//
+#define global pairImpl_new(%1, %2 = stt_zero@, %3 = stt_zero@) %tabdata %i0 %i0 \
+	_cat(%p0,@__tmp) = %2 :\
+	_cat(%p1,@__tmp) = %3 :\
+	newmod %1, abdata_pair_impl@, _cat(%p0,@__tmp), _cat(%p1,@__tmp)  :\
+	%o0 %o0 //
 
 #define global pairImpl_delete(%1) delmod %1
 
@@ -91,8 +89,10 @@
 // @ set    => •Ð•û
 // @ assign => —¼•û
 //------------------------------------------------
-#define global pairImpl_set(%1,%2,%3 = 0) \
-	ARG_TEMP@abdata_pair_impl(set) = (%2) : pairImpl_setv %1, ARG_TEMP@abdata_pair_impl(set), %3
+#define global pairImpl_set(%1,%2,%3 = 0) %tabdata \
+	_cat(%i,@__tmp) = (%2) :\
+	pairImpl_setv %1, _cat(%o,@__tmp), %3
+	
 #modfunc pairImpl_setv var dst, int idx
 	abelem_setv mValue(idx), dst
 	return
@@ -103,10 +103,11 @@
 #define global pairImpl_setv_lhs(%1,%2) pairImpl_setv %1, %2, PairImplIdx_Lhs
 #define global pairImpl_setv_rhs(%1,%2) pairImpl_setv %1, %2, PairImplIdx_Rhs
 
-#define global pairImpl_set_both(%1,%2,%3) \
-	ARG_TEMP@abdata_pair_impl(set_lhs) = (%2) :\
-	ARG_TEMP@abdata_pair_impl(set_rhs) = (%3) :\
-	pairImpl_setv_both %1, ARG_TEMP@abdata_pair_impl(set_lhs), ARG_TEMP@abdata_pair_impl(set_rhs)
+#define global pairImpl_set_both(%1,%2,%3) %tabdata %i0 %i0 \
+	_cat(%p0,@__tmp) = (%2) :\
+	_cat(%p1,@__tmp) = (%3) :\
+	pairImpl_setv_both %1, _cat(%p0,@__tmp), _cat(%p1,@__tmp) :\
+	%o0 %o0 //
 
 #modfunc pairImpl_setv_both var lhs, var rhs
 	abelem_setv mValue(PairImplIdx_Lhs), lhs

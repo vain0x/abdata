@@ -11,8 +11,6 @@
 #module abdata_con_impl mCnt, mElems, midlist
 ; abdata_container_impl ‚ÍŽ¯•ÊŽq’·‚ÌŒÀŠE‚ð’´‚¦‚Ä‚¢‚é‚½‚ß
 
-#define ctype ARG_TEMP(%1) con_impl_argtmp_%1@__abdata
-
 #define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
 #define true  1
 #define false 0
@@ -122,7 +120,10 @@
 //------------------------------------------------
 // ’l‚ÌÝ’è
 //------------------------------------------------
-#define global containerImpl_set(%1,%2,%3=0) ARG_TEMP@abdata_con_impl(set) = %2 : containerImpl_setv %1, ARG_TEMP@abdata_con_impl(set), %3
+#define global containerImpl_set(%1,%2,%3=0) %tabdata \
+	_cat(%i,@__tmp) = %2 :\
+	containerImpl_setv %1, _cat(%o,@__tmp), %3
+	
 #modfunc containerImpl_setv var vValue, int i,  local iv
 	
 	iv = midlist( containerImpl_getRealIndex(thismod, i) )
@@ -143,7 +144,10 @@
 // @	( i >= mCnt ) => ([i] ‚Ü‚Å—v‘f‚ðŽ©“®Šg’£)
 // @ };
 //------------------------------------------------
-#define global containerImpl_insert(%1,%2,%3=0) ARG_TEMP@abdata_con_impl(insert) = %2 : containerImpl_insertv %1, ARG_TEMP@abdata_con_impl(insert), %3
+#define global containerImpl_insert(%1,%2,%3=0) %tabdata \
+	_cat(%i,@__tmp) = %2 :\
+	containerImpl_insertv %1, _cat(%o,@__tmp), %3
+	
 #modfunc containerImpl_insertv var vValue, int _i,  local i, local id
 	i = _i
 	if ( _i < 0 ) {
