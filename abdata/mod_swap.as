@@ -15,12 +15,12 @@
 	x ^= y : y ^= x : x ^= y
 	return
 	
-#ifdef __hsp_x64__
+#ifdef __hsp64__
  #deffunc swap_str var x, var y
 	//効率が悪く、さらにキャパシティが縮んでしまう
 	swap_var x, y
 	return
-#else //defined(__hsp_x64__)
+#else //defined(__hsp64__@)
  #const sizeof_FlexValue 16
 //文字列ポインタの交換を行う
 #deffunc swap_str var x, var y,  \
@@ -36,11 +36,11 @@
 	if ( y_aptr == 0 ) { dup y_p, y_pval(7) } else { dup y_p, y_master(y_aptr) }
 	swap_int x_p, y_p
 	return
-#endif //defined(__hsp_x64__)
+#endif //defined(__hsp64__@)
 
-#ifdef __hsp_x64__
+#ifdef __hsp64__@
  #define global swap_fv !!"未実装"
-#else //defined(__hsp_x64__)
+#else //defined(__hsp64__@)
 //FlexValue の中身の交換を行う
 #deffunc swap_fv var x, var y,  \
 	local x_pval, local x_idx, local x_pt, \
@@ -57,11 +57,11 @@
 	memcpy x_pt(x_idx), y_pt(y_idx), sizeof_FlexValue
 	memcpy y_pt(y_idx), t_fv,        sizeof_FlexValue
 	return
-#endif //defined(__hsp_x64__)
+#endif //defined(__hsp64__@)
 
-#ifdef __hsp_x64__
+#ifdef __hsp64__@
  #define swap_array !!"未実装"
-#else //defined(__hsp_x64__)
+#else //defined(__hsp64__@)
  #const sizeof_PVal 48
 //pval の中身の交換を行う
 #deffunc swap_array array x, array y,  \
@@ -75,7 +75,7 @@
 	memcpy x_pval, y_pval, sizeof_PVal
 	memcpy y_pval, t_pval, sizeof_PVal
 	return
-#endif //defined(__hsp_x64__)
+#endif //defined(__hsp64__@)
 
 #global
 
