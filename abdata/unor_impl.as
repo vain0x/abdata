@@ -309,45 +309,21 @@
 	
 //------------------------------------------------
 // 要素を検索する
-// @private
-// @algorithm : 二分探索(binary search)
 // @result :
 // @	キーがある場合 => 真を返す。idx := 要素番号。
 // @	キーがない場合 => 偽を返す。idx := 指定キーがあるべき要素番号。
 //------------------------------------------------
-#modfunc unorImpl_find_ex@abdata_unor_impl str key, var idx,  local size, local iMin, local iMax, local nCmp, local bExists
+#modfunc unorImpl_find_ex@abdata_unor_impl str _key, var idx,  \
+	local key
 	
-	size = unorImpl_size(thismod)
-	iMin = 0
-	iMax = size
-	idx  = size / 2
-	
-	bExists = false
-	
-	repeat
-		if ( iMin == iMax ) {
-			idx = iMin		// 一致した値
-			break
+	key = _key
+	idx = list_lower_bound(mlistKey, key)
+	if ( idx != list_size(mlistKey) ) {
+		if ( list_get(mlistKey, idx) == key ) {
+			return true
 		}
-		
-		nCmp = ( list_get(mlistKey, idx) != key )
-		
-		if ( nCmp == 0 ) {
-			bExists = true
-			break
-			
-		} else : if ( nCmp > 0 ) {
-			iMax = idx
-			
-		} else /* : if ( nCmp < 0 ) */ {
-			iMin = idx + 1
-		}
-		
-		// 残りの中央にフォーカス
-		idx = ( iMin + iMax ) / 2
-	loop
-	
-	return bExists
+	}
+	return false
 	
 #ifdef _DEBUG
 
