@@ -20,7 +20,7 @@
 
 #define ctype STR_ERR_OVER_RANGE(%1) "Error! [abdata コンテナ] 要素番号範囲外エラー(" + (%1) + ")"
 
-#enum global SortMode_Ascending = 0		// 昇順
+#enum global SortMode_Ascending = 0
 #enum global SortMode_Decending = 1
 
 #define global containerImpl_new(%1, %2 = 0, %3 = stt_zero@) newmod %1, abdata_con_impl@, %2, %3

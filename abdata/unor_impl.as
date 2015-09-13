@@ -1,5 +1,3 @@
-// unor - 連想配列 ( 不整列コンテナ ) (実装)
-
 #ifndef IG_ABDATA_UNOR_IMPL_AS
 #define IG_ABDATA_UNOR_IMPL_AS
 
@@ -14,7 +12,6 @@
 #define ctype ARG_TEMP(%1) unor_impl_argtmp_%1@__abdata
 
 #define ctype operate_strcmp(%1,%2,%3) ( (%1) != (%3) %2 0 )
-#define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
 #define true  1
 #define false 0
 
