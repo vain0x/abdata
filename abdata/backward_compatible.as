@@ -1,8 +1,13 @@
 #ifndef IG_ABDATA_BACKWARD_COMPATIBLE_AS
 #define IG_ABDATA_BACKWARD_COMPATIBLE_AS
 
-//_swap -> _loc_swap
-//_count -> _count
+/*
+このファイルを include することで、古い abdata のコマンドが使用できる。
+ただし以下のコマンドは挙動が変更されたため、このファイルでは対処されない。
+
+`*_swap`: 現在はコンテナの中身を交換するコマンド。古いものは `*_loc_swap` に改名された。
+`*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
+//*/
 
 #define global dequeNull            abdataNull
 #define global deque_make           container_make
