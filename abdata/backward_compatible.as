@@ -1,5 +1,5 @@
-#ifndef IG_ABDATA_BACKWARD_COMPATIBLE_AS
-#define IG_ABDATA_BACKWARD_COMPATIBLE_AS
+#ifndef        IG_ABDATA_BACKWARD_COMPATIBLE_AS
+#define global IG_ABDATA_BACKWARD_COMPATIBLE_AS
 
 /*
 このファイルを include することで、古い abdata のコマンドが使用できる。
