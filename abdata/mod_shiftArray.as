@@ -10,21 +10,15 @@
 #define global stdarray_index_of_end (-127)
 
 //------------------------------------------------
-// ”z—ñ‹æŠÔ‚Ì³‹K‰» @private
-// 
-// @result: ”½“]‹æŠÔ‚©”Û‚©
+// ”z—ñ‹æŠÔ‚Ì³‹K‰»
+// @private
 //------------------------------------------------
 #deffunc stdarray_regularize_range@shift_array_mod array self, array range,  local tmp
 	if ( range(1) == stdarray_index_of_end ) { range(1) = length(self) }
-	
-	if ( range(0) > range(1) ) {		// ‹æŠÔ‚ª‹t => —¼•û + 1 ‚µ‚ÄŒğŠ·
-		tmp      = range(0) + 1
-		range(0) = range(1) + 1
-		range(1) = tmp
-		return true
-	} else {
-		return false
+	if ( range(0) > range(1) ) {
+		range(0) = range(1)
 	}
+	return
 	
 //------------------------------------------------
 // ‘}“ü ( “I‚Èˆ— )
@@ -93,7 +87,7 @@
 	range = iBgn, iEnd
 	stdarray_regularize_range self, range
 	
-	if ( dir >= 0 ^ stat ) {		// ”½“]‹æŠÔ => ‹t•ûŒü‚É Rotate
+	if ( dir >= 0 ) {
 		stdarray_loc_move self, range(0), range(1) - 1
 	} else {
 		stdarray_loc_move self,           range(1) - 1, range(0)
@@ -114,7 +108,6 @@
 #deffunc stdarray_reverse_ array self, int iBgn, int iEnd,  local range
 	range = iBgn, iEnd
 	stdarray_regularize_range self, range
-	if ( stat ) { return }			// ”½“]‹æŠÔ => ”½“]‚µ‚Ä‚à–ß‚é‚Ì‚Åˆ—‚·‚é•K—v‚È‚µ
 	
 	repeat (range(1) - range(0)) / 2
 		stdarray_loc_swap self, range(0) + cnt, range(1) - cnt - 1
