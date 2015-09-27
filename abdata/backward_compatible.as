@@ -9,6 +9,45 @@
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#define global stack_make          deque_make
+#define global stack_new           deque_new
+#define global stack_delete        deque_delete
+#define global stack_peekv         stack_getv
+#define global stack_peek          stack_get
+#define global stack_get_back      deque_get_back
+#define global stack_getv_back     deque_getv_back
+#define global stack_pop_back      deque_pop_back
+#define global stack_popv_back     deque_popv_back
+#define global stack_pop           deque_pop_back
+#define global stack_popv          deque_popv_back
+#define global stack_vartype       container_vartype_back
+#define global stack_double_front  deque_double_front
+#define global stack_double_back   deque_double_back
+#define global stack_push_back     deque_push_back
+#define global stack_pushv_back    deque_pushv_back
+#define global stack_add           stack_push
+#define global stack_push          deque_push_back
+#define global stack_pushv         deque_pushv_back
+#define global stack_erase         deque_erase_back
+#define global stack_loc_swap_back deque_loc_swap_back
+#define global stack_loc_swap      stack_loc_swap_back
+#define global stack_clear         deque_clear
+#define global stack_chain         deque_chain
+#define global stack_copy          deque_copy
+#define global stack_swap          deque_swap
+#define global stack_iter_init     deque_iter_init
+#define global stack_iter_next     deque_iter_next
+#define global stack_size          deque_size
+#define global stack_length        stack_size
+#define global stack_empty         deque_empty
+#define global stack_count         deque_count
+#define global stack_is_valid      deque_is_valid
+#define global stack_dbglog        deque_dbglog
+#define global stack_getv(%1,%2=0)      deque_getv %1, (-(%2) - 1)
+#define global ctype stack_get(%1,%2=0) deque_get(%1, (-(%2) - 1))
+#define global stack_clone(%1,%2=0)     deque_clone %1, (-(%2) - 1)
+#define global ctype stack_ref(%1,%2=0) deque_ref(%1, (-(%2) - 1))
+
 #define global dequeNull            abdataNull
 #define global deque_make           container_make
 #define global deque_new            container_new

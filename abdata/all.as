@@ -4,7 +4,6 @@
 #include "alg_iter.as"
 #include "abelem.as"
 #include "list.as"
-#include "stack.as"
 #include "tnode.as"
 #include "pair.as"
 #include "unor.as"
