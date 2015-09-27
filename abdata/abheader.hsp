@@ -1,11 +1,9 @@
 #ifndef        ig_abdata_header_hsp
 #define global ig_abdata_header_hsp
 
-// 外部(global領域)で定義されるヘッダファイル
-
 #ifdef _DEBUG
 
-// 警告回避
+	// 警告回避
 	dim stt_allinsts@__abdata
 	dim stt_nullinst@__abdata
 	dim stt_zero@

@@ -1,5 +1,3 @@
-// Algorithm::Iteration - 反復
-
 #ifndef ig_abdata_algorithm_iteration_hsp
 #define ig_abdata_algorithm_iteration_hsp
 
@@ -86,8 +84,7 @@
 	%2_iter_init ITER_INST(%1), ITER_DATA(%1)
 	
 #modinit var inst
-	mInst     = inst
-;	mIterData = ;
+	mInst = inst
 	return
 	
 //------------------------------------------------
@@ -95,9 +92,7 @@
 // @ いまのところ、構造名は必要でないが……。
 //------------------------------------------------
 #define global iter_delete(%1, %2) delmod ITER_INST_REAL(%1) : ITER_INST_IDX_VAR(%1) --
-;#modterm
-;	return
-	
+
 #global
 
 //------------------------------------------------

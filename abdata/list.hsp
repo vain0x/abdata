@@ -12,7 +12,6 @@
 
 #module abdata_list_impl mCnt, mElems, midlist
 
-#define ctype numrg(%1,%2,%3) ( ((%2) <= (%1)) && ((%1) <= (%3)) )
 #define true  1
 #define false 0
 #define int_max 0x7FFFFFFF
@@ -131,9 +130,7 @@
 	
 	// 適切に型を変換する
 	abelem_changeVartype mElems(iv), vartype(vValue)
-	
-	abelem_setv mElems( iv ), vValue
-	
+	abelem_setv          mElems(iv), vValue
 	return
 	
 //------------------------------------------------
@@ -163,7 +160,6 @@
 		i = _i
 	}
 	
-	// i 番目を空ける
 	stdarray_insert_room midlist, i
 	
 	// 新規値を追加
@@ -171,7 +167,6 @@
 	abelem_new mElems, vValue
 	midlist(i) = stat	;id
 	mCnt ++
-	
 	return
 	
 //------------------------------------------------
@@ -227,10 +222,11 @@
 #define global listImpl_resize(%1, %2, %3) \
 	listImpl_resize_ (%1), (%2), (%3)
 
-#modfunc listImpl_resize_ int newlen, var initValue,  local dif
+#modfunc listImpl_resize_ int newlen, var initValue,  \
+	local dif
+	
 	dif = newlen - mCnt
 	
-	// 減少
 	if ( dif < 0 ) {
 		if ( newlen <= 0 ) {
 			listImpl_clear thismod
@@ -239,11 +235,10 @@
 			// 要素 [newlen] 以降を除去
 			repeat -dif, newlen
 				abelem_delete mElems( midlist(cnt) )
-				midlist(cnt) = -1		// 無効要素にする
+				midlist(cnt) = -1 // nullify
 			loop
 		}
 		
-	// 増加
 	} else : if ( dif > 0 ) {
 		// 新要素を dif 個生成し、末尾に追加する
 		repeat dif, newlen - dif
@@ -259,7 +254,7 @@
 // 移動
 //------------------------------------------------
 #modfunc listImpl_loc_move int iSrc, int iDst
-	abAssert ( listImpl_size(thismod) >= 2 ), "move には少なくとも2要素が必要"		// 最低でも2つの要素がないと、move は意味がない
+	abAssert ( listImpl_size(thismod) >= 2 ), "loc_move には少なくとも2要素が必要"
 	
 	stdarray_loc_move midlist, listImpl_getRealIndex(thismod, iSrc), listImpl_getRealIndex(thismod, iDst)
 	return
@@ -268,7 +263,7 @@
 // 交換
 //------------------------------------------------
 #modfunc listImpl_loc_swap int iPos1, int iPos2
-	abAssert ( listImpl_size(thismod) >= 2 ), "swap には少なくとも2要素が必要"		// 最低でも2つの要素がないと、swap は意味がない
+	abAssert ( listImpl_size(thismod) >= 2 ), "loc_swap には少なくとも2要素が必要"
 	
 	stdarray_loc_swap midlist, listImpl_getRealIndex(thismod, iPos1), listImpl_getRealIndex(thismod, iPos2)
 	return
@@ -301,15 +296,9 @@
 //------------------------------------------------
 #modfunc listImpl_clear
 	
-	// 全要素を解放する
-	foreach mElems
-		abelem_delete mElems(cnt)
-	loop
-	
-	// 番号リストを初期化
+	dimtype mElems, 5
 	dim midlist
 	mCnt = 0
-	
 	return
 	
 //------------------------------------------------
@@ -364,10 +353,7 @@
 	
 //------------------------------------------------
 // 整列
-// 
-// @alg: (based: Merge-Sort)
-// @	1. 型タイプ値で整列
-// @	2. 同じ型 => 不等号による比較で整列
+//
 // @prm mode : SortMode_* (default: SortMode_Ascening)
 //------------------------------------------------
 #modfunc listImpl_sort int mode,  \
@@ -424,7 +410,6 @@
 	
 	// idx-list を変更
 	memcpy midlist, arrDst, len * 4
-	
 	return
 	
 //------------------------------------------------
@@ -554,8 +539,8 @@
 // 範囲チェック
 //------------------------------------------------
 #modcfunc listImpl_is_valid int i
-	if ( numrg(i, 0, mCnt - 1) ) {					// 有効範囲か
-		if ( varuse( mElems(midlist(i)) ) ) {		// 有効な要素番号か
+	if ( 0 <= i && i < mCnt ) {
+		if ( varuse( mElems(midlist(i)) ) ) {
 			return true
 		}
 	}
@@ -574,7 +559,6 @@
 	}
 	
 	abAssert ( 0 <= i && i < mCnt ), STR_ERR_OVER_RANGE(i)
-	
 	return i
 	
 #ifdef _DEBUG
@@ -619,60 +603,40 @@
 //------------------------------------------------
 #deffunc list_new_impl var self, int num, var vDefault,  local len
 	
-	// 要素数の自動拡張
 	len = length(abdataInsts_var)
-	if ( len != 1 ) {
-		if ( varuse( abdataInsts_var(len - 2) ) ) {		// 「最後から1つ前の要素」を使用している => わりと埋まってきた => 拡張
-			abdataInsts_var(len * 2 - 1) = abNullmod	// null を代入して自動拡張
-			// 最後の要素は abNullmod のクローンなので .varuse = 2 となり、判定に使用できない
-		}
+	
+	// 十分に埋まっていたら自動拡張
+	if ( len > 1 ) : if ( varuse(abdataInsts_var(len - 2)) ) {
+		abdataInsts_var(len * 2) = abNullmod
 	}
 	
-	// 新要素生成
-	listImpl_new abdataInsts_var, num, vDefault : self = stat
+	listImpl_new abdataInsts_var, num, vDefault
+	self = stat
 	return
 	
-#define global ctype list_make(%1 = 0, %2 = stt_zero@) new_list_(%1, %2)
+#define global ctype list_make(%1 = 0, %2 = stt_zero@) list_make_impl(%1, %2)
 
 //------------------------------------------------
 // 一時コンテナ・オブジェクトの生成
 //------------------------------------------------
-#defcfunc new_list_ int num, var vDefault,  local newObj
+#defcfunc list_make_impl int num, var vDefault,  local newObj
 	list_new newObj, num, vDefault
 	return newObj
 	
 #global
 
-//------------------------------------------------
-// 値の取得 ( 命令形式 )
-//------------------------------------------------
 #define global list_getv(%1, %2, %3 = 0) listImpl_getv abdataInsts(%1), %2, %3
 #define global list_popv(%1, %2, %3 = 0) listImpl_popv abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// 値の取得 ( 関数形式 )
-//------------------------------------------------
 #define global ctype list_get(%1,%2=0) listImpl_get(abdataInsts(%1), %2)
 #define global ctype list_pop(%1,%2=0) listImpl_pop(abdataInsts(%1), %2)
 
-//------------------------------------------------
-// 参照化 ( 命令形式 )
-//------------------------------------------------
 #define global list_clone(%1,%2,%3=0) listImpl_clone abdataInsts(%1), %2, %3
 
 #define global list_clone_abelem(%1, %2, %3) listImpl_clone_abelem abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// 参照化 ( 関数形式 )
-//------------------------------------------------
 #define global ctype list_ref(%1,%2=0) listImpl_ref(abdataInsts(%1),%2)
 
-//------------------------------------------------
-// 先頭・末尾の値の取得
-// 
-// @ get 処理 >> const な操作
-// @ pop 処理 >> 要素は取り除かれる
-//------------------------------------------------
 #define global ctype list_get_front(%1)     listImpl_get_front( abdataInsts(%1) )
 #define global ctype list_get_back(%1)      listImpl_get_back ( abdataInsts(%1) )
 #define global       list_getv_front(%1,%2) listImpl_getv_front abdataInsts(%1), %2
@@ -682,33 +646,18 @@
 #define global       list_popv_front(%1,%2) listImpl_popv_front abdataInsts(%1), %2
 #define global       list_popv_back(%1,%2)  listImpl_popv_back  abdataInsts(%1), %2
 
-//------------------------------------------------
-// 型の取得 ( 関数形式 )
-//------------------------------------------------
 #define global ctype list_vartype(%1,%2)    listImpl_vartype( abdataInsts(%1), %2 )
 #define global ctype list_vartype_front(%1) listImpl_vartype_front( abdataInsts(%1) )
 #define global ctype list_vartype_back(%1)  listImpl_vartype_back( abdataInsts(%1) )
 
-//------------------------------------------------
-// 値の設定
-//------------------------------------------------
 #define global list_set(%1, %2, %3 = 0)  listImpl_set  abdataInsts(%1), %2, %3
 #define global list_setv(%1, %2, %3 = 0) listImpl_setv abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// 挿入
-//------------------------------------------------
 #define global list_insert(%1, %2, %3 = 0)  listImpl_insert  abdataInsts(%1), %2, %3
 #define global list_insertv(%1, %2, %3 = 0) listImpl_insertv abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// 要素の倍化
-//------------------------------------------------
 #define global list_double(%1, %2, %3) listImpl_double abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// 先頭・最後尾への追加
-//------------------------------------------------
 #define global list_double_front(%1)   listImpl_double_front abdataInsts(%1)
 #define global list_double_back(%1)    listImpl_double_back  abdataInsts(%1)
 #define global list_push_front(%1,%2)  listImpl_push_front   abdataInsts(%1), %2
@@ -720,84 +669,39 @@
 #define global list_pushv list_pushv_back
 #define global list_add   list_push_back
 
-//------------------------------------------------
-// 除去
-//------------------------------------------------
 #define global list_erase(%1, %2)   listImpl_erase       abdataInsts(%1), %2
 #define global list_erase_front(%1) listImpl_erase_front abdataInsts(%1)
 #define global list_erase_back(%1)  listImpl_erase_back  abdataInsts(%1)
 
-//------------------------------------------------
-// 要素数設定
-//------------------------------------------------
 #define global list_resize(%1, %2, %3 = stt_zero@)  listImpl_resize abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// 移動
-//------------------------------------------------
-#define global list_loc_move(%1, %2, %3) listImpl_loc_move abdataInsts(%1), %2, %3
-
-//------------------------------------------------
-// 交換
-//------------------------------------------------
+#define global list_loc_move(%1, %2, %3) listImpl_loc_move       abdataInsts(%1), %2, %3
 #define global list_loc_swap(%1, %2, %3) listImpl_loc_swap       abdataInsts(%1), %2, %3
 #define global list_loc_swap_front(%1)   listImpl_loc_swap_front abdataInsts(%1)
 #define global list_loc_swap_back(%1)    listImpl_loc_swap_back  abdataInsts(%1)
 
-//------------------------------------------------
-// 巡回
-//------------------------------------------------
-#define global list_rotate(%1, %2 = 0, %3 = stdarray_index_of_end) listImpl_rotate abdataInsts(%1), %2, %3
+#define global list_rotate(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	listImpl_rotate abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// 巡回 ( 逆回転 )
-//------------------------------------------------
-#define global list_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) listImpl_rotate_back abdataInsts(%1), %2, %3
+#define global list_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	listImpl_rotate_back abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// 反転
-//------------------------------------------------
-#define global list_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) listImpl_reverse abdataInsts(%1), %2, %3
+#define global list_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	listImpl_reverse abdataInsts(%1), %2, %3
 
-//------------------------------------------------
-// [i] 完全消去
-//------------------------------------------------
-#define global list_clear(%1) listImpl_clear abdataInsts(%1)
-
-//------------------------------------------------
-// [i] 連結
-//------------------------------------------------
+#define global list_clear(%1)    listImpl_clear abdataInsts(%1)
 #define global list_chain(%1,%2) listImpl_chain abdataInsts(%1), abdataInsts(%2)
+#define global list_copy(%1,%2)  listImpl_copy abdataInsts(%1), abdataInsts(%2)
+#define global list_swap(%1,%2)  listImpl_swap abdataInsts(%1), abdataInsts(%2)
 
-//------------------------------------------------
-// [i] 複写
-//------------------------------------------------
-#define global list_copy(%1,%2) listImpl_copy abdataInsts(%1), abdataInsts(%2)
+#define global ctype list_lexicographical_compare(%1, %2) \
+	listImpl_lexicographical_compare(abdataInsts(%1), abdataInsts(%2))
 
-//------------------------------------------------
-// [i] 交換
-//------------------------------------------------
-#define global list_swap(%1,%2) listImpl_swap abdataInsts(%1), abdataInsts(%2)
+#define global list_sort(%1, %2 = SortMode_Ascending) \
+	listImpl_sort abdataInsts(%1), %2
 
-//------------------------------------------------
-// [i] 辞書順比較
-//------------------------------------------------
-#define global ctype list_lexicographical_compare(%1, %2) listImpl_lexicographical_compare(abdataInsts(%1), abdataInsts(%2))
-
-//------------------------------------------------
-// 整列
-// 
-// @alg: (based: Merge-Sort)
-// @	1. 型タイプ値で整列
-// @	2. 同じ型 => 不等号による比較で整列
-// @prm mode : SortMode_* (default: SortMode_Ascening)
-//------------------------------------------------
-#define global list_sort(%1, %2 = SortMode_Ascending) listImpl_sort abdataInsts(%1), %2
-
-//------------------------------------------------
-// 整列済み
-//------------------------------------------------
-#define global ctype list_is_sorted(%1, %2 = SortMode_Ascending) listImpl_is_sorted(abdataInsts(%1), %2)
+#define global ctype list_is_sorted(%1, %2 = SortMode_Ascending) \
+	listImpl_is_sorted(abdataInsts(%1), %2)
 
 #define global ctype list_lower_bound(%1, %2, %3 = SortMode_Ascending) \
 	listImpl_lower_bound(abdataInsts(%1), %2, %3)
@@ -814,45 +718,21 @@
 #define global list_sorted_erasev(%1, %2, %3 = int_max@abdata_list_impl, %4 = SortMode_Ascending) \
 	listImpl_sorted_erasev abdataInsts(%1), %2, %3, %4
 
-//------------------------------------------------
-// [i] 反復子::初期化
-//------------------------------------------------
-#define global list_iter_init(%1,%2) listImpl_iter_init abdataInsts(%1), %2
+#define global       list_iter_init(%1,%2)    listImpl_iter_init abdataInsts(%1), %2
+#define global ctype list_iter_next(%1,%2,%3) listImpl_iter_next(abdataInsts(%1), %2, %3)
 
-//------------------------------------------------
-// [i] 反復子::更新
-//------------------------------------------------
-#define global ctype list_iter_next(%1,%2,%3) listImpl_iter_next( abdataInsts(%1), %2, %3 )
-
-//------------------------------------------------
-// [i] 要素数
-//------------------------------------------------
-#define global ctype list_size(%1)  listImpl_size (abdataInsts(%1))
-#define global ctype list_empty(%1) listImpl_empty(abdataInsts(%1))
-#define global ctype list_count(%1, %2)  listImpl_count(abdataInsts(%1), %2)
+#define global ctype list_size(%1)      listImpl_size (abdataInsts(%1))
+#define global ctype list_empty(%1)     listImpl_empty(abdataInsts(%1))
+#define global ctype list_count(%1, %2) listImpl_count(abdataInsts(%1), %2)
 #define global list_length list_size
 
-//------------------------------------------------
-// 範囲チェック
-//------------------------------------------------
 #define global ctype list_is_valid(%1,%2) listImpl_is_valid(abdataInsts(%1), %2)
 
-//------------------------------------------------
-// 実際の要素番号を得る
-// @private
-//------------------------------------------------
-// #modcfunc local list_getRealIndex int idx
-
-//------------------------------------------------
-// 要素比較
-//------------------------------------------------
 #define global ctype list_opCmpElem(%1,%2,%3) listImpl_opCmpElem(abdataInsts(%1), %2, %3)
 
-//------------------------------------------------
-// デバッグ出力
-//------------------------------------------------
 #define global list_dbglog(%1) listImpl_dbglog_ abdataInsts(%1), "%1"
 
-	list_new listNull		// null := abdataInsts[0]
+	// abdataInsts(0) を null として扱う。
+	list_new listNull
 
 #endif

@@ -25,11 +25,9 @@
 //------------------------------------------------
 #deffunc stdarray_insert_room array self, int idx,  local i
 	
-	// ‘}“ü‚³‚ê‚éêŠ‚ğ‹ó‚¯‚é
 	for i, length(self), idx, -1
 		self(i) = self(i - 1)
 	next
-	
 	return
 	
 //------------------------------------------------
@@ -37,11 +35,9 @@
 //------------------------------------------------
 #deffunc stdarray_erase array self, int idx,  local i
 	
-	// íœ‚³‚ê‚éêŠ‚ğÁ‚· ( ‘¼‚Ì’l‚Åã‘‚«‚·‚é )
 	for i, idx, length(self) - 1
 		self(i) = self(i + 1)
 	next
-	
 	return
 	
 //------------------------------------------------
@@ -63,7 +59,6 @@
 		self(i) = self(i + dir)	// Ÿ‚ÌêŠ‚Ì’l‚ğó‚¯æ‚é
 	next
 	self(to) = temp
-	
 	return
 	
 //------------------------------------------------
@@ -112,7 +107,6 @@
 	repeat (range(1) - range(0)) / 2
 		stdarray_loc_swap self, range(0) + cnt, range(1) - cnt - 1
 	loop
-	
 	return
 	
 #global
