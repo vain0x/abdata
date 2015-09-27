@@ -5,6 +5,8 @@
 
 #module shift_array_mod
 
+#define true 1
+#define false 0
 #define global stdarray_index_of_end (-127)
 
 //------------------------------------------------
