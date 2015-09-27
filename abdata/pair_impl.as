@@ -4,6 +4,7 @@
 // ちょうど2つの要素からなるコンテナ
 // 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
 
+#include "abheader.as"
 #include "abelem.as"
 #include "mod_pvalptr.as"
 #include "mod_swap.as"
@@ -27,9 +28,9 @@
 #define global pairImpl_length pairImpl_size
 
 #define global pairImpl_new(%1, %2 = stt_zero@, %3 = stt_zero@) %tabdata %i0 %i0 \
-	_cat(%p0,@__tmp) = %2 :\
-	_cat(%p1,@__tmp) = %3 :\
-	newmod %1, abdata_pair_impl@, _cat(%p0,@__tmp), _cat(%p1,@__tmp)  :\
+	_cat@__abdata(%p0,@__tmp) = %2 :\
+	_cat@__abdata(%p1,@__tmp) = %3 :\
+	newmod %1, abdata_pair_impl@, _cat@__abdata(%p0,@__tmp), _cat@__abdata(%p1,@__tmp)  :\
 	%o0 %o0 //
 
 #define global pairImpl_delete(%1) delmod %1
@@ -90,8 +91,8 @@
 // @ assign => 両方
 //------------------------------------------------
 #define global pairImpl_set(%1,%2,%3 = 0) %tabdata \
-	_cat(%i,@__tmp) = (%2) :\
-	pairImpl_setv %1, _cat(%o,@__tmp), %3
+	_cat@__abdata(%i,@__tmp) = (%2) :\
+	pairImpl_setv %1, _cat@__abdata(%o,@__tmp), %3
 	
 #modfunc pairImpl_setv var dst, int idx
 	abelem_setv mValue(idx), dst
@@ -104,9 +105,9 @@
 #define global pairImpl_setv_rhs(%1,%2) pairImpl_setv %1, %2, PairImplIdx_Rhs
 
 #define global pairImpl_set_both(%1,%2,%3) %tabdata %i0 %i0 \
-	_cat(%p0,@__tmp) = (%2) :\
-	_cat(%p1,@__tmp) = (%3) :\
-	pairImpl_setv_both %1, _cat(%p0,@__tmp), _cat(%p1,@__tmp) :\
+	_cat@__abdata(%p0,@__tmp) = (%2) :\
+	_cat@__abdata(%p1,@__tmp) = (%3) :\
+	pairImpl_setv_both %1, _cat@__abdata(%p0,@__tmp), _cat@__abdata(%p1,@__tmp) :\
 	%o0 %o0 //
 
 #modfunc pairImpl_setv_both var lhs, var rhs

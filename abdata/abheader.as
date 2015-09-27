@@ -20,9 +20,8 @@
 
 #endif //defined(_DEBUG)
 
-#ifndef _empty
- #define global _empty //
-#endif
+#define ctype _cat@__abdata(%1,%2)%1%2
+#define _empty@__abdata//
 
 #ifndef abdataInsts
  #define global ctype abdataInsts(%1) stt_allinsts@__abdata(%1)

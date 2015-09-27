@@ -122,8 +122,8 @@
 // ílÇÃê›íË
 //------------------------------------------------
 #define global unorImpl_set(%1, %2 = "" ,%3) %tabdata \
-	_cat(%i,@__tmp) = %3 :\
-	unorImpl_setv %1, %2, _cat(%o,@__tmp)
+	_cat@__abdata(%i,@__tmp) = %3 :\
+	unorImpl_setv %1, %2, _cat@__abdata(%o,@__tmp)
 
 #modfunc unorImpl_setv str key, var vValue
 	unorImpl_setv_by_index_ thismod, unorImpl_getIndex(thismod, key), vValue
@@ -139,8 +139,8 @@
 // @ ä˘ë∂Ç»ÇÁé∏îs
 //------------------------------------------------
 #define global unorImpl_add(%1, %2 = "", %3 = stt_zero@) %tabdata \
-	_cat(%i,@__tmp) = %3 :\
-	unorImpl_addv %1, %2, _cat(%o,@__tmp)
+	_cat@__abdata(%i,@__tmp) = %3 :\
+	unorImpl_addv %1, %2, _cat@__abdata(%o,@__tmp)
 
 #modfunc unorImpl_addv str key, var vValue
 	unorImpl_addValue thismod, key, vValue

@@ -6,10 +6,6 @@
 // 反復アルゴリズム (foreach)
 // @ _continue は更新を行う。
 
-#ifndef _cat
- #define global ctype _cat(%1,%2)%1%2
-#endif
-
 #module abdata_iter mInst, mIterData
 
 #define ctype ARG_TEMP(%1) %1_iter_argtmp@__abdata
@@ -109,7 +105,7 @@
 //------------------------------------------------
 #define global IterateBegin(%1,%2,%3=it)  %tabdata_iterate %i0 %s1 iter_new %1, %2 : IterateCntRef__ = -1 : while ( iter_next(%1, %2, %3) ) : IterateCntRef__ ++
 #define global IterateEnd                 %tabdata_iterate wend : iter_delete %o  %o0
-#define global IterateCntRef__            %tabdata_iterate _cat(%p1,@__abdata)
+#define global IterateCntRef__            %tabdata_iterate _cat@__abdata(%p1,@__abdata)
 #define global IterateCnt                 %tabdata_iterate (IterateCntRef__)
 #define global ctype Iterate(%1,%2,%3=it) %tabdata_iterate_2 \
 	IterateBegin %1, %2, %3 : gosub *%i : IterateEnd : if 0 : *%o

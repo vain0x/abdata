@@ -121,8 +121,8 @@
 // ’l‚Ìİ’è
 //------------------------------------------------
 #define global containerImpl_set(%1,%2,%3=0) %tabdata \
-	_cat(%i,@__tmp) = %2 :\
-	containerImpl_setv %1, _cat(%o,@__tmp), %3
+	_cat@__abdata(%i,@__tmp) = %2 :\
+	containerImpl_setv %1, _cat@__abdata(%o,@__tmp), %3
 	
 #modfunc containerImpl_setv var vValue, int i,  local iv
 	
@@ -145,8 +145,8 @@
 // @ };
 //------------------------------------------------
 #define global containerImpl_insert(%1,%2,%3=0) %tabdata \
-	_cat(%i,@__tmp) = %2 :\
-	containerImpl_insertv %1, _cat(%o,@__tmp), %3
+	_cat@__abdata(%i,@__tmp) = %2 :\
+	containerImpl_insertv %1, _cat@__abdata(%o,@__tmp), %3
 	
 #modfunc containerImpl_insertv var vValue, int _i,  local i, local id
 	i = _i
