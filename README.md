@@ -104,21 +104,19 @@
 
 ## 実装詳細メモ
 #### abdataInsts_var
-* abdata のほとんどのモジュールクラス(containerImpl や unorImpl など)のインスタンスは、この1つの配列変数の中に生成される。
+* abdata のほとんどのモジュールクラス(listImpl や unorImpl など)のインスタンスは、この1つの配列変数の中に生成される。
 * abdata を使う側では、インスタンスの代わりに、この配列の添字を用いる。
 * これによりインスタンスを関数に渡したり参照のコピーを行ったりできる。代償として、GCに相当する機能がなくなってしまっている。
 
-#### container
-* 実質的に list と思ってよい。
-  * list はこれのラッパ。
-* インスタンスの中に abelem の配列 mElems をもつ。その要素はこの container の値を表しているが、順番は同じではない。
-* メンバ変数 midlist が、container の要素と、それを表す mElems の要素への対応をもつ。
-  * すなわち、container(index) <---> mElems(midlist(index)) という関係がある。
-  * コメントでは container の添字と区別するため、mElems の添字を real index と呼んでいる。
+#### list
+* インスタンスの中に abelem の配列 mElems をもつ。その要素はこの list の値を表しているが、順番は同じではない。
+* メンバ変数 midlist が、list の要素と、それを表す mElems の要素への対応をもつ。
+  * すなわち、list(index) <---> mElems(midlist(index)) という関係がある。
+  * コメントでは list の添字と区別するため、mElems の添字を real index と呼んでいる。
   * `_loc_swap` を効率よく実装するため。
 
 #### pair
-* 要素数が常に 2 であることを除いて、container とほぼ同様。
+* 要素数が常に 2 であることを除いて、list とほぼ同様。
 
 #### unor
 * STL の std::unordered ではなく、Loki::AssocVector みたいなもの。
