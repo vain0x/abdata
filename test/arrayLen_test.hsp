@@ -1,5 +1,9 @@
 #include "../abdata/arrayLen.as"
 
+#ifndef true
+ #define global true 1
+#endif
+
 #module
 
 #deffunc arrayLenTest_eq_ran array arr, int _value, int x_lb, int x_ub, \

@@ -47,7 +47,7 @@
 	tnode_resetElemsv %1, ARG_TEMP@abdata_tnode(1), ARG_TEMP@abdata_tnode(2) ://
 	
 #deffunc tnode_resetElemsv var self, var value, var chd
-	if ( list_empty(self) == false ) { return }
+	if ( list_empty(self) == 0 ) { return }
 	list_insertv self, value, TNIdx_Value
 	list_insertv self, chd,   TNIdx_Chd
 	return

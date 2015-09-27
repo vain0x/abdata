@@ -6,6 +6,9 @@
 
 #module abdata_abelem mValue
 
+#define vartype_double 3
+#define vartype_int 4
+
 #define global abelem_new(%1,%2 = stt_zero@) newmod %1, abdata_abelem@, %2
 #define global abelem_delete(%1)             delmod %1
 

@@ -1,5 +1,9 @@
 #include "../abdata/container.as"
 
+#ifndef true
+ #define global true 1
+#endif
+
 #module
 #defcfunc make_iota_container int n,  local self
 	self = container_make()
