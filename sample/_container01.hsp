@@ -1,4 +1,4 @@
-#include "../abdata/container.as"
+#include "../abdata/container.hsp"
 
 	container_new    vSt
 	container_add    vSt, "Hello, world!"

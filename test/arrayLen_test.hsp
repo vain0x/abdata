@@ -1,4 +1,4 @@
-#include "../abdata/arrayLen.as"
+#include "../abdata/arrayLen.hsp"
 
 #ifndef true
  #define global true 1

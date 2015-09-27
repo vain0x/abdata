@@ -1,8 +1,8 @@
-#ifndef IG_ABDATA_TREE_NODE_AS
-#define IG_ABDATA_TREE_NODE_AS
+#ifndef ig_abdata_tnode_hsp
+#define ig_abdata_tnode_hsp
 
-#include "list.as"
-#include "alg_iter.as"
+#include "list.hsp"
+#include "alg_iter.hsp"
 
 #define global TNode_ClsName "tnode"
 #define global tnodeNull listNull

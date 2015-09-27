@@ -1,4 +1,4 @@
-#include "../abdata/list.as"
+#include "../abdata/list.hsp"
 
 	obj = list_make()
 ;	list_new    obj

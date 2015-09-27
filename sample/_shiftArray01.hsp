@@ -1,4 +1,4 @@
-#include "../abdata/mod_shiftArray.as"
+#include "../abdata/mod_shiftArray.hsp"
 
 #module
 #define global output(%1,%2) _output %1, %2, "%2"

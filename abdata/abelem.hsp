@@ -1,8 +1,7 @@
-#ifndef IG_ABDATA_ABELEM_AS
-#define IG_ABDATA_ABELEM_AS
+#ifndef ig_abdata_elem_hsp
+#define ig_abdata_elem_hsp
 
-#include "mod_pvalptr.as"
-#include "mod_opCompare.as"
+#include "mod_pvalptr.hsp"
 
 #module abdata_abelem mValue
 

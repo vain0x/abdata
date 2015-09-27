@@ -1,6 +1,6 @@
 
-#include "../abdata/alg_iter.as"
-#include "../abdata/list.as"
+#include "../abdata/alg_iter.hsp"
+#include "../abdata/list.hsp"
 	
 	// ‚Æ‚è‚ ‚¦‚¸—v‘f’Ç‰Á
 	list_new obj

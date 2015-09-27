@@ -1,4 +1,4 @@
-#include "../abdata/mod_swap.as"
+#include "../abdata/mod_swap.hsp"
 
 #module kls x_, id_
 #modinit int x

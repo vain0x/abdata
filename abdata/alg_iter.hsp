@@ -1,7 +1,7 @@
 // Algorithm::Iteration - 反復
 
-#ifndef IG_ABDATA_ALGORITHM_ITERATION_AS
-#define IG_ABDATA_ALGORITHM_ITERATION_AS
+#ifndef ig_abdata_algorithm_iteration_hsp
+#define ig_abdata_algorithm_iteration_hsp
 
 // 反復アルゴリズム (foreach)
 // @ _continue は更新を行う。

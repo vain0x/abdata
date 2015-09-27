@@ -1,5 +1,5 @@
-#ifndef IG_MODULE_OPERATION_COMPARE_AS
-#define IG_MODULE_OPERATION_COMPARE_AS
+#ifndef ig_module_operation_compare_hsp
+#define ig_module_operation_compare_hsp
 
 #module
 

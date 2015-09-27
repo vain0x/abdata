@@ -14,15 +14,16 @@
   * [NYSL (煮るなり焼くなり好きにしろライセンス)](http://www.kmonos.net/nysl/) に従う。
 
 ## 内容
-* [abdata/all.as](abdata/all.as): すべてのヘッダを一括で \#include します。
+* [abdata/all.hsp](abdata/all.hsp): すべてのヘッダを一括で \#include します。
 * [sample](sample): 簡単なサンプルです。
 
-* [abdata/backward_compatible.as](abdata/backward_compatible.as) : 古い abdata をそこそこ動かせるヘッダ。
+* 後方互換用
+  * [abdata/backward_compatible.as](abdata/backward_compatible.as): 古い abdata をそこそこ動かせる。
+  * 各種 `.as` ファイル。
 
 ### コンテナ
 * pair: ペア
 * list: リスト
-* stack: スタック
 * tnode: 木構造 (擬似)
 * unor: 文字列からの連想配列
 * abelem: 任意型の値
@@ -98,7 +99,7 @@
 アルゴリズム関数を提供するファイルには、接頭辞 alg_ が付いています。
 
 * 反復アルゴリズム
-  * [abdata/alg_iter.as](abdata/alg_iter.as)
+  * [abdata/alg_iter.hsp](abdata/alg_iter.hsp)
   * `foreach` のようなもの。コンテナ内の各要素についてループを行います。
 
 ## 実装詳細メモ

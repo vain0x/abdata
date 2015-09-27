@@ -1,14 +1,14 @@
-#ifndef IG_ABDATA_CONTAINER_AS
-#define IG_ABDATA_CONTAINER_AS
+#ifndef ig_abdata_container_hsp
+#define ig_abdata_container_hsp
 
-#include "abheader.as"
-#include "abelem.as"
-#include "arrayLen.as"
-#include "mod_nullmod.as"
-#include "mod_shiftArray.as"
-#include "mod_pvalptr.as"
-#include "mod_swap.as"
-#include "mod_ref.as"
+#include "abheader.hsp"
+#include "abelem.hsp"
+#include "arrayLen.hsp"
+#include "mod_nullmod.hsp"
+#include "mod_shiftArray.hsp"
+#include "mod_pvalptr.hsp"
+#include "mod_swap.hsp"
+#include "mod_ref.hsp"
 
 #module abdata_con_impl mCnt, mElems, midlist
 ; abdata_container_impl ‚ÍŽ¯•ÊŽq’·‚ÌŒÀŠE‚ð’´‚¦‚Ä‚¢‚é‚½‚ß

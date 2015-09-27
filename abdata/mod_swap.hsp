@@ -1,7 +1,7 @@
-#ifndef IG_MODULE_SWAP_AS
-#define IG_MODULE_SWAP_AS
+#ifndef ig_module_swap_hsp
+#define ig_module_swap_hsp
 
-#include "mod_pvalptr.as"
+#include "mod_pvalptr.hsp"
 
 #module
 

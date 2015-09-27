@@ -1,4 +1,4 @@
-#include "../abdata/tnode.as"
+#include "../abdata/tnode.hsp"
 
 	tnode_new root, "e", list_make()
 	

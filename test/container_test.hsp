@@ -1,4 +1,4 @@
-#include "../abdata/container.as"
+#include "../abdata/container.hsp"
 
 #ifndef true
  #define global true 1
