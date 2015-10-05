@@ -3,6 +3,7 @@
 
 #include "alg_iter.hsp"
 #include "abelem.hsp"
+#include "arrlen.hsp"
 #include "list.hsp"
 #include "tnode.hsp"
 #include "pair.hsp"

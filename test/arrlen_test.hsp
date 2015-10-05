@@ -1,0 +1,102 @@
+#include "../abdata/arrlen.hsp"
+
+#ifndef true
+ #define global true 1
+#endif
+
+#module
+
+#deffunc arrlenTest_eq_ran array arr, int _value, int x_lb, int x_ub, \
+	local value, local eq_ran
+	
+	value = _value
+	arrlen_equal_range arr, length(arr), value, eq_ran(0), eq_ran(1)
+	assert eq_ran(0) == x_lb
+	assert eq_ran(1) == x_ub
+	return
+	
+#deffunc arrlenTest_sorted_insert \
+	array _arr, int _value, int can_dup, \
+	int x_lb, int x_ub, int x_c,        \
+	local arr, local len, local value, local lb, local ub
+	
+	arrlen_copy arr, len,  _arr, length(_arr)
+	value = _value
+	arrlenSorted_insert_v arr, len, value, can_dup
+	assert stat == x_c
+	
+	arrlen_equal_range arr, len, value, lb, ub
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#deffunc arrlenTest_sorted_erase array _arr, int _value, int max_count,  int x_lb, int x_ub, int x_c, \
+	local arr, local value, local lb, local ub
+	
+	arrlen_copy arr, len,  _arr, length(_arr)
+	value = _value
+	arrlenSorted_erase_v arr, len, value, max_count
+	assert stat == x_c
+	
+	arrlen_equal_range arr, len, value, lb, ub
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#global
+
+	arr = 1, 3, 3, 5, 5, 5, 7, 8
+	arr_len = length(arr)
+	
+	//®—ñ«
+	arr_not_sorted = 1, 3, 3, 4, 2
+	arr_not_sorted_len = length(arr_not_sorted)
+	
+	assert arrlen_is_sorted(arr, arr_len)
+	assert arrlen_is_sorted(arr_not_sorted, arr_not_sorted_len) == 0
+	
+	//ŒŸõ
+	arrlenTest_eq_ran arr, 0,   0, 0
+	arrlenTest_eq_ran arr, 2,   1, 1
+	arrlenTest_eq_ran arr, 3,   1, 3
+	arrlenTest_eq_ran arr, 8,   7, 8
+	arrlenTest_eq_ran arr, 9,   8, 8
+	
+	//®—ñÏ‚Ý‚Ì”‚¦ã‚°
+	val = 0, 1, 3, 5
+	x_c = 0, 1, 2, 3
+	repeat 3
+		assert arrlenSorted_count(arr, arr_len, val(cnt)) == x_c(cnt)
+	loop
+	
+	//®—ñÏ‚Ý‘}“ü
+	//‘}“üŒã‚ÉA‘}“ü‚µ‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚èAŽÀÛ‰½ŒÂ‘}“ü‚³‚ê‚é‚©
+	arrlenTest_sorted_insert arr, 0,  true,    0, 1,  1
+	arrlenTest_sorted_insert arr, 1,  true,    0, 2,  1
+	arrlenTest_sorted_insert arr, 1, false,    0, 1,  0
+	arrlenTest_sorted_insert arr, 2,  true,    1, 2,  1
+	arrlenTest_sorted_insert arr, 3,  true,    1, 4,  1
+	arrlenTest_sorted_insert arr, 3, false,    1, 3,  0
+	arrlenTest_sorted_insert arr, 9,  true,    8, 9,  1
+	arrlenTest_sorted_insert arr, 9, false,    8, 9,  1
+	
+	//®—ñÏ‚Ý‚Ìœ‹Ž
+	//œ‹ŽŒã‚ÉAœ‹Ž‚³‚ê‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚èAŽÀÛ‰½ŒÂœ‹Ž‚³‚ê‚é‚©
+	arrlenTest_sorted_erase arr, 0,  1,    0, 0,  0
+	arrlenTest_sorted_erase arr, 1,  1,    0, 0,  1
+	arrlenTest_sorted_erase arr, 3,  1,    1, 2,  1
+	arrlenTest_sorted_erase arr, 3, 99,    1, 1,  2
+	arrlenTest_sorted_erase arr, 9, 99,    8, 8,  0
+	
+	//”äŠr
+	arrlen_copy arr2, arr2_len,  arr, arr_len
+	arrlen_copy arr3, arr3_len,  arr, arr_len
+	arr2(1) --
+	arr3(1) ++
+	assert arrlen_lexicographical_compare(arr, arr_len,  arr,   arr_len) == 0
+	assert arrlen_lexicographical_compare(arr, arr_len,  arr2, arr2_len) > 0
+	assert arrlen_lexicographical_compare(arr, arr_len,  arr3, arr3_len) < 0
+	assert arrlen_lexicographical_compare(arr, arr_len,  arr3, arr3_len - 1) > 0
+	
+	logmes "arrlen test completed."
+	

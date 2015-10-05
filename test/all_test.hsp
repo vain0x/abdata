@@ -2,6 +2,6 @@
 #include "list_test.hsp"
 #include "pair_test.hsp"
 #include "unor_test.hsp"
-#include "arrayLen_test.hsp"
+#include "arrlen_test.hsp"
 
 	logmes "All test completed."
