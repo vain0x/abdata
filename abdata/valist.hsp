@@ -46,6 +46,10 @@ len_:
 	//len_ = 0
 	return getaptr(thismod)
 	
+#modfunc valistImpl_dup_aps__ array ref_aps
+	dup ref_aps, aps_
+	return
+	
 #modcfunc valistImpl_len
 	return len_
 	
@@ -191,7 +195,10 @@ len_:
 
 #define global valist_iter_swap(%1, %2, %3) \
 	valistImpl_iter_swap abdataInsts(%1), %2, %3
-	
+
+#define global valist_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	valist_reverse__ %1, %2, %3
+
 #module
 #deffunc valist_new_empty var self
 	
@@ -257,6 +264,20 @@ len_:
 #module
 #deffunc valist_erase_back int self
 	valist_erase_range self, valist_size(self) - 1, valist_size(self)
+	return
+#global
+
+#module
+#deffunc valist_reverse__ int self, int i_beg, int i_end,  \
+	local aps
+	
+	if ( i_end == stdarray_index_of_end ) {
+		valist_reverse__ self, i_beg, valist_size(self)
+		return
+	}
+	assert 0 <= i_beg && i_beg <= i_end && i_end <= valist_size(self)
+	valistImpl_dup_aps__ abdataInsts(self), aps
+	stdarray_reverse aps, i_beg, i_end
 	return
 #global
 
