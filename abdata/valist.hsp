@@ -268,6 +268,23 @@ len_:
 #global
 
 #module
+#deffunc valist_resize int self, int new_len, var value,  \
+	local len
+	
+	assert new_len >= 0
+	len = valist_size(self)
+	if ( len <= new_len ) {
+		repeat new_len - len
+			valist_pushv_back self, value
+		loop
+		
+	} else {
+		valist_erase_range self, new_len, len
+	}
+	return len
+#global
+
+#module
 #deffunc valist_reverse__ int self, int i_beg, int i_end,  \
 	local aps
 	
