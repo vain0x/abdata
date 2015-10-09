@@ -56,6 +56,18 @@ empty_len_:
 		return length(arr_) - 1
 	}
 	
+#modfunc abbox_unsafe_erase_at int i
+	
+	// empty_ ‚Éd•¡Œ³‚ª¶‚¶‚È‚¢‚Æ‚«‚É‚¾‚¯g‚¤B
+	#ifdef _debug
+		repeat empty_len_
+			assert empty_(cnt) != i
+		loop
+	#endif
+	empty_(empty_len_) = i
+	empty_len_ ++
+	return
+	
 #global
 
 #endif
