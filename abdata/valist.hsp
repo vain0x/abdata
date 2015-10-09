@@ -330,6 +330,17 @@ len_:
 #global
 
 #module
+#deffunc valist_iter_move int self, int i_src, int i_dst,  \
+	local aps
+	
+	assert 0 <= i_src && i_src < valist_size(self)
+	assert 0 <= i_dst && i_dst < valist_size(self)
+	valistImpl_dup_aps__ abdataInsts(self), aps
+	stdarray_loc_move aps, i_src, i_end
+	return
+#global
+
+#module
 #deffunc valist_reverse__ int self, int i_beg, int i_end,  \
 	local aps
 	
