@@ -3,10 +3,6 @@
 
 #module
 
-#define vartype_str 2
-#define vartype_double 3
-#define vartype_int 4
-
 //------------------------------------------------
 // “¯‚¶Œ^‚Ì”äŠr‰‰ŽZ
 //------------------------------------------------
@@ -26,20 +22,12 @@
 //------------------------------------------------
 // ”CˆÓ‚ÌŒ^‚Ì”äŠr‰‰ŽZ
 //------------------------------------------------
-#defcfunc abdata_compare var lhs, var rhs,  \
-	local vtype, local value
-	
-	vtype = vartype(lhs), vartype(rhs)
-	if ( (vtype(0) == vartype_double || vtype(0) == vartype_int) && (vtype(1) == vartype_double || vtype(1) == vartype_int) ) {
-		value = double(lhs) - rhs
-		if ( absf(value) < 1e-9 ) { return 0 }
-		return int(value / absf(value))
-	} else : if ( vtype(0) != vtype(1) ) {
-		return vtype(0) - vtype(1)
-	} else {
-		return lhs != rhs
+#defcfunc abdata_compare var lhs, var rhs
+	if ( vartype(lhs) != vartype(rhs) ) {
+		return vartype(lhs) - vartype(rhs)
 	}
-
+	return abdata_hom_cmp(lhs, rhs)
+	
 #global
 
 #endif
