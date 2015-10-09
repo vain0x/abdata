@@ -34,17 +34,33 @@ len_:
 #define ctype ap_ix_at(%1)   ap_ix(aps_(%1))
 
 #modinit
-
-	// vartype 0 is invalid
-	abbox_new arrs_
+	valistImpl_init thismod
+	return getaptr(thismod)
 	
+#modfunc valistImpl_init
+
+	assert vartype("struct") == 5
+	dimtype arrs_, 5, vartype_max + 1
+	
+	abbox_new arrs_
 	repeat vartype_max, 1
 		abbox_new arrs_, cnt
 	loop
 	
-	//dim aps_, 0
-	//len_ = 0
-	return getaptr(thismod)
+	// vartype 0 is invalid
+	delmod arrs_(0)
+	assert varuse(arrs_(0)) == 0
+	
+	assert len_ == 0
+	return
+	
+#modfunc valistImpl_clear
+
+	dim arrs_
+	dim aps_
+	len_ = 0
+	valistImpl_init thismod
+	return
 	
 #modfunc valistImpl_dup_aps__ array ref_aps
 	dup ref_aps, aps_
@@ -142,6 +158,9 @@ len_:
 
 #define global ctype valist_make(%1 = 0, %2 = stt_zero@) \
 	valist_make_replicate(%1, %2)
+	
+#define global valist_clear(%1) \
+	valistImpl_clear abdataInsts(%1)
 
 #define global ctype valist_size(%1) valistImpl_len(abdataInsts(%1))
 #define global valist_length valist_size
