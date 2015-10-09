@@ -155,6 +155,10 @@ len_:
 		valistImpl_ref_impl(abdataInsts(%1), _cat@__abdata(%p,@__tmp), (%2)) \
 	) %o0 //
 
+#define global valist_set(%1, %2, %3) %tabdata \
+	_cat@__abdata(%i,@__tmp) = %2 :\
+	valist_setv %1, _cat@__abdata(%o,@__tmp), %3
+
 #define global valist_setv(%1, %2, %3) \
 	valistImpl_setv abdataInsts(%1), %2, %3
 
