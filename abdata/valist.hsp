@@ -287,12 +287,15 @@ len_:
 #global
 
 #module
-#defcfunc valist_ref_impl int self, array ref, int i
-
+#deffunc valist_dup int self, int i, array ref
 	if ( valist_try_dup(self, i, ref) ) {
-		return 0
+		return
 	}
 	assert : end 1
+
+#defcfunc valist_ref_impl int self, array ref, int i
+	valist_dup self, i, ref
+	return 0
 #global
 
 #module
@@ -364,12 +367,10 @@ len_:
 	if ( cmp ) { return cmp }
 	
 	repeat len
-		if ( valist_try_dup(self, cnt, l_ref) && valist_try_dup(rhs , cnt, r_ref) ) {
-			cmp = abdata_compare(l_ref, r_ref)
-			if ( cmp ) { break }
-		} else {
-			assert : end 1
-		}
+		valist_dup self, cnt, l_ref
+		valist_dup rhs , cnt, r_ref
+		cmp = abdata_compare(l_ref, r_ref)
+		if ( cmp ) { break }
 	loop
 	return cmp
 #global
