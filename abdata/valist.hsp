@@ -76,7 +76,7 @@ len_:
 // wrapper
 
 #define global valist_new(%1, %2 = 0, %3 = stt_zero@) \
-	valist_new__ %1, %2, %3 //unimplemented
+	valist_new_replicate %1, %2, %3
 
 #define global valist_delete(%1) \
 	delmod abdataInsts(%1)
@@ -103,6 +103,15 @@ len_:
 	
 	newmod abdataInsts_var, abdata_valist_impl@
 	self = stat
+	return
+#global
+
+#module
+#deffunc valist_new_replicate var self, int count, var value
+	valist_new_empty self
+	repeat count
+		valist_insertv self, value, cnt
+	loop
 	return
 #global
 
