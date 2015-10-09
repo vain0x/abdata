@@ -129,6 +129,9 @@ len_:
 #define global valist_delete(%1) \
 	delmod abdataInsts(%1)
 
+#define global ctype valist_make(%1 = 0, %2 = stt_zero@) \
+	valist_make_replicate(%1, %2)
+
 #define global ctype valist_size(%1) valistImpl_len(abdataInsts(%1))
 #define global valist_length valist_size
 
@@ -197,6 +200,12 @@ len_:
 		valist_insertv self, value, cnt
 	loop
 	return
+	
+#defcfunc valist_make_replicate int count, var value,  \
+	local self
+	
+	valist_new_replicate self, count, value
+	return self
 #global
 
 #module
