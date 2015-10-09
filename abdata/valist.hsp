@@ -49,9 +49,12 @@ len_:
 #modcfunc valistImpl_len
 	return len_
 	
-#modcfunc valistImpl_try_get int i, var result
+#modcfunc valistImpl_try_get int i, var result, int removes
 	if ( 0 <= i && i < len_ ) {
 		abbox_unsafe_get_v arrs_(ap_type_at(i)), result, ap_ix_at(i)
+		if ( removes ) {
+			valistImpl_erase_range thismod, i, i + 1
+		}
 		return true
 	} else {
 		return false
@@ -107,7 +110,10 @@ len_:
 #define global valist_length valist_size
 
 #define global ctype valist_try_get(%1, %2, %3) \
-	valistImpl_try_get(abdataInsts(%1), %2, %3)
+	valistImpl_try_get(abdataInsts(%1), %2, %3, 0 /* removes */)
+
+#define global ctype valist_try_pop(%1, %2, %3) \
+	valistImpl_try_get(abdataInsts(%1), %2, %3, 1 /* removes */)
 
 #define global valist_insertv(%1, %2, %3 = 0) \
 	valistImpl_insertv abdataInsts(%1), %2, %3
