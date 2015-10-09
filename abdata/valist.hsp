@@ -63,6 +63,21 @@ len_:
 		return false
 	}
 	
+#modfunc valistImpl_setv var value, int i
+
+	assert 0 <= i && i < len_
+	if ( vartype(value) == ap_type_at(i) ) {
+		abbox_unsafe_set_v arrs_(ap_type_at(i)), ap_ix_at(i), value
+		
+	// Œ^‚ª•Ï‚í‚éê‡
+	// Œ³‚Ì—v‘f‚ðœ‹Ž‚µAV‚µ‚­‘}“ü‚µ‚½—v‘f‚Ö‚ÌƒŠƒ“ƒN‚Å’u‚«Š·‚¦‚éB
+	} else {
+		abbox_unsafe_erase_at arrs_(ap_type_at(i)), ap_ix_at(i)
+		abbox_add arrs_(vartype(value)), value
+		aps_(i) = ap_make(vartype(value), stat)
+	}
+	return
+	
 #modfunc valistImpl_insertv var value, int i
 
 	if ( i < 0 ) {
@@ -119,6 +134,9 @@ len_:
 
 #define global ctype valist_try_pop(%1, %2, %3) \
 	valistImpl_try_get(abdataInsts(%1), %2, %3, 1 /* removes */)
+
+#define global valist_setv(%1, %2, %3) \
+	valistImpl_setv abdataInsts(%1), %2, %3
 
 #define global valist_insertv(%1, %2, %3 = 0) \
 	valistImpl_insertv abdataInsts(%1), %2, %3
