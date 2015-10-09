@@ -30,6 +30,9 @@ len_:
 #define true 1
 #define false 0
 
+#define ctype ap_type_at(%1) ap_type(aps_(%1))
+#define ctype ap_ix_at(%1)   ap_ix(aps_(%1))
+
 #modinit
 
 	// vartype 0 is invalid
@@ -48,7 +51,7 @@ len_:
 	
 #modcfunc valistImpl_try_get int i, var result
 	if ( 0 <= i && i < len_ ) {
-		abbox_unsafe_get_v arrs_(ap_type(aps_(i))), result, ap_ix(aps_(i))
+		abbox_unsafe_get_v arrs_(ap_type_at(i)), result, ap_ix_at(i)
 		return true
 	} else {
 		return false
