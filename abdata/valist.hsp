@@ -81,6 +81,17 @@ len_:
 	len_ ++
 	return
 	
+#modfunc valistImpl_erase_range int i_beg, int i_end
+	if ( i_beg >= i_end ) { return }
+	
+	repeat i_end - i_beg, i_beg
+		abbox_unsafe_erase_at arrs_(ap_type_at(cnt)), ap_ix_at(cnt)
+	loop
+	
+	stdarray_erase_range aps_, len_, i_beg, i_end
+	len_ -= i_end - i_beg
+	return
+	
 #global
 
 //##############################################################################
@@ -111,6 +122,9 @@ len_:
 #define global valist_push_back(%1, %2) %tabdata \
 	_cat@__abdata(%i,@__tmp) = %2 :\
 	valist_pushv_back %1, _cat@__abdata(%o,@__tmp)
+
+#define global valist_erase_range(%1, %2, %3) \
+	valistImpl_erase_range abdataInsts(%1), %2, %3
 
 #module
 #deffunc valist_new_empty var self
