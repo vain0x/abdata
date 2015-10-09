@@ -140,6 +140,9 @@ len_:
 #define global ctype valist_try_pop(%1, %2, %3) \
 	valistImpl_try_get(abdataInsts(%1), %2, %3, 1 /* removes */)
 
+#define global ctype valist_get(%1, %2)  valist_get__(%1, %2, 0 /* removes */)
+#define global ctype valist_pop(%1, %2)  valist_get__(%1, %2, 1 /* removes */)
+
 #define global ctype valist_ref(%1, %2) %t__ref %i0 \
 	_cat@__abdata(%p,@__tmp)( \
 		valistImpl_ref_impl(abdataInsts(%1), _cat@__abdata(%p,@__tmp), (%2)) \
@@ -190,6 +193,16 @@ len_:
 		valist_insertv self, value, cnt
 	loop
 	return
+#global
+
+#module
+#defcfunc valist_get__ int self, int i, int removes,  \
+	local result
+	
+	if ( valistImpl_try_get(abdataInsts(self), i, result, removes) ) {
+		return result
+	}
+	assert : end 1
 #global
 
 #module
