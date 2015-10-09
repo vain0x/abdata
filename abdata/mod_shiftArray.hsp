@@ -108,12 +108,20 @@
 // @prm [iBgn, iEnd) : ”½“]‘ÎÛ‚Ì‹æŠÔ
 //------------------------------------------------
 #define global stdarray_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) stdarray_reverse_ %1, %2, %3
-#deffunc stdarray_reverse_ array self, int iBgn, int iEnd,  local range
-	range = iBgn, iEnd
-	stdarray_regularize_range self, range
+#deffunc stdarray_reverse_ array self, int iBgn, int iEnd,  \
+	local tmp
+
+	if ( iEnd == stdarray_index_of_end ) {
+		stdarray_reverse_ self, iBgn, length(self)
+		return
+	} else : if ( iBgn >= iEnd ) {
+		return
+	}
 	
-	repeat (range(1) - range(0)) / 2
-		stdarray_loc_swap self, range(0) + cnt, range(1) - cnt - 1
+	repeat (iEnd - iBgn) >> 1
+		tmp = self(iBgn + cnt)
+		self(iBgn + cnt    ) = self(iEnd - cnt - 1)
+		self(iEnd - cnt - 1) = tmp
 	loop
 	return
 	
