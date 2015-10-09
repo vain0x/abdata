@@ -142,6 +142,8 @@ len_:
 
 #define global ctype valist_get(%1, %2)  valist_get__(%1, %2, 0 /* removes */)
 #define global ctype valist_pop(%1, %2)  valist_get__(%1, %2, 1 /* removes */)
+#define global ctype valist_get_front(%1)  valist_get(%1, 0)
+#define global ctype valist_pop_front(%1)  valist_pop(%1, 0)
 
 #define global ctype valist_ref(%1, %2) %t__ref %i0 \
 	_cat@__abdata(%p,@__tmp)( \
