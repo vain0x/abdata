@@ -34,6 +34,9 @@ len_:
 #define ctype ap_type_at(%1) ap_type(aps_(%1))
 #define ctype ap_ix_at(%1)   ap_ix(aps_(%1))
 
+#define global abdata_sort_ascending 0
+#define global abdata_sort_decending 1
+
 #modinit
 	valistImpl_init thismod
 	return getaptr(thismod)
@@ -373,6 +376,20 @@ len_:
 		if ( cmp ) { break }
 	loop
 	return cmp
+#global
+
+#module
+#defcfunc valist_is_sorted int self, int sort_mode,  \
+	local i, local l_ref, local r_ref
+	
+	for i, 0, valist_size(self) - 1
+		valist_dup self, i    , l_ref
+		valist_dup self, i + 1, r_ref
+		if ( abdata_compare(l_ref, r_ref) * (1 - 2 * sort_mode) > 0 ) {
+			return false
+		}
+	next
+	return true
 #global
 
 #endif
