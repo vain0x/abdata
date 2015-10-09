@@ -255,6 +255,17 @@ len_:
 #global
 
 #module
+#deffunc valist_chain int self, int rhs,  \
+	local i, local ref
+	
+	while ( valist_try_dup(rhs, i, ref) ) // avoid copying
+		valist_pushv_back self, ref
+		i ++
+	wend
+	return
+#global
+
+#module
 #defcfunc valist_get__ int self, int i, int removes,  \
 	local result
 	
