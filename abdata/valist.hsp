@@ -379,6 +379,15 @@ len_:
 #global
 
 #module
+#defcfunc valist_count int self, var value,  local count, local ref
+	repeat valist_size(self)
+		valist_dup self, cnt, ref
+		if ( abdata_compare(value, ref) == 0 ) { count ++ }
+	loop
+	return count
+#global
+
+#module
 #defcfunc valist_is_sorted int self, int sort_mode,  \
 	local i, local l_ref, local r_ref
 	
