@@ -118,6 +118,13 @@ len_:
 	len_ -= i_end - i_beg
 	return
 	
+#modfunc valistImpl_iter_swap int i0, int i1
+
+	assert 0 <= i0 && i0 < len_
+	assert 0 <= i1 && i1 < len_
+	stdarray_loc_swap aps_, i0, i1
+	return
+	
 #global
 
 //##############################################################################
@@ -182,6 +189,9 @@ len_:
 #define global valist_erase_front(%1, %2) \
 	valist_erase_range %1, 0, 1
 
+#define global valist_iter_swap(%1, %2, %3) \
+	valistImpl_iter_swap abdataInsts(%1), %2, %3
+	
 #module
 #deffunc valist_new_empty var self
 	
