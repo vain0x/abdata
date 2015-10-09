@@ -49,6 +49,9 @@ len_:
 #modcfunc valistImpl_len
 	return len_
 	
+#modcfunc valistImpl_type_at int i
+	return ap_type_at(i)
+	
 #modcfunc valistImpl_try_get int i, var result, int removes
 	if ( 0 <= i && i < len_ ) {
 		abbox_unsafe_get_v arrs_(ap_type_at(i)), result, ap_ix_at(i)
@@ -108,6 +111,8 @@ len_:
 
 #define global ctype valist_size(%1) valistImpl_len(abdataInsts(%1))
 #define global valist_length valist_size
+
+#define global ctype valist_type_at(%1, %2) valistImpl_type_at(abdataInsts(%1), %2)
 
 #define global ctype valist_try_get(%1, %2, %3) \
 	valistImpl_try_get(abdataInsts(%1), %2, %3, 0 /* removes */)
