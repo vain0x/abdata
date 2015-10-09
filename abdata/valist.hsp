@@ -1,0 +1,60 @@
+#ifndef ig_abdata_valist_hsp
+#define ig_abdata_valist_hsp
+
+#include "abheader.hsp"
+#include "abbox.hsp"
+
+#module abdata_valist_impl arrs_, aps_, len_
+
+/**
+arrs_(t):
+	型 t の配列を持つ abbox
+
+aps_(i):
+	self が持つ i 番目の要素が、arrs_ のどこに位置しているかを表す値。
+	t := ap_type(aps_(i)) は、その要素の型を表す。
+	k := ap_ix  (aps_(i)) は、その要素の値の arrs_(t) における位置を表す。
+
+len_:
+	self が持つ要素の個数。
+//*/
+
+#define ctype ap_type(%1) (((%1) & 0x7F000000) >> 24)
+#define ctype ap_ix(%1)    ((%1) & 0x00FFFFFF)
+#define ctype ap_make(%1, %2) ((((%1) & 0x7F) << 24) | ap_ix(%2))
+#define vartype_max 7
+
+#define true 1
+#define false 0
+
+#modinit
+
+	// vartype 0 is invalid
+	abbox_new arrs_
+	
+	repeat vartype_max, 1
+		abbox_new arrs_, cnt
+	loop
+	
+	//dim aps_, 0
+	//len_ = 0
+	return
+	
+#modcfunc valistImpl_len
+	return len_
+	
+#global
+
+//##############################################################################
+// wrapper
+
+#define global valist_new(%1, %2 = 0, %3 = stt_zero@) \
+	valist_new__ %1, %2, %3 //unimplemented
+
+#define global valist_delete(%1) \
+	delmod abdataInsts(%1)
+
+#define global ctype valist_size(%1) valistImpl_len(abdataInsts(%1))
+#define global valist_length valist_size
+
+#endif
