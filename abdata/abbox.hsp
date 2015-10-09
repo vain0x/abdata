@@ -1,0 +1,39 @@
+#ifndef ig_abdata_abbox_hsp
+#define ig_abdata_abbox_hsp
+
+/*
+標準の配列変数をラップしたモジュールクラス
+//*/
+
+#module abdata_abbox arr_
+
+#define global abbox_new(%1, %2 = 4, %3 = 1) newmod %1, abdata_abbox@, %2, %3
+#define global abbox_delete delmod
+
+#modinit int type, int len
+
+	dimtype arr_, type, len
+	return getaptr(thismod)
+	
+#modcfunc abbox_type
+	return vartype(arr_)
+	
+#modfunc abbox_unsafe_set_v int i, var value
+	arr_(i) = value
+	return
+	
+#modfunc abbox_unsafe_get_v var result, int i
+	result = arr_(i)
+	return
+	
+#modfunc abbox_unsafe_dup_v var ref, int i
+	dup ref, arr_(i)
+	return
+	
+#modfunc abbox_memexpand int i, int size
+	memexpand arr_(i), size
+	return
+	
+#global
+
+#endif
