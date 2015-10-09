@@ -94,6 +94,10 @@ len_:
 #define global valist_push_front(%1, %2)  valist_insert  (%1), %2, 0
 #define global valist_pushv_front(%1, %2) valist_insertv (%1), %2, 0
 
+#define global valist_push_back(%1, %2) %tabdata \
+	_cat@__abdata(%i,@__tmp) = %2 :\
+	valist_pushv_back %1, _cat@__abdata(%o,@__tmp)
+
 #module
 #deffunc valist_new_empty var self
 	
@@ -115,6 +119,12 @@ len_:
 	repeat count
 		valist_insertv self, value, cnt
 	loop
+	return
+#global
+
+#module
+#deffunc valist_pushv_back int self, var value
+	valist_insertv self, value, valist_size(self)
 	return
 #global
 
