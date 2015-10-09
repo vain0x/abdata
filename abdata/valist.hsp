@@ -83,10 +83,13 @@ len_:
 		return false
 	}
 	
-#modcfunc valistImpl_ref_impl array ref, int i
-	assert 0 <= i && i < len_
-	abbox_unsafe_dup_v arrs_(ap_type_at(i)), ref, ap_ix_at(i)
-	return 0
+#modcfunc valistImpl_try_dup int i, array ref
+	if ( 0 <= i && i < len_ ) {
+		abbox_unsafe_dup_v arrs_(ap_type_at(i)), ref, ap_ix_at(i)
+		return true
+	} else {
+		return false
+	}
 	
 #modfunc valistImpl_setv var value, int i
 
@@ -180,9 +183,12 @@ len_:
 #define global ctype valist_get_back(%1)   valist_get_back__(%1, 0 /* removes */)
 #define global ctype valist_pop_back(%1)   valist_get_back__(%1, 1 /* removes */)
 
+#define global ctype valist_try_dup(%1, %2, %3) \
+	valistImpl_try_dup(abdataInsts(%1), %2, %3)
+
 #define global ctype valist_ref(%1, %2) %t__ref %i0 \
 	_cat@__abdata(%p,@__tmp)( \
-		valistImpl_ref_impl(abdataInsts(%1), _cat@__abdata(%p,@__tmp), (%2)) \
+		valist_ref_impl(%1, _cat@__abdata(%p,@__tmp), (%2)) \
 	) %o0 //
 
 #define global valist_set(%1, %2, %3) %tabdata \
@@ -264,6 +270,15 @@ len_:
 	
 	if ( valistImpl_try_get(abdataInsts(self), valist_size(self) - 1, result, removes) ) {
 		return result
+	}
+	assert : end 1
+#global
+
+#module
+#defcfunc valist_ref_impl int self, array ref, int i
+
+	if ( valist_try_dup(self, i, ref) ) {
+		return 0
 	}
 	assert : end 1
 #global
