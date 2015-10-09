@@ -46,6 +46,16 @@ empty_len_:
 	memexpand arr_(i), size
 	return
 	
+#modfunc abbox_add var value
+	if ( empty_len_ ) {
+		empty_len_ --
+		arr_(empty_(empty_len_)) = value
+		return empty_(empty_len_)
+	} else {
+		arr_(length(arr_)) = value
+		return length(arr_) - 1
+	}
+	
 #global
 
 #endif
