@@ -3,9 +3,19 @@
 
 /*
 標準の配列変数をラップしたモジュールクラス
+
+arr_: データを持つ配列変数
+
+empty_:
+	arr_ の「空いている要素の位置」からなる配列。
+	順番はテキトー。
+
+empty_len_:
+	empty_ の長さ。
 //*/
 
-#module abdata_abbox arr_
+#module abdata_abbox \
+	arr_, empty_, empty_len_
 
 #define global abbox_new(%1, %2 = 4, %3 = 1) newmod %1, abdata_abbox@, %2, %3
 #define global abbox_delete delmod
@@ -13,7 +23,9 @@
 #modinit int type, int len
 
 	dimtype arr_, type, len
-	return getaptr(thismod)
+	//dim empty_, 1
+	empty_len_ = 1
+	return
 	
 #modcfunc abbox_type
 	return vartype(arr_)
@@ -30,7 +42,7 @@
 	dup ref, arr_(i)
 	return
 	
-#modfunc abbox_memexpand int i, int size
+#modfunc abbox_unsafe_memexpand int i, int size
 	memexpand arr_(i), size
 	return
 	
