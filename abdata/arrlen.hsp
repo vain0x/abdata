@@ -3,7 +3,7 @@
 
 // ’·‚³Žw’è‚Â‚«‚Ì1ŽŸŒ³•W€”z—ñ
 
-#include "mod_opCompare.hsp"
+#include "mod_compare.hsp"
 
 #module arrlen
 
@@ -64,7 +64,7 @@
 		return vartype(lhs) - vartype(rhs)
 	}
 	repeat lhs_len
-		cmp = opCompare(lhs(cnt), rhs(cnt))
+		cmp = abdata_hom_cmp(lhs(cnt), rhs(cnt))
 		if ( cmp != 0 ) { break }
 	loop
 	return cmp
@@ -111,7 +111,7 @@
 	assert arrlen_is_valid_len(self, len)
 	is_sorted = true
 	repeat limit(0, len - 1, int_max)
-		if ( opCompare(self(cnt), self(cnt + 1)) > 0 ) {
+		if ( abdata_hom_cmp(self(cnt), self(cnt + 1)) > 0 ) {
 			is_sorted = false : break
 		}
 	loop
@@ -137,7 +137,7 @@
 	repeat
 		if ( (ub - lb) <= 1 ) { break }
 		mid = lb + (ub - lb) / 2
-		if ( opCompare(self(mid), value) < 0 ) {
+		if ( abdata_hom_cmp(self(mid), value) < 0 ) {
 			lb = mid
 		} else {
 			ub = mid
@@ -162,7 +162,7 @@
 	repeat
 		if ( (ub - lb) <= 1 ) { break }
 		mid = lb + (ub - lb) / 2
-		if ( opCompare(self(mid), value) <= 0 ) {
+		if ( abdata_hom_cmp(self(mid), value) <= 0 ) {
 			lb = mid
 		} else {
 			ub = mid

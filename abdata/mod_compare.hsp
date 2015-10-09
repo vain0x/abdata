@@ -1,26 +1,28 @@
-#ifndef ig_module_operation_compare_hsp
-#define ig_module_operation_compare_hsp
+#ifndef ig_module_compare_hsp
+#define ig_module_compare_hsp
 
 #module
 
+#define vartype_str 2
 #define vartype_double 3
 #define vartype_int 4
 
 //------------------------------------------------
 // “¯‚¶Œ^‚Ì”äŠr‰‰ŽZ
 //------------------------------------------------
-#defcfunc opCompare var lhs, var rhs
-	assert vartype(lhs) == vartype(rhs)
-	if ( vartype(lhs) == 2 /* vartype("str") */ ) {
-		return (lhs != rhs)
-	} else {
-		if ( lhs < rhs ) {
-			return -1
-		} else {
-			return (lhs > rhs)
-		}
-	}
+#defcfunc abdata_hom_cmp var lhs, var rhs
 	
+	assert vartype(lhs) == vartype(rhs)
+	if ( vartype(lhs) == 2 ) {
+		return (lhs != rhs)
+	} else : if ( lhs == rhs ) {
+		return 0
+	} else : if ( lhs > rhs ) {
+		return 1
+	} else {
+		return -1
+	}
+
 //------------------------------------------------
 // ”CˆÓ‚ÌŒ^‚Ì”äŠr‰‰ŽZ
 //------------------------------------------------

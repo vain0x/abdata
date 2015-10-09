@@ -8,7 +8,7 @@
 #include "mod_pvalptr.hsp"
 #include "mod_swap.hsp"
 #include "mod_ref.hsp"
-#include "mod_opCompare.hsp"
+#include "mod_compare.hsp"
 
 #module abdata_list_impl mCnt, mElems, midlist
 
@@ -420,7 +420,7 @@
 	repeat limit(0, mCnt - 1, int_max)
 		listImpl_clone thismod, clone1, cnt
 		listImpl_clone thismod, clone2, cnt + 1
-		if ( opCompare(clone1, clone2) * (1 - 2 * sort_mode) > 0 ) {
+		if ( abdata_compare(clone1, clone2) * (1 - 2 * sort_mode) > 0 ) {
 			is_sorted = false : break
 		}
 	loop
@@ -439,7 +439,7 @@
 		mid = lb + (ub - lb) / 2
 		listImpl_clone thismod, mid_clone, mid
 		
-		cmp = opCompare(mid_clone, value) * (1 - 2 * sort_mode)
+		cmp = abdata_compare(mid_clone, value) * (1 - 2 * sort_mode)
 		if ( ((finds_upper != 0) && cmp == 0) || cmp < 0 ) {
 			lb = mid
 		} else {
@@ -473,7 +473,7 @@
 	lb = listImpl_lower_bound(thismod, value, sort_mode)
 	if ( can_dup == false && lb != listImpl_size(thismod) ) {
 		listImpl_clone thismod, clone, lb
-		if ( opCompare(clone, value) == 0 ) { return }
+		if ( abdata_compare(clone, value) == 0 ) { return }
 	}
 	listImpl_insertv thismod, value, lb
 	return

@@ -2,7 +2,7 @@
 #define ig_abdata_elem_hsp
 
 #include "mod_pvalptr.hsp"
-#include "mod_opCompare.hsp"
+#include "mod_compare.hsp"
 
 #module abdata_abelem mValue
 
