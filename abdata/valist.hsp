@@ -6,6 +6,7 @@
 #include "mod_shiftArray.hsp"
 #include "mod_nullmod.hsp"
 #include "mod_pvalptr.hsp"
+#include "mod_compare.hsp"
 
 #module abdata_valist_impl arrs_, aps_, len_
 
@@ -352,6 +353,25 @@ len_:
 	valistImpl_dup_aps__ abdataInsts(self), aps
 	stdarray_reverse aps, i_beg, i_end
 	return
+#global
+
+#module
+#defcfunc valist_compare int self, int rhs,  \
+	local len, local cmp, local l_ref, local r_ref
+	
+	len = valist_size(self)
+	cmp = len - valist_size(rhs) 
+	if ( cmp ) { return cmp }
+	
+	repeat len
+		if ( valist_try_dup(self, cnt, l_ref) && valist_try_dup(rhs , cnt, r_ref) ) {
+			cmp = abdata_compare(l_ref, r_ref)
+			if ( cmp ) { break }
+		} else {
+			assert : end 1
+		}
+	loop
+	return cmp
 #global
 
 #endif
