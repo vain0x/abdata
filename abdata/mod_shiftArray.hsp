@@ -40,6 +40,14 @@
 	next
 	return
 	
+#deffunc stdarray_erase_range array self, int len, int i_beg, int i_end
+
+	assert 0 <= i_beg && i_beg <= i_end && i_end <= len
+	repeat len - i_end
+		self(i_beg + cnt) = self(i_end + cnt)
+	loop
+	return
+	
 //------------------------------------------------
 // ˆÚ“®
 //------------------------------------------------
