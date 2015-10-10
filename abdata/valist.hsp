@@ -73,6 +73,15 @@ len_:
 #modcfunc valistImpl_vartype int i
 	return ap_type_at(i)
 	
+#modcfunc valistImpl_regular_ix int i
+
+	if ( i == abdata_ix_end ) {
+		return len_
+	} else : if ( i < 0 ) {
+		return (i \ len_) + len_
+	}
+	return i
+	
 /**
 _unsafe_get_v thismod, result, i, removes
 
@@ -126,7 +135,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #modfunc valistImpl_insertv var value, int i
 
 	if ( i < 0 ) {
-		valistImpl_insertv value, (i \ len_) + len_
+		valistImpl_insertv thismod, value, valistImpl_regular_ix(thismod, i)
 		return
 	}
 	
@@ -230,6 +239,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #define global valist_length valist_size
 
 #define global ctype valist_vartype(%1, %2) valistImpl_vartype(abdataInsts(%1), %2)
+
+#define global ctype valist_regular_ix(%1, %2) valistImpl_regular_ix(abdataInsts(%1), %2)
 
 #define global ctype valist_try_get(%1, %2, %3) \
 	valistImpl_try_get(abdataInsts(%1), %2, %3, 0 /* removes */)
