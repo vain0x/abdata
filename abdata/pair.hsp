@@ -67,12 +67,12 @@
 //------------------------------------------------
 // ƒNƒ[ƒ“‚ğì‚é
 //------------------------------------------------
-#modfunc pairImpl_clone var vSrc, int idx
-	abelem_clone mValue(idx), vSrc
+#modfunc pairImpl_dup var vSrc, int idx
+	abelem_dup mValue(idx), vSrc
 	return
 	
-#define global pairImpl_clone_lhs(%1,%2) pairImpl_clone %1, %2, PairImplIdx_Lhs
-#define global pairImpl_clone_rhs(%1,%2) pairImpl_clone %1, %2, PairImplIdx_Rhs
+#define global pairImpl_dup_lhs(%1,%2) pairImpl_dup %1, %2, PairImplIdx_Lhs
+#define global pairImpl_dup_rhs(%1,%2) pairImpl_dup %1, %2, PairImplIdx_Rhs
 
 //------------------------------------------------
 // Œ^‚Ìæ“¾ ( ŠÖ”Œ`® )
@@ -118,8 +118,8 @@
 // ”‚¦ã‚°
 //------------------------------------------------
 #modcfunc pairImpl_count var value,  local lhs, local rhs, local count
-	pairImpl_clone_lhs thismod, lhs
-	pairImpl_clone_rhs thismod, rhs
+	pairImpl_dup_lhs thismod, lhs
+	pairImpl_dup_rhs thismod, rhs
 	if ( lhs == value ) { count ++ }
 	if ( rhs == value ) { count ++ }
 	return count
@@ -255,9 +255,9 @@
 #define global ctype pair_get_lhs(%1)         pairImpl_get_lhs(abdataInsts(%1))
 #define global ctype pair_get_rhs(%1)         pairImpl_get_rhs(abdataInsts(%1))
 
-#define global pair_clone(%1,%2,%3=0)  pairImpl_clone     abdataInsts(%1), %2, %3
-#define global pair_clone_lhs(%1,%2)   pairImpl_clone_lhs abdataInsts(%1), %2
-#define global pair_clone_rhs(%1,%2)   pairImpl_clone_rhs abdataInsts(%1), %2
+#define global pair_dup(%1,%2,%3=0)  pairImpl_dup     abdataInsts(%1), %2, %3
+#define global pair_dup_lhs(%1,%2)   pairImpl_dup_lhs abdataInsts(%1), %2
+#define global pair_dup_rhs(%1,%2)   pairImpl_dup_rhs abdataInsts(%1), %2
 #define global ctype pair_vartype(%1,%2)  pairImpl_vartype(abdataInsts(%1), %2)
 #define global ctype pair_vartype_lhs(%1) pairImpl_vartype_lhs(abdataInsts(%1))
 #define global ctype pair_vartype_rhs(%1) pairImpl_vartype_rhs(abdataInsts(%1))

@@ -17,8 +17,8 @@
 	
 	//QÆ‰»
 	pair_new p, "l", "r"
-	pair_clone p, lhs_ref, 0
-	pair_clone p, rhs_ref, 1
+	pair_dup p, lhs_ref, 0
+	pair_dup p, rhs_ref, 1
 	
 	lhs_ref = "LHS"
 	assert pair_get_lhs(p) == "LHS"

@@ -31,7 +31,7 @@
 	//QÆ‰»
 	un = make_iota_unor(3)
 	
-	unor_clone un, "#1", r
+	unor_dup un, "#1", r
 	assert r == 1
 	r = 99
 	assert unor_get(un, "#1") == 99

@@ -12,6 +12,12 @@
 #enum global SortMode_Ascending = 0
 #enum global SortMode_Decending = 1
 
+#define global list_clone list_dup
+#define global unor_clone unor_dup
+#define global pair_clone pair_dup
+#define global pair_clone_lhs pair_dup_lhs
+#define global pair_clone_rhs pair_dup_rhs
+
 #define global pair_loc_swap        pair_iter_swap
 #define global list_loc_move        list_iter_move
 #define global list_loc_swap        list_iter_swap

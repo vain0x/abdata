@@ -71,11 +71,11 @@
 //------------------------------------------------
 // QÆ‰» ( –½—ßŒ`® )
 //------------------------------------------------
-#modfunc listImpl_clone var vRef, int i
-	abelem_clone mElems( midlist( listImpl_getRealIndex(thismod, i) ) ), vRef
+#modfunc listImpl_dup var vRef, int i
+	abelem_dup mElems( midlist( listImpl_getRealIndex(thismod, i) ) ), vRef
 	return
 	
-#modfunc listImpl_clone_abelem var ref, int i
+#modfunc listImpl_dup_abelem var ref, int i
 	dup ref, mElems(midlist(i))
 	return
 	
@@ -86,7 +86,7 @@
 	ref_ref_expr_template_2(listImpl_ref_, %1, %2)
 
 #modcfunc listImpl_ref_ array ref, int i
-	listImpl_clone thismod, ref, i
+	listImpl_dup thismod, ref, i
 	return 0
 	
 //------------------------------------------------
@@ -386,8 +386,8 @@
 #modcfunc listImpl_is_sorted int sort_mode,  local is_sorted,  local clone1, local clone2
 	is_sorted = true
 	repeat limit(0, mCnt - 1, int_max)
-		listImpl_clone thismod, clone1, cnt
-		listImpl_clone thismod, clone2, cnt + 1
+		listImpl_dup thismod, clone1, cnt
+		listImpl_dup thismod, clone2, cnt + 1
 		if ( abdata_compare(clone1, clone2) * (1 - 2 * sort_mode) > 0 ) {
 			is_sorted = false : break
 		}
@@ -405,7 +405,7 @@
 	repeat
 		if ( (ub - lb) <= 1 ) { break }
 		mid = lb + (ub - lb) / 2
-		listImpl_clone thismod, mid_clone, mid
+		listImpl_dup thismod, mid_clone, mid
 		
 		cmp = abdata_compare(mid_clone, value) * (1 - 2 * sort_mode)
 		if ( ((finds_upper != 0) && cmp == 0) || cmp < 0 ) {
@@ -440,7 +440,7 @@
 	
 	lb = listImpl_lb(thismod, value, sort_mode)
 	if ( can_dup == false && lb != listImpl_size(thismod) ) {
-		listImpl_clone thismod, clone, lb
+		listImpl_dup thismod, clone, lb
 		if ( abdata_compare(clone, value) == 0 ) { return }
 	}
 	listImpl_insertv thismod, value, lb
@@ -498,7 +498,7 @@
 //------------------------------------------------
 #modcfunc listImpl_count var value,  local count, local ref
 	repeat mCnt
-		listImpl_clone thismod, ref, cnt
+		listImpl_dup thismod, ref, cnt
 		if ( abdata_compare(value, ref) == 0 ) { count ++ }
 	loop
 	return count
@@ -590,9 +590,9 @@
 #define global ctype list_get(%1,%2=0) listImpl_get(abdataInsts(%1), %2)
 #define global ctype list_pop(%1,%2=0) listImpl_pop(abdataInsts(%1), %2)
 
-#define global list_clone(%1,%2,%3=0) listImpl_clone abdataInsts(%1), %2, %3
+#define global list_dup(%1,%2,%3=0) listImpl_dup abdataInsts(%1), %2, %3
 
-#define global list_clone_abelem(%1, %2, %3) listImpl_clone_abelem abdataInsts(%1), %2, %3
+#define global list_dup_abelem(%1, %2, %3) listImpl_dup_abelem abdataInsts(%1), %2, %3
 
 #define global ctype list_ref(%1,%2=0) listImpl_ref(abdataInsts(%1),%2)
 

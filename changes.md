@@ -30,6 +30,8 @@
 * `SortMode_Decending` を `abdata_sort_decending` に改名した。
 * モジュール `tnode` を deprecated 指定にした。
 * `_swap` を削除した。
+* `_clone` を `_dup` に改名した。
+  * `list_clone`, `unor_clone`, `pair_clone`, `pair_clone_lhs`, `pair_clone_rhs`
 
 ### 2015/10/05
 * モジュール `arrayLen` を `arrlen` に改名した。

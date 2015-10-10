@@ -115,7 +115,7 @@
 	
 	//QÆ‰»
 	con = list_make_iota(4)
-	list_clone con, r, 2
+	list_dup con, r, 2
 	assert r == 2
 	r = 99
 	assert list_get(con, 2) == 99

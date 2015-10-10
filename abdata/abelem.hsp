@@ -26,7 +26,7 @@
 //------------------------------------------------
 // éQè∆âª ( ñΩóﬂå`éÆ )
 //------------------------------------------------
-#modfunc abelem_clone var dst
+#modfunc abelem_dup var dst
 	dup dst, mValue
 	return
 	
@@ -67,8 +67,8 @@
 // @result: î‰äríl { -1 (<), 0 (==), +1 (>) }
 //------------------------------------------------
 #modcfunc abelem_cmp var rhs,  local lhs_ref, local rhs_ref
-	abelem_clone thismod, lhs_ref
-	abelem_clone rhs,     rhs_ref
+	abelem_dup thismod, lhs_ref
+	abelem_dup rhs,     rhs_ref
 	return abdata_compare(lhs_ref, rhs_ref)
 	
 #global

@@ -27,7 +27,7 @@
 //------------------------------------------------
 // ì‡ïîópÇÃì«Ç›èëÇ´
 //------------------------------------------------
-#modfunc unorImpl_clone_members@abdata_unor_impl array keys, array vals
+#modfunc unorImpl_dup_members@abdata_unor_impl array keys, array vals
 	dup keys, mlistKey
 	dup vals, mlistValue
 	return
@@ -80,17 +80,17 @@
 //------------------------------------------------
 // éQè∆âª ( ñΩóﬂå`éÆ )
 //------------------------------------------------
-#modfunc unorImpl_clone_by_index_ var vRef, int i
-	list_clone mlistValue, vRef, i
+#modfunc unorImpl_dup_by_index_ var vRef, int i
+	list_dup mlistValue, vRef, i
 	return
 	
-#modfunc unorImpl_clone str key, var vRef
-	unorImpl_clone_by_index_ thismod, vRef, unorImpl_getIndex( thismod, key )
+#modfunc unorImpl_dup str key, var vRef
+	unorImpl_dup_by_index_ thismod, vRef, unorImpl_getIndex( thismod, key )
 	return
 	
-#modfunc unorImpl_clone_kv_by_index_@abdata_unor_impl var key, var value, int i
-	list_clone mlistKey,     key, i
-	list_clone mlistValue, value, i
+#modfunc unorImpl_dup_kv_by_index_@abdata_unor_impl var key, var value, int i
+	list_dup mlistKey,     key, i
+	list_dup mlistValue, value, i
 	return
 	
 //------------------------------------------------
@@ -100,7 +100,7 @@
 	ref_ref_expr_template_2(unorImpl_ref_, %1, %2)
 
 #modcfunc unorImpl_ref_by_index_ array ref, int i
-	unorImpl_clone_by_index_ thismod, ref, i
+	unorImpl_dup_by_index_ thismod, ref, i
 	return 0
 	
 #modcfunc unorImpl_ref_ array ref, str key
@@ -198,15 +198,15 @@
 	cmp = (unorImpl_size(thismod) - unorImpl_size(rhs))
 	if ( cmp ) { return cmp }
 	
-	unorImpl_clone_members rhs, keys, vals
+	unorImpl_dup_members rhs, keys, vals
 	repeat list_size(mlistKey)
-		list_clone mlistKey, lhs_key, cnt
-		list_clone     keys, rhs_key, cnt
+		list_dup mlistKey, lhs_key, cnt
+		list_dup     keys, rhs_key, cnt
 		cmp = (lhs_key != rhs_key)
 		if ( cmp ) { break }
 		
-		list_clone_abelem mlistValue, lhs_elem, cnt
-		list_clone_abelem       vals, rhs_elem, cnt
+		list_dup_abelem mlistValue, lhs_elem, cnt
+		list_dup_abelem       vals, rhs_elem, cnt
 		cmp = abelem_cmp(lhs_elem, rhs_elem)
 		if ( cmp ) { break }
 	loop
@@ -346,7 +346,7 @@
 #define global ctype unor_tryget(%1, %2 = "", %3) unorImpl_tryget(abdataInsts(%1), %2, %3)
 #define global ctype unor_trypop(%1, %2 = "", %3) unorImpl_trypop(abdataInsts(%1), %2, %3)
 
-#define global       unor_clone(%1, %2 = "", %3) unorImpl_clone abdataInsts(%1), %2, %3
+#define global       unor_dup(%1, %2 = "", %3) unorImpl_dup abdataInsts(%1), %2, %3
 #define global ctype unor_ref(%1, %2 = "") unorImpl_ref(abdataInsts(%1), %2)
 
 #define global ctype unor_vartype(%1, %2 = "") unorImpl_vartype(abdataInsts(%1), %2)
