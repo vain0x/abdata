@@ -73,7 +73,7 @@ len_:
 #modcfunc valistImpl_vartype int i
 	return ap_type_at(i)
 	
-#modcfunc valistImpl_try_get int i, var result, int removes
+#modcfunc valistImpl_try_get var result, int i, int removes
 	if ( 0 <= i && i < len_ ) {
 		abbox_unsafe_get_v arrs_(ap_type_at(i)), result, ap_ix_at(i)
 		if ( removes ) {
@@ -85,11 +85,11 @@ len_:
 	}
 	
 #define valistImpl_unsafe_dup(%1 = thismod, %2, %3) \
-	abbox_unsafe_dup_v arrs_(ap_type_at(%2)), %3, ap_ix_at(%2)
+	abbox_unsafe_dup_v arrs_(ap_type_at(%3)), %2, ap_ix_at(%3)
 
-#modcfunc valistImpl_try_dup int i, array ref
+#modcfunc valistImpl_try_dup array ref, int i
 	if ( 0 <= i && i < len_ ) {
-		valistImpl_unsafe_dup thismod, i, ref
+		valistImpl_unsafe_dup thismod, ref, i
 		return true
 	} else {
 		return false
@@ -176,8 +176,8 @@ len_:
 				} else : if ( p1 >= e1 ) {
 					aps_tmp(cnt) = aps_(p2) : p2 ++
 				} else {
-					valistImpl_unsafe_dup thismod, p1, l_ref
-					valistImpl_unsafe_dup thismod, p2, r_ref
+					valistImpl_unsafe_dup thismod, l_ref, p1
+					valistImpl_unsafe_dup thismod, r_ref, p2
 					cmp = abdata_compare(l_ref, r_ref)
 					if ( cmp == 0 || ((cmp < 0) == (sort_mode == abdata_sort_ascending)) ) {
 						aps_tmp(cnt) = aps_(p1) : p1 ++
@@ -320,7 +320,7 @@ len_:
 #deffunc valist_chain int self, int rhs,  \
 	local i, local ref
 	
-	while ( valist_try_dup(rhs, i, ref) ) // avoid copying
+	while ( valist_try_dup(rhs, ref, i) ) // avoid copying
 		valist_pushv_back self, ref
 		i ++
 	wend
@@ -331,7 +331,7 @@ len_:
 #defcfunc valist_get__ int self, int i, int removes,  \
 	local result
 	
-	if ( valistImpl_try_get(abdataInsts(self), i, result, removes) ) {
+	if ( valistImpl_try_get(abdataInsts(self), result, i, removes) ) {
 		return result
 	}
 	assert : end 1
@@ -341,21 +341,21 @@ len_:
 #defcfunc valist_get_back__ int self, int removes,  \
 	local result
 	
-	if ( valistImpl_try_get(abdataInsts(self), valist_size(self) - 1, result, removes) ) {
+	if ( valistImpl_try_get(abdataInsts(self), result, valist_size(self) - 1, removes) ) {
 		return result
 	}
 	assert : end 1
 #global
 
 #module
-#deffunc valist_dup int self, int i, array ref
-	if ( valist_try_dup(self, i, ref) ) {
+#deffunc valist_dup int self, array ref, int i
+	if ( valist_try_dup(self, ref, i) ) {
 		return
 	}
 	assert : end 1
 
 #defcfunc valist_ref_impl int self, array ref, int i
-	valist_dup self, i, ref
+	valist_dup self, ref, i
 	return 0
 #global
 
@@ -428,8 +428,8 @@ len_:
 	if ( cmp ) { return cmp }
 	
 	repeat len
-		valist_dup self, cnt, l_ref
-		valist_dup rhs , cnt, r_ref
+		valist_dup self, l_ref, cnt
+		valist_dup rhs , r_ref, cnt
 		cmp = abdata_compare(l_ref, r_ref)
 		if ( cmp ) { break }
 	loop
@@ -439,7 +439,7 @@ len_:
 #module
 #defcfunc valist_count int self, var value,  local count, local ref
 	repeat valist_size(self)
-		valist_dup self, cnt, ref
+		valist_dup self, ref, cnt
 		if ( abdata_compare(value, ref) == 0 ) { count ++ }
 	loop
 	return count
@@ -450,8 +450,8 @@ len_:
 	local i, local l_ref, local r_ref
 	
 	for i, 0, valist_size(self) - 1
-		valist_dup self, i    , l_ref
-		valist_dup self, i + 1, r_ref
+		valist_dup self, l_ref, i
+		valist_dup self, r_ref, i + 1
 		if ( abdata_compare(l_ref, r_ref) * (1 - 2 * sort_mode) > 0 ) {
 			return false
 		}
@@ -467,7 +467,7 @@ len_:
 	lb = -1 : ub = valist_size(self)
 	while ( ub - lb > 1 )
 		mid = lb + (ub - lb) / 2
-		valist_dup self, mid, ref
+		valist_dup self, ref, mid
 		cmp = abdata_compare(ref, value) * (1 - 2 * sort_mode)
 		if ( ((finds_ub != 0) && cmp == 0) || cmp < 0 ) {
 			lb = mid
@@ -513,7 +513,7 @@ len_:
 	
 #defcfunc valist_iter_next int self, var iter, var iter_data
 	iter_data ++
-	return valist_try_get(self, iter_data, iter)
+	return valist_try_get(self, iter, iter_data)
 #global
 
 #ifdef _debug
@@ -523,7 +523,7 @@ len_:
 	
 	logmes "[" + ident + "] debug-log"
 	repeat valist_size(self)
-		valist_dup self, cnt, ref
+		valist_dup self, ref, cnt
 		logmes strf("#%2d: %s", cnt, str(ref))
 	loop
 	logmes ""

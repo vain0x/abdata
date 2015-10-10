@@ -158,7 +158,7 @@
 	
 	//QÆ‰»
 	con = valist_make_iota(4)
-	valist_dup con, 2, r
+	valist_dup con, r, 2
 	assert r == 2
 	r = 99
 	assert valist_get(con, 2) == 99
