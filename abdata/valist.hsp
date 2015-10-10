@@ -227,6 +227,9 @@ len_:
 
 #define global valist_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
 	valist_reverse__ %1, %2, %3
+	
+#define global ctype valist_lb(%1, %2, %3 = abdata_sort_ascending)  valist_lb_ub__(%1, %2, %3, 0 /* finds_lb */)
+#define global ctype valist_ub(%1, %2, %3 = abdata_sort_ascending)  valist_lb_ub__(%1, %2, %3, 1 /* finds_ub */)
 
 #module
 #deffunc valist_new_empty var self
@@ -399,6 +402,25 @@ len_:
 		}
 	next
 	return true
+#global
+
+#module
+#defcfunc valist_lb_ub__ int self, var value, int sort_mode, int finds_ub, \
+	local lb, local ub, local mid, local ref, local cmp
+	
+	assert valist_is_sorted(self, sort_mode)
+	lb = -1 : ub = valist_size(self)
+	while ( ub - lb > 1 )
+		mid = lb + (ub - lb) / 2
+		valist_dup self, mid, ref
+		cmp = abdata_compare(ref, value) * (1 - 2 * sort_mode)
+		if ( ((finds_ub != 0) && cmp == 0) || cmp < 0 ) {
+			lb = mid
+		} else {
+			ub = mid
+		}
+	wend
+	return ub
 #global
 
 #endif
