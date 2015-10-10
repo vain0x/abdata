@@ -28,15 +28,15 @@
 	//”äŠr
 	pair_new p1, 10, 20
 	pair_new p2, 30, "x"
-	assert pair_lexicographical_compare(p1, p1) == 0
-	assert pair_lexicographical_compare(p1, p2) < 0
-	assert pair_lexicographical_compare(p2, p1) > 0
+	assert pair_compare(p1, p1) == 0
+	assert pair_compare(p1, p2) < 0
+	assert pair_compare(p2, p1) > 0
 	
 	//ˆÚ“®
 	pair_new p1, "l", "r"
 	pair_loc_swap p1
 	pair_new p2, "r", "l"
-	assert pair_lexicographical_compare(p1, p2) == 0
+	assert pair_compare(p1, p2) == 0
 	
 	//”‚¦ã‚°
 	pair_new p1, 1, 1

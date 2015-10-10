@@ -209,16 +209,16 @@
 	con2 = list_make_iota(4)
 	con3 = list_make_iota(5)
 	list_set con2, ".", 1
-	assert list_lexicographical_compare(con1, con1) == 0
-	assert list_lexicographical_compare(con1, con2) > 0
-	assert list_lexicographical_compare(con2, con3) < 0
-	assert list_lexicographical_compare(con3, con2) > 0
+	assert list_compare(con1, con1) == 0
+	assert list_compare(con1, con2) > 0
+	assert list_compare(con2, con3) < 0
+	assert list_compare(con3, con2) > 0
 	
 	//•¡Ê
 	con1 = list_make_iota(3)
 	con2 = list_make()
 	list_copy con2, con1
-	assert list_lexicographical_compare(con2, con1) == 0
+	assert list_compare(con2, con1) == 0
 	
 	
 	//®—ñÏ‚İ‚©

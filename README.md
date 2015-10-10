@@ -90,7 +90,7 @@
   * swap 交換先
     * 2つのコンテナの中身をまるごと入れ替えます。
 * 辞書順比較
-  * lexicographical_compare()
+  * compare()
     * 辞書順に比較する。
 
 ### アルゴリズム(algorithm)

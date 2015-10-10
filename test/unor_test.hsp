@@ -106,8 +106,8 @@
 	un0 = make_iota_unor(3)
 	un1 = make_iota_unor(2)
 	unor_add un1, "#3", -1
-	assert unor_lexicographical_compare(un0, un0) == 0
-	assert unor_lexicographical_compare(un0, un1) < 0
-	assert unor_lexicographical_compare(un1, un0) > 0
+	assert unor_compare(un0, un0) == 0
+	assert unor_compare(un0, un1) < 0
+	assert unor_compare(un1, un0) > 0
 	
 	logmes "Unor test completed."

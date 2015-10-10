@@ -176,10 +176,10 @@
 //------------------------------------------------
 // é´èëèáî‰är
 //------------------------------------------------
-#modcfunc pairImpl_lexicographical_compare var rhs
-	return pairImpl_lexicographical_compare_impl@abdata_pair_impl(rhs, mValue)
+#modcfunc pairImpl_compare var rhs
+	return pairImpl_compare_impl@abdata_pair_impl(rhs, mValue)
 
-#modcfunc pairImpl_lexicographical_compare_impl@abdata_pair_impl array lhs_value, \
+#modcfunc pairImpl_compare_impl@abdata_pair_impl array lhs_value, \
 	local cmp
 	
 	assert pairImpl_size(thismod) == 2
@@ -288,8 +288,8 @@
 #define global pair_copy(%1,%2) pairImpl_copy abdataInsts(%1), abdataInsts(%2)
 #define global pair_swap(%1,%2) pairImpl_swap abdataInsts(%1), abdataInsts(%2)
 
-#define global ctype pair_lexicographical_compare(%1,%2) \
-	pairImpl_lexicographical_compare(abdataInsts(%1), abdataInsts(%2))
+#define global ctype pair_compare(%1,%2) \
+	pairImpl_compare(abdataInsts(%1), abdataInsts(%2))
 
 #define global       pair_iter_init(%1,%2)    pairImpl_iter_init abdataInsts(%1), %2
 #define global ctype pair_iter_next(%1,%2,%3) pairImpl_iter_next( abdataInsts(%1), %2, %3 )

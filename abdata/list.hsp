@@ -324,10 +324,10 @@
 //------------------------------------------------
 // é´èëèáî‰är
 //------------------------------------------------
-#modcfunc listImpl_lexicographical_compare var rhs
-	return listImpl_lexicographical_compare_impl@abdata_list_impl(rhs, mCnt, mElems, midlist)
+#modcfunc listImpl_compare var rhs
+	return listImpl_compare_impl@abdata_list_impl(rhs, mCnt, mElems, midlist)
 	
-#modcfunc listImpl_lexicographical_compare_impl@abdata_list_impl int lhs_size, array lhs_elems, array lhs_idlist, \
+#modcfunc listImpl_compare_impl@abdata_list_impl int lhs_size, array lhs_elems, array lhs_idlist, \
 	local cmp
 	
 	if ( lhs_size != mCnt ) {
@@ -678,8 +678,8 @@
 #define global list_copy(%1,%2)  listImpl_copy abdataInsts(%1), abdataInsts(%2)
 #define global list_swap(%1,%2)  listImpl_swap abdataInsts(%1), abdataInsts(%2)
 
-#define global ctype list_lexicographical_compare(%1, %2) \
-	listImpl_lexicographical_compare(abdataInsts(%1), abdataInsts(%2))
+#define global ctype list_compare(%1, %2) \
+	listImpl_compare(abdataInsts(%1), abdataInsts(%2))
 
 #define global list_sort(%1, %2 = SortMode_Ascending) \
 	listImpl_sort abdataInsts(%1), %2

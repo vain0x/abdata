@@ -203,7 +203,7 @@
 //------------------------------------------------
 // [i] é´èëèáî‰är
 //------------------------------------------------
-#modcfunc unorImpl_lexicographical_compare var rhs,  \
+#modcfunc unorImpl_compare var rhs,  \
 	local lhs_key, local lhs_elem, \
 	local rhs_key, local rhs_elem, local keys, local vals, local cmp
 	
@@ -376,8 +376,8 @@
 #define global unor_copy(%1, %2)  unorImpl_copy  abdataInsts(%1), abdataInsts(%2)
 #define global unor_swap(%1,%2)   unorImpl_swap  abdataInsts(%1), abdataInsts(%2)
 
-#define global ctype unor_lexicographical_compare(%1, %2) \
-	unorImpl_lexicographical_compare(abdataInsts(%1), abdataInsts(%2))
+#define global ctype unor_compare(%1, %2) \
+	unorImpl_compare(abdataInsts(%1), abdataInsts(%2))
 
 #define global       unor_iter_init(%1,%2)    unorImpl_iter_init abdataInsts(%1), %2
 #define global ctype unor_iter_next(%1,%2,%3) unorImpl_iter_next(abdataInsts(%1), %2, %3)

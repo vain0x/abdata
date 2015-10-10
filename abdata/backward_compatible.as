@@ -9,6 +9,10 @@
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#define global list_lexicographical_compare list_compare
+#define global pair_lexicographical_compare pair_compare
+#define global unor_lexicographical_compare unor_compare
+
 #module
 #deffunc list_double int self, int i,  local tmp
 	list_getv    self, tmp, i
