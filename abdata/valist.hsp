@@ -423,4 +423,11 @@ len_:
 	return ub
 #global
 
+#module
+#deffunc valist_equal_range int self, var value, var lb, var ub, int sort_mode
+	lb = valist_lb(self, value, sort_mode)
+	ub = valist_ub(self, value, sort_mode)
+	return
+#global
+
 #endif
