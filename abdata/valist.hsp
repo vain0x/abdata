@@ -451,4 +451,14 @@ len_:
 	return
 #global
 
+#module
+#deffunc valist_iter_init int self, var iter_data
+	iter_data = -1
+	return
+	
+#defcfunc valist_iter_next int self, var iter, var iter_data
+	iter_data ++
+	return valist_try_get(self, iter_data, iter)
+#global
+
 #endif
