@@ -9,6 +9,15 @@
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#module
+#deffunc list_double int self, int i,  local tmp
+	list_getv    self, tmp, i
+	list_insertv self, tmp, i
+	return
+#global
+#define global list_double_front(%1)   list_double (%1), 0
+#define global list_double_back(%1)    list_double (%1), -1
+
 #define global stack_make          deque_make
 #define global stack_new           deque_new
 #define global stack_delete        deque_delete

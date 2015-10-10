@@ -15,6 +15,9 @@
 * knowbug での拡張表示
 
 ## 更新履歴
+### 2015/10/10
+* `list_double`, `list_double_front`, `list_double_back` を削除した。
+
 ### 2015/10/05
 * モジュール `arrayLen` を `arrlen` に改名した。
 

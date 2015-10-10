@@ -170,20 +170,8 @@
 	return
 	
 //------------------------------------------------
-// —v‘f‚Ì”{‰»
-//------------------------------------------------
-#modfunc listImpl_double int _i,  local i, local temp
-	i = listImpl_getRealIndex( thismod, _i )
-	
-	listImpl_getv    thismod, temp, i
-	listImpl_insertv thismod, temp, i
-	return
-	
-//------------------------------------------------
 // æ“ªEÅŒã”ö‚Ö‚Ì’Ç‰Á
 //------------------------------------------------
-#define global listImpl_double_front(%1)   listImpl_double  %1, 0
-#define global listImpl_double_back(%1)    listImpl_double  %1, (-1)
 #define global listImpl_push_front(%1,%2)  listImpl_insert  %1, %2, 0
 #define global listImpl_pushv_front(%1,%2) listImpl_insertv %1, %2, 0
 #define global listImpl_push_back(%1,%2)   listImpl_insert  %1, %2, listImpl_size(%1)
@@ -656,10 +644,6 @@
 #define global list_insert(%1, %2, %3 = 0)  listImpl_insert  abdataInsts(%1), %2, %3
 #define global list_insertv(%1, %2, %3 = 0) listImpl_insertv abdataInsts(%1), %2, %3
 
-#define global list_double(%1, %2, %3) listImpl_double abdataInsts(%1), %2, %3
-
-#define global list_double_front(%1)   listImpl_double_front abdataInsts(%1)
-#define global list_double_back(%1)    listImpl_double_back  abdataInsts(%1)
 #define global list_push_front(%1,%2)  listImpl_push_front   abdataInsts(%1), %2
 #define global list_pushv_front(%1,%2) listImpl_pushv_front  abdataInsts(%1), %2
 #define global list_push_back(%1,%2)   listImpl_push_back    abdataInsts(%1), %2
