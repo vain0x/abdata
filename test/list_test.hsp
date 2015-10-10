@@ -161,7 +161,7 @@
 	//—”
 	con1 = list_make(5)
 	repeat list_size(con1)
-		list_set con1, rnd(1000)
+		list_set con1, rnd(1000), cnt
 	loop
 	list_sort con1
 	assert list_size(con1) == 5
