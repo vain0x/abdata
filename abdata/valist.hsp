@@ -370,6 +370,11 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
+#defcfunc valist_is_valid int self, int i
+	return 0 <= i && i < valist_size(self)
+#global
+
+#module
 #defcfunc valist_get__ int self, int i, int removes,  \
 	local result
 	
