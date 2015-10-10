@@ -8,7 +8,7 @@
 #module
 #deffunc valist_logmes int self
 	repeat valist_size(self)
-		logmes strf("#%04d::%d  =  %s", cnt, valist_type_at(self, cnt), str(valist_get(self, cnt)))
+		logmes strf("#%04d::%d  =  %s", cnt, valist_vartype(self, cnt), str(valist_get(self, cnt)))
 	loop
 	return
 

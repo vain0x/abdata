@@ -73,7 +73,7 @@ len_:
 #modcfunc valistImpl_len
 	return len_
 	
-#modcfunc valistImpl_type_at int i
+#modcfunc valistImpl_vartype int i
 	return ap_type_at(i)
 	
 #modcfunc valistImpl_try_get int i, var result, int removes
@@ -219,7 +219,7 @@ len_:
 #define global ctype valist_size(%1) valistImpl_len(abdataInsts(%1))
 #define global valist_length valist_size
 
-#define global ctype valist_type_at(%1, %2) valistImpl_type_at(abdataInsts(%1), %2)
+#define global ctype valist_vartype(%1, %2) valistImpl_vartype(abdataInsts(%1), %2)
 
 #define global ctype valist_try_get(%1, %2, %3) \
 	valistImpl_try_get(abdataInsts(%1), %2, %3, 0 /* removes */)
