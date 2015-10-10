@@ -30,6 +30,7 @@ len_:
 
 #define true 1
 #define false 0
+#define int_max 0x7FFFFFFF
 
 #define ctype ap_type_at(%1) ap_type(aps_(%1))
 #define ctype ap_ix_at(%1)   ap_ix(aps_(%1))
@@ -309,6 +310,9 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #define global valist_ord_insertv(%1, %2, %3 = true@abdata_valist_impl, %4 = abdata_sort_ascending) \
 	valist_ord_insertv__ %1, %2, %3, %4
 
+#define global valist_ord_erasev(%1, %2, %3 = int_max@abdata_valist_impl, %4 = abdata_sort_ascending) \
+	valist_ord_erasev__ %1, %2, %3, %4
+
 #ifdef _debug
 	#define global valist_dbglog(%1) valist_dbglog__ %1, "%1"
 #else
@@ -506,7 +510,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
-#deffunc valist_ord_erasev int self, var value, int max_count, int sort_mode,  \
+#deffunc valist_ord_erasev__ int self, var value, int max_count, int sort_mode,  \
 	local lb, local ub
 	
 	valist_equal_range self, value, lb, ub, sort_mode
