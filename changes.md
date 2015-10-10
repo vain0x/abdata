@@ -25,6 +25,8 @@
 * `list_upper_bound()` を `list_ub()` に改名した。
 * `list_loc_swap` を `list_iter_swap` に改名した。
 * `list_loc_move` を `list_iter_move` に改名した。
+* `SortMode_Ascending` を `abdata_sort_ascending` に改名した。
+* `SortMode_Decending` を `abdata_sort_decending` に改名した。
 
 ### 2015/10/05
 * モジュール `arrayLen` を `arrlen` に改名した。

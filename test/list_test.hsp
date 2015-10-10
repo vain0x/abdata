@@ -223,14 +223,14 @@
 	
 	//®—ñÏ‚İ‚©
 	con = list_make_iota(3)
-	assert list_is_sorted(con /*, SortMode_Ascending*/)
+	assert list_is_sorted(con /*, abdata_sort_ascending*/)
 	
 	list_reverse con
-	assert list_is_sorted(con, SortMode_Decending)
+	assert list_is_sorted(con, abdata_sort_decending)
 	
 	list_set con, 99, 2
-	assert list_is_sorted(con, SortMode_Ascending) == 0
-	assert list_is_sorted(con, SortMode_Decending) == 0
+	assert list_is_sorted(con, abdata_sort_ascending) == 0
+	assert list_is_sorted(con, abdata_sort_decending) == 0
 	
 #module
 #deffunc listTest_eq_ran var self, int _value, int sort_mode,  int x_lb, int x_ub, \
@@ -305,24 +305,24 @@
 	list_chain   con2, con1
 	list_reverse con2 //8, 7, 5, 5, 5, 3, 3, 1
 	
-	listTest_eq_ran con2, 9, SortMode_Decending,   0, 0
-	listTest_eq_ran con2, 8, SortMode_Decending,   0, 1
-	listTest_eq_ran con2, 5, SortMode_Decending,   2, 5
-	listTest_eq_ran con2, 0, SortMode_Decending,   8, 8
+	listTest_eq_ran con2, 9, abdata_sort_decending,   0, 0
+	listTest_eq_ran con2, 8, abdata_sort_decending,   0, 1
+	listTest_eq_ran con2, 5, abdata_sort_decending,   2, 5
+	listTest_eq_ran con2, 0, abdata_sort_decending,   8, 8
 	
 	//®—ñÏ‚İ‘}“ü
 	//‘}“üŒã‚ÉA‘}“ü‚µ‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚é‚©
-	listTest_sorted_insert con2, 9,  true, SortMode_Decending,    0, 1
-	listTest_sorted_insert con2, 8,  true, SortMode_Decending,    0, 2
-	listTest_sorted_insert con2, 7, false, SortMode_Decending,    1, 2
-	listTest_sorted_insert con2, 5,  true, SortMode_Decending,    2, 6
-	listTest_sorted_insert con2, 0,  true, SortMode_Decending,    8, 9
+	listTest_sorted_insert con2, 9,  true, abdata_sort_decending,    0, 1
+	listTest_sorted_insert con2, 8,  true, abdata_sort_decending,    0, 2
+	listTest_sorted_insert con2, 7, false, abdata_sort_decending,    1, 2
+	listTest_sorted_insert con2, 5,  true, abdata_sort_decending,    2, 6
+	listTest_sorted_insert con2, 0,  true, abdata_sort_decending,    8, 9
 	
 	//®—ñÏ‚İ‚Ìœ‹
 	//œ‹Œã‚ÉAœ‹‚³‚ê‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚é‚©
-	listTest_sorted_erase con2, 9,  1, SortMode_Decending,    0, 0
-	listTest_sorted_erase con2, 5,  1, SortMode_Decending,    2, 4
-	listTest_sorted_erase con2, 3, 99, SortMode_Decending,    5, 5
-	listTest_sorted_erase con2, 0, 99, SortMode_Decending,    8, 8
+	listTest_sorted_erase con2, 9,  1, abdata_sort_decending,    0, 0
+	listTest_sorted_erase con2, 5,  1, abdata_sort_decending,    2, 4
+	listTest_sorted_erase con2, 3, 99, abdata_sort_decending,    5, 5
+	listTest_sorted_erase con2, 0, 99, abdata_sort_decending,    8, 8
 	
 	logmes "list test completed."

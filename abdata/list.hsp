@@ -18,9 +18,6 @@
 
 #define ctype STR_ERR_OVER_RANGE(%1) "Error! [abdata コンテナ] 要素番号範囲外エラー(" + (%1) + ")"
 
-#enum global SortMode_Ascending = 0
-#enum global SortMode_Decending = 1
-
 #define global listImpl_new(%1, %2, %3) newmod %1, abdata_list_impl@, %2, %3
 #define global listImpl_delete(%1) delmod %1
 
@@ -380,7 +377,7 @@
 				} else {
 					// ?( 一致する or ( 左が小さく(真) 昇順(真) || 右が小さく(偽) 降順(偽) ) ) => lhs からとる
 					cmp = abelem_cmp( mElems(arrDst(p1)), mElems(arrDst(p2)) )
-					if ( cmp == 0 || ( (cmp < 0) == (mode == SortMode_Ascending) ) ) {
+					if ( cmp == 0 || ( (cmp < 0) == (mode == abdata_sort_ascending) ) ) {
 						arrTmp(cnt) = arrDst(p1) : p1 ++
 					} else {
 						arrTmp(cnt) = arrDst(p2) : p2 ++
@@ -436,8 +433,8 @@
 	loop
 	return ub
 	
-#define global ctype listImpl_lb(%1, %2, %3 = SortMode_Ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 0)
-#define global ctype listImpl_ub(%1, %2, %3 = SortMode_Ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 1)
+#define global ctype listImpl_lb(%1, %2, %3 = abdata_sort_ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 0)
+#define global ctype listImpl_ub(%1, %2, %3 = abdata_sort_ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 1)
 
 #modfunc listImpl_equal_range var value, var lb, var ub, int sort_mode
 	lb = listImpl_lb(thismod, value, sort_mode)
@@ -451,7 +448,7 @@
 // @param can_dup (true):
 // これが真なら、すでに value が含まれているときも、挿入する。
 //------------------------------------------------
-#define global listImpl_sorted_insertv(%1, %2, %3 = true@abdata_list_impl, %4 = SortMode_Ascending) \
+#define global listImpl_sorted_insertv(%1, %2, %3 = true@abdata_list_impl, %4 = abdata_sort_ascending) \
 	listImpl_sorted_insertv_@abdata_list_impl (%1), (%2), (%3), (%4)
 
 #modfunc listImpl_sorted_insertv_@abdata_list_impl \
@@ -472,7 +469,7 @@
 // @param value: 除去すべき要素の値
 // @param max_count (∞): 除去される要素の個数の最大値
 //------------------------------------------------
-#define global listImpl_sorted_erasev(%1, %2, %3 = int_max@abdata_list_impl, %4 = SortMode_Ascending) \
+#define global listImpl_sorted_erasev(%1, %2, %3 = int_max@abdata_list_impl, %4 = abdata_sort_ascending) \
 	listImpl_sorted_erasev_@abdata_list_impl (%1), (%2), (%3), (%4)
 	
 #modfunc listImpl_sorted_erasev_@abdata_list_impl \
@@ -664,25 +661,25 @@
 #define global ctype list_compare(%1, %2) \
 	listImpl_compare(abdataInsts(%1), abdataInsts(%2))
 
-#define global list_sort(%1, %2 = SortMode_Ascending) \
+#define global list_sort(%1, %2 = abdata_sort_ascending) \
 	listImpl_sort abdataInsts(%1), %2
 
-#define global ctype list_is_sorted(%1, %2 = SortMode_Ascending) \
+#define global ctype list_is_sorted(%1, %2 = abdata_sort_ascending) \
 	listImpl_is_sorted(abdataInsts(%1), %2)
 
-#define global ctype list_lb(%1, %2, %3 = SortMode_Ascending) \
+#define global ctype list_lb(%1, %2, %3 = abdata_sort_ascending) \
 	listImpl_lb(abdataInsts(%1), %2, %3)
 	
-#define global ctype list_ub(%1, %2, %3 = SortMode_Ascending) \
+#define global ctype list_ub(%1, %2, %3 = abdata_sort_ascending) \
 	listImpl_ub(abdataInsts(%1), %2, %3)
 	
-#define global list_equal_range(%1, %2, %3, %4, %5 = SortMode_Ascending) \
+#define global list_equal_range(%1, %2, %3, %4, %5 = abdata_sort_ascending) \
 	listImpl_equal_range abdataInsts(%1), %2, %3, %4, %5
 	
-#define global list_sorted_insertv(%1, %2, %3 = true@abdata_list_impl, %4 = SortMode_Ascending) \
+#define global list_sorted_insertv(%1, %2, %3 = true@abdata_list_impl, %4 = abdata_sort_ascending) \
 	listImpl_sorted_insertv abdataInsts(%1), %2, %3, %4
 	
-#define global list_sorted_erasev(%1, %2, %3 = int_max@abdata_list_impl, %4 = SortMode_Ascending) \
+#define global list_sorted_erasev(%1, %2, %3 = int_max@abdata_list_impl, %4 = abdata_sort_ascending) \
 	listImpl_sorted_erasev abdataInsts(%1), %2, %3, %4
 
 #define global       list_iter_init(%1,%2)    listImpl_iter_init abdataInsts(%1), %2

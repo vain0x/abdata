@@ -9,6 +9,9 @@
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#enum global SortMode_Ascending = 0
+#enum global SortMode_Decending = 1
+
 #define global pair_loc_swap        pair_iter_swap
 #define global list_loc_move        list_iter_move
 #define global list_loc_swap        list_iter_swap

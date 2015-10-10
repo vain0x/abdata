@@ -34,9 +34,6 @@ len_:
 #define ctype ap_type_at(%1) ap_type(aps_(%1))
 #define ctype ap_ix_at(%1)   ap_ix(aps_(%1))
 
-#define global abdata_sort_ascending 0
-#define global abdata_sort_decending 1
-
 #modinit
 	valistImpl_init thismod
 	return getaptr(thismod)
