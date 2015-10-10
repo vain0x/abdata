@@ -252,8 +252,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #define global ctype valist_pop(%1, %2)  valist_get__(%1, %2, 1 /* removes */)
 #define global ctype valist_get_front(%1)  valist_get(%1, 0)
 #define global ctype valist_pop_front(%1)  valist_pop(%1, 0)
-#define global ctype valist_get_back(%1)   valist_get_back__(%1, 0 /* removes */)
-#define global ctype valist_pop_back(%1)   valist_get_back__(%1, 1 /* removes */)
+#define global ctype valist_get_back(%1)   valist_get(%1, -1)
+#define global ctype valist_pop_back(%1)   valist_pop(%1, -1)
 
 #define global ctype valist_try_dup(%1, %2, %3) \
 	valistImpl_try_dup(abdataInsts(%1), %2, %3)
@@ -355,17 +355,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #defcfunc valist_get__ int self, int i, int removes,  \
 	local result
 	
-	if ( valistImpl_try_get(abdataInsts(self), result, i, removes) ) {
-		return result
-	}
-	assert : end 1
-#global
-
-#module
-#defcfunc valist_get_back__ int self, int removes,  \
-	local result
-	
-	if ( valistImpl_try_get(abdataInsts(self), result, valist_size(self) - 1, removes) ) {
+	if ( valistImpl_try_get(abdataInsts(self), result, valist_regular_ix(self, i), removes) ) {
 		return result
 	}
 	assert : end 1
