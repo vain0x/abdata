@@ -17,6 +17,8 @@
 ## 更新履歴
 ### 2015/10/10
 * `list_double`, `list_double_front`, `list_double_back` を削除した。
+* 異型比較において、型の異なるの値を常に異なる値として扱うようにした。
+  * `list_count()` が型変換が行わなくなった。
 
 ### 2015/10/05
 * モジュール `arrayLen` を `arrlen` に改名した。
