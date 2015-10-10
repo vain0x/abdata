@@ -253,9 +253,6 @@
 	stdarray_iter_swap midlist, listImpl_getRealIndex(thismod, iPos1), listImpl_getRealIndex(thismod, iPos2)
 	return
 	
-#define global listImpl_iter_swap_front(%1) listImpl_iter_swap %1,  0,  1
-#define global listImpl_iter_swap_back(%1)  listImpl_iter_swap %1, -2, -1
-
 //------------------------------------------------
 // „‰ñ
 //------------------------------------------------
@@ -647,8 +644,6 @@
 
 #define global list_iter_move(%1, %2, %3) listImpl_iter_move       abdataInsts(%1), %2, %3
 #define global list_iter_swap(%1, %2, %3) listImpl_iter_swap       abdataInsts(%1), %2, %3
-#define global list_iter_swap_front(%1)   listImpl_iter_swap_front abdataInsts(%1)
-#define global list_iter_swap_back(%1)    listImpl_iter_swap_back  abdataInsts(%1)
 
 #define global list_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
 	listImpl_reverse abdataInsts(%1), %2, %3

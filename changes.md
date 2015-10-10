@@ -21,6 +21,7 @@
   * `list_count()` が型変換が行わなくなった。
 * `list_rotate`, `list_rotate_back` を削除した。
 * `list_push`, `list_pushv` を削除した。
+* `list_loc_swap_front`, `list_loc_swap_back` を削除した。
 * `list_lower_bound()` を `list_lb()` に改名した。
 * `list_upper_bound()` を `list_ub()` に改名した。
 * `list_loc_swap` を `list_iter_swap` に改名した。
