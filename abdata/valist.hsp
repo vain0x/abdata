@@ -87,9 +87,12 @@ len_:
 		return false
 	}
 	
+#define valistImpl_unsafe_dup(%1 = thismod, %2, %3) \
+	abbox_unsafe_dup_v arrs_(ap_type_at(%2)), %3, ap_ix_at(%2)
+
 #modcfunc valistImpl_try_dup int i, array ref
 	if ( 0 <= i && i < len_ ) {
-		abbox_unsafe_dup_v arrs_(ap_type_at(i)), ref, ap_ix_at(i)
+		valistImpl_unsafe_dup thismod, i, ref
 		return true
 	} else {
 		return false
@@ -150,6 +153,50 @@ len_:
 	assert 0 <= i0 && i0 < len_
 	assert 0 <= i1 && i1 < len_
 	stdarray_loc_swap aps_, i0, i1
+	return
+	
+#modfunc valistImpl_sort int sort_mode,  \
+	local p, local p1, local e1, local p2, local e2, local size_segment, local size_seg_merged, \
+	local aps_tmp, local l_ref, local r_ref, local cmp
+	
+	dim aps_tmp, len_
+	repeat
+		size_segment = 1 << cnt
+		
+		repeat
+			p  = size_segment * (cnt * 2)
+			p1 = p
+			e1 = p1 + size_segment
+			p2 = e1
+			e2 = limit(p2 + size_segment, 0, len_)
+			size_seg_merged = (e2 - p)
+			
+			if ( size_seg_merged < size_segment ) { break }
+			
+			repeat size_seg_merged
+				if ( p2 >= e2 ) {
+					aps_tmp(cnt) = aps_(p1) : p1 ++
+				} else : if ( p1 >= e1 ) {
+					aps_tmp(cnt) = aps_(p2) : p2 ++
+				} else {
+					valistImpl_unsafe_dup thismod, p1, l_ref
+					valistImpl_unsafe_dup thismod, p2, r_ref
+					cmp = abdata_compare(l_ref, r_ref)
+					if ( cmp == 0 || ((cmp < 0) == (sort_mode == abdata_sort_ascending)) ) {
+						aps_tmp(cnt) = aps_(p1) : p1 ++
+					} else {
+						aps_tmp(cnt) = aps_(p2) : p2 ++
+					}
+				}
+			loop
+			
+			repeat size_seg_merged
+				aps_(p + cnt) = aps_tmp(cnt)
+			loop
+		loop
+		
+		if ( len_ <= size_segment ) { break }
+	loop
 	return
 	
 #global
@@ -227,7 +274,10 @@ len_:
 
 #define global valist_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
 	valist_reverse__ %1, %2, %3
-	
+
+#define global valist_sort(%1, %2 = abdata_sort_ascending) \
+	valistImpl_sort abdataInsts(%1), %2
+
 #define global ctype valist_lb(%1, %2, %3 = abdata_sort_ascending)  valist_lb_ub__(%1, %2, %3, 0 /* finds_lb */)
 #define global ctype valist_ub(%1, %2, %3 = abdata_sort_ascending)  valist_lb_ub__(%1, %2, %3, 1 /* finds_ub */)
 
