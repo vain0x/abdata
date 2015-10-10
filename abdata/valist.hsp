@@ -281,6 +281,12 @@ len_:
 #define global ctype valist_lb(%1, %2, %3 = abdata_sort_ascending)  valist_lb_ub__(%1, %2, %3, 0 /* finds_lb */)
 #define global ctype valist_ub(%1, %2, %3 = abdata_sort_ascending)  valist_lb_ub__(%1, %2, %3, 1 /* finds_ub */)
 
+#ifdef _debug
+	#define global valist_dbglog(%1) valist_dbglog__ %1, "%1"
+#else
+	#define global valist_dbglog(%1) :
+#endif //defined(_debug)
+
 #module
 #deffunc valist_new_empty var self
 	
@@ -517,5 +523,20 @@ len_:
 	iter_data ++
 	return valist_try_get(self, iter_data, iter)
 #global
+
+#ifdef _debug
+#module
+#deffunc valist_dbglog__ int self, str ident,  \
+	local ref
+	
+	logmes "[" + ident + "] debug-log"
+	repeat valist_size(self)
+		valist_dup self, cnt, ref
+		logmes strf("#%2d: %s", cnt, str(ref))
+	loop
+	logmes ""
+	return
+#global
+#endif //defined(_debug)
 
 #endif
