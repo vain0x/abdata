@@ -1,6 +1,8 @@
 #ifndef ig_abdata_tnode_hsp
 #define ig_abdata_tnode_hsp
 
+// [[deprecated]]
+
 #include "list.hsp"
 #include "alg_iter.hsp"
 
