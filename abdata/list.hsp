@@ -21,7 +21,7 @@
 #enum global SortMode_Ascending = 0
 #enum global SortMode_Decending = 1
 
-#define global listImpl_new(%1, %2 = 0, %3 = stt_zero@) newmod %1, abdata_list_impl@, %2, %3
+#define global listImpl_new(%1, %2, %3) newmod %1, abdata_list_impl@, %2, %3
 #define global listImpl_delete(%1) delmod %1
 
 //------------------------------------------------
@@ -582,14 +582,14 @@
 #define global list_ClsName "list"
 #define global listNull abdataNull
 
-#define global list_new(%1, %2 = 0, %3 = stt_zero@) list_new_impl %1, %2, %3
+#define global list_new(%1, %2 = 0, %3 = stt_zero@) %1 = list_make(%2, %3)
 #define global list_delete(%1) listImpl_delete abdataInsts(%1)
 
 #module
 //------------------------------------------------
 // 一時コンテナ・オブジェクトの生成
 //------------------------------------------------
-#deffunc list_new_impl var self, int num, var vDefault,  local len
+#defcfunc list_make_impl int num, var vDefault,  local len
 	
 	len = length(abdataInsts_var)
 	
@@ -599,18 +599,9 @@
 	}
 	
 	listImpl_new abdataInsts_var, num, vDefault
-	self = stat
-	return
+	return stat
 	
 #define global ctype list_make(%1 = 0, %2 = stt_zero@) list_make_impl(%1, %2)
-
-//------------------------------------------------
-// 一時コンテナ・オブジェクトの生成
-//------------------------------------------------
-#defcfunc list_make_impl int num, var vDefault,  local newObj
-	list_new newObj, num, vDefault
-	return newObj
-	
 #global
 
 #define global list_getv(%1, %2, %3 = 0) listImpl_getv abdataInsts(%1), %2, %3
@@ -709,6 +700,6 @@
 #define global list_dbglog(%1) listImpl_dbglog_ abdataInsts(%1), "%1"
 
 	// abdataInsts(0) を null として扱う。
-	list_new listNull
+	listNull = list_make()
 
 #endif

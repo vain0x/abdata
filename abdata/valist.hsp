@@ -205,7 +205,7 @@ len_:
 // wrapper
 
 #define global valist_new(%1, %2 = 0, %3 = stt_zero@) \
-	valist_new_replicate %1, %2, %3
+	%1 = valist_make_replicate(%2, %3)
 
 #define global valist_delete(%1) \
 	delmod abdataInsts(%1)
@@ -288,7 +288,7 @@ len_:
 #endif //defined(_debug)
 
 #module
-#deffunc valist_new_empty var self
+#defcfunc valist_make_empty
 	
 	// abdataInsts_var ‚ÌL’·
 	#define __len length(abdataInsts_var)
@@ -298,22 +298,17 @@ len_:
 	#undef __len
 	
 	newmod abdataInsts_var, abdata_valist_impl@
-	self = stat
-	return
+	return stat
 #global
 
 #module
-#deffunc valist_new_replicate var self, int count, var value
-	valist_new_empty self
-	repeat count
-		valist_insertv self, value, cnt
-	loop
-	return
-	
 #defcfunc valist_make_replicate int count, var value,  \
 	local self
 	
-	valist_new_replicate self, count, value
+	self = valist_make_empty()
+	repeat count
+		valist_insertv self, value, cnt
+	loop
 	return self
 #global
 

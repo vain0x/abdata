@@ -21,8 +21,8 @@
 // [i] ç\íz
 //------------------------------------------------
 #modinit
-	list_new mlistKey
-	list_new mlistValue
+	mlistKey = list_make()
+	mlistValue = list_make()
 	return getaptr(thismod)
 	
 //------------------------------------------------
@@ -341,13 +341,13 @@
 #define global Unor_ClsName "unor"
 #define global unorNull abdataNull
 
-#define global unor_new(%1)    unorImpl_new    abdataInsts_var : %1 = stat
+#define global unor_new(%1) %1 = unor_make()
 #define global unor_delete(%1) unorImpl_delete abdataInsts(%1)
 
 #module
-#defcfunc unor_make  local newOne
-	unor_new newOne
-	return   newOne
+#defcfunc unor_make
+	unorImpl_new abdataInsts_var
+	return stat
 #global
 
 #define global       unor_getv(%1, %2 = "", %3) unorImpl_getv abdataInsts(%1), %2, %3

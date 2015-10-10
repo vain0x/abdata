@@ -21,9 +21,9 @@
 	double_var = M_PI
 	str_var = "list_test"
 	
-	list_new con0
-	list_new con1, 1, double_var
-	list_new con2, 7, str_var
+	con0 = list_make()
+	con1 = list_make(1, double_var)
+	con2 = list_make(7, str_var)
 	
 	assert list_size(con0) == 0
 	assert list_size(con1) == 1
@@ -36,7 +36,7 @@
 	//—v‘f’Ç‰Á
 	
 	//push_back
-	list_new con, 3, str_var
+	con = list_make(3, str_var)
 	list_push_back con, M_PI
 	assert list_size(con) == 4
 	assert list_get(con, 3) == M_PI
