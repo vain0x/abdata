@@ -519,7 +519,7 @@
 #modcfunc listImpl_count var value,  local count, local ref
 	repeat mCnt
 		listImpl_clone thismod, ref, cnt
-		if ( ref == value ) { count ++ }
+		if ( abdata_compare(value, ref) == 0 ) { count ++ }
 	loop
 	return count
 
