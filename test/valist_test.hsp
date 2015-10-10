@@ -148,7 +148,7 @@
 	
 	//œ‹
 	con = valist_make_iota(4)
-	valist_erase_at con, 2
+	valist_erase con, 2
 	assert valist_size(con) == 4 - 1
 	
 	expected = 0, 1, 3
