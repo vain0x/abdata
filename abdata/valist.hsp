@@ -312,6 +312,13 @@ len_:
 #global
 
 #module
+#deffunc valist_copy int self, int rhs
+	valist_clear self
+	valist_chain self, rhs
+	return
+#global
+
+#module
 #deffunc valist_chain int self, int rhs,  \
 	local i, local ref
 	
