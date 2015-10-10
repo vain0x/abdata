@@ -297,7 +297,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #define global valist_iter_swap(%1, %2, %3) \
 	valistImpl_iter_swap abdataInsts(%1), %2, %3
 
-#define global valist_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
+#define global valist_reverse(%1, %2 = 0, %3 = abdata_ix_end) \
 	valist_reverse__ %1, %2, %3
 
 #define global valist_sort(%1, %2 = abdata_sort_ascending) \
@@ -415,8 +415,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #deffunc valist_reverse__ int self, int i_beg, int i_end,  \
 	local aps
 	
-	if ( i_end == stdarray_index_of_end ) {
-		valist_reverse__ self, i_beg, valist_size(self)
+	if ( i_end < 0 ) {
+		valist_reverse__ self, i_beg, valist_regular_ix(self, i_end)
 		return
 	}
 	assert 0 <= i_beg && i_beg <= i_end && i_end <= valist_size(self)
