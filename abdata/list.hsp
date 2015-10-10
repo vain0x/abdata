@@ -649,8 +649,6 @@
 #define global list_push_back(%1,%2)   listImpl_push_back    abdataInsts(%1), %2
 #define global list_pushv_back(%1,%2)  listImpl_pushv_back   abdataInsts(%1), %2
 
-#define global list_push  list_push_back
-#define global list_pushv list_pushv_back
 #define global list_add   list_push_back
 
 #define global list_erase(%1, %2)   listImpl_erase       abdataInsts(%1), %2
