@@ -243,6 +243,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 
 #define global ctype valist_size(%1) valistImpl_len(abdataInsts(%1))
 #define global valist_length valist_size
+#define global ctype valist_empty(%1) (valist_size(%1) == 0)
 
 #define global ctype valist_vartype(%1, %2) valistImpl_vartype(abdataInsts(%1), %2)
 
