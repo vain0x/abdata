@@ -441,4 +441,14 @@ len_:
 	return
 #global
 
+#module
+#deffunc valist_ord_erasev int self, var value, int max_count, int sort_mode,  \
+	local lb, local ub
+	
+	valist_equal_range self, value, lb, ub, sort_mode
+	lb = ub - limit(ub - lb, 0, max_count)
+	valist_erase_range self, lb, ub
+	return
+#global
+
 #endif
