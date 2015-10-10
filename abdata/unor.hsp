@@ -5,7 +5,6 @@
 #include "list.hsp"
 #include "alg_iter.hsp"
 #include "mod_pvalptr.hsp"
-#include "mod_swap.hsp"
 #include "mod_ref.hsp"
 
 #module abdata_unor_impl mlistKey, mlistValue
@@ -190,17 +189,6 @@
 	return
 	
 //------------------------------------------------
-// [i] åä∑
-//------------------------------------------------
-#modfunc unorImpl_swap var obj,  \
-	local keys, local vals,  local tmp_keys, local tmp_vals
-	
-	unorImpl_clone_members obj, keys, vals
-	swap_int mlistKey,   keys
-	swap_int mlistValue, vals
-	return
-	
-//------------------------------------------------
 // [i] é´èëèáî‰är
 //------------------------------------------------
 #modcfunc unorImpl_compare var rhs,  \
@@ -374,7 +362,6 @@
 #define global unor_clear(%1)     unorImpl_clear abdataInsts(%1)
 #define global unor_chain(%1, %2) unorImpl_chain abdataInsts(%1), abdataInsts(%2)
 #define global unor_copy(%1, %2)  unorImpl_copy  abdataInsts(%1), abdataInsts(%2)
-#define global unor_swap(%1,%2)   unorImpl_swap  abdataInsts(%1), abdataInsts(%2)
 
 #define global ctype unor_compare(%1, %2) \
 	unorImpl_compare(abdataInsts(%1), abdataInsts(%2))

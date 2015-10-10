@@ -152,13 +152,6 @@
 		assert list_get(con0, 3 + cnt) == list_get(con1, cnt)
 	loop
 	
-	//ŒğŠ·
-	con0 = list_make_iota(3)
-	con1 = list_make_iota(4)
-	list_swap con0, con1
-	assert list_size(con0) == 4
-	assert list_size(con1) == 3
-	
 	//®—ñ
 	//’·‚³0
 	con0 = list_make_iota(0)
@@ -219,7 +212,6 @@
 	con2 = list_make()
 	list_copy con2, con1
 	assert list_compare(con2, con1) == 0
-	
 	
 	//®—ñÏ‚İ‚©
 	con = list_make_iota(3)

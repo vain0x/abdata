@@ -29,6 +29,7 @@
 * `SortMode_Ascending` を `abdata_sort_ascending` に改名した。
 * `SortMode_Decending` を `abdata_sort_decending` に改名した。
 * モジュール `tnode` を deprecated 指定にした。
+* `_swap` を削除した。
 
 ### 2015/10/05
 * モジュール `arrayLen` を `arrlen` に改名した。

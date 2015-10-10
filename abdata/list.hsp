@@ -6,7 +6,6 @@
 #include "mod_nullmod.hsp"
 #include "mod_shiftArray.hsp"
 #include "mod_pvalptr.hsp"
-#include "mod_swap.hsp"
 #include "mod_ref.hsp"
 #include "mod_compare.hsp"
 
@@ -300,19 +299,6 @@
 #modfunc listImpl_copy var src
 	listImpl_clear thismod
 	listImpl_chain thismod, src
-	return
-	
-//------------------------------------------------
-// [i] ŒðŠ·
-//------------------------------------------------
-#modfunc listImpl_swap var rhs
-	listImpl_swap_impl@abdata_list_impl rhs, mCnt, mElems, midlist
-	return
-	
-#modfunc listImpl_swap_impl@abdata_list_impl array lhs_cnt, array lhs_elems, array lhs_idlist
-	swap_int   mCnt,    lhs_cnt
-	swap_array mElems,  lhs_elems
-	swap_array midlist, lhs_idlist
 	return
 	
 //------------------------------------------------
@@ -651,7 +637,6 @@
 #define global list_clear(%1)    listImpl_clear abdataInsts(%1)
 #define global list_chain(%1,%2) listImpl_chain abdataInsts(%1), abdataInsts(%2)
 #define global list_copy(%1,%2)  listImpl_copy abdataInsts(%1), abdataInsts(%2)
-#define global list_swap(%1,%2)  listImpl_swap abdataInsts(%1), abdataInsts(%2)
 
 #define global ctype list_compare(%1, %2) \
 	listImpl_compare(abdataInsts(%1), abdataInsts(%2))

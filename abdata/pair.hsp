@@ -7,7 +7,6 @@
 #include "abheader.hsp"
 #include "abelem.hsp"
 #include "mod_pvalptr.hsp"
-#include "mod_swap.hsp"
 
 #module abdata_pair_impl mValue
 
@@ -163,17 +162,6 @@
 #define global pairImpl_chain(%1,%2) "pair_chain ‚Í‚Å‚«‚Ü‚¹‚ñB[pair_chain(%1, %2)]"
 
 //------------------------------------------------
-// [i] ŒğŠ·
-//------------------------------------------------
-#modfunc pairImpl_swap var rhs
-	pairImpl_swap_impl@abdata_pair_impl rhs, mValue
-	return
-	
-#modfunc pairImpl_swap_impl@abdata_pair_impl array lhs_value
-	swap_array lhs_value, mValue
-	return
-	
-//------------------------------------------------
 // «‘‡”äŠr
 //------------------------------------------------
 #modcfunc pairImpl_compare var rhs
@@ -286,7 +274,6 @@
 
 #define global pair_clear(%1) pairImpl_clear abdataInsts(%1)
 #define global pair_copy(%1,%2) pairImpl_copy abdataInsts(%1), abdataInsts(%2)
-#define global pair_swap(%1,%2) pairImpl_swap abdataInsts(%1), abdataInsts(%2)
 
 #define global ctype pair_compare(%1,%2) \
 	pairImpl_compare(abdataInsts(%1), abdataInsts(%2))
