@@ -1,0 +1,326 @@
+#include "../abdata/valist.hsp"
+#include "../abdata/mod_ref.hsp"
+
+#ifndef true
+ #define global true 1
+#endif
+
+#module
+#deffunc valist_logmes int self
+	repeat valist_size(self)
+		logmes strf("#%04d::%d  =  %s", cnt, valist_type_at(self, cnt), str(valist_get(self, cnt)))
+	loop
+	return
+
+#defcfunc valist_make_iota int n,  \
+	local self
+	
+	self = valist_make()
+	repeat n
+		valist_push_back self, cnt
+	loop
+	return self
+#global
+
+#module
+#deffunc valistTest_eq_ran var self, int _value, int sort_mode,  int x_lb, int x_ub, \
+	local value, local lb, local ub
+	
+	value = _value
+	valist_equal_range self, value, lb, ub, sort_mode
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#deffunc valistTest_ord_insert var _self, int _value, int can_dup, int sort_mode, \
+	int x_lb, int x_ub, \
+	local self, local value, local lb, local ub
+	
+	self = valist_make()
+	valist_copy self, _self
+	value = _value
+	valist_ord_insertv self, value, can_dup, sort_mode
+	valist_equal_range self, value, lb, ub,  sort_mode
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#deffunc valistTest_ord_erase var _self, int _value, int max_count, int sort_mode,  int x_lb, int x_ub, \
+	local self, local value, local lb, local ub
+	
+	self = valist_make()
+	valist_copy self, _self
+	value = _value
+	valist_ord_erasev  self, value, max_count, sort_mode
+	valist_equal_range self, value, lb, ub,    sort_mode
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#deffunc valistTest_main
+
+	randomize
+
+	//\’zƒeƒXƒg
+	
+	int_var = 0
+	double_var = M_PI
+	str_var = "valist_test"
+	
+	valist_new con0
+	valist_new con1, 1, double_var
+	valist_new con2, 7, str_var
+	
+	assert valist_size(con0) == 0
+	assert valist_size(con1) == 1
+	assert valist_get(con1, cnt) == double_var
+	assert valist_size(con2) == 7
+	repeat valist_size(con2)
+		assert valist_get(con2, cnt) == str_var
+	loop
+	valist_dbglog con2
+	//—v‘f’Ç‰Á
+	
+	//push_back
+	valist_new con, 3, str_var
+	valist_push_back con, M_PI
+	assert valist_size(con) == 4
+	assert valist_get(con, 3) == M_PI
+	repeat 3
+		assert valist_get(con, cnt) == str_var
+	loop
+	valist_delete con
+	
+	//push_front
+	con = valist_make_iota(4)
+	valist_push_front con, M_PI
+	assert valist_size(con) == 5
+	assert valist_get(con, 0) == M_PI
+	repeat 4, 1
+		assert valist_get(con, cnt) == cnt - 1
+	loop
+	
+	//insert mid
+	con = valist_make_iota(5)
+	valist_insert con, M_PI, 2
+	assert valist_size(con) == 6
+	repeat 2
+		assert valist_get(con, cnt) == cnt
+	loop
+	assert valist_get(con, 2) == M_PI
+	repeat 3, 3
+		assert valist_get(con, cnt) == cnt - 1
+	loop
+	
+	//insert after last
+	con = valist_make_iota(3)
+	valist_insert con, 7, 7
+	assert valist_size(con) == 8
+	repeat 8
+		if ( cnt < 3 || cnt == 7 ) {
+			assert valist_get(con, cnt) == cnt
+		} else {
+			assert valist_get(con, cnt) == stt_zero@
+		}
+	loop
+	
+	//ƒTƒCƒYw’è
+	
+	//to extend
+	con = valist_make_iota(3)
+	valist_resize con, 5, str_var
+	assert valist_size(con) == 5
+	repeat 5
+		if ( cnt < 3 ) {
+			assert valist_get(con, cnt) == cnt
+		} else {
+			assert valist_get(con, cnt) == str_var
+		}
+	loop
+	
+	//to truncate
+	con = valist_make_iota(5)
+	valist_resize con, 2, stt_zero@
+	assert valist_size(con) == 2
+	repeat 2
+		assert valist_get(con, cnt) == cnt
+	loop
+	
+	//œ‹
+	con = valist_make_iota(4)
+	valist_erase_at con, 2
+	assert valist_size(con) == 4 - 1
+	
+	expected = 0, 1, 3
+	repeat 3
+		assert valist_get(con, cnt) == expected(cnt)
+	loop
+	
+	//QÆ‰»
+	con = valist_make_iota(4)
+	valist_dup con, 2, r
+	assert r == 2
+	r = 99
+	assert valist_get(con, 2) == 99
+	
+	con = valist_make_iota(3)
+	valist_ref(con, 1) ++
+	assert valist_get(con, 1) == 2
+	
+	//‘‚«Š·‚¦
+	con = valist_make_iota(4)
+	valist_set con, str_var, 2
+	assert valist_size(con) == 4
+	assert valist_get(con, 0) == 0
+	assert valist_get(con, 1) == 1
+	assert valist_get(con, 2) == str_var
+	assert valist_get(con, 3) == 3
+	
+	//ˆÚ“®AŒğŠ·A„‰ñA”½“]
+	
+	//Á‹
+	con = valist_make_iota(3)
+	valist_clear con
+	assert valist_size(con) == 0
+	
+	//˜AŒ‹
+	con0 = valist_make_iota(3)
+	con1 = valist_make_iota(4)
+	valist_chain con0, con1
+	assert valist_size(con0) == 3+4
+	repeat 3
+		assert valist_get(con0, cnt) == cnt
+	loop
+	repeat 4
+		assert valist_get(con0, 3 + cnt) == valist_get(con1, cnt)
+	loop
+	
+	//®—ñ
+	
+	//’·‚³0
+	con0 = valist_make_iota(0)
+	valist_sort con0
+	assert valist_size(con0) == 0
+	
+	//—”
+	con1 = valist_make(5)
+	repeat valist_size(con1)
+		valist_set con1, rnd(1000), cnt
+	loop
+	valist_sort con1
+	assert valist_size(con1) == 5
+	repeat valist_size(con1) - 1
+		assert valist_get(con1, cnt) <= valist_get(con1, cnt + 1)
+	loop
+	
+	//•¡”‚ÌŒ^
+	con2 = valist_make()
+	valist_push_back con2, "b"
+	valist_push_back con2, 5
+	valist_push_back con2, 1
+	valist_push_back con2, "a"
+	valist_sort con2
+	assert valist_get(con2, 0) == "a"
+	assert valist_get(con2, 1) == "b"
+	assert valist_get(con2, 2) == 1
+	assert valist_get(con2, 3) == 5
+	
+	//”‚¦ã‚°
+	con = valist_make()
+	valist_push_back con, "1"
+	valist_push_back con, "a"
+	valist_push_back con, 1
+	valist_push_back con, 4
+	assert valist_count(con, ref_xi(1)) == 1
+	assert valist_count(con, stt_zero@) == 0
+	
+	//«‘‡”äŠr
+	con1 = valist_make_iota(4)
+	con2 = valist_make_iota(4)
+	con3 = valist_make_iota(5)
+	valist_set con2, ".", 1
+	assert valist_compare(con1, con1) == 0
+	assert valist_compare(con1, con2) > 0
+	assert valist_compare(con2, con3) < 0
+	assert valist_compare(con3, con2) > 0
+	
+	//•¡Ê
+	con1 = valist_make_iota(3)
+	con2 = valist_make()
+	valist_copy con2, con1
+	assert valist_compare(con2, con1) == 0
+	
+	//®—ñÏ‚İ‚©
+	con = valist_make_iota(3)
+	assert valist_is_sorted(con, abdata_sort_ascending)
+	
+	valist_reverse con
+	assert valist_is_sorted(con, abdata_sort_decending)
+	
+	valist_set con, 99, 2
+	assert valist_is_sorted(con, abdata_sort_ascending) == 0
+	assert valist_is_sorted(con, abdata_sort_decending) == 0
+	
+	//‰ºŠEAãŠE
+	con1 = valist_make()
+	expected = 1, 3, 3, 5, 5, 5, 7, 8
+	foreach expected
+		valist_pushv_back con1, expected(cnt)
+	loop
+	
+	//ŒŸõ
+	valistTest_eq_ran con1, 0,,   0, 0
+	valistTest_eq_ran con1, 2,,   1, 1
+	valistTest_eq_ran con1, 3,,   1, 3
+	valistTest_eq_ran con1, 8,,   7, 8
+	valistTest_eq_ran con1, 9,,   8, 8
+	
+	//®—ñÏ‚İ‘}“ü
+	//‘}“üŒã‚ÉA‘}“ü‚µ‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚é‚©
+	valistTest_ord_insert con1, 0,  true,,    0, 1
+	valistTest_ord_insert con1, 1,  true,,    0, 2
+	valistTest_ord_insert con1, 1, false,,    0, 1
+	valistTest_ord_insert con1, 2,  true,,    1, 2
+	valistTest_ord_insert con1, 3,  true,,    1, 4
+	valistTest_ord_insert con1, 3, false,,    1, 3
+	valistTest_ord_insert con1, 9,  true,,    8, 9
+	valistTest_ord_insert con1, 9, false,,    8, 9
+	
+	//®—ñÏ‚İ‚Ìœ‹
+	//œ‹Œã‚ÉAœ‹‚³‚ê‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚é‚©
+	valistTest_ord_erase con1, 0,  1,,    0, 0
+	valistTest_ord_erase con1, 1,  1,,    0, 0
+	valistTest_ord_erase con1, 3,  1,,    1, 2
+	valistTest_ord_erase con1, 3, 99,,    1, 1
+	valistTest_ord_erase con1, 9, 99,,    8, 8
+	
+	con2 = valist_make()
+	valist_chain   con2, con1
+	valist_reverse con2 //8, 7, 5, 5, 5, 3, 3, 1
+	
+	valistTest_eq_ran con2, 9, abdata_sort_decending,   0, 0
+	valistTest_eq_ran con2, 8, abdata_sort_decending,   0, 1
+	valistTest_eq_ran con2, 5, abdata_sort_decending,   2, 5
+	valistTest_eq_ran con2, 0, abdata_sort_decending,   8, 8
+	
+	//®—ñÏ‚İ‘}“ü
+	//‘}“üŒã‚ÉA‘}“ü‚µ‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚é‚©
+	valistTest_ord_insert con2, 9,  true, abdata_sort_decending,    0, 1
+	valistTest_ord_insert con2, 8,  true, abdata_sort_decending,    0, 2
+	valistTest_ord_insert con2, 7, false, abdata_sort_decending,    1, 2
+	valistTest_ord_insert con2, 5,  true, abdata_sort_decending,    2, 6
+	valistTest_ord_insert con2, 0,  true, abdata_sort_decending,    8, 9
+	
+	//®—ñÏ‚İ‚Ìœ‹
+	//œ‹Œã‚ÉAœ‹‚³‚ê‚½’l‚Ì equal_range ‚ª‚Ç‚¤‚È‚é‚©
+	valistTest_ord_erase con2, 9,  1, abdata_sort_decending,    0, 0
+	valistTest_ord_erase con2, 5,  1, abdata_sort_decending,    2, 4
+	valistTest_ord_erase con2, 3, 99, abdata_sort_decending,    5, 5
+	valistTest_ord_erase con2, 0, 99, abdata_sort_decending,    8, 8
+	
+	logmes "valist test completed."
+	return
+	
+#global
+
+	valistTest_main
