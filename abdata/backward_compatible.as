@@ -9,6 +9,12 @@
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#define global list_rotate(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	listImpl_rotate abdataInsts(%1), %2, %3
+
+#define global list_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	listImpl_rotate_back abdataInsts(%1), %2, %3
+
 #define global list_lexicographical_compare list_compare
 #define global pair_lexicographical_compare pair_compare
 #define global unor_lexicographical_compare unor_compare
