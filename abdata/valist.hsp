@@ -430,4 +430,15 @@ len_:
 	return
 #global
 
+#module
+#deffunc valist_ord_insertv int self, var value, int may_dup, int sort_mode,  \
+	local lb, local ub
+	
+	valist_equal_range self, value, lb, ub, sort_mode
+	if ( may_dup || lb == ub ) {
+		valist_insertv self, value, ub
+	}
+	return
+#global
+
 #endif
