@@ -51,9 +51,17 @@ empty_len_:
 		empty_len_ --
 		arr_(empty_(empty_len_)) = value
 		return empty_(empty_len_)
+		
 	} else {
-		arr_(length(arr_)) = value
-		return length(arr_) - 1
+		// óvëfêîÇñÒ2î{Ç…ägí£
+		
+		empty_len_ = length(arr_)
+		repeat empty_len_
+			empty_(empty_len_ - 1 - cnt) = empty_len_ + cnt
+		loop
+		
+		arr_(empty_len_ << 1) = value
+		return empty_len_ << 1
 	}
 	
 #modfunc abbox_unsafe_erase_at int i
