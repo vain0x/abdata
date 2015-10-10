@@ -205,9 +205,9 @@
 		cmp = (lhs_key != rhs_key)
 		if ( cmp ) { break }
 		
-		list_dup_abelem mlistValue, lhs_elem, cnt
-		list_dup_abelem       vals, rhs_elem, cnt
-		cmp = abelem_cmp(lhs_elem, rhs_elem)
+		list_dup mlistValue, lhs_elem, cnt
+		list_dup       vals, rhs_elem, cnt
+		cmp = abdata_compare(lhs_elem, rhs_elem)
 		if ( cmp ) { break }
 	loop
 	return cmp

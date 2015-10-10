@@ -75,10 +75,6 @@
 	abelem_dup mElems( midlist( listImpl_getRealIndex(thismod, i) ) ), vRef
 	return
 	
-#modfunc listImpl_dup_abelem var ref, int i
-	dup ref, mElems(midlist(i))
-	return
-	
 //------------------------------------------------
 // QÆ‰» ( ŠÖ”Œ`® )
 //------------------------------------------------
@@ -591,8 +587,6 @@
 #define global ctype list_pop(%1,%2=0) listImpl_pop(abdataInsts(%1), %2)
 
 #define global list_dup(%1,%2,%3=0) listImpl_dup abdataInsts(%1), %2, %3
-
-#define global list_dup_abelem(%1, %2, %3) listImpl_dup_abelem abdataInsts(%1), %2, %3
 
 #define global ctype list_ref(%1,%2=0) listImpl_ref(abdataInsts(%1),%2)
 
