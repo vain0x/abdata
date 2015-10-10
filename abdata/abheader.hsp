@@ -30,5 +30,6 @@
 
 #define global abdata_sort_ascending 0
 #define global abdata_sort_decending 1
+#define global abdata_ix_end (-127)
 
 #endif
