@@ -9,6 +9,9 @@
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#define global list_lower_bound list_lb
+#define global list_upper_bound list_ub
+
 #define global list_push  list_push_back
 #define global list_pushv list_pushv_back
 

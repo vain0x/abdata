@@ -436,12 +436,12 @@
 	loop
 	return ub
 	
-#define global ctype listImpl_lower_bound(%1, %2, %3 = SortMode_Ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 0)
-#define global ctype listImpl_upper_bound(%1, %2, %3 = SortMode_Ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 1)
+#define global ctype listImpl_lb(%1, %2, %3 = SortMode_Ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 0)
+#define global ctype listImpl_ub(%1, %2, %3 = SortMode_Ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 1)
 
 #modfunc listImpl_equal_range var value, var lb, var ub, int sort_mode
-	lb = listImpl_lower_bound(thismod, value, sort_mode)
-	ub = listImpl_upper_bound(thismod, value, sort_mode)
+	lb = listImpl_lb(thismod, value, sort_mode)
+	ub = listImpl_ub(thismod, value, sort_mode)
 	return
 	
 //------------------------------------------------
@@ -458,7 +458,7 @@
 	var value, int can_dup, int sort_mode,  \
 	local lb, local clone
 	
-	lb = listImpl_lower_bound(thismod, value, sort_mode)
+	lb = listImpl_lb(thismod, value, sort_mode)
 	if ( can_dup == false && lb != listImpl_size(thismod) ) {
 		listImpl_clone thismod, clone, lb
 		if ( abdata_compare(clone, value) == 0 ) { return }
@@ -670,11 +670,11 @@
 #define global ctype list_is_sorted(%1, %2 = SortMode_Ascending) \
 	listImpl_is_sorted(abdataInsts(%1), %2)
 
-#define global ctype list_lower_bound(%1, %2, %3 = SortMode_Ascending) \
-	listImpl_lower_bound(abdataInsts(%1), %2, %3)
+#define global ctype list_lb(%1, %2, %3 = SortMode_Ascending) \
+	listImpl_lb(abdataInsts(%1), %2, %3)
 	
-#define global ctype list_upper_bound(%1, %2, %3 = SortMode_Ascending) \
-	listImpl_upper_bound(abdataInsts(%1), %2, %3)
+#define global ctype list_ub(%1, %2, %3 = SortMode_Ascending) \
+	listImpl_ub(abdataInsts(%1), %2, %3)
 	
 #define global list_equal_range(%1, %2, %3, %4, %5 = SortMode_Ascending) \
 	listImpl_equal_range abdataInsts(%1), %2, %3, %4, %5

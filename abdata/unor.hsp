@@ -302,7 +302,7 @@
 	local key
 	
 	key = _key
-	idx = list_lower_bound(mlistKey, key)
+	idx = list_lb(mlistKey, key)
 	if ( idx != list_size(mlistKey) ) {
 		if ( list_get(mlistKey, idx) == key ) {
 			return true
