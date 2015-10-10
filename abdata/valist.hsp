@@ -157,6 +157,11 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	return
 	
 #modfunc valistImpl_erase_range int i_beg, int i_end
+
+	if ( i_beg < 0 || i_end < 0 ) {
+		valistImpl_erase_range thismod, valistImpl_regular_ix(thismod, i_beg), valistImpl_regular_ix(thismod, i_end)
+		return
+	}
 	if ( i_beg >= i_end ) { return }
 	
 	repeat i_end - i_beg, i_beg
@@ -286,8 +291,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #define global valist_erase_range(%1, %2, %3) \
 	valistImpl_erase_range abdataInsts(%1), %2, %3
 
-#define global valist_erase_front(%1, %2) \
-	valist_erase_range %1, 0, 1
+#define global valist_erase_front(%1, %2)   valist_erase_at %1, 0
+#define global valist_erase_back(%1, %2)    valist_erase_at %1, -1
 
 #define global valist_iter_swap(%1, %2, %3) \
 	valistImpl_iter_swap abdataInsts(%1), %2, %3
@@ -375,12 +380,6 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #module
 #deffunc valist_erase_at int self, int i
 	valist_erase_range self, i, i + 1
-	return
-#global
-
-#module
-#deffunc valist_erase_back int self
-	valist_erase_range self, valist_size(self) - 1, valist_size(self)
 	return
 #global
 
