@@ -306,6 +306,9 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #define global ctype valist_lb(%1, %2, %3 = abdata_sort_ascending)  valist_lb_ub__(%1, %2, %3, 0 /* finds_lb */)
 #define global ctype valist_ub(%1, %2, %3 = abdata_sort_ascending)  valist_lb_ub__(%1, %2, %3, 1 /* finds_ub */)
 
+#define global valist_ord_insertv(%1, %2, %3 = true@abdata_valist_impl, %4 = abdata_sort_ascending) \
+	valist_ord_insertv__ %1, %2, %3, %4
+
 #ifdef _debug
 	#define global valist_dbglog(%1) valist_dbglog__ %1, "%1"
 #else
@@ -492,7 +495,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
-#deffunc valist_ord_insertv int self, var value, int may_dup, int sort_mode,  \
+#deffunc valist_ord_insertv__ int self, var value, int may_dup, int sort_mode,  \
 	local lb, local ub
 	
 	valist_equal_range self, value, lb, ub, sort_mode
