@@ -152,7 +152,7 @@ len_:
 
 	assert 0 <= i0 && i0 < len_
 	assert 0 <= i1 && i1 < len_
-	stdarray_loc_swap aps_, i0, i1
+	stdarray_iter_swap aps_, i0, i1
 	return
 	
 #modfunc valistImpl_sort int sort_mode,  \
@@ -404,7 +404,7 @@ len_:
 	assert 0 <= i_src && i_src < valist_size(self)
 	assert 0 <= i_dst && i_dst < valist_size(self)
 	valistImpl_dup_aps__ abdataInsts(self), aps
-	stdarray_loc_move aps, i_src, i_end
+	stdarray_iter_move aps, i_src, i_end
 	return
 #global
 

@@ -34,7 +34,7 @@
 	
 	//ˆÚ“®
 	pair_new p1, "l", "r"
-	pair_loc_swap p1
+	pair_iter_swap p1
 	pair_new p2, "r", "l"
 	assert pair_compare(p1, p2) == 0
 	

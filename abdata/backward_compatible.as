@@ -9,6 +9,12 @@
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#define global pair_loc_swap        pair_iter_swap
+#define global list_loc_move        list_iter_move
+#define global list_loc_swap        list_iter_swap
+#define global list_loc_swap_front(%1)  list_iter_swap %1,  0,  1
+#define global list_loc_swap_back(%1)   list_iter_swap %1, -2, -1
+
 #define global list_lower_bound list_lb
 #define global list_upper_bound list_ub
 

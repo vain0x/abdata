@@ -241,23 +241,23 @@
 //------------------------------------------------
 // 移動
 //------------------------------------------------
-#modfunc listImpl_loc_move int iSrc, int iDst
-	abAssert ( listImpl_size(thismod) >= 2 ), "loc_move には少なくとも2要素が必要"
+#modfunc listImpl_iter_move int iSrc, int iDst
+	abAssert ( listImpl_size(thismod) >= 2 ), "iter_move には少なくとも2要素が必要"
 	
-	stdarray_loc_move midlist, listImpl_getRealIndex(thismod, iSrc), listImpl_getRealIndex(thismod, iDst)
+	stdarray_iter_move midlist, listImpl_getRealIndex(thismod, iSrc), listImpl_getRealIndex(thismod, iDst)
 	return
 	
 //------------------------------------------------
 // 交換
 //------------------------------------------------
-#modfunc listImpl_loc_swap int iPos1, int iPos2
-	abAssert ( listImpl_size(thismod) >= 2 ), "loc_swap には少なくとも2要素が必要"
+#modfunc listImpl_iter_swap int iPos1, int iPos2
+	abAssert ( listImpl_size(thismod) >= 2 ), "iter_swap には少なくとも2要素が必要"
 	
-	stdarray_loc_swap midlist, listImpl_getRealIndex(thismod, iPos1), listImpl_getRealIndex(thismod, iPos2)
+	stdarray_iter_swap midlist, listImpl_getRealIndex(thismod, iPos1), listImpl_getRealIndex(thismod, iPos2)
 	return
 	
-#define global listImpl_loc_swap_front(%1) listImpl_loc_swap %1,  0,  1
-#define global listImpl_loc_swap_back(%1)  listImpl_loc_swap %1, -2, -1
+#define global listImpl_iter_swap_front(%1) listImpl_iter_swap %1,  0,  1
+#define global listImpl_iter_swap_back(%1)  listImpl_iter_swap %1, -2, -1
 
 //------------------------------------------------
 // 巡回
@@ -648,10 +648,10 @@
 
 #define global list_resize(%1, %2, %3 = stt_zero@)  listImpl_resize abdataInsts(%1), %2, %3
 
-#define global list_loc_move(%1, %2, %3) listImpl_loc_move       abdataInsts(%1), %2, %3
-#define global list_loc_swap(%1, %2, %3) listImpl_loc_swap       abdataInsts(%1), %2, %3
-#define global list_loc_swap_front(%1)   listImpl_loc_swap_front abdataInsts(%1)
-#define global list_loc_swap_back(%1)    listImpl_loc_swap_back  abdataInsts(%1)
+#define global list_iter_move(%1, %2, %3) listImpl_iter_move       abdataInsts(%1), %2, %3
+#define global list_iter_swap(%1, %2, %3) listImpl_iter_swap       abdataInsts(%1), %2, %3
+#define global list_iter_swap_front(%1)   listImpl_iter_swap_front abdataInsts(%1)
+#define global list_iter_swap_back(%1)    listImpl_iter_swap_back  abdataInsts(%1)
 
 #define global list_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
 	listImpl_reverse abdataInsts(%1), %2, %3

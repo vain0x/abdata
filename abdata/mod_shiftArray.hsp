@@ -51,7 +51,7 @@
 //------------------------------------------------
 // ˆÚ“®
 //------------------------------------------------
-#deffunc stdarray_loc_move array self, int from, int to,  local temp, local dir, local i
+#deffunc stdarray_iter_move array self, int from, int to,  local temp, local dir, local i
 	if ( from == to ) { return }
 	
 	// ˆÚ“®Œ³‚Ì’l‚ğ•Û‘¶‚·‚é
@@ -72,7 +72,7 @@
 //------------------------------------------------
 // ŒğŠ·
 //------------------------------------------------
-#deffunc stdarray_loc_swap array self, int pos1, int pos2,  local temp
+#deffunc stdarray_iter_swap array self, int pos1, int pos2,  local temp
 	if ( pos1 == pos2 ) { return }
 	temp       = self(pos1)
 	self(pos1) = self(pos2)
@@ -91,9 +91,9 @@
 	stdarray_regularize_range self, range
 	
 	if ( dir >= 0 ) {
-		stdarray_loc_move self, range(0), range(1) - 1
+		stdarray_iter_move self, range(0), range(1) - 1
 	} else {
-		stdarray_loc_move self,           range(1) - 1, range(0)
+		stdarray_iter_move self,           range(1) - 1, range(0)
 	}
 	return
 	

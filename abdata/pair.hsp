@@ -129,7 +129,7 @@
 // —v‘fŒðŠ·
 // @ lhs ‚Æ rhs ‚ðŒðŠ·‚·‚é
 //------------------------------------------------
-#modfunc pairImpl_loc_swap  local tmpLhs, local tmpRhs
+#modfunc pairImpl_iter_swap  local tmpLhs, local tmpRhs
 	pairImpl_getv_lhs thismod, tmpLhs
 	pairImpl_getv_rhs thismod, tmpRhs
 	pairImpl_setv_lhs thismod, tmpRhs
@@ -282,7 +282,7 @@
 #define global pair_set_both(%1,%2,%3)  pairImpl_set_both  abdataInsts(%1), %2, %3
 #define global pair_setv_both(%1,%2,%3) pairImpl_setv_both abdataInsts(%1), %2, %3
 
-#define global pair_loc_swap(%1) pairImpl_loc_swap abdataInsts(%1)
+#define global pair_iter_swap(%1) pairImpl_iter_swap abdataInsts(%1)
 
 #define global pair_clear(%1) pairImpl_clear abdataInsts(%1)
 #define global pair_copy(%1,%2) pairImpl_copy abdataInsts(%1), abdataInsts(%2)
