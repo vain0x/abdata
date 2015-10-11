@@ -1,0 +1,58 @@
+#include "benchmark/benchmark.hsp"
+#include "../abdata/all.hsp"
+
+#define global total_size 1000
+
+	gosub *LInit
+	benchmark_logmes *LAddHom, "add(hom)"
+	benchmark_logmes *LAddHet, "add(het)"
+	benchmark_logmes *LFind, "find (100”{)"
+	stop
+	
+*LInit
+	randomize
+	int_value = 0xdeadbeaf
+	dbl_value = M_PI
+	str_value = "hello!"
+	
+	vs = unor_make()
+	unor_addv vs, "0", str_value
+	unor_addv vs, "1", dbl_value
+	unor_addv vs, "2", int_value
+	
+	ws = unor_make()
+	repeat total_size
+		unor_addv ws, str(cnt), unor_ref(vs, str(rnd(3)))
+	loop
+	return
+	
+*LAddHom
+	xs = unor_make()
+	repeat total_size
+		key = str(cnt)
+		
+		unor_addv xs, key, int_value
+	loop
+	unor_delete xs
+	return
+	
+*LAddHet
+	xs = unor_make()
+	repeat total_size
+		key = str(cnt)
+		
+		switch (rnd(3) + 2)
+			case 2: unor_addv xs, key, str_value : swbreak
+			case 3: unor_addv xs, key, dbl_value : swbreak
+			case 4: unor_addv xs, key, int_value : swbreak
+			default: assert
+		swend
+	loop
+	unor_delete xs
+	return
+	
+*LFind
+	repeat 100
+		unor_getv ws, str(rnd(total_size)), value
+	loop
+	return

@@ -1,0 +1,54 @@
+#include "benchmark/benchmark.hsp"
+#include "../abdata/all.hsp"
+
+#define global total_size 20000
+
+	gosub *LInit
+	benchmark_logmes *LPushBackHom, "push_back(hom)"
+	benchmark_logmes *LPushBackHet, "push_back(het)"
+	benchmark_logmes *LIterate, "iterate"
+	stop
+	
+*LInit
+	randomize
+	int_value = 0xdeadbeaf
+	dbl_value = M_PI
+	str_value = "hello!"
+	
+	vs = list_make()
+	list_pushv_back vs, str_value
+	list_pushv_back vs, dbl_value
+	list_pushv_back vs, int_value
+	
+	ws = list_make()
+	repeat total_size
+		list_pushv_back ws, list_ref(vs, rnd(3))
+	loop
+	return
+	
+*LPushBackHom
+	xs = list_make()
+	repeat total_size
+		list_pushv_back xs, int_value
+	loop
+	list_delete xs
+	return
+	
+*LPushBackHet
+	xs = list_make()
+	repeat total_size
+		switch (rnd(3) + 2)
+			case 2: list_pushv_back xs, str_value : swbreak
+			case 3: list_pushv_back xs, dbl_value : swbreak
+			case 4: list_pushv_back xs, int_value : swbreak
+			default: assert
+		swend
+	loop
+	list_delete xs
+	return
+	
+*LIterate
+	repeat list_size(ws)
+		list_getv ws, value, cnt
+	loop
+	return
