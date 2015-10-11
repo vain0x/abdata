@@ -2,675 +2,591 @@
 #define ig_abdata_list_hsp
 
 #include "abheader.hsp"
-#include "abelem.hsp"
+#include "abbox.hsp"
+#include "arrlen.hsp"
 #include "mod_nullmod.hsp"
-#include "mod_shiftArray.hsp"
 #include "mod_pvalptr.hsp"
-#include "mod_ref.hsp"
 #include "mod_compare.hsp"
 
-#module abdata_list_impl mCnt, mElems, midlist
+#module abdata_list_impl arrs_, aps_, len_
 
-#define true  1
+/**
+arrs_(t):
+	型 t の配列を持つ abbox
+
+aps_(i):
+	self が持つ i 番目の要素が、arrs_ のどこに位置しているかを表す値。
+	t := ap_type(aps_(i)) は、その要素の型を表す。
+	k := ap_ix  (aps_(i)) は、その要素の値の arrs_(t) における位置を表す。
+
+len_:
+	self が持つ要素の個数。
+//*/
+
+#define ctype ap_type(%1) (((%1) & 0x7F000000) >> 24)
+#define ctype ap_ix(%1)    ((%1) & 0x00FFFFFF)
+#define ctype ap_make(%1, %2) ((((%1) & 0x7F) << 24) | ap_ix(%2))
+#define vartype_max 7
+
+#define true 1
 #define false 0
 #define int_max 0x7FFFFFFF
 
-#define ctype STR_ERR_OVER_RANGE(%1) "Error! [abdata コンテナ] 要素番号範囲外エラー(" + (%1) + ")"
+#define ctype ap_type_at(%1) ap_type(aps_(%1))
+#define ctype ap_ix_at(%1)   ap_ix(aps_(%1))
 
-#define global listImpl_new(%1, %2, %3) newmod %1, abdata_list_impl@, %2, %3
-#define global listImpl_delete(%1) delmod %1
-
-//------------------------------------------------
-// [i] 構築
-// 
-// @prm num      : num 個の要素を既に確保した状態で生成する。
-// @prm vDefault : 確保する値の初期値
-//------------------------------------------------
-#modinit int num, var vDefault
-	if ( num <= 0 ) {
-		dimtype mElems, 5
-		
-	} else {
-		repeat num
-			abelem_new mElems, vDefault
-			midlist(cnt) = cnt
-			mCnt ++
-		loop
-	}
-	
+#modinit
+	listImpl_init thismod
 	return getaptr(thismod)
 	
-//------------------------------------------------
-// 値の取得 ( 命令形式 )
-//------------------------------------------------
-#modfunc listImpl_getv_ var result, int _i, int bRemove,  local i
+#modfunc listImpl_init
+
+	assert vartype("struct") == 5
+	dimtype arrs_, 5, vartype_max + 1
 	
-	i = listImpl_getRealIndex(thismod, _i)
+	abbox_new arrs_
+	repeat vartype_max, 1
+		abbox_new arrs_, cnt
+	loop
 	
-	abelem_getv mElems( midlist(i) ), result
+	// vartype 0 is invalid
+	delmod arrs_(0)
+	assert varuse(arrs_(0)) == 0
 	
-	if ( bRemove ) {
-		listImpl_erase thismod, i
+	assert len_ == 0
+	return
+	
+#modfunc listImpl_clear
+
+	dim arrs_
+	dim aps_
+	len_ = 0
+	listImpl_init thismod
+	return
+	
+#modfunc listImpl_dup_aps__ array ref_aps
+	dup ref_aps, aps_
+	return
+	
+#modcfunc listImpl_len
+	return len_
+	
+#modcfunc listImpl_vartype int i
+	return ap_type_at(listImpl_regular_ix(thismod, i))
+	
+#modcfunc listImpl_regular_ix int i
+
+	if ( 0 <= i && i < len_ ) {
+		return i
+	} else : if ( i < 0 && i + len_ >= 0 ) {
+		return i + len_
+	}
+	assert : end 1
+	
+#modcfunc listImpl_regular_ix_or_end int i
+
+	if ( 0 <= i && i <= len_ ) {
+		return i
+	} else : if ( i == abdata_ix_end ) {
+		return len_
+	} else : if ( i < 0 && i + len_ >= 0 ) {
+		return i + len_
+	}
+	assert : end 1
+	
+/**
+_unsafe_get_v thismod, result, i, removes
+
+i 番目の要素の値を result に代入する。
+removes が真なら、その要素を erase する。
+//*/
+#define listImpl_unsafe_get_v(%1 = thismod, %2, %3, %4) \
+	abbox_unsafe_get_v arrs_(ap_type_at(%3)), %2, ap_ix_at(%3)  :\
+	if (%4) { listImpl_erase_range %1, (%3), (%3) + 1 }       :\
+	//
+	
+#modcfunc listImpl_try_get var result, int i, int removes
+	if ( 0 <= i && i < len_ ) {
+		listImpl_unsafe_get_v thismod, result, i, removes
+		return true
+	} else {
+		return false
 	}
 	
+/**
+_unsafe_dup_v thismod, result, i
+
+result を、i 番目の要素のデータへのクローン変数にする。
+//*/
+#define listImpl_unsafe_dup(%1 = thismod, %2, %3) \
+	abbox_unsafe_dup_v arrs_(ap_type_at(%3)), %2, ap_ix_at(%3)
+
+#modcfunc listImpl_try_dup array ref, int i
+	if ( 0 <= i && i < len_ ) {
+		listImpl_unsafe_dup thismod, ref, i
+		return true
+	} else {
+		return false
+	}
+	
+#modfunc listImpl_setv var value, int i
+
+	assert 0 <= i && i < len_
+	if ( vartype(value) == ap_type_at(i) ) {
+		abbox_unsafe_set_v arrs_(ap_type_at(i)), ap_ix_at(i), value
+		
+	// 型が変わる場合
+	// 元の要素を除去し、新しく挿入した要素へのリンクで置き換える。
+	} else {
+		abbox_unsafe_erase_at arrs_(ap_type_at(i)), ap_ix_at(i)
+		abbox_add arrs_(vartype(value)), value
+		aps_(i) = ap_make(vartype(value), stat)
+	}
 	return
 	
-#define global listImpl_getv(%1,%2,%3=0) listImpl_getv_ %1, %2, %3, 0
-#define global listImpl_popv(%1,%2,%3=0) listImpl_getv_ %1, %2, %3, 1
+#modfunc listImpl_insertv var value, int i
 
-//------------------------------------------------
-// 値の取得 ( 関数形式 )
-//------------------------------------------------
-#modcfunc listImpl_get_ int i, int bRemove,  local tmp
-	listImpl_getv_ thismod, tmp, i, bRemove
-	return tmp
+	if ( i < 0 ) {
+		listImpl_insertv thismod, value, listImpl_regular_ix_or_end(thismod, i)
+		return
+	}
 	
-#define global ctype listImpl_get(%1,%2=0) listImpl_get_(%1, %2, 0)
-#define global ctype listImpl_pop(%1,%2=0) listImpl_get_(%1, %2, 1)
-
-//------------------------------------------------
-// 参照化 ( 命令形式 )
-//------------------------------------------------
-#modfunc listImpl_dup var vRef, int i
-	abelem_dup mElems( midlist( listImpl_getRealIndex(thismod, i) ) ), vRef
-	return
-	
-//------------------------------------------------
-// 参照化 ( 関数形式 )
-//------------------------------------------------
-#define global ctype listImpl_ref(%1, %2) \
-	ref_ref_expr_template_2(listImpl_ref_, %1, %2)
-
-#modcfunc listImpl_ref_ array ref, int i
-	listImpl_dup thismod, ref, i
-	return 0
-	
-//------------------------------------------------
-// 先頭・末尾の値の取得
-// 
-// @ get 処理 >> const な操作
-// @ pop 処理 >> 要素は取り除かれる
-//------------------------------------------------
-#define global ctype listImpl_get_front(%1)     listImpl_get(%1, 0)
-#define global ctype listImpl_get_back(%1)      listImpl_get(%1, -1)
-#define global       listImpl_getv_front(%1,%2) listImpl_getv %1, %2, 0
-#define global       listImpl_getv_back(%1,%2)  listImpl_getv %1, %2, -1
-#define global ctype listImpl_pop_front(%1)     listImpl_pop(%1, 0)
-#define global ctype listImpl_pop_back(%1)      listImpl_pop(%1, -1)
-#define global       listImpl_popv_front(%1,%2) listImpl_popv %1, %2, 0
-#define global       listImpl_popv_back(%1,%2)  listImpl_popv %1, %2, -1
-
-//------------------------------------------------
-// 型の取得 ( 関数形式 )
-//------------------------------------------------
-#modcfunc listImpl_vartype int i
-	return abelem_vartype( mElems(midlist(listImpl_getRealIndex(thismod, i))) )
-	
-#define global ctype listImpl_vartype_front(%1) listImpl_vartype(%1, 0)
-#define global ctype listImpl_vartype_back(%1)  listImpl_vartype(%1, -1)
-
-//------------------------------------------------
-// 値の設定
-//------------------------------------------------
-#define global listImpl_set(%1,%2,%3=0) %tabdata \
-	_cat@__abdata(%i,@__tmp) = %2 :\
-	listImpl_setv %1, _cat@__abdata(%o,@__tmp), %3
-	
-#modfunc listImpl_setv var vValue, int i,  local iv
-	
-	iv = midlist( listImpl_getRealIndex(thismod, i) )
-	
-	// 適切に型を変換する
-	abelem_changeVartype mElems(iv), vartype(vValue)
-	abelem_setv          mElems(iv), vValue
-	return
-	
-//------------------------------------------------
-// 挿入
-// 
-// @permit (i == mCnt) : 最後尾への追加のため
-// @ i が範囲外 => {
-// @	( i <     0 ) => i += mCnt,
-// @	( i >= mCnt ) => ([i] まで要素を自動拡張)
-// @ };
-//------------------------------------------------
-#define global listImpl_insert(%1,%2,%3=0) %tabdata \
-	_cat@__abdata(%i,@__tmp) = %2 :\
-	listImpl_insertv %1, _cat@__abdata(%o,@__tmp), %3
-	
-#modfunc listImpl_insertv var vValue, int _i,  local i, local id
-	i = _i
-	if ( _i < 0 ) {
-		i += mCnt
-	} else : if ( _i > mCnt ) {
-		logmes "abdata 要素を自動拡張 [" + mCnt + ", " + _i + "]"
-		repeat _i - mCnt, mCnt
+	// 要素数の自動拡張
+	if ( i > len_ ) {
+		repeat i - len_, len_
 			listImpl_insertv thismod, stt_zero@, cnt
 		loop
-		i = _i
-	} else {
-		i = _i
 	}
 	
-	stdarray_insert_room midlist, i
+	// 新要素に対応する ap のための要素を挿入
+	arrlen_insert_no_init aps_, len_, i
 	
-	// 新規値を追加
-;	id         = GetNextAddIndex( mElems )
-	abelem_new mElems, vValue
-	midlist(i) = stat	;id
-	mCnt ++
+	// 新要素を挿入
+	abbox_add arrs_(vartype(value)), value
+	aps_(i) = ap_make(vartype(value), stat)
 	return
 	
-//------------------------------------------------
-// 先頭・最後尾への追加
-//------------------------------------------------
-#define global listImpl_push_front(%1,%2)  listImpl_insert  %1, %2, 0
-#define global listImpl_pushv_front(%1,%2) listImpl_insertv %1, %2, 0
-#define global listImpl_push_back(%1,%2)   listImpl_insert  %1, %2, listImpl_size(%1)
-#define global listImpl_pushv_back(%1,%2)  listImpl_insertv %1, %2, listImpl_size(%1)
-#define global listImpl_push               listImpl_push_back
-#define global listImpl_pushv              listImpl_pushv_back
-#define global listImpl_add                listImpl_push_back
+#modfunc listImpl_erase_range int i_beg, int i_end
 
-//------------------------------------------------
-// 除去
-//------------------------------------------------
-#modfunc listImpl_erase int _i,  local i
-	i = listImpl_getRealIndex(thismod, _i)
-	listImpl_erase_range thismod, i, i + 1
-	return
-	
-#define global listImpl_erase_front(%1) listImpl_erase %1, 0
-#define global listImpl_erase_back(%1)  listImpl_erase %1, (-1)
-
-#modfunc listImpl_erase_range int lb, int ub
-	if ( ub <= lb ) { return }
-	repeat mCnt - ub, lb
-		if ( cnt < ub ) {
-			abelem_delete mElems(midlist(cnt))
-		}
-		midlist(cnt) = midlist(cnt + (ub - lb))
-	loop
-	mCnt -= (ub - lb)
-	return
-	
-//------------------------------------------------
-// 要素数の設定
-// 
-// @result: 元の要素数
-//------------------------------------------------
-#define global listImpl_resize(%1, %2, %3) \
-	listImpl_resize_ (%1), (%2), (%3)
-
-#modfunc listImpl_resize_ int newlen, var initValue,  \
-	local dif
-	
-	dif = newlen - mCnt
-	
-	if ( dif < 0 ) {
-		if ( newlen <= 0 ) {
-			listImpl_clear thismod
-			
-		} else {
-			// 要素 [newlen] 以降を除去
-			repeat -dif, newlen
-				abelem_delete mElems( midlist(cnt) )
-				midlist(cnt) = -1 // nullify
-			loop
-		}
-		
-	} else : if ( dif > 0 ) {
-		// 新要素を dif 個生成し、末尾に追加する
-		repeat dif, newlen - dif
-			abelem_new mElems, initValue
-			midlist(cnt) = stat	;id
-		loop
+	if ( i_beg < 0 || i_end < 0 ) {
+		listImpl_erase_range thismod, listImpl_regular_ix_or_end(thismod, i_beg), listImpl_regular_ix_or_end(thismod, i_end)
+		return
 	}
+	assert 0 <= i_beg && i_beg <= i_end && i_end <= len_
 	
-	mCnt = newlen
-	return newlen - dif
-	
-//------------------------------------------------
-// 移動
-//------------------------------------------------
-#modfunc listImpl_iter_move int iSrc, int iDst
-	abAssert ( listImpl_size(thismod) >= 2 ), "iter_move には少なくとも2要素が必要"
-	
-	stdarray_iter_move midlist, listImpl_getRealIndex(thismod, iSrc), listImpl_getRealIndex(thismod, iDst)
-	return
-	
-//------------------------------------------------
-// 交換
-//------------------------------------------------
-#modfunc listImpl_iter_swap int iPos1, int iPos2
-	abAssert ( listImpl_size(thismod) >= 2 ), "iter_swap には少なくとも2要素が必要"
-	
-	stdarray_iter_swap midlist, listImpl_getRealIndex(thismod, iPos1), listImpl_getRealIndex(thismod, iPos2)
-	return
-	
-//------------------------------------------------
-// 巡回
-//------------------------------------------------
-#modfunc listImpl_rotateImpl int iBgn, int _iEnd, int dir,  local iEnd
-	if ( _iEnd == stdarray_index_of_end ) { iEnd = listImpl_size(thismod) } else { iEnd = _iEnd }
-	stdarray_rotate_step midlist, iBgn, iEnd, dir
-	return
-	
-#define global listImpl_rotate(     %1, %2 = 0, %3 = stdarray_index_of_end) listImpl_rotateImpl %1, %2, %3,  1
-#define global listImpl_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) listImpl_rotateImpl %1, %2, %3, -1
-
-//------------------------------------------------
-// 反転
-//------------------------------------------------
-#define global listImpl_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) listImpl_reverse_ %1, %2, %3
-#modfunc listImpl_reverse_ int iBgn, int _iEnd,  local iEnd
-	if ( _iEnd == stdarray_index_of_end ) { iEnd = listImpl_size(thismod) } else { iEnd = _iEnd }
-	stdarray_reverse midlist, iBgn, iEnd
-	return
-	
-//------------------------------------------------
-// [i] 完全消去
-//------------------------------------------------
-#modfunc listImpl_clear
-	
-	dimtype mElems, 5
-	dim midlist
-	mCnt = 0
-	return
-	
-//------------------------------------------------
-// [i] 連結
-//------------------------------------------------
-#modfunc listImpl_chain var src,  local tmp, local offset
-	offset = mCnt
- 	repeat listImpl_size( src )
-		listImpl_getv       src, tmp, cnt
-		listImpl_insert thismod, tmp, cnt + offset
-	loop
-	return
-	
-//------------------------------------------------
-// [i] 複写
-//------------------------------------------------
-#modfunc listImpl_copy var src
-	listImpl_clear thismod
-	listImpl_chain thismod, src
-	return
-	
-//------------------------------------------------
-// 辞書順比較
-//------------------------------------------------
-#modcfunc listImpl_compare var rhs
-	return listImpl_compare_impl@abdata_list_impl(rhs, mCnt, mElems, midlist)
-	
-#modcfunc listImpl_compare_impl@abdata_list_impl int lhs_size, array lhs_elems, array lhs_idlist, \
-	local cmp
-	
-	if ( lhs_size != mCnt ) {
-		return lhs_size - mCnt
-	}
-	repeat lhs_size
-		cmp = abelem_cmp(lhs_elems(lhs_idlist(cnt)), mElems(midlist(cnt)))
-		if ( cmp != 0 ) { break }
-	loop
-	return cmp
-	
-//------------------------------------------------
-// 整列
-//
-// @prm mode : SortMode_* (default: SortMode_Ascening)
-//------------------------------------------------
-#modfunc listImpl_sort int mode,  \
-	local arrTmp, local arrDst, local len, \
-	local p, local p1, local e1, local p2, local e2, local sizeSegment, local sizeSegMerged, \
-	local cmp
-	
-	len = listImpl_size(thismod)
-	dim     arrDst, len
-	foreach arrDst
-		arrDst(cnt) = cnt
+	repeat i_end - i_beg, i_beg
+		abbox_unsafe_erase_at arrs_(ap_type_at(cnt)), ap_ix_at(cnt)
 	loop
 	
-	dim arrTmp, len
+	arrlen_erase_range aps_, len_, i_beg, i_end
+	return
 	
-	// マージソート
+#modfunc listImpl_iter_swap int i0, int i1
+	arrlen_iter_swap aps_, len_, i0, i1
+	return
+	
+#modfunc listImpl_sort int sort_mode,  \
+	local p, local p1, local e1, local p2, local e2, local size_segment, local size_seg_merged, \
+	local aps_tmp, local l_ref, local r_ref, local cmp
+	
+	dim aps_tmp, len_
 	repeat
-		sizeSegment = 1 << cnt		// 1, 2, 4, 8, ...
+		size_segment = 1 << cnt
 		
-		// 2-Segment ごとにマージ
 		repeat
-			p  = sizeSegment * (cnt * 2)	// 2-Segment の先頭
-			p1 = p							// lhs (left hand segment) 範囲 (先頭要素)
-			e1 = p1 + sizeSegment			// 〃 (最終要素 + 1)
-			p2 = e1							// rhs
-			e2 = limit( p2 + sizeSegment, 0, len )
-			sizeSegMerged = (e2 - p)		// マージ後の Segment サイズ
+			p  = size_segment * (cnt * 2)
+			p1 = p
+			e1 = p1 + size_segment
+			p2 = e1
+			e2 = limit(p2 + size_segment, 0, len_)
+			size_seg_merged = (e2 - p)
 			
-			if ( sizeSegMerged < sizeSegment ) { break }	// 閾値以下 => マージせず終了
+			if ( size_seg_merged < size_segment ) { break }
 			
-			repeat sizeSegMerged
-				if ( p2 >= e2 ) {			// rhs の取り出しが既に完了している
-					arrTmp(cnt) = arrDst(p1) : p1 ++
-				} else : if ( p1 >= e1 ) {	// lhs 〃
-					arrTmp(cnt) = arrDst(p2) : p2 ++
+			repeat size_seg_merged
+				if ( p2 >= e2 ) {
+					aps_tmp(cnt) = aps_(p1) : p1 ++
+				} else : if ( p1 >= e1 ) {
+					aps_tmp(cnt) = aps_(p2) : p2 ++
 				} else {
-					// ?( 一致する or ( 左が小さく(真) 昇順(真) || 右が小さく(偽) 降順(偽) ) ) => lhs からとる
-					cmp = abelem_cmp( mElems(arrDst(p1)), mElems(arrDst(p2)) )
-					if ( cmp == 0 || ( (cmp < 0) == (mode == abdata_sort_ascending) ) ) {
-						arrTmp(cnt) = arrDst(p1) : p1 ++
+					listImpl_unsafe_dup thismod, l_ref, p1
+					listImpl_unsafe_dup thismod, r_ref, p2
+					cmp = abdata_compare(l_ref, r_ref)
+					if ( cmp == 0 || ((cmp < 0) == (sort_mode == abdata_sort_ascending)) ) {
+						aps_tmp(cnt) = aps_(p1) : p1 ++
 					} else {
-						arrTmp(cnt) = arrDst(p2) : p2 ++
+						aps_tmp(cnt) = aps_(p2) : p2 ++
 					}
 				}
 			loop
 			
-			// マージされた配列をソース配列に貼り付け
-			memcpy arrDst(p), arrTmp, sizeSegMerged * 4
+			repeat size_seg_merged
+				aps_(p + cnt) = aps_tmp(cnt)
+			loop
 		loop
 		
-		// マージ終了 (1つの Segment に纏まったため)
-		if ( len <= sizeSegment ) { break }
+		if ( len_ <= size_segment ) { break }
 	loop
-	
-	// idx-list を変更
-	memcpy midlist, arrDst, len * 4
 	return
-	
-//------------------------------------------------
-// 整列済みか？
-//------------------------------------------------
-#modcfunc listImpl_is_sorted int sort_mode,  local is_sorted,  local clone1, local clone2
-	is_sorted = true
-	repeat limit(0, mCnt - 1, int_max)
-		listImpl_dup thismod, clone1, cnt
-		listImpl_dup thismod, clone2, cnt + 1
-		if ( abdata_compare(clone1, clone2) * (1 - 2 * sort_mode) > 0 ) {
-			is_sorted = false : break
-		}
-	loop
-	return is_sorted
-	
-//------------------------------------------------
-// 整列済みコンテナの、下界・上界をみつける
-//------------------------------------------------
-#modcfunc listImpl_lu_bound_@abdata_list_impl var value, int sort_mode, int finds_upper, \
-	local lb, local ub, local mid, local mid_clone, local cmp
-	
-	assert listImpl_is_sorted(thismod, sort_mode)
-	lb = -1 : ub = mCnt
-	repeat
-		if ( (ub - lb) <= 1 ) { break }
-		mid = lb + (ub - lb) / 2
-		listImpl_dup thismod, mid_clone, mid
-		
-		cmp = abdata_compare(mid_clone, value) * (1 - 2 * sort_mode)
-		if ( ((finds_upper != 0) && cmp == 0) || cmp < 0 ) {
-			lb = mid
-		} else {
-			ub = mid
-		}
-	loop
-	return ub
-	
-#define global ctype listImpl_lb(%1, %2, %3 = abdata_sort_ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 0)
-#define global ctype listImpl_ub(%1, %2, %3 = abdata_sort_ascending) listImpl_lu_bound_@abdata_list_impl((%1), (%2), (%3), 1)
-
-#modfunc listImpl_equal_range var value, var lb, var ub, int sort_mode
-	lb = listImpl_lb(thismod, value, sort_mode)
-	ub = listImpl_ub(thismod, value, sort_mode)
-	return
-	
-//------------------------------------------------
-// 整列済みコンテナの、適切な位置に要素を挿入する
-//
-// @param value: 挿入される要素の値
-// @param can_dup (true):
-// これが真なら、すでに value が含まれているときも、挿入する。
-//------------------------------------------------
-#define global listImpl_sorted_insertv(%1, %2, %3 = true@abdata_list_impl, %4 = abdata_sort_ascending) \
-	listImpl_sorted_insertv_@abdata_list_impl (%1), (%2), (%3), (%4)
-
-#modfunc listImpl_sorted_insertv_@abdata_list_impl \
-	var value, int can_dup, int sort_mode,  \
-	local lb, local clone
-	
-	lb = listImpl_lb(thismod, value, sort_mode)
-	if ( can_dup == false && lb != listImpl_size(thismod) ) {
-		listImpl_dup thismod, clone, lb
-		if ( abdata_compare(clone, value) == 0 ) { return }
-	}
-	listImpl_insertv thismod, value, lb
-	return
-	
-//------------------------------------------------
-// 整列済みコンテナから、要素を除去する
-//
-// @param value: 除去すべき要素の値
-// @param max_count (∞): 除去される要素の個数の最大値
-//------------------------------------------------
-#define global listImpl_sorted_erasev(%1, %2, %3 = int_max@abdata_list_impl, %4 = abdata_sort_ascending) \
-	listImpl_sorted_erasev_@abdata_list_impl (%1), (%2), (%3), (%4)
-	
-#modfunc listImpl_sorted_erasev_@abdata_list_impl \
-	var value, int max_count, int sort_mode,  \
-	local lb, local ub
-	
-	listImpl_equal_range thismod, value, lb, ub, sort_mode
-	ub = lb + limit(ub - lb, 0, max_count)
-	listImpl_erase_range thismod, lb, ub
-	return
-	
-//------------------------------------------------
-// [i] 反復子::初期化
-//------------------------------------------------
-#modfunc listImpl_iter_init var iterData
-	iterData = -1
-	return
-	
-//------------------------------------------------
-// [i] 反復子::更新
-//------------------------------------------------
-#modcfunc listImpl_iter_next var vIt, var iterData
-	iterData ++
-	
-	if ( listImpl_is_valid(thismod, iterData) == false ) {
-		return false
-	}
-	
-	listImpl_getv thismod, vIt, iterData
-	return true
-	
-//------------------------------------------------
-// [i] 要素数
-//------------------------------------------------
-#modcfunc listImpl_size
-	return mCnt
-	
-#define global listImpl_length listImpl_size
-#define global ctype listImpl_empty(%1) ( listImpl_size(%1) == 0 )
-
-//------------------------------------------------
-// 数え上げ
-//------------------------------------------------
-#modcfunc listImpl_count var value,  local count, local ref
-	repeat mCnt
-		listImpl_dup thismod, ref, cnt
-		if ( abdata_compare(value, ref) == 0 ) { count ++ }
-	loop
-	return count
-
-//------------------------------------------------
-// 範囲チェック
-//------------------------------------------------
-#modcfunc listImpl_is_valid int i
-	if ( 0 <= i && i < mCnt ) {
-		if ( varuse( mElems(midlist(i)) ) ) {
-			return true
-		}
-	}
-	return false
-	
-//------------------------------------------------
-// 実際の要素番号を得る
-// @private
-//------------------------------------------------
-#modcfunc listImpl_getRealIndex@abdata_list_impl int _i,  local i
-	i = _i
-	
-	// 循環参照
-	if ( i < 0 ) {
-		i += mCnt
-	}
-	
-	abAssert ( 0 <= i && i < mCnt ), STR_ERR_OVER_RANGE(i)
-	return i
-	
-#ifdef _DEBUG
-
-//------------------------------------------------
-// デバッグ出力
-//------------------------------------------------
-#define global listImpl_dbglog(%1) listImpl_dbglog_ %1, "%1"
-
-#modfunc listImpl_dbglog_ str _ident,  local ident
-	ident = _ident
-	
-	logmes "["+ strtrim(ident, 0, ' ') +"] debug-log"
-	
-	repeat listImpl_size(thismod)
-		logmes strf("#%2d: ", cnt) + listImpl_get(thismod, cnt)
-	loop
-	
-	logmes ""
-	return
-	
-#else //defined(_DEBUG)
-
-#define global listImpl_dbglog(%1) :
-
-#endif //defined(_DEBUG)
 	
 #global
 
 //##############################################################################
 // wrapper
 
-#define global list_ClsName "list"
-#define global listNull abdataNull
+#define global list_new(%1, %2 = 0, %3 = stt_zero@) \
+	%1 = list_make_replicate(%2, %3)
 
-#define global list_new(%1, %2 = 0, %3 = stt_zero@) %1 = list_make(%2, %3)
-#define global list_delete(%1) listImpl_delete abdataInsts(%1)
+#define global list_delete(%1) \
+	delmod abdataInsts(%1)
 
-#module
-//------------------------------------------------
-// 一時コンテナ・オブジェクトの生成
-//------------------------------------------------
-#defcfunc list_make_impl int num, var vDefault,  local len
+#define global ctype list_make(%1 = 0, %2 = stt_zero@) \
+	list_make_replicate(%1, %2)
 	
-	len = length(abdataInsts_var)
-	
-	// 十分に埋まっていたら自動拡張
-	if ( len > 1 ) : if ( varuse(abdataInsts_var(len - 2)) ) {
-		abdataInsts_var(len * 2) = abNullmod
-	}
-	
-	listImpl_new abdataInsts_var, num, vDefault
-	return stat
-	
-#define global ctype list_make(%1 = 0, %2 = stt_zero@) list_make_impl(%1, %2)
-#global
+#define global list_clear(%1) \
+	listImpl_clear abdataInsts(%1)
 
-#define global list_getv(%1, %2, %3 = 0) listImpl_getv abdataInsts(%1), %2, %3
-#define global list_popv(%1, %2, %3 = 0) listImpl_popv abdataInsts(%1), %2, %3
+#define global ctype list_size(%1) listImpl_len(abdataInsts(%1))
+#define global list_length list_size
+#define global ctype list_empty(%1) (list_size(%1) == 0)
 
-#define global ctype list_get(%1,%2=0) listImpl_get(abdataInsts(%1), %2)
-#define global ctype list_pop(%1,%2=0) listImpl_pop(abdataInsts(%1), %2)
+#define global ctype list_vartype(%1, %2) listImpl_vartype(abdataInsts(%1), %2)
+#define global ctype list_vartype_front(%1, %2) list_vartype((%1), 0)
+#define global ctype list_vartype_back(%1, %2)  list_vartype((%1), -1)
 
-#define global list_dup(%1,%2,%3=0) listImpl_dup abdataInsts(%1), %2, %3
+#define global ctype list_regular_ix(%1, %2)        listImpl_regular_ix(abdataInsts(%1), %2)
+#define global ctype list_regular_ix_or_end(%1, %2) listImpl_regular_ix_or_end(abdataInsts(%1), %2)
 
-#define global ctype list_ref(%1,%2=0) listImpl_ref(abdataInsts(%1),%2)
+#define global ctype list_try_get(%1, %2, %3) \
+	listImpl_try_get(abdataInsts(%1), %2, %3, 0 /* removes */)
 
-#define global ctype list_get_front(%1)     listImpl_get_front( abdataInsts(%1) )
-#define global ctype list_get_back(%1)      listImpl_get_back ( abdataInsts(%1) )
-#define global       list_getv_front(%1,%2) listImpl_getv_front abdataInsts(%1), %2
-#define global       list_getv_back(%1,%2)  listImpl_getv_back  abdataInsts(%1), %2
-#define global ctype list_pop_front(%1)     listImpl_pop_front( abdataInsts(%1) )
-#define global ctype list_pop_back(%1)      listImpl_pop_back ( abdataInsts(%1) )
-#define global       list_popv_front(%1,%2) listImpl_popv_front abdataInsts(%1), %2
-#define global       list_popv_back(%1,%2)  listImpl_popv_back  abdataInsts(%1), %2
+#define global ctype list_try_pop(%1, %2, %3) \
+	listImpl_try_get(abdataInsts(%1), %2, %3, 1 /* removes */)
 
-#define global ctype list_vartype(%1,%2)    listImpl_vartype( abdataInsts(%1), %2 )
-#define global ctype list_vartype_front(%1) listImpl_vartype_front( abdataInsts(%1) )
-#define global ctype list_vartype_back(%1)  listImpl_vartype_back( abdataInsts(%1) )
+#define global ctype list_get(%1, %2)  list_get__(%1, %2, 0 /* removes */)
+#define global ctype list_pop(%1, %2)  list_get__(%1, %2, 1 /* removes */)
+#define global ctype list_get_front(%1)  list_get(%1, 0)
+#define global ctype list_pop_front(%1)  list_pop(%1, 0)
+#define global ctype list_get_back(%1)   list_get(%1, -1)
+#define global ctype list_pop_back(%1)   list_pop(%1, -1)
 
-#define global list_set(%1, %2, %3 = 0)  listImpl_set  abdataInsts(%1), %2, %3
-#define global list_setv(%1, %2, %3 = 0) listImpl_setv abdataInsts(%1), %2, %3
+#define global list_getv(%1, %2, %3)    list_getv__ %1, %2, %3, 0 /* removes */
+#define global list_popv(%1, %2, %3)    list_getv__ %1, %2, %3, 1 /* removes */
+#define global list_getv_front(%1, %2)  list_getv %1, %2, 0
+#define global list_popv_front(%1, %2)  list_popv %1, %2, 0
+#define global list_getv_back(%1, %2)   list_getv %1, %2, -1
+#define global list_popv_back(%1, %2)   list_popv %1, %2, -1
 
-#define global list_insert(%1, %2, %3 = 0)  listImpl_insert  abdataInsts(%1), %2, %3
-#define global list_insertv(%1, %2, %3 = 0) listImpl_insertv abdataInsts(%1), %2, %3
+#define global ctype list_try_dup(%1, %2, %3) \
+	listImpl_try_dup(abdataInsts(%1), %2, %3)
 
-#define global list_push_front(%1,%2)  listImpl_push_front   abdataInsts(%1), %2
-#define global list_pushv_front(%1,%2) listImpl_pushv_front  abdataInsts(%1), %2
-#define global list_push_back(%1,%2)   listImpl_push_back    abdataInsts(%1), %2
-#define global list_pushv_back(%1,%2)  listImpl_pushv_back   abdataInsts(%1), %2
+#define global ctype list_ref(%1, %2) %t__ref %i0 \
+	_cat@__abdata(%p,@__tmp)( \
+		list_ref_impl(%1, _cat@__abdata(%p,@__tmp), (%2)) \
+	) %o0 //
 
-#define global list_add   list_push_back
+#define global list_set(%1, %2, %3) %tabdata \
+	_cat@__abdata(%i,@__tmp) = %2 :\
+	list_setv %1, _cat@__abdata(%o,@__tmp), %3
 
-#define global list_erase(%1, %2)   listImpl_erase       abdataInsts(%1), %2
-#define global list_erase_front(%1) listImpl_erase_front abdataInsts(%1)
-#define global list_erase_back(%1)  listImpl_erase_back  abdataInsts(%1)
+#define global list_setv(%1, %2, %3) \
+	listImpl_setv abdataInsts(%1), %2, %3
 
-#define global list_resize(%1, %2, %3 = stt_zero@)  listImpl_resize abdataInsts(%1), %2, %3
+#define global list_insertv(%1, %2, %3) \
+	listImpl_insertv abdataInsts(%1), %2, %3
 
-#define global list_iter_move(%1, %2, %3) listImpl_iter_move       abdataInsts(%1), %2, %3
-#define global list_iter_swap(%1, %2, %3) listImpl_iter_swap       abdataInsts(%1), %2, %3
+#define global list_insert(%1, %2, %3) %tabdata \
+	_cat@__abdata(%i,@__tmp) = %2 :\
+	list_insertv %1, _cat@__abdata(%o,@__tmp), %3
 
-#define global list_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
-	listImpl_reverse abdataInsts(%1), %2, %3
+#define global list_push_front(%1, %2)  list_insert  (%1), %2, 0
+#define global list_pushv_front(%1, %2) list_insertv (%1), %2, 0
 
-#define global list_clear(%1)    listImpl_clear abdataInsts(%1)
-#define global list_chain(%1,%2) listImpl_chain abdataInsts(%1), abdataInsts(%2)
-#define global list_copy(%1,%2)  listImpl_copy abdataInsts(%1), abdataInsts(%2)
+#define global list_push_back(%1, %2)   list_insert  (%1), %2, abdata_ix_end
+#define global list_pushv_back(%1, %2)  list_insertv (%1), %2, abdata_ix_end
+#define global list_add list_push_back
 
-#define global ctype list_compare(%1, %2) \
-	listImpl_compare(abdataInsts(%1), abdataInsts(%2))
+#define global list_erase_range(%1, %2, %3) \
+	listImpl_erase_range abdataInsts(%1), %2, %3
+
+#define global list_erase_front(%1, %2)   list_erase %1, 0
+#define global list_erase_back(%1, %2)    list_erase %1, -1
+
+#define global list_iter_swap(%1, %2, %3) \
+	listImpl_iter_swap abdataInsts(%1), %2, %3
+
+#define global list_reverse(%1, %2 = 0, %3 = abdata_ix_end) \
+	list_reverse__ %1, %2, %3
 
 #define global list_sort(%1, %2 = abdata_sort_ascending) \
 	listImpl_sort abdataInsts(%1), %2
 
-#define global ctype list_is_sorted(%1, %2 = abdata_sort_ascending) \
-	listImpl_is_sorted(abdataInsts(%1), %2)
+#define global ctype list_lb(%1, %2, %3 = abdata_sort_ascending)  list_lb_ub__(%1, %2, %3, 0 /* finds_lb */)
+#define global ctype list_ub(%1, %2, %3 = abdata_sort_ascending)  list_lb_ub__(%1, %2, %3, 1 /* finds_ub */)
 
-#define global ctype list_lb(%1, %2, %3 = abdata_sort_ascending) \
-	listImpl_lb(abdataInsts(%1), %2, %3)
-	
-#define global ctype list_ub(%1, %2, %3 = abdata_sort_ascending) \
-	listImpl_ub(abdataInsts(%1), %2, %3)
-	
-#define global list_equal_range(%1, %2, %3, %4, %5 = abdata_sort_ascending) \
-	listImpl_equal_range abdataInsts(%1), %2, %3, %4, %5
-	
 #define global list_sorted_insertv(%1, %2, %3 = true@abdata_list_impl, %4 = abdata_sort_ascending) \
-	listImpl_sorted_insertv abdataInsts(%1), %2, %3, %4
-	
+	list_sorted_insertv__ %1, %2, %3, %4
+
 #define global list_sorted_erasev(%1, %2, %3 = int_max@abdata_list_impl, %4 = abdata_sort_ascending) \
-	listImpl_sorted_erasev abdataInsts(%1), %2, %3, %4
+	list_sorted_erasev__ %1, %2, %3, %4
 
-#define global       list_iter_init(%1,%2)    listImpl_iter_init abdataInsts(%1), %2
-#define global ctype list_iter_next(%1,%2,%3) listImpl_iter_next(abdataInsts(%1), %2, %3)
+#ifdef _debug
+	#define global list_dbglog(%1) list_dbglog__ %1, "%1"
+#else
+	#define global list_dbglog(%1) :
+#endif //defined(_debug)
 
-#define global ctype list_size(%1)      listImpl_size (abdataInsts(%1))
-#define global ctype list_empty(%1)     listImpl_empty(abdataInsts(%1))
-#define global ctype list_count(%1, %2) listImpl_count(abdataInsts(%1), %2)
-#define global list_length list_size
+#module
+#defcfunc list_make_empty
+	
+	// abdataInsts_var の伸長
+	#define __len length(abdataInsts_var)
+		if ( __len > 1 ) : if ( varuse(abdataInsts_var(__len - 2)) ) {
+			abdataInsts_var(__len * 2) = abNullmod
+		}
+	#undef __len
+	
+	newmod abdataInsts_var, abdata_list_impl@
+	return stat
+#global
 
-#define global ctype list_is_valid(%1,%2) listImpl_is_valid(abdataInsts(%1), %2)
+#module
+#defcfunc list_make_replicate int count, var value,  \
+	local self
+	
+	self = list_make_empty()
+	repeat count
+		list_insertv self, value, cnt
+	loop
+	return self
+#global
 
-#define global ctype list_opCmpElem(%1,%2,%3) listImpl_opCmpElem(abdataInsts(%1), %2, %3)
+#module
+#defcfunc list_from_array array src, int len,  \
+	local self
+	
+	self = list_make_empty()
+	list_chain_array self, src, len
+	return self
+#global
 
-#define global list_dbglog(%1) listImpl_dbglog_ abdataInsts(%1), "%1"
+#module
+#deffunc list_copy int self, int rhs
+	list_clear self
+	list_chain self, rhs
+	return
+#global
 
-	// abdataInsts(0) を null として扱う。
-	listNull = list_make()
+#module
+#deffunc list_chain int self, int rhs,  \
+	local i, local ref
+	
+	while ( list_try_dup(rhs, ref, i) ) // avoid copying
+		list_pushv_back self, ref
+		i ++
+	wend
+	return
+#global
+
+#module
+#deffunc list_chain_array int self, array arr, int len
+	assert arrlen_is_valid_len(arr, len)
+	repeat len
+		list_pushv_back self, arr(cnt)
+	loop
+	return
+#global
+
+#module
+#defcfunc list_is_valid int self, int i
+	return 0 <= i && i < list_size(self)
+#global
+
+#module
+#defcfunc list_get__ int self, int i, int removes,  \
+	local result
+	
+	if ( listImpl_try_get(abdataInsts(self), result, list_regular_ix(self, i), removes) ) {
+		return result
+	}
+	assert : end 1
+#global
+
+#module
+#deffunc list_getv__ int self, var result, int i, int removes
+
+	if ( listImpl_try_get(abdataInsts(self), result, list_regular_ix(self, i), removes) ) {
+		return
+	}
+	assert : end 1
+#global
+
+#module
+#deffunc list_dup int self, array ref, int i
+	if ( list_try_dup(self, ref, i) ) {
+		return
+	}
+	assert : end 1
+
+#defcfunc list_ref_impl int self, array ref, int i
+	list_dup self, ref, i
+	return 0
+#global
+
+#module
+#deffunc list_erase int self, int i
+	list_erase_range self, i, i + 1
+	return
+#global
+
+#module
+#define global list_resize(%1, %2, %3 = stt_zero@) \
+	list_resize__ %1, %2, %3
+
+#deffunc list_resize__ int self, int new_len, var value,  \
+	local len
+	
+	assert new_len >= 0
+	len = list_size(self)
+	if ( len <= new_len ) {
+		repeat new_len - len
+			list_pushv_back self, value
+		loop
+		
+	} else {
+		list_erase_range self, new_len, len
+	}
+	return len
+#global
+
+#module
+#deffunc list_iter_move int self, int i_src, int i_dst,  \
+	local aps
+	
+	listImpl_dup_aps__ abdataInsts(self), aps
+	arrlen_iter_move aps, list_size(self), i_src, i_dst
+	return
+#global
+
+#module
+#deffunc list_reverse__ int self, int i_beg, int i_end,  \
+	local aps
+	
+	listImpl_dup_aps__ abdataInsts(self), aps
+	arrlen_reverse aps, list_size(self), i_beg, i_end
+	return
+#global
+
+#module
+#defcfunc list_compare int self, int rhs,  \
+	local len, local cmp, local l_ref, local r_ref
+	
+	len = list_size(self)
+	cmp = len - list_size(rhs) 
+	if ( cmp ) { return cmp }
+	
+	repeat len
+		list_dup self, l_ref, cnt
+		list_dup rhs , r_ref, cnt
+		cmp = abdata_compare(l_ref, r_ref)
+		if ( cmp ) { break }
+	loop
+	return cmp
+#global
+
+#module
+#defcfunc list_count int self, var value,  local count, local ref
+	repeat list_size(self)
+		list_dup self, ref, cnt
+		if ( abdata_compare(value, ref) == 0 ) { count ++ }
+	loop
+	return count
+#global
+
+#module
+#defcfunc list_is_sorted int self, int sort_mode,  \
+	local i, local l_ref, local r_ref
+	
+	for i, 0, list_size(self) - 1
+		list_dup self, l_ref, i
+		list_dup self, r_ref, i + 1
+		if ( abdata_compare(l_ref, r_ref) * (1 - 2 * sort_mode) > 0 ) {
+			return false
+		}
+	next
+	return true
+#global
+
+#module
+#defcfunc list_lb_ub__ int self, var value, int sort_mode, int finds_ub, \
+	local lb, local ub, local mid, local ref, local cmp
+	
+	assert list_is_sorted(self, sort_mode)
+	lb = -1 : ub = list_size(self)
+	while ( ub - lb > 1 )
+		mid = lb + (ub - lb) / 2
+		list_dup self, ref, mid
+		cmp = abdata_compare(ref, value) * (1 - 2 * sort_mode)
+		if ( ((finds_ub != 0) && cmp == 0) || cmp < 0 ) {
+			lb = mid
+		} else {
+			ub = mid
+		}
+	wend
+	return ub
+#global
+
+#module
+#deffunc list_equal_range int self, var value, var lb, var ub, int sort_mode
+	lb = list_lb(self, value, sort_mode)
+	ub = list_ub(self, value, sort_mode)
+	return
+#global
+
+#module
+#deffunc list_sorted_insertv__ int self, var value, int may_dup, int sort_mode,  \
+	local lb, local ub
+	
+	list_equal_range self, value, lb, ub, sort_mode
+	if ( may_dup || lb == ub ) {
+		list_insertv self, value, ub
+	}
+	return
+#global
+
+#module
+#deffunc list_sorted_erasev__ int self, var value, int max_count, int sort_mode,  \
+	local lb, local ub
+	
+	list_equal_range self, value, lb, ub, sort_mode
+	lb = ub - limit(ub - lb, 0, max_count)
+	list_erase_range self, lb, ub
+	return
+#global
+
+#module
+#deffunc list_iter_init int self, var iter_data
+	iter_data = -1
+	return
+	
+#defcfunc list_iter_next int self, var iter, var iter_data
+	iter_data ++
+	return list_try_get(self, iter, iter_data)
+#global
+
+#ifdef _debug
+#module
+#deffunc list_dbglog__ int self, str ident,  \
+	local ref
+	
+	logmes "[" + ident + "] debug-log"
+	repeat list_size(self)
+		list_dup self, ref, cnt
+		logmes strf("#%2d: %s", cnt, str(ref))
+	loop
+	logmes ""
+	return
+#global
+#endif //defined(_debug)
 
 #endif

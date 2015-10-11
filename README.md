@@ -102,14 +102,11 @@
 * これによりインスタンスを関数に渡したり参照のコピーを行ったりできる。代償として、GCに相当する機能がなくなってしまっている。
 
 #### list
-* インスタンスの中に abelem の配列 mElems をもつ。その要素はこの list の値を表しているが、順番は同じではない。
-* メンバ変数 midlist が、list の要素と、それを表す mElems の要素への対応をもつ。
-  * すなわち、list(index) <---> mElems(midlist(index)) という関係がある。
-  * コメントでは list の添字と区別するため、mElems の添字を real index と呼んでいる。
-  * `_loc_swap` を効率よく実装するため。
+* 実装 [abdata/valist.hsp](abdata/valist.hsp) のコメントを参照。
 
 #### pair
-* 要素数が常に 2 であることを除いて、list とほぼ同様。
+* 長さが常に 2 の list。
+* 2つの abelem がそれぞれ lhs, rhs の値を持つ。
 
 #### unor
 * STL の std::unordered ではなく、Loki::AssocVector みたいなもの。

@@ -1,17 +1,63 @@
 #include "../abdata/list.hsp"
+#include "../abdata/mod_ref.hsp"
 
 #ifndef true
  #define global true 1
 #endif
 
 #module
-#defcfunc list_make_iota int n,  local self
+#deffunc list_logmes int self
+	repeat list_size(self)
+		logmes strf("#%04d::%d  =  %s", cnt, list_vartype(self, cnt), str(list_get(self, cnt)))
+	loop
+	return
+
+#defcfunc list_make_iota int n,  \
+	local self
+	
 	self = list_make()
 	repeat n
 		list_push_back self, cnt
 	loop
 	return self
 #global
+
+#module
+#deffunc listTest_eq_ran var self, int _value, int sort_mode,  int x_lb, int x_ub, \
+	local value, local lb, local ub
+	
+	value = _value
+	list_equal_range self, value, lb, ub, sort_mode
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#deffunc listTest_sorted_insert var _self, int _value, int can_dup, int sort_mode, \
+	int x_lb, int x_ub, \
+	local self, local value, local lb, local ub
+	
+	self = list_make()
+	list_copy self, _self
+	value = _value
+	list_sorted_insertv self, value, can_dup, sort_mode
+	list_equal_range self, value, lb, ub,  sort_mode
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#deffunc listTest_sorted_erase var _self, int _value, int max_count, int sort_mode,  int x_lb, int x_ub, \
+	local self, local value, local lb, local ub
+	
+	self = list_make()
+	list_copy self, _self
+	value = _value
+	list_sorted_erasev  self, value, max_count, sort_mode
+	list_equal_range self, value, lb, ub,    sort_mode
+	assert lb == x_lb
+	assert ub == x_ub
+	return
+	
+#deffunc listTest_main
 
 	randomize
 
@@ -21,9 +67,9 @@
 	double_var = M_PI
 	str_var = "list_test"
 	
-	con0 = list_make()
-	con1 = list_make(1, double_var)
-	con2 = list_make(7, str_var)
+	list_new con0
+	list_new con1, 1, double_var
+	list_new con2, 7, str_var
 	
 	assert list_size(con0) == 0
 	assert list_size(con1) == 1
@@ -32,11 +78,11 @@
 	repeat list_size(con2)
 		assert list_get(con2, cnt) == str_var
 	loop
-	
+	list_dbglog con2
 	//—v‘f’Ç‰Á
 	
 	//push_back
-	con = list_make(3, str_var)
+	list_new con, 3, str_var
 	list_push_back con, M_PI
 	assert list_size(con) == 4
 	assert list_get(con, 3) == M_PI
@@ -77,9 +123,6 @@
 			assert list_get(con, cnt) == stt_zero@
 		}
 	loop
-	
-	//pushvŒn: –¢À‘•
-	//—v‘f‚Ì”{‰Á: –¢À‘•
 	
 	//ƒTƒCƒYw’è
 	
@@ -133,7 +176,15 @@
 	assert list_get(con, 2) == str_var
 	assert list_get(con, 3) == 3
 	
-	//ˆÚ“®AŒğŠ·A„‰ñA”½“]
+	//ˆÚ“®
+	con = list_make_iota(4)
+	list_iter_move con, -3, -1
+	list_logmes con
+	expected = 0, 2, 3, 1
+	assert list_compare(con, list_from_array(expected, 4)) == 0
+	
+	//ŒğŠ·A”½“]
+	//arrlen ‚ğƒ‰ƒbƒv‚µ‚½‚¾‚¯‚È‚Ì‚ÅÈ—ª
 	
 	//Á‹
 	con = list_make_iota(3)
@@ -153,6 +204,7 @@
 	loop
 	
 	//®—ñ
+	
 	//’·‚³0
 	con0 = list_make_iota(0)
 	list_sort con0
@@ -181,21 +233,14 @@
 	assert list_get(con2, 2) == 1
 	assert list_get(con2, 3) == 5
 	
-	//“Yš”ÍˆÍƒ`ƒFƒbƒN
-	con = list_make_iota(3)
-	repeat 9, -3
-		assert list_is_valid(con, cnt) == (0 <= cnt && cnt < 3)
-	loop
-	
 	//”‚¦ã‚°
 	con = list_make()
 	list_push_back con, "1"
 	list_push_back con, "a"
 	list_push_back con, 1
 	list_push_back con, 4
-	one_int = 1
-	assert list_count(con, one_int) == 1
-	assert list_count(con, stt_zero) == 0
+	assert list_count(con, ref_xi(1)) == 1
+	assert list_count(con, stt_zero@) == 0
 	
 	//«‘‡”äŠr
 	con1 = list_make_iota(4)
@@ -215,7 +260,7 @@
 	
 	//®—ñÏ‚İ‚©
 	con = list_make_iota(3)
-	assert list_is_sorted(con /*, abdata_sort_ascending*/)
+	assert list_is_sorted(con, abdata_sort_ascending)
 	
 	list_reverse con
 	assert list_is_sorted(con, abdata_sort_decending)
@@ -224,48 +269,9 @@
 	assert list_is_sorted(con, abdata_sort_ascending) == 0
 	assert list_is_sorted(con, abdata_sort_decending) == 0
 	
-#module
-#deffunc listTest_eq_ran var self, int _value, int sort_mode,  int x_lb, int x_ub, \
-	local value, local eq_ran
-	
-	value = _value
-	list_equal_range self, value, eq_ran(0), eq_ran(1), sort_mode
-	assert eq_ran(0) == x_lb
-	assert eq_ran(1) == x_ub
-	return
-	
-#deffunc listTest_sorted_insert var _self, int _value, int can_dup, int sort_mode, \
-	int x_lb, int x_ub, \
-	local self, local value, local lb, local ub
-	
-	self = list_make()
-	list_copy self, _self
-	value = _value
-	list_sorted_insertv self, value, can_dup, sort_mode
-	list_equal_range    self, value, lb, ub,  sort_mode
-	assert lb == x_lb
-	assert ub == x_ub
-	return
-	
-#deffunc listTest_sorted_erase var _self, int _value, int max_count, int sort_mode,  int x_lb, int x_ub, \
-	local self, local value, local lb, local ub
-	
-	self = list_make()
-	list_copy self, _self
-	value = _value
-	list_sorted_erasev self, value, max_count, sort_mode
-	list_equal_range   self, value, lb, ub,    sort_mode
-	assert lb == x_lb
-	assert ub == x_ub
-	return
-#global
-
 	//‰ºŠEAãŠE
-	con1 = list_make()
 	expected = 1, 3, 3, 5, 5, 5, 7, 8
-	foreach expected
-		list_pushv_back con1, expected(cnt)
-	loop
+	con1 = list_from_array(expected, 8)
 	
 	//ŒŸõ
 	listTest_eq_ran con1, 0,,   0, 0
@@ -318,3 +324,8 @@
 	listTest_sorted_erase con2, 0, 99, abdata_sort_decending,    8, 8
 	
 	logmes "list test completed."
+	return
+	
+#global
+
+	listTest_main
