@@ -52,6 +52,7 @@
 	len += target_len
 	return
 	
+// [[deprecated]]
 #deffunc arrlen_swap array self, var len, array target, var target_len, \
 	local tmp, local tmp_len
 	
