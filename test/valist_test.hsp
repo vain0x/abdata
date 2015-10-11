@@ -176,7 +176,15 @@
 	assert valist_get(con, 2) == str_var
 	assert valist_get(con, 3) == 3
 	
-	//移動、交換、巡回、反転
+	//移動
+	con = valist_make_iota(4)
+	valist_iter_move con, -3, -1
+	valist_logmes con
+	expected = 0, 2, 3, 1
+	assert valist_compare(con, valist_from_array(expected, 4)) == 0
+	
+	//交換、反転
+	//arrlen をラップしただけなので省略
 	
 	//消去
 	con = valist_make_iota(3)
