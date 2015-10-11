@@ -257,6 +257,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #define global ctype valist_empty(%1) (valist_size(%1) == 0)
 
 #define global ctype valist_vartype(%1, %2) valistImpl_vartype(abdataInsts(%1), %2)
+#define global ctype valist_vartype_front(%1, %2) valist_vartype((%1), 0)
+#define global ctype valist_vartype_back(%1, %2)  valist_vartype((%1), -1)
 
 #define global ctype valist_regular_ix(%1, %2)        valistImpl_regular_ix(abdataInsts(%1), %2)
 #define global ctype valist_regular_ix_or_end(%1, %2) valistImpl_regular_ix_or_end(abdataInsts(%1), %2)
