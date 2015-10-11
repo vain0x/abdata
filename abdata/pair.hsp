@@ -5,8 +5,9 @@
 // 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
 
 #include "abheader.hsp"
-#include "abelem.hsp"
+#include "abbox.hsp"
 #include "mod_pvalptr.hsp"
+#include "mod_compare.hsp"
 
 #module abdata_pair_impl mValue
 
@@ -38,15 +39,16 @@
 // [i] 構築
 //------------------------------------------------
 #modinit var lhs, var rhs
-	abelem_new mValue, lhs
-	abelem_new mValue, rhs
+	abbox_new mValue, vartype(lhs), 1
+	abbox_new mValue, vartype(rhs), 1
+	pairImpl_setv_both thismod, lhs, rhs
 	return getaptr(thismod)
 	
 //------------------------------------------------
 // 値の取得
 //------------------------------------------------
 #modfunc pairImpl_getv var vResult, int idx
-	abelem_getv mValue(idx), vResult
+	abbox_unsafe_get_v mValue(idx), vResult, 0
 	return
 	
 #modcfunc pairImpl_get int idx,  local tmp
@@ -68,7 +70,7 @@
 // クローンを作る
 //------------------------------------------------
 #modfunc pairImpl_dup var vSrc, int idx
-	abelem_dup mValue(idx), vSrc
+	abbox_unsafe_dup_v mValue(idx), vSrc, 0
 	return
 	
 #define global pairImpl_dup_lhs(%1,%2) pairImpl_dup %1, %2, PairImplIdx_Lhs
@@ -78,7 +80,7 @@
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
 #modcfunc pairImpl_vartype int idx
-	return abelem_vartype( mValue(idx) )
+	return abbox_type(mValue(idx))
 	
 #define global ctype pairImpl_vartype_lhs(%1) pairImpl_vartype(%1, PairImplIdx_Lhs)
 #define global ctype pairImpl_vartype_rhs(%1) pairImpl_vartype(%1, PairImplIdx_Rhs)
@@ -94,7 +96,7 @@
 	pairImpl_setv %1, _cat@__abdata(%o,@__tmp), %3
 	
 #modfunc pairImpl_setv var dst, int idx
-	abelem_setv mValue(idx), dst
+	abbox_unsafe_set_v mValue(idx), 0, dst
 	return
 	
 #define global pairImpl_set_lhs(%1,%2) pairImpl_set %1, %2, PairImplIdx_Lhs
@@ -110,8 +112,8 @@
 	%o0 %o0 //
 
 #modfunc pairImpl_setv_both var lhs, var rhs
-	abelem_setv mValue(PairImplIdx_Lhs), lhs
-	abelem_setv mValue(PairImplIdx_Rhs), rhs
+	abbox_unsafe_set_v mValue(PairImplIdx_Lhs), 0, lhs
+	abbox_unsafe_set_v mValue(PairImplIdx_Rhs), 0, rhs
 	return
 	
 //------------------------------------------------
@@ -139,11 +141,10 @@
 // [i] 完全消去
 //------------------------------------------------
 #modfunc pairImpl_clear
+
+	dim mValue
 	repeat pairImpl_size(thismod)
-		abelem_delete mValue(cnt)
-	loop
-	repeat pairImpl_size(thismod)
-		abelem_new mValue
+		abbox_new mValue
 	loop
 	return
 	
@@ -164,15 +165,11 @@
 //------------------------------------------------
 // 辞書順比較
 //------------------------------------------------
-#modcfunc pairImpl_compare var rhs
-	return pairImpl_compare_impl@abdata_pair_impl(rhs, mValue)
-
-#modcfunc pairImpl_compare_impl@abdata_pair_impl array lhs_value, \
-	local cmp
-	
-	assert pairImpl_size(thismod) == 2
-	repeat 2
-		cmp = abelem_cmp(lhs_value(cnt), mValue(cnt))
+#modcfunc pairImpl_compare var rhs,  local l_ref, local r_ref
+	repeat pairImpl_size(thismod)
+		pairImpl_dup thismod, l_ref, cnt
+		pairImpl_dup rhs    , r_ref, cnt
+		cmp = abdata_compare(l_ref, r_ref)
 		if ( cmp ) { break }
 	loop
 	return cmp
