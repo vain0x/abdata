@@ -3,6 +3,7 @@
 
 // ’·‚³w’è‚Â‚«‚Ì1ŸŒ³•W€”z—ñ
 
+#include "abheader.hsp"
 #include "mod_compare.hsp"
 
 #module abdata_arrlen
@@ -78,6 +79,18 @@
 		self(lb + cnt) = self(ub + cnt)
 	loop
 	len -= ub - lb
+	return
+	
+#deffunc arrlen_iter_swap array self, int len, int i0, int i1,  \
+	local tmp
+	
+	assert 0 <= i0 && i0 < len
+	assert 0 <= i1 && i1 < len
+	if ( i0 != i1 ) {
+		tmp = self(i0)
+		self(i0) = self(i1)
+		self(i1) = tmp
+	}
 	return
 	
 #defcfunc arrlen_is_sorted array self, int len,  \

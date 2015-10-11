@@ -6,6 +6,13 @@
 
 #module
 
+#deffunc arrlen_iota array arr, var len, int len_
+	len = len_
+	repeat len
+		arr(cnt) = cnt
+	loop
+	return
+
 #deffunc arrlenTest_eq_ran array arr, int _value, int x_lb, int x_ub, \
 	local value, local lb, local ub
 	
@@ -97,5 +104,15 @@
 	assert arrlen_compare(arr, arr_len,  arr3, arr3_len) < 0
 	assert arrlen_compare(arr, arr_len,  arr3, arr3_len - 1) > 0
 	
-	logmes "arrlen test completed."
+	//ŒğŠ·
+	arrlen_iota      arr, arr_len, 7
+	arrlen_iter_swap arr, arr_len, 1, 3
+	repeat arr_len
+		if ( cnt == 1 || cnt == 3 ) {
+			assert arr(cnt) == (cnt ^ 1 ^ 3)
+		} else {
+			assert arr(cnt) == cnt
+		}
+	loop
 	
+	logmes "arrlen test completed."

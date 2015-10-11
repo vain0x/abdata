@@ -108,6 +108,19 @@ self ‚©‚ç“Yš [lb, ub) ‚Ì—v‘f‚ğœ‹‚·‚éB
 
 
 %index
+arrlen_iter_swap
+—v‘f‚ğŒğŠ·
+%prm
+(self, len, i0, i1)
+array self
+int len
+int i0, i1: ŒğŠ·‚·‚é—v‘f‚Ì“Yš
+%inst
+self ‚Ì i0, i1 ”Ô–Ú‚Ì2‚Â‚Ì—v‘f‚ğŒğŠ·‚·‚éB
+
+
+
+%index
 arrlen_is_sorted
 ®—ñÏ‚İ‚©H
 %prm
