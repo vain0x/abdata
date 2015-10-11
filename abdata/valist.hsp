@@ -380,6 +380,15 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
+#deffunc valist_chain_array int self, array arr, int len
+	assert arrlen_is_valid_len(arr, len)
+	repeat len
+		valist_pushv_back self, arr(cnt)
+	loop
+	return
+#global
+
+#module
 #defcfunc valist_is_valid int self, int i
 	return 0 <= i && i < valist_size(self)
 #global
