@@ -589,4 +589,9 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 #endif //defined(_debug)
 
+#define global listNull abdataNull
+
+	listNull = list_make()
+	assert listNull == 0
+
 #endif
