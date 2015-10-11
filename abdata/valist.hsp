@@ -76,12 +76,23 @@ len_:
 	
 #modcfunc valistImpl_regular_ix int i
 
-	if ( i == abdata_ix_end ) {
-		return len_
-	} else : if ( i < 0 ) {
-		return (i \ len_) + len_
+	if ( 0 <= i && i < len_ ) {
+		return i
+	} else : if ( i < 0 && i + len_ >= 0 ) {
+		return i + len_
 	}
-	return i
+	assert : end 1
+	
+#modcfunc valistImpl_regular_ix_or_end int i
+
+	if ( 0 <= i && i <= len_ ) {
+		return i
+	} else : if ( i == abdata_ix_end ) {
+		return len_
+	} else : if ( i < 0 && i + len_ >= 0 ) {
+		return i + len_
+	}
+	assert : end 1
 	
 /**
 _unsafe_get_v thismod, result, i, removes
@@ -136,7 +147,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #modfunc valistImpl_insertv var value, int i
 
 	if ( i < 0 ) {
-		valistImpl_insertv thismod, value, valistImpl_regular_ix(thismod, i)
+		valistImpl_insertv thismod, value, valistImpl_regular_ix_or_end(thismod, i)
 		return
 	}
 	
@@ -160,7 +171,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #modfunc valistImpl_erase_range int i_beg, int i_end
 
 	if ( i_beg < 0 || i_end < 0 ) {
-		valistImpl_erase_range thismod, valistImpl_regular_ix(thismod, i_beg), valistImpl_regular_ix(thismod, i_end)
+		valistImpl_erase_range thismod, valistImpl_regular_ix_or_end(thismod, i_beg), valistImpl_regular_ix_or_end(thismod, i_end)
 		return
 	}
 	if ( i_beg >= i_end ) { return }
@@ -247,7 +258,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 
 #define global ctype valist_vartype(%1, %2) valistImpl_vartype(abdataInsts(%1), %2)
 
-#define global ctype valist_regular_ix(%1, %2) valistImpl_regular_ix(abdataInsts(%1), %2)
+#define global ctype valist_regular_ix(%1, %2)        valistImpl_regular_ix(abdataInsts(%1), %2)
+#define global ctype valist_regular_ix_or_end(%1, %2) valistImpl_regular_ix_or_end(abdataInsts(%1), %2)
 
 #define global ctype valist_try_get(%1, %2, %3) \
 	valistImpl_try_get(abdataInsts(%1), %2, %3, 0 /* removes */)
@@ -445,7 +457,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	local aps
 	
 	if ( i_end < 0 ) {
-		valist_reverse__ self, i_beg, valist_regular_ix(self, i_end)
+		valist_reverse__ self, i_beg, valist_regular_ix_or_end(self, i_end)
 		return
 	}
 	assert 0 <= i_beg && i_beg <= i_end && i_end <= valist_size(self)
