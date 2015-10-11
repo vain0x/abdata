@@ -5,7 +5,7 @@
 
 #include "mod_compare.hsp"
 
-#module arrlen
+#module abdata_arrlen
 
 #define true 1
 #define false 0
@@ -14,35 +14,25 @@
 #defcfunc arrlen_is_valid_len array self, int len
 	return (0 <= len && len <= length(self))
 	
-/**
-* arrlen の消去
-//*/
 #deffunc arrlen_clear array self, var len
 	dim self
 	len = 0
 	return
 	
-/**
-* arrlen の複写
-//*/
 #deffunc arrlen_copy array self, var len, array target, int target_len
 	arrlen_clear self, len
 	arrlen_chain self, len, target, target_len
 	return
 	
-/**
-* arrlen の連結
-//*/
 #deffunc arrlen_chain array self, var len, array target, int target_len
+
+	assert len == 0 || vartype(self) == vartype(target)
 	repeat target_len
 		self(len + cnt) = target(cnt)
 	loop
 	len += target_len
 	return
 	
-/**
-* arrlen の交換
-//*/
 #deffunc arrlen_swap array self, var len, array target, var target_len, \
 	local tmp, local tmp_len
 	
@@ -51,10 +41,7 @@
 	arrlen_copy target, target_len, tmp, tmp_len
 	return
 	
-/**
-* arrlen の辞書順比較
-//*/
-#defcfunc arrlen_lexicographical_compare array lhs, int lhs_len, array rhs, int rhs_len, \
+#defcfunc arrlen_compare array lhs, int lhs_len, array rhs, int rhs_len, \
 	local cmp
 	
 	if ( lhs_len != rhs_len ) {
@@ -69,9 +56,6 @@
 	loop
 	return cmp
 	
-/**
-* arrlen の、idx 番目を空ける (初期化なし)
-//*/
 #deffunc arrlen_insert_no_init array self, var len, int idx
 	assert arrlen_is_valid_len(self, len)
 	assert idx >= 0
@@ -86,9 +70,6 @@
 	}
 	return
 	
-/**
-* arrlen の、[lb, ub) 番目の要素を除去する
-//*/
 #deffunc arrlen_erase_range array self, var len, int lb, int ub
 	assert arrlen_is_valid_len(self, len)
 	assert 0 <= lb && lb <= len
@@ -99,15 +80,9 @@
 	len -= ub - lb
 	return
 	
-/**
-* arrlen が、昇順に整列済みであるか否か
-*
-* つまり self(0) <= self(1) <= ... となっていること。
-*
-* @param self: 対象の配列
-* @param len: self の長さ
-//*/
-#defcfunc arrlen_is_sorted array self, int len,  local is_sorted
+#defcfunc arrlen_is_sorted array self, int len,  \
+	local is_sorted
+	
 	assert arrlen_is_valid_len(self, len)
 	is_sorted = true
 	repeat limit(0, len - 1, int_max)
@@ -117,18 +92,7 @@
 	loop
 	return is_sorted
 	
-/**
-* 整列済み arrlen の、下界をみつける
-*
-* @param self: 対象の配列
-* @param len: self の長さ
-* @param value: 探す値
-* @return i:
-*	もし self(i) == value となる要素があれば、その最小の i が返る。
-*	それがなければ、self(i) > value となる最小の i が返る。
-*	それもなければ、len が返る。
-//*/
-#defcfunc arrlen_lower_bound array self, int len, var value, \
+#defcfunc arrlen_lb array self, int len, var value, \
 	local lb, local ub, local mid, local cmp
 	
 	assert arrlen_is_sorted(self, len)
@@ -145,15 +109,7 @@
 	loop
 	return ub
 	
-/**
-* 整列済み arrlen の、上界をみつける
-*
-* @param value: 探す値
-* @return i:
-*	self(k) > value となる要素があれば、そのような k の最小値が返る。
-*	なければ、len が返る。
-//*/
-#defcfunc arrlen_upper_bound array self, int len, var value, \
+#defcfunc arrlen_ub array self, int len, var value, \
 	local lb, local ub, local mid, local cmp
 	
 	assert arrlen_is_sorted(self, len)
@@ -170,74 +126,42 @@
 	loop
 	return ub
 	
-/**
-* 整列済み arrlen の、ある値を含む区間をみつける
-*
-* 「(lb <= k && k < ub) をみたすすべての k について、self(k) == value」となるような、lb, ub がみつかる。
-*
-* @param value: 探す値
-* @param lb, ub
-*	arrlen_lower_bound, _upper_bound の値が代入される。
-//*/
 #deffunc arrlen_equal_range array self, int len, var value, var lb, var ub
-	lb = arrlen_lower_bound(self, len, value)
-	ub = arrlen_upper_bound(self, len, value)
+	lb = arrlen_lb(self, len, value)
+	ub = arrlen_ub(self, len, value)
 	return
 	
-/**
-* 整列済み arrlen が含む、ある値の個数を返す
-*
-* @param value: 探す値
-//*/
-#defcfunc arrlenSorted_count array self, int len, var value,  local lb, local ub
-	lb = arrlen_lower_bound(self, len, value)
-	if ( lb != len ) : if ( self(lb) == value ) {
-		ub = arrlen_upper_bound(self, len, value)
-		return ub - lb
+#defcfunc arrlen_sorted_count array self, int len, var value,  \
+	local lb, local ub
+	
+	arrlen_equal_range self, len, value, lb, ub
+	return ub - lb
+	
+#define global arrlen_sorted_insert_v(%1, %2, %3, %4 = true@arrlen) \
+	arrlen_sorted_insert_v__ (%1), (%2), (%3), (%4)
+
+#deffunc arrlen_sorted_insert_v__ array self, var len, var value, int may_dup,  \
+	local lb, local ub
+	
+	arrlen_equal_range self, len, value, lb, ub
+	if ( may_dup || lb == ub ) {
+		arrlen_insert_no_init self, len, ub
+		self(ub) = value
+		return 1
 	}
 	return 0
 	
-/**
-* 整列済み arrlen の、適切な位置に要素を挿入する
-*
-* @param value: 挿入される要素の値
-* @param can_dup (true):
-*	これが真なら、すでに value が含まれているときも、挿入する。
-* @return n:
-*	挿入された要素の個数
-//*/
-#define global arrlenSorted_insert_v(%1, %2, %3, %4 = true@arrlen) \
-	_arrlenSorted_insert_v@arrlen (%1), (%2), (%3), (%4)
-
-#deffunc _arrlenSorted_insert_v@arrlen \
-	array self, var len, var value, int can_dup,  local lb
+#define global arrlen_sorted_erase_v(%1, %2, %3, %4 = int_max@arrlen) \
+	_arrlen_sorted_erase_v@arrlen (%1), (%2), (%3), (%4)
 	
-	lb = arrlen_lower_bound(self, len, value)
-	if ( can_dup == false && lb != len ) {
-		if ( self(lb) == value ) { return 0 }
-	}
-	arrlen_insert_no_init self, len, lb
-	self(lb) = value
-	return 1
+#deffunc _arrlen_sorted_erase_v@arrlen \
+	array self, var len, var value, int max_count,  \
+	local lb, local ub
 	
-/**
-* 整列済み arrlen から、要素を除去する
-*
-* @param value: 除去すべき要素の値
-* @param max_count (∞): 除去される要素の個数の最大値
-* @return n:
-*	除去された要素の個数
-//*/
-#define global arrlenSorted_erase_v(%1, %2, %3, %4 = int_max@arrlen) \
-	_arrlenSorted_erase_v@arrlen (%1), (%2), (%3), (%4)
-	
-#deffunc _arrlenSorted_erase_v@arrlen \
-	array self, var len, var value, int max_count,  local ran
-	
-	arrlen_equal_range self, len, value, ran(0), ran(1)
-	ran(1) = ran(0) + limit(ran(1) - ran(0), 0, max_count)
-	arrlen_erase_range self, len, ran(0), ran(1)
-	return ran(1) - ran(0)
+	arrlen_equal_range self, len, value, lb, ub
+	lb = ub - limit(ub - lb, 0, max_count)
+	arrlen_erase_range self, len, lb, ub
+	return ub - lb
 	
 #global
 
