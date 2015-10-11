@@ -14,6 +14,7 @@
 * モジュール `list` の実装を `valist` で差し替えた。
 * `list` のヘルプファイルを書き直した。
 * `mod_swap` を削除した。
+* `pair` を非推奨にした。
 
 ### 2015/10/10
 * `list_double`, `list_double_front`, `list_double_back` を削除した。

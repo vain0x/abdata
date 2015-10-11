@@ -1,6 +1,7 @@
 #ifndef ig_abdata_pair_hsp
 #define ig_abdata_pair_hsp
 
+// [[deprecated]]
 // ちょうど2つの要素からなるコンテナ
 // 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
 

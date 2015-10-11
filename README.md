@@ -22,7 +22,6 @@
   * 各種 `.as` ファイル。
 
 ### コンテナ
-* pair: ペア
 * list: リスト
 * unor: 文字列からの連想配列
 
@@ -103,8 +102,9 @@
 * 実装 [abdata/list.hsp](abdata/list.hsp) のコメントを参照。
 
 #### pair
+* **非推奨**
 * 長さが常に 2 の list。
-* 2つの abelem がそれぞれ lhs, rhs の値を持つ。
+* 2つの abbox がそれぞれ lhs, rhs の値を持つ。
 
 #### unor
 * STL の std::unordered ではなく、Loki::AssocVector みたいなもの。
