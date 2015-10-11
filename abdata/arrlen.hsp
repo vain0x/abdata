@@ -15,6 +15,14 @@
 #defcfunc arrlen_is_valid_len array self, int len
 	return (0 <= len && len <= length(self))
 	
+#defcfunc arrlen_regular_ix array self, int len, int i
+	if ( 0 <= i && i < len ) {
+		return i
+	} else : if ( i < 0 && i + len >= 0 ) {
+		return i + len
+	}
+	assert : end 1
+	
 #deffunc arrlen_clear array self, var len
 	dim self
 	len = 0
@@ -84,6 +92,10 @@
 #deffunc arrlen_iter_swap array self, int len, int i0, int i1,  \
 	local tmp
 	
+	if ( i0 < 0 || i1 < 0 ) {
+		arrlen_iter_swap self, len, arrlen_regular_ix(self, len, i0), arrlen_regular_ix(self, len, i1)
+		return
+	}
 	assert 0 <= i0 && i0 < len
 	assert 0 <= i1 && i1 < len
 	if ( i0 != i1 ) {
@@ -96,6 +108,10 @@
 #deffunc arrlen_iter_move array self, int len, int i_src, int i_dst,  \
 	local tmp, local i, local dir
 
+	if ( i_src < 0 || i_dst < 0 ) {
+		arrlen_iter_move self, len, arrlen_regular_ix(self, len, i_src), arrlen_regular_ix(self, len, i_dst)
+		return
+	}
 	assert 0 <= i_src && i_src < len
 	assert 0 <= i_dst && i_dst < len
 	if ( i_src < i_dst ) { dir = 1 } else { dir = -1 }

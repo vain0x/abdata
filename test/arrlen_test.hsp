@@ -115,19 +115,30 @@
 		}
 	loop
 	
+	arrlen_iota      arr, arr_len, 5
+	arrlen_iter_swap arr, arr_len, -2, -1
+	expected = 0, 1, 2, 4, 3
+	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
+	
 	//ˆÚ“®
 	
 	//‘Oi
 	arrlen_iota      arr, arr_len, 5
 	arrlen_iter_move arr, arr_len, 1, 4
 	expected = 0, 2, 3, 4, 1
-	assert arrlen_compare(arr, arr_len, expected, length(expected)) == 0
+	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
 	
 	//Œã‘Ş
 	arrlen_iota      arr, arr_len, 5
 	arrlen_iter_move arr, arr_len, 3, 0
 	expected = 3, 0, 1, 2, 4
-	assert arrlen_compare(arr, arr_len, expected, length(expected)) == 0
+	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
+	
+	//•‰‚ÌˆÊ’u
+	arrlen_iota      arr, arr_len, 5
+	arrlen_iter_move arr, arr_len, -3, -1
+	expected = 0, 1, 3, 4, 2
+	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
 	
 	//”½“]
 	arrlen_iota      arr, arr_len, 5
