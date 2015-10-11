@@ -435,6 +435,10 @@ result を、i 番目の要素のデータへのクローン変数にする。
 
 #module
 #deffunc list_erase int self, int i
+	if ( i < 0 ) {
+		list_erase self, list_regular_ix(self, i)
+		return
+	}
 	list_erase_range self, i, i + 1
 	return
 #global
