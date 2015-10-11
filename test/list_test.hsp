@@ -78,7 +78,7 @@
 	repeat list_size(con2)
 		assert list_get(con2, cnt) == str_var
 	loop
-	list_dbglog con2
+	
 	//—v‘f’Ç‰Á
 	
 	//push_back
@@ -179,7 +179,6 @@
 	//ˆÚ“®
 	con = list_make_iota(4)
 	list_iter_move con, -3, -1
-	list_logmes con
 	expected = 0, 2, 3, 1
 	assert list_compare(con, list_from_array(expected, 4)) == 0
 	
