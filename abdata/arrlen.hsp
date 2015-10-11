@@ -159,28 +159,28 @@
 	}
 	return
 	
-#defcfunc arrlen_is_sorted array self, int len,  \
+#defcfunc arrlen_is_sorted array self, int len, int sort_mode,  \
 	local is_sorted
 	
 	assert arrlen_is_valid_len(self, len)
 	is_sorted = true
 	repeat limit(0, len - 1, int_max)
-		if ( abdata_hom_cmp(self(cnt), self(cnt + 1)) > 0 ) {
+		if ( abdata_hom_cmp(self(cnt), self(cnt + 1)) * (1 - 2 * sort_mode) > 0 ) {
 			is_sorted = false : break
 		}
 	loop
 	return is_sorted
 	
-#defcfunc arrlen_lb array self, int len, var value, \
+#defcfunc arrlen_lb array self, int len, var value, int sort_mode,  \
 	local lb, local ub, local mid, local cmp
 	
-	assert arrlen_is_sorted(self, len)
+	assert arrlen_is_sorted(self, len, sort_mode)
 	
 	lb = -1 : ub = len
 	repeat
 		if ( (ub - lb) <= 1 ) { break }
 		mid = lb + (ub - lb) / 2
-		if ( abdata_hom_cmp(self(mid), value) < 0 ) {
+		if ( abdata_hom_cmp(self(mid), value) * (1 - 2 * sort_mode) < 0 ) {
 			lb = mid
 		} else {
 			ub = mid
@@ -188,16 +188,16 @@
 	loop
 	return ub
 	
-#defcfunc arrlen_ub array self, int len, var value, \
+#defcfunc arrlen_ub array self, int len, var value, int sort_mode,  \
 	local lb, local ub, local mid, local cmp
 	
-	assert arrlen_is_sorted(self, len)
+	assert arrlen_is_sorted(self, len, sort_mode)
 	
 	lb = -1 : ub = len
 	repeat
 		if ( (ub - lb) <= 1 ) { break }
 		mid = lb + (ub - lb) / 2
-		if ( abdata_hom_cmp(self(mid), value) <= 0 ) {
+		if ( abdata_hom_cmp(self(mid), value) * (1 - 2 * sort_mode) <= 0 ) {
 			lb = mid
 		} else {
 			ub = mid
@@ -205,9 +205,9 @@
 	loop
 	return ub
 	
-#deffunc arrlen_equal_range array self, int len, var value, var lb, var ub
-	lb = arrlen_lb(self, len, value)
-	ub = arrlen_ub(self, len, value)
+#deffunc arrlen_equal_range array self, int len, var value, var lb, var ub, int sort_mode
+	lb = arrlen_lb(self, len, value, sort_mode)
+	ub = arrlen_ub(self, len, value, sort_mode)
 	return
 	
 #defcfunc arrlen_sorted_count array self, int len, var value,  \
@@ -216,13 +216,13 @@
 	arrlen_equal_range self, len, value, lb, ub
 	return ub - lb
 	
-#define global arrlen_sorted_insert_v(%1, %2, %3, %4 = true@arrlen) \
-	arrlen_sorted_insert_v__ (%1), (%2), (%3), (%4)
+#define global arrlen_sorted_insert_v(%1, %2, %3, %4 = true@arrlen, %5 = abdata_sort_ascending) \
+	arrlen_sorted_insert_v__ (%1), (%2), (%3), (%4), (%5)
 
-#deffunc arrlen_sorted_insert_v__ array self, var len, var value, int may_dup,  \
+#deffunc arrlen_sorted_insert_v__ array self, var len, var value, int may_dup, int sort_mode,  \
 	local lb, local ub
 	
-	arrlen_equal_range self, len, value, lb, ub
+	arrlen_equal_range self, len, value, lb, ub, sort_mode
 	if ( may_dup || lb == ub ) {
 		arrlen_insert_no_init self, len, ub
 		self(ub) = value
@@ -230,14 +230,14 @@
 	}
 	return 0
 	
-#define global arrlen_sorted_erase_v(%1, %2, %3, %4 = int_max@arrlen) \
-	_arrlen_sorted_erase_v@arrlen (%1), (%2), (%3), (%4)
+#define global arrlen_sorted_erase_v(%1, %2, %3, %4 = int_max@arrlen, %5 = abdata_sort_ascending) \
+	_arrlen_sorted_erase_v@arrlen (%1), (%2), (%3), (%4), (%5)
 	
 #deffunc _arrlen_sorted_erase_v@arrlen \
-	array self, var len, var value, int max_count,  \
+	array self, var len, var value, int max_count, int sort_mode,  \
 	local lb, local ub
 	
-	arrlen_equal_range self, len, value, lb, ub
+	arrlen_equal_range self, len, value, lb, ub, sort_mode
 	lb = ub - limit(ub - lb, 0, max_count)
 	arrlen_erase_range self, len, lb, ub
 	return ub - lb

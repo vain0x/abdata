@@ -104,6 +104,11 @@
 	assert arrlen_compare(arr, arr_len,  arr3, arr3_len) < 0
 	assert arrlen_compare(arr, arr_len,  arr3, arr3_len - 1) > 0
 	
+	//~‡
+	arrlen_iota    arr, arr_len, 4
+	arrlen_reverse arr, arr_len, 0, abdata_ix_end
+	assert arrlen_is_sorted(arr, arr_len, abdata_sort_decending)
+	
 	//‘}“ü
 	
 	//”ÍˆÍ“à
