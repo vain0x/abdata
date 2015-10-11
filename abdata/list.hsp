@@ -427,7 +427,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 
 #module
 #deffunc list_dup int self, array ref, int i
-	if ( list_try_dup(self, ref, i) ) {
+
+	if ( list_try_dup(self, ref, list_regular_ix(self, i)) ) {
 		return
 	}
 	assert : end 1

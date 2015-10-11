@@ -158,14 +158,14 @@
 	
 	//QÆ‰»
 	con = list_make_iota(4)
-	list_dup con, r, 2
+	list_dup con, r, -2
 	assert r == 2
 	r = 99
 	assert list_get(con, 2) == 99
 	
 	con = list_make_iota(3)
-	list_ref(con, 1) ++
-	assert list_get(con, 1) == 2
+	list_ref(con, -1) ++
+	assert list_get(con, 2) == 3
 	
 	//‘‚«Š·‚¦
 	con = list_make_iota(4)
