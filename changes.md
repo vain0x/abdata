@@ -1,14 +1,3 @@
-## TODO
-* 最大最小検索
-  * min_element, max_element, minmax_element
-* 重複除去
-  * unique & erase
-* 置換
-  * replace
-* unor の実装の改良
-* より安全なテスト
-* knowbug での拡張表示
-
 ## 更新履歴
 ### 2015/10/11
 * モジュール `list` の実装を `valist` で差し替えた。
