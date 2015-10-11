@@ -1,9 +1,0 @@
-#include "../abdata/pair.as"
-
-	pair_new     p
-	pair_set_both p, 1, 2
-	pair_dbglog  p
-	
-	p = pairNull
-	stop
-	

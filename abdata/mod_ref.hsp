@@ -1,5 +1,5 @@
-#ifndef IG_MODULE_REFERENCE_AS
-#define IG_MODULE_REFERENCE_AS
+#ifndef ig_module_ref_hsp
+#define ig_module_ref_hsp
 
 #module
 

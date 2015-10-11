@@ -1,0 +1,81 @@
+#ifndef ig_abdata_abbox_hsp
+#define ig_abdata_abbox_hsp
+
+/*
+標準の配列変数をラップしたモジュールクラス
+
+arr_: データを持つ配列変数
+
+empty_:
+	arr_ の「空いている要素の位置」からなる配列。
+	順番はテキトー。
+
+empty_len_:
+	empty_ の長さ。
+//*/
+
+#module abdata_abbox \
+	arr_, empty_, empty_len_
+
+#define global abbox_new(%1, %2 = 4, %3 = 1) newmod %1, abdata_abbox@, %2, %3
+#define global abbox_delete delmod
+
+#modinit int type, int len
+
+	dimtype arr_, type, len
+	//dim empty_, 1
+	empty_len_ = 1
+	return
+	
+#modcfunc abbox_type
+	return vartype(arr_)
+	
+#modfunc abbox_unsafe_set_v int i, var value
+	arr_(i) = value
+	return
+	
+#modfunc abbox_unsafe_get_v var result, int i
+	result = arr_(i)
+	return
+	
+#modfunc abbox_unsafe_dup_v var ref, int i
+	dup ref, arr_(i)
+	return
+	
+#modfunc abbox_unsafe_memexpand int i, int size
+	memexpand arr_(i), size
+	return
+	
+#modfunc abbox_add var value
+	if ( empty_len_ ) {
+		empty_len_ --
+		arr_(empty_(empty_len_)) = value
+		return empty_(empty_len_)
+		
+	} else {
+		// 要素数を約2倍に拡張
+		
+		empty_len_ = length(arr_)
+		repeat empty_len_
+			empty_(empty_len_ - 1 - cnt) = empty_len_ + cnt
+		loop
+		
+		arr_(empty_len_ << 1) = value
+		return empty_len_ << 1
+	}
+	
+#modfunc abbox_unsafe_erase_at int i
+	
+	// empty_ に重複元が生じないときにだけ使う。
+	#ifdef _debug
+		repeat empty_len_
+			assert empty_(cnt) != i
+		loop
+	#endif
+	empty_(empty_len_) = i
+	empty_len_ ++
+	return
+	
+#global
+
+#endif

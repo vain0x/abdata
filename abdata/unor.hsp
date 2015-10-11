@@ -1,11 +1,11 @@
-#ifndef IG_ABDATA_UNOR_IMPL_AS
-#define IG_ABDATA_UNOR_IMPL_AS
+#ifndef ig_abdata_unor_hsp
+#define ig_abdata_unor_hsp
 
-#include "list.as"
-#include "alg_iter.as"
-#include "mod_pvalptr.as"
-#include "mod_swap.as"
-#include "mod_ref.as"
+#include "abheader.hsp"
+#include "list.hsp"
+#include "alg_iter.hsp"
+#include "mod_pvalptr.hsp"
+#include "mod_ref.hsp"
 
 #module abdata_unor_impl mlistKey, mlistValue
 
@@ -20,16 +20,14 @@
 // [i] 構築
 //------------------------------------------------
 #modinit
-	// メンバ変数の初期化
-	list_new mlistKey
-	list_new mlistValue
-	
+	mlistKey = list_make()
+	mlistValue = list_make()
 	return getaptr(thismod)
 	
 //------------------------------------------------
 // 内部用の読み書き
 //------------------------------------------------
-#modfunc unorImpl_clone_members@abdata_unor_impl array keys, array vals
+#modfunc unorImpl_dup_members@abdata_unor_impl array keys, array vals
 	dup keys, mlistKey
 	dup vals, mlistValue
 	return
@@ -82,17 +80,17 @@
 //------------------------------------------------
 // 参照化 ( 命令形式 )
 //------------------------------------------------
-#modfunc unorImpl_clone_by_index_ var vRef, int i
-	list_clone mlistValue, vRef, i
+#modfunc unorImpl_dup_by_index_ var vRef, int i
+	list_dup mlistValue, vRef, i
 	return
 	
-#modfunc unorImpl_clone str key, var vRef
-	unorImpl_clone_by_index_ thismod, vRef, unorImpl_getIndex( thismod, key )
+#modfunc unorImpl_dup str key, var vRef
+	unorImpl_dup_by_index_ thismod, vRef, unorImpl_getIndex( thismod, key )
 	return
 	
-#modfunc unorImpl_clone_kv_by_index_@abdata_unor_impl var key, var value, int i
-	list_clone mlistKey,     key, i
-	list_clone mlistValue, value, i
+#modfunc unorImpl_dup_kv_by_index_@abdata_unor_impl var key, var value, int i
+	list_dup mlistKey,     key, i
+	list_dup mlistValue, value, i
 	return
 	
 //------------------------------------------------
@@ -102,7 +100,7 @@
 	ref_ref_expr_template_2(unorImpl_ref_, %1, %2)
 
 #modcfunc unorImpl_ref_by_index_ array ref, int i
-	unorImpl_clone_by_index_ thismod, ref, i
+	unorImpl_dup_by_index_ thismod, ref, i
 	return 0
 	
 #modcfunc unorImpl_ref_ array ref, str key
@@ -122,8 +120,8 @@
 // 値の設定
 //------------------------------------------------
 #define global unorImpl_set(%1, %2 = "" ,%3) %tabdata \
-	_cat(%i,@__tmp) = %3 :\
-	unorImpl_setv %1, %2, _cat(%o,@__tmp)
+	_cat@__abdata(%i,@__tmp) = %3 :\
+	unorImpl_setv %1, %2, _cat@__abdata(%o,@__tmp)
 
 #modfunc unorImpl_setv str key, var vValue
 	unorImpl_setv_by_index_ thismod, unorImpl_getIndex(thismod, key), vValue
@@ -139,8 +137,8 @@
 // @ 既存なら失敗
 //------------------------------------------------
 #define global unorImpl_add(%1, %2 = "", %3 = stt_zero@) %tabdata \
-	_cat(%i,@__tmp) = %3 :\
-	unorImpl_addv %1, %2, _cat(%o,@__tmp)
+	_cat@__abdata(%i,@__tmp) = %3 :\
+	unorImpl_addv %1, %2, _cat@__abdata(%o,@__tmp)
 
 #modfunc unorImpl_addv str key, var vValue
 	unorImpl_addValue thismod, key, vValue
@@ -149,7 +147,7 @@
 //------------------------------------------------
 // 除去
 // 
-// @+ 存在しない要素は除去しない
+// @ 存在しない要素は除去しない。
 //------------------------------------------------
 #modfunc unorImpl_erase str key,  local i
 	
@@ -176,11 +174,10 @@
 // [i] 連結
 //------------------------------------------------
 #modfunc unorImpl_chain var src,  local it
-	
+
 	IterateBegin src, unorImpl, it
 		unorImpl_add thismod, it, unorImpl_get(src, it)
 	IterateEnd
-	
 	return
 	
 //------------------------------------------------
@@ -192,36 +189,25 @@
 	return
 	
 //------------------------------------------------
-// [i] 交換
-//------------------------------------------------
-#modfunc unorImpl_swap var obj,  \
-	local keys, local vals,  local tmp_keys, local tmp_vals
-	
-	unorImpl_clone_members obj, keys, vals
-	swap_int mlistKey,   keys
-	swap_int mlistValue, vals
-	return
-	
-//------------------------------------------------
 // [i] 辞書順比較
 //------------------------------------------------
-#modcfunc unorImpl_lexicographical_compare var rhs,  \
+#modcfunc unorImpl_compare var rhs,  \
 	local lhs_key, local lhs_elem, \
 	local rhs_key, local rhs_elem, local keys, local vals, local cmp
 	
 	cmp = (unorImpl_size(thismod) - unorImpl_size(rhs))
 	if ( cmp ) { return cmp }
 	
-	unorImpl_clone_members rhs, keys, vals
+	unorImpl_dup_members rhs, keys, vals
 	repeat list_size(mlistKey)
-		list_clone mlistKey, lhs_key, cnt
-		list_clone     keys, rhs_key, cnt
+		list_dup mlistKey, lhs_key, cnt
+		list_dup     keys, rhs_key, cnt
 		cmp = (lhs_key != rhs_key)
 		if ( cmp ) { break }
 		
-		list_clone_abelem mlistValue, lhs_elem, cnt
-		list_clone_abelem       vals, rhs_elem, cnt
-		cmp = abelem_cmp(lhs_elem, rhs_elem)
+		list_dup mlistValue, lhs_elem, cnt
+		list_dup       vals, rhs_elem, cnt
+		cmp = abdata_compare(lhs_elem, rhs_elem)
 		if ( cmp ) { break }
 	loop
 	return cmp
@@ -260,28 +246,18 @@
 //------------------------------------------------
 // 実際の要素番号を得る
 // @private
-// @result:
-// @	?(bNoAdd == false) =>
-// @		ある場合 => キーがある要素番号
-// @		ない場合 => 新規追加し、その番号を返す。
-// @		=>> 常に有効な要素番号を返す。
-// @	else =>
-// @		ある場合 => キーがある要素番号
-// @		ない場合 => 負数
+// @prm bNoAdd: false なら、要素が見つからなかったときに挿入してその位置を返す。
+// @result: 見つかった位置、または -1。
 //------------------------------------------------
 #modcfunc unorImpl_getIndex@abdata_unor_impl str key, int bNoAdd,  local idx
 	
 	unorImpl_find_ex thismod, key, idx
-	if ( stat ) {
-		return idx
-	}
+	if ( stat ) { return idx }
 	
-	// 新規に追加する
 	if ( bNoAdd == false ) {
 		unorImpl_addValue_by_index_ thismod, idx, key, stt_zero@
 		return stat
 	}
-	
 	return -1
 	
 //------------------------------------------------
@@ -294,12 +270,9 @@
 #modfunc unorImpl_addValue@abdata_unor_impl str key, var vValue,  local idx
 	
 	unorImpl_find_ex thismod, key, idx
-	if ( stat ) {		// キーは既存
-		return idx
-	}
+	if ( stat ) { return idx }
 	
 	unorImpl_addValue_by_index_ thismod, idx, key, vValue
-	
 	return idx
 	
 #modfunc unorImpl_addValue_by_index_@abdata_unor_impl int idx, str key, var vValue
@@ -309,15 +282,15 @@
 	
 //------------------------------------------------
 // 要素を検索する
-// @result :
-// @	キーがある場合 => 真を返す。idx := 要素番号。
-// @	キーがない場合 => 偽を返す。idx := 指定キーがあるべき要素番号。
+//
+// @prm idx: lower_bound が代入される。
+// @result: 要素がみつかったかどうか
 //------------------------------------------------
 #modfunc unorImpl_find_ex@abdata_unor_impl str _key, var idx,  \
 	local key
 	
 	key = _key
-	idx = list_lower_bound(mlistKey, key)
+	idx = list_lb(mlistKey, key)
 	if ( idx != list_size(mlistKey) ) {
 		if ( list_get(mlistKey, idx) == key ) {
 			return true
@@ -330,9 +303,7 @@
 //------------------------------------------------
 // デバッグ出力
 //------------------------------------------------
-#define global unorImpl_dbglog(%1) unorImpl_dbglog_ %1, "%1"
-
-#deffunc unorImpl_dbglog_ var self,  str _ident,  local ident, local it
+#deffunc unorImpl_dbglog var self, str _ident,  local ident, local it
 	ident = _ident
 	
 	logmes "[" + strtrim(ident, 0, ' ') + "] debug-log"
@@ -351,5 +322,60 @@
 #endif //defined(_DEBUG)
 
 #global
+
+//##############################################################################
+// wrapper
+
+#define global Unor_ClsName "unor"
+#define global unorNull abdataNull
+
+#define global unor_new(%1) %1 = unor_make()
+#define global unor_delete(%1) unorImpl_delete abdataInsts(%1)
+
+#module
+#defcfunc unor_make
+	unorImpl_new abdataInsts_var
+	return stat
+#global
+
+#define global       unor_getv(%1, %2 = "", %3) unorImpl_getv abdataInsts(%1), %2, %3
+#define global       unor_popv(%1, %2 = "", %3) unorImpl_popv abdataInsts(%1), %2, %3
+#define global ctype unor_get(%1, %2 = "") unorImpl_get(abdataInsts(%1), %2)
+#define global ctype unor_pop(%1, %2 = "") unorImpl_pop(abdataInsts(%1), %2)
+
+#define global ctype unor_tryget(%1, %2 = "", %3) unorImpl_tryget(abdataInsts(%1), %2, %3)
+#define global ctype unor_trypop(%1, %2 = "", %3) unorImpl_trypop(abdataInsts(%1), %2, %3)
+
+#define global       unor_dup(%1, %2 = "", %3) unorImpl_dup abdataInsts(%1), %2, %3
+#define global ctype unor_ref(%1, %2 = "") unorImpl_ref(abdataInsts(%1), %2)
+
+#define global ctype unor_vartype(%1, %2 = "") unorImpl_vartype(abdataInsts(%1), %2)
+
+#define global unor_set(%1,%2="",%3)  unorImpl_set  abdataInsts(%1), %2, %3
+#define global unor_setv(%1,%2="",%3) unorImpl_setv abdataInsts(%1), %2, %3
+
+#define global unor_add(%1, %2 = "",%3 = stt_zero@) unorImpl_add abdataInsts(%1), %2, %3
+#define global unor_addv(%1, %2, %3) unorImpl_addv abdataInsts(%1), %2, %3
+
+#define global unor_erase(%1, %2) unorImpl_erase abdataInsts(%1), %2
+
+#define global unor_clear(%1)     unorImpl_clear abdataInsts(%1)
+#define global unor_chain(%1, %2) unorImpl_chain abdataInsts(%1), abdataInsts(%2)
+#define global unor_copy(%1, %2)  unorImpl_copy  abdataInsts(%1), abdataInsts(%2)
+
+#define global ctype unor_compare(%1, %2) \
+	unorImpl_compare(abdataInsts(%1), abdataInsts(%2))
+
+#define global       unor_iter_init(%1,%2)    unorImpl_iter_init abdataInsts(%1), %2
+#define global ctype unor_iter_next(%1,%2,%3) unorImpl_iter_next(abdataInsts(%1), %2, %3)
+
+#define global ctype unor_size(%1)  unorImpl_size(abdataInsts(%1))
+#define global ctype unor_empty(%1) unorImpl_empty(abdataInsts(%1))
+#define global unor_length unor_size
+
+#define global ctype unor_count_key(%1, %2) unorImpl_count_key(abdataInsts(%1), %2)
+#define global ctype unor_count_value(%1, %2) unorImpl_count_value(abdataInsts(%1), %2)
+
+#define global unor_dbglog(%1) unorImpl_dbglog abdataInsts(%1), "%1"
 
 #endif

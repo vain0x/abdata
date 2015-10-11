@@ -1,0 +1,51 @@
+#ifndef ig_abdata_stdarray_hsp
+#define ig_abdata_stdarray_hsp
+
+// [[deprecated]]
+
+#define global stdarray_index_of_end (-127)
+
+#include "arrlen.hsp"
+
+#module
+#deffunc stdarray_insert_room array self, int i,  \
+	local len
+	
+	len = length(self)
+	arrlen_insert_no_init self, len, i
+	return
+#global
+
+#module
+#deffunc stdarray_erase array self, int i,  \
+	local len
+	
+	len = length(self)
+	arrlen_erase_many self, len, i, 1
+	return
+#global
+
+#define global stdarray_iter_swap(%1, %2, %3)  arrlen_iter_swap %1, length(%1), %2, %3
+#define global stdarray_iter_move(%1, %2, %3)  arrlen_iter_move %1, length(%1), %2, %3
+
+#define global stdarray_reverse(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	arrlen_reverse %1, length(%1), %2, %3
+	
+#module
+#deffunc stdarray_rotate_step array self, int i_bgn, int i_end, int step
+	if ( i_bgn < 0 || i_end < 0 ) {
+		stdarray_rotate_step self, stdarray_regular_ix_or_end(self, i_bgn), std_array_regular_ix_or_end(self, i_end)
+		return
+	}
+	if ( step >= 0 ) {
+		stdarray_iter_move self, i_bgn, i_end - 1
+	} else {
+		stdarray_iter_move self,        i_end - 1, i_bgn
+	}
+	return
+	
+#define global stdarray_rotate(    %1, %2 = 0, %3 = stdarray_index_of_end) stdarray_rotate_step %1, %2, %3,  1
+#define global stdarray_rotateBack(%1, %2 = 0, %3 = stdarray_index_of_end) stdarray_rotate_step %1, %2, %3, -1
+#global
+
+#endif

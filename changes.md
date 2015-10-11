@@ -1,20 +1,57 @@
 ## TODO
 * 最大最小検索
   * min_element, max_element, minmax_element
-* 整列
-  * sort
-    * stable_sort (merge_sort) だけでいいと思う。
 * 重複除去
   * unique & erase
 * 置換
   * replace
-* コンテナのメンバ関数の補完
-* コンテナの構造的比較
 * unor の実装の改良
 * より安全なテスト
 * knowbug での拡張表示
 
 ## 更新履歴
+### 2015/10/11
+* モジュール `list` の実装を `valist` で差し替えた。
+* `list` のヘルプファイルを書き直した。
+* `mod_swap` を削除した。
+* `pair` を非推奨にした。
+
+### 2015/10/10
+* `list_double`, `list_double_front`, `list_double_back` を削除した。
+* 異型比較において、型の異なるの値を常に異なる値として扱うようにした。
+  * `list_count()` が型変換が行わなくなった。
+* `list_rotate`, `list_rotate_back` を削除した。
+* `list_push`, `list_pushv` を削除した。
+* `list_loc_swap_front`, `list_loc_swap_back` を削除した。
+* `list_lower_bound()` を `list_lb()` に改名した。
+* `list_upper_bound()` を `list_ub()` に改名した。
+* `list_loc_swap` を `list_iter_swap` に改名した。
+* `list_loc_move` を `list_iter_move` に改名した。
+* `SortMode_Ascending` を `abdata_sort_ascending` に改名した。
+* `SortMode_Decending` を `abdata_sort_decending` に改名した。
+* モジュール `tnode` を deprecated 指定にした。
+* `_swap` を削除した。
+* `_clone` を `_dup` に改名した。
+  * `list_clone`, `unor_clone`, `pair_clone`, `pair_clone_lhs`, `pair_clone_rhs`
+
+### 2015/10/05
+* モジュール `arrayLen` を `arrlen` に改名した。
+
+### 2015/09/27
+* ラッパモジュール `stack` を削除した。
+* `*_impl` ファイルを削除して、ラッパのファイルと合体した。
+* HSPスクリプトの拡張子を `.hsp` で統一した。
+  * 後方互換性のため `.as` 版も残してある。
+* container をラップしたモジュール list を削除し、container を list に改名した。
+  * 実質同じだった。
+
+### 2015/08/27
+* 異型比較において、int と double をともに比較するようにした。
+
+### 2015/08/17
+* NYSLライセンスにした。
+  * これまでは権利表記がなかった。
+
 ### 2015/07/14 (Tue)
 * モジュール [abdata/mod_ref.as](abdata/mod_ref.as) を追加した。
   * `_ref()` の定義をわずかに一般化した。

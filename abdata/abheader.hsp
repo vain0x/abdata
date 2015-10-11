@@ -1,11 +1,9 @@
-#ifndef        IG_ABDATA_EXTERNAL_HEADER_AS
-#define global IG_ABDATA_EXTERNAL_HEADER_AS
-
-// 外部(global領域)で定義されるヘッダファイル
+#ifndef        ig_abdata_header_hsp
+#define global ig_abdata_header_hsp
 
 #ifdef _DEBUG
 
-// 警告回避
+	// 警告回避
 	dim stt_allinsts@__abdata
 	dim stt_nullinst@__abdata
 	dim stt_zero@
@@ -20,9 +18,8 @@
 
 #endif //defined(_DEBUG)
 
-#ifndef _empty
- #define global _empty //
-#endif
+#define ctype _cat@__abdata(%1,%2)%1%2
+#define _empty@__abdata//
 
 #ifndef abdataInsts
  #define global ctype abdataInsts(%1) stt_allinsts@__abdata(%1)
@@ -30,5 +27,9 @@
 
 #define global abdataInsts_var stt_allinsts@__abdata
 #define global abdataNull      stt_nullinst@__abdata //=0
+
+#define global abdata_sort_ascending 0
+#define global abdata_sort_decending 1
+#define global abdata_ix_end (-127)
 
 #endif

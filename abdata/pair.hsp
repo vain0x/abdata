@@ -1,12 +1,14 @@
-#ifndef IG_ABDATA_PAIR_IMPL_AS
-#define IG_ABDATA_PAIR_IMPL_AS
+#ifndef ig_abdata_pair_hsp
+#define ig_abdata_pair_hsp
 
+// [[deprecated]]
 // ちょうど2つの要素からなるコンテナ
 // 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
 
-#include "abelem.as"
-#include "mod_pvalptr.as"
-#include "mod_swap.as"
+#include "abheader.hsp"
+#include "abbox.hsp"
+#include "mod_pvalptr.hsp"
+#include "mod_compare.hsp"
 
 #module abdata_pair_impl mValue
 
@@ -27,9 +29,9 @@
 #define global pairImpl_length pairImpl_size
 
 #define global pairImpl_new(%1, %2 = stt_zero@, %3 = stt_zero@) %tabdata %i0 %i0 \
-	_cat(%p0,@__tmp) = %2 :\
-	_cat(%p1,@__tmp) = %3 :\
-	newmod %1, abdata_pair_impl@, _cat(%p0,@__tmp), _cat(%p1,@__tmp)  :\
+	_cat@__abdata(%p0,@__tmp) = %2 :\
+	_cat@__abdata(%p1,@__tmp) = %3 :\
+	newmod %1, abdata_pair_impl@, _cat@__abdata(%p0,@__tmp), _cat@__abdata(%p1,@__tmp)  :\
 	%o0 %o0 //
 
 #define global pairImpl_delete(%1) delmod %1
@@ -38,15 +40,16 @@
 // [i] 構築
 //------------------------------------------------
 #modinit var lhs, var rhs
-	abelem_new mValue, lhs
-	abelem_new mValue, rhs
+	abbox_new mValue, vartype(lhs), 1
+	abbox_new mValue, vartype(rhs), 1
+	pairImpl_setv_both thismod, lhs, rhs
 	return getaptr(thismod)
 	
 //------------------------------------------------
 // 値の取得
 //------------------------------------------------
 #modfunc pairImpl_getv var vResult, int idx
-	abelem_getv mValue(idx), vResult
+	abbox_unsafe_get_v mValue(idx), vResult, 0
 	return
 	
 #modcfunc pairImpl_get int idx,  local tmp
@@ -67,18 +70,18 @@
 //------------------------------------------------
 // クローンを作る
 //------------------------------------------------
-#modfunc pairImpl_clone var vSrc, int idx
-	abelem_clone mValue(idx), vSrc
+#modfunc pairImpl_dup var vSrc, int idx
+	abbox_unsafe_dup_v mValue(idx), vSrc, 0
 	return
 	
-#define global pairImpl_clone_lhs(%1,%2) pairImpl_clone %1, %2, PairImplIdx_Lhs
-#define global pairImpl_clone_rhs(%1,%2) pairImpl_clone %1, %2, PairImplIdx_Rhs
+#define global pairImpl_dup_lhs(%1,%2) pairImpl_dup %1, %2, PairImplIdx_Lhs
+#define global pairImpl_dup_rhs(%1,%2) pairImpl_dup %1, %2, PairImplIdx_Rhs
 
 //------------------------------------------------
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
 #modcfunc pairImpl_vartype int idx
-	return abelem_vartype( mValue(idx) )
+	return abbox_type(mValue(idx))
 	
 #define global ctype pairImpl_vartype_lhs(%1) pairImpl_vartype(%1, PairImplIdx_Lhs)
 #define global ctype pairImpl_vartype_rhs(%1) pairImpl_vartype(%1, PairImplIdx_Rhs)
@@ -90,11 +93,11 @@
 // @ assign => 両方
 //------------------------------------------------
 #define global pairImpl_set(%1,%2,%3 = 0) %tabdata \
-	_cat(%i,@__tmp) = (%2) :\
-	pairImpl_setv %1, _cat(%o,@__tmp), %3
+	_cat@__abdata(%i,@__tmp) = (%2) :\
+	pairImpl_setv %1, _cat@__abdata(%o,@__tmp), %3
 	
 #modfunc pairImpl_setv var dst, int idx
-	abelem_setv mValue(idx), dst
+	abbox_unsafe_set_v mValue(idx), 0, dst
 	return
 	
 #define global pairImpl_set_lhs(%1,%2) pairImpl_set %1, %2, PairImplIdx_Lhs
@@ -104,22 +107,22 @@
 #define global pairImpl_setv_rhs(%1,%2) pairImpl_setv %1, %2, PairImplIdx_Rhs
 
 #define global pairImpl_set_both(%1,%2,%3) %tabdata %i0 %i0 \
-	_cat(%p0,@__tmp) = (%2) :\
-	_cat(%p1,@__tmp) = (%3) :\
-	pairImpl_setv_both %1, _cat(%p0,@__tmp), _cat(%p1,@__tmp) :\
+	_cat@__abdata(%p0,@__tmp) = (%2) :\
+	_cat@__abdata(%p1,@__tmp) = (%3) :\
+	pairImpl_setv_both %1, _cat@__abdata(%p0,@__tmp), _cat@__abdata(%p1,@__tmp) :\
 	%o0 %o0 //
 
 #modfunc pairImpl_setv_both var lhs, var rhs
-	abelem_setv mValue(PairImplIdx_Lhs), lhs
-	abelem_setv mValue(PairImplIdx_Rhs), rhs
+	abbox_unsafe_set_v mValue(PairImplIdx_Lhs), 0, lhs
+	abbox_unsafe_set_v mValue(PairImplIdx_Rhs), 0, rhs
 	return
 	
 //------------------------------------------------
 // 数え上げ
 //------------------------------------------------
 #modcfunc pairImpl_count var value,  local lhs, local rhs, local count
-	pairImpl_clone_lhs thismod, lhs
-	pairImpl_clone_rhs thismod, rhs
+	pairImpl_dup_lhs thismod, lhs
+	pairImpl_dup_rhs thismod, rhs
 	if ( lhs == value ) { count ++ }
 	if ( rhs == value ) { count ++ }
 	return count
@@ -128,7 +131,7 @@
 // 要素交換
 // @ lhs と rhs を交換する
 //------------------------------------------------
-#modfunc pairImpl_loc_swap  local tmpLhs, local tmpRhs
+#modfunc pairImpl_iter_swap  local tmpLhs, local tmpRhs
 	pairImpl_getv_lhs thismod, tmpLhs
 	pairImpl_getv_rhs thismod, tmpRhs
 	pairImpl_setv_lhs thismod, tmpRhs
@@ -139,11 +142,10 @@
 // [i] 完全消去
 //------------------------------------------------
 #modfunc pairImpl_clear
+
+	dim mValue
 	repeat pairImpl_size(thismod)
-		abelem_delete mValue(cnt)
-	loop
-	repeat pairImpl_size(thismod)
-		abelem_new mValue
+		abbox_new mValue
 	loop
 	return
 	
@@ -162,28 +164,13 @@
 #define global pairImpl_chain(%1,%2) "pair_chain はできません。[pair_chain(%1, %2)]"
 
 //------------------------------------------------
-// [i] 交換
-//------------------------------------------------
-#modfunc pairImpl_swap var rhs
-	pairImpl_swap_impl@abdata_pair_impl rhs, mValue
-	return
-	
-#modfunc pairImpl_swap_impl@abdata_pair_impl array lhs_value
-	swap_array lhs_value, mValue
-	return
-	
-//------------------------------------------------
 // 辞書順比較
 //------------------------------------------------
-#modcfunc pairImpl_lexicographical_compare var rhs
-	return pairImpl_lexicographical_compare_impl@abdata_pair_impl(rhs, mValue)
-
-#modcfunc pairImpl_lexicographical_compare_impl@abdata_pair_impl array lhs_value, \
-	local cmp
-	
-	assert pairImpl_size(thismod) == 2
-	repeat 2
-		cmp = abelem_cmp(lhs_value(cnt), mValue(cnt))
+#modcfunc pairImpl_compare var rhs,  local l_ref, local r_ref
+	repeat pairImpl_size(thismod)
+		pairImpl_dup thismod, l_ref, cnt
+		pairImpl_dup rhs    , r_ref, cnt
+		cmp = abdata_compare(l_ref, r_ref)
 		if ( cmp ) { break }
 	loop
 	return cmp
@@ -228,5 +215,70 @@
 #endif //defined(_DEBUG)
 	
 #global
+
+//##############################################################################
+// wrapper
+
+#define global Pair_ClsName "pair"
+#define global pairNull abdataNull
+
+#define global PairIdx_Lhs PairImplIdx_Lhs
+#define global PairIdx_Rhs PairImplIdx_Rhs
+
+#define global ctype pair_size(%1)  pairImpl_size ( abdataInsts(%1) )
+#define global ctype pair_empty(%1) pairImpl_empty( abdataInsts(%1) )
+#define global ctype pair_count(%1, %2) pairImpl_count(abdataInsts(%1), %2)
+#define global pair_length pair_size
+
+#define global pair_new(%1, %2 = stt_zero@, %3 = stt_zero@) \
+	pairImpl_new abdataInsts_var, %2, %3 : %1 = stat
+	
+#define global pair_delete(%1) pairImpl_delete abdataInsts(%1)
+
+#module
+#define global ctype pair_make(%1 = stt_zero@, %2 = stt_zero@) \
+	pair_make_impl(%1, %2)
+	
+#defcfunc pair_make_impl var lhs, var rhs,  local newObj
+	pair_new newObj, lhs, rhs
+	return newObj
+#global
+
+#define global       pair_getv(%1,%2,%3=0)   pairImpl_getv abdataInsts(%1), %2, %3
+#define global ctype pair_get(%1,%2=0)       pairImpl_get( abdataInsts(%1), %2 )
+#define global       pair_getv_lhs(%1,%2)     pairImpl_getv_lhs  abdataInsts(%1), %2
+#define global       pair_getv_rhs(%1,%2)     pairImpl_getv_rhs  abdataInsts(%1), %2
+#define global       pair_getv_both(%1,%2,%3) pairImpl_getv_both abdataInsts(%1), %2, %3
+
+#define global ctype pair_get_lhs(%1)         pairImpl_get_lhs(abdataInsts(%1))
+#define global ctype pair_get_rhs(%1)         pairImpl_get_rhs(abdataInsts(%1))
+
+#define global pair_dup(%1,%2,%3=0)  pairImpl_dup     abdataInsts(%1), %2, %3
+#define global pair_dup_lhs(%1,%2)   pairImpl_dup_lhs abdataInsts(%1), %2
+#define global pair_dup_rhs(%1,%2)   pairImpl_dup_rhs abdataInsts(%1), %2
+#define global ctype pair_vartype(%1,%2)  pairImpl_vartype(abdataInsts(%1), %2)
+#define global ctype pair_vartype_lhs(%1) pairImpl_vartype_lhs(abdataInsts(%1))
+#define global ctype pair_vartype_rhs(%1) pairImpl_vartype_rhs(abdataInsts(%1))
+
+#define global pair_set(%1,%2,%3=0)  pairImpl_set     abdataInsts(%1), %2, %3
+#define global pair_set_lhs(%1,%2)   pairImpl_set_lhs abdataInsts(%1), %2
+#define global pair_set_rhs(%1,%2)   pairImpl_set_rhs abdataInsts(%1), %2
+#define global pair_setv_lhs(%1,%2) pairImpl_setv_lhs abdataInsts(%1), %2
+#define global pair_setv_rhs(%1,%2) pairImpl_setv_rhs abdataInsts(%1), %2
+#define global pair_set_both(%1,%2,%3)  pairImpl_set_both  abdataInsts(%1), %2, %3
+#define global pair_setv_both(%1,%2,%3) pairImpl_setv_both abdataInsts(%1), %2, %3
+
+#define global pair_iter_swap(%1) pairImpl_iter_swap abdataInsts(%1)
+
+#define global pair_clear(%1) pairImpl_clear abdataInsts(%1)
+#define global pair_copy(%1,%2) pairImpl_copy abdataInsts(%1), abdataInsts(%2)
+
+#define global ctype pair_compare(%1,%2) \
+	pairImpl_compare(abdataInsts(%1), abdataInsts(%2))
+
+#define global       pair_iter_init(%1,%2)    pairImpl_iter_init abdataInsts(%1), %2
+#define global ctype pair_iter_next(%1,%2,%3) pairImpl_iter_next( abdataInsts(%1), %2, %3 )
+
+#define global pair_dbglog(%1) pairImpl_dbglog_ abdataInsts(%1), "%1"
 
 #endif

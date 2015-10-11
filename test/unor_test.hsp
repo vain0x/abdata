@@ -1,4 +1,4 @@
-#include "../abdata/unor.as"
+#include "../abdata/unor.hsp"
 
 #module
 #defcfunc make_iota_unor int n,  local self
@@ -31,7 +31,7 @@
 	//éQè∆âª
 	un = make_iota_unor(3)
 	
-	unor_clone un, "#1", r
+	unor_dup un, "#1", r
 	assert r == 1
 	r = 99
 	assert unor_get(un, "#1") == 99
@@ -89,25 +89,17 @@
 	un = make_iota_unor(3)
 	unor_add un, "#3", "2"
 	two_str = "2"
-	assert unor_count_value(un, two_str) == 2
-	assert unor_count_value(un, stt_zero) == 1
+	assert unor_count_value(un, two_str) == 1
+	assert unor_count_value(un, stt_zero@) == 1
 	assert unor_count_key(un, "#2") == 1
 	assert unor_count_key(un, "#4") == 0
-	
-	//åä∑
-	
-	un0 = make_iota_unor(3)
-	un1 = make_iota_unor(2)
-	unor_swap un0, un1
-	assert unor_size(un0) == 2
-	assert unor_size(un1) == 3
 	
 	//î‰är
 	un0 = make_iota_unor(3)
 	un1 = make_iota_unor(2)
 	unor_add un1, "#3", -1
-	assert unor_lexicographical_compare(un0, un0) == 0
-	assert unor_lexicographical_compare(un0, un1) < 0
-	assert unor_lexicographical_compare(un1, un0) > 0
+	assert unor_compare(un0, un0) == 0
+	assert unor_compare(un0, un1) < 0
+	assert unor_compare(un1, un0) > 0
 	
 	logmes "Unor test completed."

@@ -1,4 +1,4 @@
-#include "../abdata/pair.as"
+#include "../abdata/pair.hsp"
 
 	//get
 	pair_new p, "l", "r"
@@ -17,8 +17,8 @@
 	
 	//QÆ‰»
 	pair_new p, "l", "r"
-	pair_clone p, lhs_ref, 0
-	pair_clone p, rhs_ref, 1
+	pair_dup p, lhs_ref, 0
+	pair_dup p, rhs_ref, 1
 	
 	lhs_ref = "LHS"
 	assert pair_get_lhs(p) == "LHS"
@@ -28,15 +28,15 @@
 	//”äŠr
 	pair_new p1, 10, 20
 	pair_new p2, 30, "x"
-	assert pair_lexicographical_compare(p1, p1) == 0
-	assert pair_lexicographical_compare(p1, p2) < 0
-	assert pair_lexicographical_compare(p2, p1) > 0
+	assert pair_compare(p1, p1) == 0
+	assert pair_compare(p1, p2) < 0
+	assert pair_compare(p2, p1) > 0
 	
 	//ˆÚ“®
 	pair_new p1, "l", "r"
-	pair_loc_swap p1
+	pair_iter_swap p1
 	pair_new p2, "r", "l"
-	assert pair_lexicographical_compare(p1, p2) == 0
+	assert pair_compare(p1, p2) == 0
 	
 	//”‚¦ã‚°
 	pair_new p1, 1, 1
@@ -46,14 +46,5 @@
 	assert pair_count(p1, one) == 2
 	assert pair_count(p2, one) == 1 
 	assert pair_count(p3, one) == 0
-	
-	//ŒğŠ·
-	pair_new p1, 1, 2
-	pair_new p2, "x", "y"
-	pair_swap p1, p2
-	assert pair_get_lhs(p1) == "x"
-	assert pair_get_rhs(p1) == "y"
-	assert pair_get_lhs(p2) == 1
-	assert pair_get_rhs(p2) == 2
 	
 	logmes "Pair test completed."

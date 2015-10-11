@@ -5,64 +5,143 @@
 このファイルを include することで、古い abdata のコマンドが使用できる。
 ただし以下のコマンドは挙動が変更されたため、このファイルでは対処されない。
 
-`*_swap`: 現在はコンテナの中身を交換するコマンド。古いものは `*_loc_swap` に改名された。
+`*_swap`: 現在はコンテナの中身を交換するコマンド。古いものは `*_iter_swap` に改名された。
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#enum global SortMode_Ascending = 0
+#enum global SortMode_Decending = 1
+
+#define global list_clone list_dup
+#define global unor_clone unor_dup
+#define global pair_clone pair_dup
+#define global pair_clone_lhs pair_dup_lhs
+#define global pair_clone_rhs pair_dup_rhs
+
+#define global pair_loc_swap        pair_iter_swap
+#define global list_loc_move        list_iter_move
+#define global list_loc_swap        list_iter_swap
+#define global list_loc_swap_front(%1)  list_iter_swap %1,  0,  1
+#define global list_loc_swap_back(%1)   list_iter_swap %1, -2, -1
+
+#define global list_lower_bound list_lb
+#define global list_upper_bound list_ub
+
+#define global list_push  list_push_back
+#define global list_pushv list_pushv_back
+
+#define global list_rotate(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	listImpl_rotate abdataInsts(%1), %2, %3
+
+#define global list_rotate_back(%1, %2 = 0, %3 = stdarray_index_of_end) \
+	listImpl_rotate_back abdataInsts(%1), %2, %3
+
+#define global list_lexicographical_compare list_compare
+#define global pair_lexicographical_compare pair_compare
+#define global unor_lexicographical_compare unor_compare
+
+#module
+#deffunc list_double int self, int i,  local tmp
+	list_getv    self, tmp, i
+	list_insertv self, tmp, i
+	return
+#global
+#define global list_double_front(%1)   list_double (%1), 0
+#define global list_double_back(%1)    list_double (%1), -1
+
+#define global stack_make          deque_make
+#define global stack_new           deque_new
+#define global stack_delete        deque_delete
+#define global stack_peekv         stack_getv
+#define global stack_peek          stack_get
+#define global stack_get_back      deque_get_back
+#define global stack_getv_back     deque_getv_back
+#define global stack_pop_back      deque_pop_back
+#define global stack_popv_back     deque_popv_back
+#define global stack_pop           deque_pop_back
+#define global stack_popv          deque_popv_back
+#define global stack_vartype       list_vartype_back
+#define global stack_double_front  deque_double_front
+#define global stack_double_back   deque_double_back
+#define global stack_push_back     deque_push_back
+#define global stack_pushv_back    deque_pushv_back
+#define global stack_add           stack_push
+#define global stack_push          deque_push_back
+#define global stack_pushv         deque_pushv_back
+#define global stack_erase         deque_erase_back
+#define global stack_loc_swap_back deque_loc_swap_back
+#define global stack_loc_swap      stack_loc_swap_back
+#define global stack_clear         deque_clear
+#define global stack_chain         deque_chain
+#define global stack_copy          deque_copy
+#define global stack_swap          deque_swap
+#define global stack_iter_init     deque_iter_init
+#define global stack_iter_next     deque_iter_next
+#define global stack_size          deque_size
+#define global stack_length        stack_size
+#define global stack_empty         deque_empty
+#define global stack_count         deque_count
+#define global stack_is_valid      deque_is_valid
+#define global stack_dbglog        deque_dbglog
+#define global stack_getv(%1,%2=0)      deque_getv %1, (-(%2) - 1)
+#define global ctype stack_get(%1,%2=0) deque_get(%1, (-(%2) - 1))
+#define global stack_clone(%1,%2=0)     deque_clone %1, (-(%2) - 1)
+#define global ctype stack_ref(%1,%2=0) deque_ref(%1, (-(%2) - 1))
+
 #define global dequeNull            abdataNull
-#define global deque_make           container_make
-#define global deque_new            container_new
-#define global deque_delete         container_delete
-#define global deque_getv           container_getv
-#define global deque_popv           container_popv
-#define global deque_get            container_get
-#define global deque_pop            container_pop
-#define global deque_clone          container_clone
-#define global deque_ref            container_ref
-#define global deque_get_front      container_get_front
-#define global deque_get_back       container_get_back
-#define global deque_getv_front     container_getv_front
-#define global deque_getv_back      container_getv_back
-#define global deque_pop_front      container_pop_front
-#define global deque_pop_back       container_pop_back
-#define global deque_popv_front     container_popv_front
-#define global deque_popv_back      container_popv_back
-#define global deque_vartype        container_vartype
-#define global deque_vartype_front  container_vartype_front
-#define global deque_vartype_back   container_vartype_back
-#define global deque_set            container_set
-#define global deque_setv           container_setv
-#define global deque_insert         container_insert
-#define global deque_insertv        container_insertv
-#define global deque_double_front   container_double_front
-#define global deque_double_back    container_double_back
-#define global deque_push_front     container_push_front
-#define global deque_push_back      container_push_back
-#define global deque_pushv_front    container_pushv_front
-#define global deque_pushv_back     container_pushv_back
-#define global deque_push           container_push
-#define global deque_pushv          container_pushv
-#define global deque_add            container_add
-#define global deque_erase          container_erase
-#define global deque_erase_front    container_erase_front
-#define global deque_erase_back     container_erase_back
-#define global deque_loc_swap_front container_loc_swap_front
-#define global deque_loc_swap_back  container_loc_swap_back
-#define global deque_rotate         container_rotate
-#define global deque_rotate_back    container_rotate_back
-#define global deque_reverse        container_reverse
-#define global deque_clear          container_clear
-#define global deque_chain          container_chain
-#define global deque_copy           container_copy
-#define global deque_swap           container_swap
-#define global deque_iter_init      container_iter_init
-#define global deque_iter_next      container_iter_next
-#define global deque_size           container_size
+#define global deque_make           list_make
+#define global deque_new            list_new
+#define global deque_delete         list_delete
+#define global deque_getv           list_getv
+#define global deque_popv           list_popv
+#define global deque_get            list_get
+#define global deque_pop            list_pop
+#define global deque_clone          list_clone
+#define global deque_ref            list_ref
+#define global deque_get_front      list_get_front
+#define global deque_get_back       list_get_back
+#define global deque_getv_front     list_getv_front
+#define global deque_getv_back      list_getv_back
+#define global deque_pop_front      list_pop_front
+#define global deque_pop_back       list_pop_back
+#define global deque_popv_front     list_popv_front
+#define global deque_popv_back      list_popv_back
+#define global deque_vartype        list_vartype
+#define global deque_vartype_front  list_vartype_front
+#define global deque_vartype_back   list_vartype_back
+#define global deque_set            list_set
+#define global deque_setv           list_setv
+#define global deque_insert         list_insert
+#define global deque_insertv        list_insertv
+#define global deque_double_front   list_double_front
+#define global deque_double_back    list_double_back
+#define global deque_push_front     list_push_front
+#define global deque_push_back      list_push_back
+#define global deque_pushv_front    list_pushv_front
+#define global deque_pushv_back     list_pushv_back
+#define global deque_push           list_push
+#define global deque_pushv          list_pushv
+#define global deque_add            list_add
+#define global deque_erase          list_erase
+#define global deque_erase_front    list_erase_front
+#define global deque_erase_back     list_erase_back
+#define global deque_loc_swap_front list_loc_swap_front
+#define global deque_loc_swap_back  list_loc_swap_back
+#define global deque_rotate         list_rotate
+#define global deque_rotate_back    list_rotate_back
+#define global deque_reverse        list_reverse
+#define global deque_clear          list_clear
+#define global deque_chain          list_chain
+#define global deque_copy           list_copy
+#define global deque_swap           list_swap
+#define global deque_iter_init      list_iter_init
+#define global deque_iter_next      list_iter_next
+#define global deque_size           list_size
 #define global deque_length         deque_size
-#define global deque_empty          container_empty
-#define global deque_count          container_count
-#define global deque_is_valid       container_is_valid
-#define global deque_dbglog         container_dbglog
+#define global deque_empty          list_empty
+#define global deque_count          list_count
+#define global deque_is_valid       list_is_valid
+#define global deque_dbglog         list_dbglog
 
 #define global queueNull           dequeNull
 #define global queue_make          deque_make
@@ -80,8 +159,8 @@
 #define global queue_popv_front    deque_popv_front
 #define global queue_popv          deque_popv_front
 #define global queue_pop           deque_pop_front
-#define global queue_vartype       container_vartype_front
-#define global queue_vartype_front container_vartype_front
+#define global queue_vartype       list_vartype_front
+#define global queue_vartype_front list_vartype_front
 #define global queue_set           deque_set
 #define global queue_setv          deque_setv
 #define global queue_insert        deque_insert
@@ -115,7 +194,6 @@
 #define global ArrayRotateBack stdarray_rotate_back
 #define global ArrayReverse stdarray_reverse
 
-#define global container_exchange container_swap
 #define global list_exchange list_swap
 #define global deque_exchange deque_swap
 #define global stack_exchange stack_swap
@@ -124,13 +202,11 @@
 #define global unor_exchange unor_swap
 #define global pair_exchange pair_swap
 
-#define global container_setSize container_resize
 #define global list_setSize list_resize
 #define global deque_setSize deque_resize
 #define global stack_setSize stack_resize
 #define global queue_setSize queue_resize
 
-#define global container_iterInit container_iter_init
 #define global list_iterInit list_iter_init
 #define global deque_iterInit deque_iter_init
 #define global stack_iterInit stack_iter_init
@@ -139,7 +215,6 @@
 #define global unor_iterInit unor_iter_init
 #define global pair_iterInit pair_iter_init
 
-#define global container_iterNext container_iter_next
 #define global list_iterNext list_iter_next
 #define global deque_iterNext deque_iter_next
 #define global stack_iterNext stack_iter_next
@@ -148,15 +223,11 @@
 #define global unor_iterNext unor_iter_next
 #define global pair_iterNext pair_iter_next
 
-#define global container_move container_loc_move
 #define global list_move list_loc_move
 #define global deque_move deque_loc_move
 #define global stack_move stack_loc_move
 #define global queue_move queue_loc_move
 
-#define global container_remove container_erase
-#define global container_remove_front container_erase_front
-#define global container_remove_back container_erase_back
 #define global list_remove list_erase
 #define global list_remove_front list_erase_front
 #define global list_remove_back list_erase_back
@@ -170,7 +241,6 @@
 #define global queue_remove_front queue_erase_front
 #define global queue_remove_back queue_erase_back
 
-#define global container_isValid container_is_valid
 #define global list_isValid list_is_valid
 #define global deque_isValid deque_is_valid
 #define global queue_isValid queue_is_valid
@@ -197,7 +267,6 @@
 #define global pair_vartypeRhs pair_vartype_rhs
 #define global pair_vartypeBoth pair_vartype_both
 
-#define global new_container container_make
 #define global new_list list_make
 #define global new_deque deque_make
 #define global new_stack stack_make
