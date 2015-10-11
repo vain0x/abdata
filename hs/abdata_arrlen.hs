@@ -135,6 +135,19 @@ self の i_src 番目の要素を、i_dst 番目に移動する。
 
 
 %index
+arrlen_reverse
+要素を反転
+%prm
+(self, len, i_beg, i_end)
+array self
+int len
+int i_beg, i_end: 位置
+%inst
+self の範囲 [i_beg, i_end) にある要素の順番を反転する。
+
+
+
+%index
 arrlen_is_sorted
 整列済みか？
 %prm

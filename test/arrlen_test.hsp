@@ -129,4 +129,10 @@
 	expected = 3, 0, 1, 2, 4
 	assert arrlen_compare(arr, arr_len, expected, length(expected)) == 0
 	
+	//”½“]
+	arrlen_iota      arr, arr_len, 5
+	arrlen_reverse   arr, arr_len, 1, arr_len
+	expected = 0, 4, 3, 2, 1
+	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
+	
 	logmes "arrlen test completed."

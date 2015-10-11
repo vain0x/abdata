@@ -106,6 +106,20 @@
 	self(i_dst) = tmp
 	return
 	
+#deffunc arrlen_reverse array self, int len, int i_beg, int i_end,  \
+	local tmp
+
+	assert 0 <= i_beg && i_beg <= len
+	assert 0 <= i_end && i_end <= len
+	if ( i_beg <= i_end ) {
+		repeat (i_end - i_beg) >> 1
+			tmp = self(i_beg + cnt)
+			self(i_beg + cnt    ) = self(i_end - cnt - 1)
+			self(i_end - cnt - 1) = tmp
+		loop
+	}
+	return
+	
 #defcfunc arrlen_is_sorted array self, int len,  \
 	local is_sorted
 	
