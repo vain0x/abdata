@@ -421,7 +421,10 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
-#deffunc valist_resize int self, int new_len, var value,  \
+#define global valist_resize(%1, %2, %3 = stt_zero@) \
+	valist_resize__ %1, %2, %3
+
+#deffunc valist_resize__ int self, int new_len, var value,  \
 	local len
 	
 	assert new_len >= 0

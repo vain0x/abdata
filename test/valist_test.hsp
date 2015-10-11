@@ -140,7 +140,7 @@
 	
 	//to truncate
 	con = valist_make_iota(5)
-	valist_resize con, 2, stt_zero@
+	valist_resize con, 2
 	assert valist_size(con) == 2
 	repeat 2
 		assert valist_get(con, cnt) == cnt
