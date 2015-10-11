@@ -262,11 +262,8 @@
 	assert valist_is_sorted(con, abdata_sort_decending) == 0
 	
 	//‰ºŠEAãŠE
-	con1 = valist_make()
 	expected = 1, 3, 3, 5, 5, 5, 7, 8
-	foreach expected
-		valist_pushv_back con1, expected(cnt)
-	loop
+	con1 = valist_from_array(expected, 8)
 	
 	//ŒŸõ
 	valistTest_eq_ran con1, 0,,   0, 0

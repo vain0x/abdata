@@ -362,6 +362,15 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
+#defcfunc valist_from_array array src, int len,  \
+	local self
+	
+	self = valist_make_empty()
+	valist_chain_array self, src, len
+	return self
+#global
+
+#module
 #deffunc valist_copy int self, int rhs
 	valist_clear self
 	valist_chain self, rhs
