@@ -304,6 +304,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 
 #define global valist_push_back(%1, %2)   valist_insert  (%1), %2, abdata_ix_end
 #define global valist_pushv_back(%1, %2)  valist_insertv (%1), %2, abdata_ix_end
+#define global valist_add valist_push_back
 
 #define global valist_erase_range(%1, %2, %3) \
 	valistImpl_erase_range abdataInsts(%1), %2, %3
