@@ -1,15 +1,10 @@
 ## TODO
 * 最大最小検索
   * min_element, max_element, minmax_element
-* 整列
-  * sort
-    * stable_sort (merge_sort) だけでいいと思う。
 * 重複除去
   * unique & erase
 * 置換
   * replace
-* コンテナのメンバ関数の補完
-* コンテナの構造的比較
 * unor の実装の改良
 * より安全なテスト
 * knowbug での拡張表示
