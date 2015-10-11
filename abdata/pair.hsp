@@ -166,7 +166,9 @@
 //------------------------------------------------
 // «‘‡”äŠr
 //------------------------------------------------
-#modcfunc pairImpl_compare var rhs,  local l_ref, local r_ref
+#modcfunc pairImpl_compare var rhs,  \
+	local l_ref, local r_ref, local cmp
+	
 	repeat pairImpl_size(thismod)
 		pairImpl_dup thismod, l_ref, cnt
 		pairImpl_dup rhs    , r_ref, cnt
