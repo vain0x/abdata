@@ -2,12 +2,10 @@
 #define ig_abdata_all_as
 
 #include "alg_iter.hsp"
+#include "mod_shiftArray.hsp"
 #include "arrlen.hsp"
 #include "list.hsp"
 #include "unor.hsp"
-
-// [[deprecated]]
 #include "pair.hsp"
-#include "mod_shiftArray.hsp"
 
 #endif

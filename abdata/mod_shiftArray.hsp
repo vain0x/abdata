@@ -3,8 +3,6 @@
 
 // [[deprecated]]
 
-#define global stdarray_index_of_end (-127)
-
 #include "arrlen.hsp"
 
 #module
@@ -34,7 +32,7 @@
 #module
 #deffunc stdarray_rotate_step array self, int i_bgn, int i_end, int step
 	if ( i_bgn < 0 || i_end < 0 ) {
-		stdarray_rotate_step self, stdarray_regular_ix_or_end(self, i_bgn), std_array_regular_ix_or_end(self, i_end)
+		stdarray_rotate_step self, arrlen_regular_ix_or_end(self, length(self), i_bgn), arrlen_regular_ix_or_end(self, length(self), i_end)
 		return
 	}
 	if ( step >= 0 ) {
