@@ -5,11 +5,6 @@
 // ちょうど2つの要素からなるコンテナ
 // 2つの要素はそれぞれ <lhs, rhs> と呼び、また、それぞれに <[0], [1]> という index を割り振る。
 
-#include "abheader.hsp"
-#include "abbox.hsp"
-#include "mod_pvalptr.hsp"
-#include "mod_compare.hsp"
-
 #module abdata_pair_impl mValue
 
 #define true  1

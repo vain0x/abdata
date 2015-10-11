@@ -1,13 +1,6 @@
 #ifndef ig_abdata_list_hsp
 #define ig_abdata_list_hsp
 
-#include "abheader.hsp"
-#include "abbox.hsp"
-#include "arrlen.hsp"
-#include "mod_nullmod.hsp"
-#include "mod_pvalptr.hsp"
-#include "mod_compare.hsp"
-
 #module abdata_list_impl arrs_, aps_, len_
 
 /**

@@ -1,12 +1,6 @@
 #ifndef ig_abdata_unor_hsp
 #define ig_abdata_unor_hsp
 
-#include "abheader.hsp"
-#include "list.hsp"
-#include "alg_iter.hsp"
-#include "mod_pvalptr.hsp"
-#include "mod_ref.hsp"
-
 #module abdata_unor_impl mlistKey, mlistValue
 
 #define ctype operate_strcmp(%1,%2,%3) ( (%1) != (%3) %2 0 )

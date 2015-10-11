@@ -2,9 +2,7 @@
 #define ig_abdata_tnode_hsp
 
 // [[deprecated]]
-
-#include "list.hsp"
-#include "alg_iter.hsp"
+#include "all.as"
 
 #define global TNode_ClsName "tnode"
 #define global tnodeNull listNull

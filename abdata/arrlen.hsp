@@ -3,9 +3,6 @@
 
 // ’·‚³w’è‚Â‚«‚Ì1ŸŒ³•W€”z—ñ
 
-#include "abheader.hsp"
-#include "mod_compare.hsp"
-
 #module abdata_arrlen
 
 #define true 1

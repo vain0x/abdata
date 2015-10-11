@@ -2,8 +2,7 @@
 #define ig_abdata_stdarray_hsp
 
 // [[deprecated]]
-
-#include "arrlen.hsp"
+#include "all.as"
 
 #module
 #deffunc stdarray_insert_room array self, int i,  \
