@@ -11,7 +11,8 @@
 
 ## 更新履歴
 ### 2015/10/11
-* モジュール `list` の実装を `valist` で差し替え。
+* モジュール `list` の実装を `valist` で差し替えた。
+* `list` のヘルプファイルを書き直した。
 
 ### 2015/10/10
 * `list_double`, `list_double_front`, `list_double_back` を削除した。

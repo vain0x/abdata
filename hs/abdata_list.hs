@@ -1,748 +1,408 @@
-;#############################
 %dll
 abdata_list
-
 %author
 uedai
-
-%date
-2011 01/09 (Sun)	// Insert の idx が要素数を超えている場合の仕様の変更
-2010 07/18 (Sun)	// 最終更新 表記など、いろいろ訂正
-2009 10/04 (Sun)	// 
-2009 08/31 (Mon)	// container のラッパに変更
-2009 05/xx (___)	// 作成
-
-%ver
-1.0
-
 %type
-抽象データ構造 リスト
-
-;%group
-;$(default_group)
+抽象データ構造
+%group
+異型リスト
 
 ;--------------------
 %index
 list_make
-List 構築 (一時)
-
+構築
 %prm
 ()
-
 %inst
-新しくリスト (List) を構築し、返します。
+新しくリストを作成して、その識別ID (整数値) を返す。
 
+作成したリストのIDは、各種 list_ 命令・関数の最初の引数に指定できる。
+
+リストが不要になったら、なるべく list_delete 命令を呼び出すこと。
+
+;--------------------
+%index
+list_from_array
+構築 (配列の複製)
+%prm
+(rhs, len)
+array rhs
+int len: rhs の長さ
+%inst
+リストの新しいインスタンスを作成して、その識別IDを返す。
+
+リストには rhs の最初の len 個の要素を持つ。
 %href
 list_make
-list_new
-list_delete
-
-%group
-構築関数
-
-;--------------------
-%index
-list_new
-List 構築
-
-%prm
-self
-var self : インスタンスを格納する変数
-
-%inst
-リスト (List) を構築します。
-
-%href
-list_make
-list_new
-list_delete
-
-%group
-構築関数
 
 ;--------------------
 %index
 list_delete
-List 解体
-
+破棄
 %prm
 self
-inst self : List インスタンス
-
+int self
 %inst
-リスト (List) を解体します。
+リスト self を解体する。以後、self が指すIDは使用すると「おかしな動作」を起こす。
 
-この関数はプログラム終了時に自動で呼び出されるため、通常、呼び出す必要はありません。
-
-%href
-list_make
-list_new
-list_delete
-
-%group
-解体関数
-
-;--------------------
-%index
-list_clone
-List クローン化
-
-%prm
-self, vRef, idx
-inst self : List インスタンス
-var  vRef : クローン化する変数
-int  idx  : 要素番号
-
-%inst
-vRef を、リストの要素 [idx] のクローンにします。
-
-dup 命令のような処理です。
-
-%href
-list_clone
-list_ref
-
-list_get
-list_getv
-
-list_pop
-list_popv
-
-%group
-メンバ関数::取得系
-
-;--------------------
-%index
-list_ref
-List 参照
-
-%prm
-(self, i)
-inst self : List インスタンス
-int  idx  : 要素番号
-
-%inst
-リストの要素 [idx] の参照を返します (擬似的に)。この関数は、代入文の左辺としてのみ使用できます。
-
-%sample
-	list_ref(idx) = 10
-//	list_ref(idx) = "string"	// 型の変換はできません
-
-%href
-list_clone
-list_ref
-
-list_get
-list_getv
-
-list_pop
-list_popv
-
-%group
-メンバ関数::取得系
-
-;--------------------
-%index
-list_get
-List 値の取得
-
-%prm
-(self, idx)
-inst self : List インスタンス
-int  idx  : 要素番号
-
-%inst
-リストの要素 [idx] の値を返します。
-
-※ pop 操作ではないので、要素がリストから取り除かれるということはありません。
-
-%href
-list_clone
-list_ref
-
-list_get
-list_getv
-
-list_pop
-list_popv
-
-%group
-メンバ関数::取得系
-
-;--------------------
-%index
-list_getv
-List 値の取得 ( 変数 )
-
-%prm
-self, result, idx
-inst self : List インスタンス
-var result  : 返値を格納する変数
-int idx     : 要素番号
-
-%inst
-リストの要素 [idx] の値を、変数 result に格納します。
-
-※ pop 操作ではないので、要素がリストから取り除かれるということはありません。
-
-%href
-list_clone
-list_ref
-
-list_get
-list_getv
-
-list_pop
-list_popv
-
-%group
-メンバ関数::取得系
-
-;--------------------
-%index
-list_pop
-List 値の取得
-
-%prm
-self, idx
-inst self : List インスタンス
-int  idx  : 要素番号
-
-%inst
-リストの要素 [idx] の値を取得し、返します。取り出した値はリストから取り除かれます。
-
-%href
-list_clone
-list_ref
-
-list_get
-list_getv
-
-list_pop
-list_popv
-
-list_erase
-
-%group
-メンバ関数::取得系
-
-;--------------------
-%index
-list_popv
-List 値の取得 ( 変数 )
-
-%prm
-self, vResult, int idx
-inst self    : List インスタンス
-var  vResult : 返値を格納する変数
-int  idx     : 要素番号
-
-%inst
-リストの要素 [idx] の値を取得し、vResult に格納します。取り出した値はリストから取り除かれます。
-
-%href
-list_clone
-list_ref
-
-list_get
-list_getv
-
-list_pop
-list_popv
-
-list_erase
-
-%group
-メンバ関数::取得系
-
-;--------------------
-%index
-list_vartype
-List 型の取得
-
-%prm
-(self, idx)
-inst self : リスト
-int  idx  : 要素番号
-
-%inst
-リストの要素 [idx] の値の型を返します。
-
-%href
-;list_vartype
-
-%group
-メンバ関数::取得系
-
-;--------------------
-%index
-list_set
-List 値の変更
-
-%prm
-self, value, idx = 0
-inst self  : List インスタンス
-any  value : 設定する値
-int  idx   : 要素番号
-
-%inst
-リストの要素 [idx] の値を value に変更します。
-
-%href
-list_set
-list_setv
-
-list_insert
-list_insertv
-
-list_double
-list_add
-
-%group
-メンバ関数::操作系
-
-;--------------------
-%index
-list_setv
-List 値の変更 ( 変数 )
-
-%prm
-self, vValue, idx
-inst self   : List インスタンス
-var  vValue : 設定する値が格納された変数
-int  idx    : 要素番号
-
-%inst
-リストの要素 [idx] に、vValue の値を設定します。
-
-%href
-list_set
-list_setv
-
-list_insert
-list_insertv
-
-list_double
-list_add
-
-%group
-メンバ関数::操作系
-
-;--------------------
-%index
-list_insert
-List 要素の挿入
-
-%prm
-self, value, idx = 0
-inst self  : List インスタンス
-any  value : 挿入する要素の値
-int  idx   : 新たな要素の番号
-
-%inst
-リストの [idx] に、新しい要素を挿入します。idx を省略する ( idx == 0 にする ) と、リストの先頭に追加されます。
-
-idx は他のメンバのそれと違い、「idx >= list_size(...)」を許可します。この場合は、要素 [idx] に値を設定するために、要素を自動で生成します。
-
-%href
-list_set
-list_setv
-
-list_insert
-list_insertv
-
-list_double
-list_add
-
-%group
-メンバ関数::操作系
-
-;--------------------
-%index
-list_insertv
-List 要素の挿入 ( 変数 )
-
-%prm
-self, vValue, idx
-inst self   : List インスタンス
-var  vValue : 挿入する要素の値が格納された変数
-int  idx    : 新しい要素の番号
-
-%inst
-リストの [idx] に新しい要素を挿入します。
-
-%href
-list_set
-list_setv
-
-list_insert
-list_insertv
-
-list_double
-list_add
-
-%group
-メンバ関数::操作系
-
-;--------------------
-%index
-list_double
-List 要素の倍化
-
-%prm
-self, idx
-inst self : リスト
-int  idx  : 要素番号
-
-%inst
-リストの [idx] の要素の直後に、同じ値の要素を挿入します。
-
-%href
-list_set
-list_setv
-
-list_insert
-list_insertv
-
-list_double
-list_add
-
-%group
-メンバ関数::操作系
-
-;--------------------
-%index
-list_add
-List 要素の追加 ( 末尾 )
-
-%prm
-self, value
-inst self  : List インスタンス
-any  value : 追加する要素の値
-
-%inst
-リストの末尾に要素を追加します。
-
-%href
-list_set
-list_setv
-
-list_insert
-list_insertv
-
-list_double
-list_add
-
-%group
-メンバ関数::操作系
-
-;--------------------
-%index
-list_erase
-List 要素の除去
-
-%prm
-self, idx
-inst self : List インスタンス
-int  idx  : 要素番号
-
-%inst
-リストの要素 [i] をリストから取り除きます。
-
-%href
-list_erase
-
-%group
-メンバ関数::操作系
-
-;--------------------
-%index
-list_loc_move
-List 要素の移動
-
-%prm
-self, from, to
-inst self : List インスタンス
-int  from : 移動前の要素番号
-int  to   : 移動後の要素番号
-
-%inst
-リストの要素 [from] を、[to] の位置に移動させます。
-
-※要素値の複写は発生しないので、低コストな処理です。
-
-%href
-
-%group
-メンバ関数::順序操作系
-
-;--------------------
-%index
-list_loc_swap
-List 要素の交換
-
-%prm
-self, pos1, pos2
-inst self : List インスタンス
-int  pos1 : 交換する要素番号
-int  pos2 : 〃
-
-%inst
-リストの要素 [pos1] と [pos2] を交換します。
-
-※要素値の複写は発生しないので、低コストな処理です。
-
-%href
-
-%group
-メンバ関数::順序操作系
-
-;--------------------
-%index
-list_rotate
-List 要素の巡回
-
-%prm
-self
-inst self : List インスタンス
-
-%inst
-リストの要素をすべて、一つ前にずらします。つまり、先頭の要素を末尾に移動させる処理です。
-
-%href
-list_rotate
-list_rotate_back
-
-%group
-メンバ関数::順序操作系
-
-;--------------------
-%index
-list_rotate_back
-List 要素の巡回 ( 逆回転 )
-
-%prm
-self
-inst self : List インスタンス
-
-%inst
-リストの要素をすべて、一つ後ろにずらします。つまり、末尾の要素を先頭に移動させる処理で、list_rotate の丁度逆です。
-
-%href
-list_rotate
-list_rotate_back
-
-%group
-メンバ関数::順序操作系
-
-;--------------------
-%index
-list_reverse
-List 要素順の反転
-
-%prm
-self
-inst self : List インスタンス
-
-%inst
-リストの要素の順番を逆にします。
-
-(ex) [1, 2, 3, 4] を反転すると [4, 3, 2, 1] になる。
-
-%href
-
-%group
-メンバ関数::順序操作系
-
-;--------------------
-%index
-list_clear
-List 消去 [i]
-
-%prm
-self
-inst self : List インスタンス
-
-%inst
-すべての要素をリストから取り除く統一関数です。
-
-%href
-
-%group
-メンバ関数::コンテナ操作系
-
-;--------------------
-%index
-list_chain
-List 連結 [i]
-
-%prm
-self, src
-inst self : List インスタンス
-inst src  : 〃
-
-%inst
-リスト src に含まれるすべての要素を、self の末尾に追加する統一関数です。src の要素の順番は維持されます。
-
-%href
-
-%group
-メンバ関数::コンテナ操作系
-
-;--------------------
-%index
-list_copy
-List 複写 [i]
-
-%prm
-self, src
-inst self : List インスタンス
-inst src  : 〃
-
-%inst
-リスト src を self に複写する統一関数です。元々あったリストは list_clear によって消去されます。
-
-%href
-list_clear
-list_chain
-
-%group
-メンバ関数::コンテナ操作系
-
-;--------------------
-%index
-list_swap
-List コンテナ交換 [i]
-
-%prm
-self, obj
-inst self : List インスタンス
-inst obj   : 〃
-
-%inst
-self と obj に含まれるすべての要素を交換します。それぞれの要素の順番は維持されます。
-
-%href
-
-%group
-メンバ関数::コンテナ操作系
-
-;--------------------
-%index
-list_iter_init
-List 反復子::初期化 [i]
-
-%prm
-self, iterData
-inst self     : List インスタンス
-var  iterData : 反復情報
-
-%inst
-リストの反復子を初期化する統一関数です。
-
-@ alg_iter が内部で使用するだけです。
-
-%href
-list_iter_init
-list_iter_next
-
-%group
-メンバ関数::反復子操作系
-
-;--------------------
-%index
-list_iter_next
-List 反復子::更新 [i]
-
-%prm
-(self, vIt, iterData)
-inst self    : List インスタンス
-var vIt      : 反復子
-var iterData : 反復情報
-
-%inst
-リストの反復子を更新する統一関数です。この返値が偽なら、次の反復を行わずに終了します。
-
-@ alg_iter が内部で使用するだけです。
-
-%href
-list_iter_init
-list_iter_next
-
-%group
-メンバ関数::反復子操作系
+リストのすべてのインスタンスは、ちょうど1回だけ list_delete されるのが望ましい。ただし、プログラムの終了時に list_delete を使う必要はない。
 
 ;--------------------
 %index
 list_size
-List 要素数 [i]
-
+要素数
 %prm
 (self)
-inst self : List インスタンス
+%inst
+リスト self が持つ要素の個数を返却する。length みたいなもの。
+
+;--------------------
+%index
+list_regular_ix
+インデックスの正規化
+%prm
+(self, ix)
+int self
+int ix: 位置
+%inst
+リストの ix 番目の位置を表す整数値を返す。
+
+1. ix が0以上、list_size(self)未満なら、ix がそのまま返される。
+2. ix が -list_size(self) 以上 -1 以下なら、ix + list_size(self) が返る。ようするに、最後の要素の位置を -1, その前の位置を -2, などと使用できる。
+3. いずれでもない場合はエラーになる。
+
+この関数は、「ix」という名前の引数に対して自動的に使用される。ユーザが使う必要はない。(位置を表す「i」は、上述の 1. の値しか受けつけない。)
+
+;--------------------
+%index
+list_vartype
+要素の型ID
+%prm
+(self, ix)
+int self
+int ix: 要素番号
+%inst
+リストの ix 番目の要素の値の型ID(vartype)を返す。
+
+;--------------------
+%index
+list_get
+値の取得
+%prm
+(self, ix)
+inst self
+int ix: 要素番号
+%inst
+リストの ix 番目の要素の値を返す。
+%href
+list_regular_ix
+list_try_get
+
+;--------------------
+%index
+list_try_get
+値の取得
+%prm
+(self, result, i)
+int self
+var result: 返値を格納する変数
+int i: 要素番号
+return: 成功したら真
+%inst
+リストの i 番目の要素の値を、変数 result に代入する。
+
+i の値が不正なら失敗し、偽(0)が返る。
+
+;--------------------
+%index
+list_try_dup
+クローン変数の作成
+%prm
+(self, ref, i)
+int self
+var ref: クローン変数にする変数
+int i: 要素番号
+return int: 成功したなら真
+%inst
+リストの i 番目の要素のクローン変数にする。
+
+クローン変数は、その要素の型が変更されたときや、self の要素数が増加したときに使用できなくなる。
+
+i の値が不正であるときには失敗し、0 が返却される。
+%href
+dup
+list_try_dup
+
+;--------------------
+%index
+list_ref
+弱参照
+%prm
+(self, ix)
+int self
+int ix: 要素番号
+return: ix 番目の要素への弱参照
+%inst
+リストの ix 番目の要素のクローン変数を作って返す。
+
+特に使う必要はない。
+%href
+list_try_dup
+
+;--------------------
+%index
+list_setv
+要素の上書き
+%prm
+self, value, ix
+int self
+var value: 設定する値
+int ix: 要素番号
+%inst
+リストの ix 番目の要素の値を value に変更する。要素の型は value の型に変更される。
+
+;--------------------
+%index
+list_insertv
+要素の挿入
+%prm
+self, value, ix
+int self
+var value: 挿入する値
+int ix: 挿入する位置
+%inst
+リストの ix 番目に、新しい要素を挿入する。
+
+ix に list_size() 以上の値を指定した場合もエラーにならない。要素数が (ix + 1) になるように、要素が挿入される。
+%href
+list_pushv_front
+list_pushv_back
+
+;--------------------
+%index
+list_pushv_front
+先頭への挿入
+%prm
+self, value
+int self
+var value: 挿入する値
+%inst
+リストの先頭に値 value の要素を挿入する。
+
+;--------------------
+%index
+list_pushv_back
+末尾への挿入
+%prm
+self, value
+int self
+var value: 挿入する値
+%inst
+リストの末尾に値 value の要素を挿入する。
+
+;--------------------
+%index
+list_erase
+要素の除去
+%prm
+self, ix
+int self
+int ix: 要素番号
+%inst
+リストの ix 番目の要素をリストから取り除く。
+%href
+list_erase_range
+
+;--------------------
+%index
+list_erase_range
+要素の除去 (範囲)
+%prm
+self, ix_beg, ix_end
+int self
+int ix_beg, ix_end: 位置
+%inst
+リストの [ix_beg, ix_end) 番目の要素をリストから除去する。
+
+;--------------------
+%index
+list_iter_swap
+要素の交換
+%prm
+self, ix0, ix1
+int self
+int ix0, ix1: 交換する要素の位置
+%inst
+リストの ix0, ix1 番目の要素を互いに交換する。
+
+;--------------------
+%index
+list_iter_move
+要素の移動
+%prm
+self, ix_src, ix_dst
+int self
+int ix_src: 要素の移動前の位置
+int ix_dst: 要素の移動後の位置
 
 %inst
-リストに含まれる要素の数を返す統一関数です。
+リストの ix_src 番目の要素を、ix_dst 番目に移動させる。
 
-%note
-list_length と同一。
-
-%href
-
-%group
-メンバ関数
+;--------------------
+%index
+list_reverse
+要素順の反転
+%prm
+self
+int self
+int ix_beg, ix_end: 要素の範囲
+%inst
+リストの [ix_beg, ix_end) 番目の要素の順番を逆にする。
 
 ;--------------------
 %index
 list_count
-List 要素の数え上げ
-
+要素の数え上げ
 %prm
 (self)
-inst self : List インスタンス
-var val : 数える値
-
+int self
+var val: 数える値
 %inst
-リストに含まれる、値が val の要素の数を返す関数です。
-
-%note
-%href
-
-%group
-メンバ関数
+リストに含まれる、値が val に等しい要素の個数を返す。(型の違う値は、異なる値とみなされる。)
 
 ;--------------------
 %index
-list_is_valid
-List 要素番号が有効かどうか
-
+list_compare
+比較
 %prm
-(self, idx)
-inst self : List インスタンス
-int  idx  : 要素番号
+(self, rhs)
+int self
+int rhs: リストのインスタンスID
+return int: 比較値
+%inst
+2つのリスト self, rhs を辞書順で比較する。
+
+違う型の値は、型ID(vartype)の小さいほうが小さい、とみなす。
+
+返される比較値は、次のような意味をもつ整数値である。
+ 負 → self が rhs より小さい。
+ 0  → self と rhs が等しい。
+ 正 → self が rhs より大きい。
+
+;--------------------
+%index
+list_clear
+消去
+%prm
+self
+int self
+%inst
+リストからすべての要素を除去する。
+
+;--------------------
+%index
+list_chain
+連結
+%prm
+self, rhs
+int self
+int rhs: リストのインスタンスID
 
 %inst
-リストの要素番号として idx が適切かどうかを返します。
-適切な番号なら true ( 0 以外 ) を、不適切なら false ( = 0 ) を返します。
-
-%href
-
-%group
-メンバ関数
+リスト rhs に含まれる各要素を、self の末尾に追加する。
 
 ;--------------------
 %index
 list_dbglog
-List デバッグ出力
+デバッグ出力
 
 %prm
 self
-inst self : List インスタンス
-
+int self
 %inst
-リストのすべての要素を logmes で出力します。
+リストのすべての要素を logmes で出力する。
 
+;--------------------
+%index
+list_is_sorted
+整列済みか？
+%prm
+(self, sort_mode)
+int self
+int sort_mode (= abdata_sort_ascending): 順序
+return int: リストが整列済みなら真
+%inst
+リストが整列されていることを確認する。
+
+sort_mode は次の2つのどちらか。
+abdata_sort_ascending: 昇順 (小さいものが前、大きいものが後)
+abdata_sort_decending: 降順 (大きいものが前、小さいものが後)
 %href
+list_compare
+list_sort
 
-%group
-メンバ関数::デバッグ
+list_equal_range
+list_lb
+list_ub
+list_sorted_insertv
+list_sorted_erasev
+
+;--------------------
+%index
+list_sort
+整列
+%prm
+self, sort_mode
+int self
+int sort_mode (= abdata_sort_ascending): 順序
+%inst
+リストを整列する。
+%href
+list_is_sorted
+
+;--------------------
+%index
+list_equal_range
+値の範囲
+%prm
+self, value, lb, ub, sort_mode
+int self
+var value
+var lb, ub: 値の下界と上界
+int sort_mode (= abdata_sort_ascending): 順序
+%inst
+arrlen_equal_range を参照。
+
+この命令はリストが整列済み(list_is_sorted)でなければいけない。
+%href
+list_is_sorted
+
+;--------------------
+%index
+list_sorted_insertv
+整列済みの挿入
+%prm
+self, value, may_dup, sort_mode
+int self
+var value: 挿入する値
+int may_dup (= true): 重複時も挿入するか？
+int sort_mode (= abdata_sort_ascending): 順序
+%inst
+整列済み(list_is_sorted)のリストに、順序を保つように値 value を持つ要素を挿入する。
+
+may_dup に false (= 0) を指定したとき、リストに値が value に等しい要素があるなら、要素を挿入しない。
+
+;--------------------
+%index
+list_sorted_erasev
+整列済みの除去
+%prm
+self, value, max_count, sort_mode
+int self
+var value: 挿入する値
+int max_count (= ∞): 除去する要素数の最大
+int sort_mode (= abdata_sort_ascending): 順序
+%inst
+整列済み(list_is_sorted)のリストから、値 value に等しい要素を除去する。
+
+値 value に等しい要素が複数ある場合、最大で max_count 個だけ取り除く。
