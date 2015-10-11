@@ -130,6 +130,13 @@
 	assert arr_len == 3 + 1
 	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
 	
+	//œ‹
+	arrlen_iota           arr, arr_len, 5
+	arrlen_erase_range    arr, arr_len, 2, -1
+	expected = 0, 1, 4
+	assert arr_len == 5 - 2
+	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
+	
 	//ŒğŠ·
 	arrlen_iota      arr, arr_len, 7
 	arrlen_iter_swap arr, arr_len, 1, 3

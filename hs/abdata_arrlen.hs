@@ -108,6 +108,22 @@ self ‚©‚ç“Yš [lb, ub) ‚Ì—v‘f‚ğœ‹‚·‚éB
 
 
 %index
+arrlen_erase_many
+—v‘f‚ğœ‹
+%prm
+(self, len, i, count)
+array self
+var len
+int i: œ‹‚·‚é—v‘f‚ÌˆÊ’u
+int count: œ‹‚·‚é—v‘f‚ÌŒÂ”
+%inst
+self ‚Ì i ”Ô–Ú‚©‚ç count ŒÂ‚Ì—v‘f‚ğœ‹‚·‚éB
+%href
+arrlen_erase_range
+
+
+
+%index
 arrlen_iter_swap
 —v‘f‚ğŒğŠ·
 %prm

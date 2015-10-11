@@ -93,19 +93,28 @@
 	}
 	return
 	
+#deffunc arrlen_erase_many array self, var len, int i, int count
+	if ( i < 0 ) {
+		arrlen_erase_many self, len, arrlen_regular_ix_or_end(self, len, i), count
+		return
+	}
+	assert arrlen_is_valid_len(self, len)
+	assert 0 <= i
+	assert 0 <= count && i + count <= len
+	
+	repeat len - (i + count), i
+		self(cnt) = self(count + cnt)
+	loop
+	len -= count
+	return
+	
 #deffunc arrlen_erase_range array self, var len, int lb, int ub
 	
 	if ( lb < 0 || ub < 0 ) {
 		arrlen_erase_range self, len, arrlen_regular_ix_or_end(self, len, lb), arrlen_regular_ix_or_end(self, len, ub)
 		return
 	}
-	assert arrlen_is_valid_len(self, len)
-	assert 0 <= lb && lb <= len
-	assert 0 <= ub && ub <= len
-	repeat len - ub
-		self(lb + cnt) = self(ub + cnt)
-	loop
-	len -= ub - lb
+	arrlen_erase_many self, len, lb, ub - lb
 	return
 	
 #deffunc arrlen_iter_swap array self, int len, int i0, int i1,  \
