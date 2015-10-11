@@ -23,6 +23,16 @@
 	}
 	assert : end 1
 	
+#defcfunc arrlen_regular_ix_or_end array self, int len, int i
+	if ( 0 <= i && i <= len ) {
+		return i
+	} else : if ( i == abdata_ix_end ) {
+		return len
+	} else : if ( i < 0 && i + len >= 0 ) {
+		return i + len
+	}
+	assert : end 1
+	
 #deffunc arrlen_clear array self, var len
 	dim self
 	len = 0
@@ -67,12 +77,16 @@
 	
 #deffunc arrlen_insert_no_init array self, var len, int idx
 	assert arrlen_is_valid_len(self, len)
-	assert idx >= 0
-	if( idx < len ) {
+	
+	if ( idx < 0 ) {
+		arrlen_insert_no_init self, len, arrlen_regular_ix_or_end(self, len, idx)
+		
+	} else : if ( idx < len ) {
 		repeat len - idx
 			self(len - cnt) = self(len - cnt - 1)
 		loop
 		len ++
+		
 	} else {
 		self(idx) = self(0)
 		len += idx - len + 1
@@ -80,6 +94,11 @@
 	return
 	
 #deffunc arrlen_erase_range array self, var len, int lb, int ub
+	
+	if ( lb < 0 || ub < 0 ) {
+		arrlen_erase_range self, len, arrlen_regular_ix_or_end(self, len, lb), arrlen_regular_ix_or_end(self, len, ub)
+		return
+	}
 	assert arrlen_is_valid_len(self, len)
 	assert 0 <= lb && lb <= len
 	assert 0 <= ub && ub <= len
@@ -125,6 +144,10 @@
 #deffunc arrlen_reverse array self, int len, int i_beg, int i_end,  \
 	local tmp
 
+	if ( i_beg < 0 || i_end < 0 ) {
+		arrlen_reverse self, len, arrlen_regular_ix_or_end(self, len, i_beg), arrlen_regular_ix_or_end(self, len, i_end)
+		return
+	}
 	assert 0 <= i_beg && i_beg <= len
 	assert 0 <= i_end && i_end <= len
 	if ( i_beg <= i_end ) {

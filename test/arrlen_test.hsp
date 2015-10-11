@@ -104,6 +104,27 @@
 	assert arrlen_compare(arr, arr_len,  arr3, arr3_len) < 0
 	assert arrlen_compare(arr, arr_len,  arr3, arr3_len - 1) > 0
 	
+	//‘}“ü
+	
+	//”ÍˆÍ“à
+	arrlen_iota           arr, arr_len, 3
+	arrlen_insert_no_init arr, arr_len, 1 : arr(1) = 9
+	expected = 0, 9, 1, 2
+	assert arr_len == 3 + 1
+	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
+	
+	//”ÍˆÍŠO
+	arrlen_iota           arr, arr_len, 3
+	arrlen_insert_no_init arr, arr_len, 5 : arr(5) = 9
+	assert arr_len == 5 + 1
+	
+	//––”ö
+	arrlen_iota           arr, arr_len, 3
+	arrlen_insert_no_init arr, arr_len, abdata_ix_end : arr(arr_len - 1) = 9
+	expected = 0, 1, 2, 9
+	assert arr_len == 3 + 1
+	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
+	
 	//ŒğŠ·
 	arrlen_iota      arr, arr_len, 7
 	arrlen_iter_swap arr, arr_len, 1, 3
