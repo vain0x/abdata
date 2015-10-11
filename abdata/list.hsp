@@ -131,6 +131,10 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	
 #modfunc listImpl_setv var value, int i
 
+	if ( i < 0 ) {
+		listImpl_setv thismod, value, listImpl_regular_ix(thismod, i)
+		return
+	}
 	assert 0 <= i && i < len_
 	if ( vartype(value) == ap_type_at(i) ) {
 		abbox_unsafe_set_v arrs_(ap_type_at(i)), ap_ix_at(i), value
