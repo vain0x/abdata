@@ -10,12 +10,15 @@
 #include "abdata/all.hsp"
 ```
 
+* [hs](hs) フォルダの中身を「hsphelp」フォルダに移動すると、F1キーから各命令のヘルプが見れるようになる。
+
 * abdata ライブラリの全ファイルは誰でも自由に使用、再配布可能。
   * [NYSL (煮るなり焼くなり好きにしろライセンス)](http://www.kmonos.net/nysl/) に従う。
 
 ## 内容
 * [abdata/all.hsp](abdata/all.hsp): すべてのヘッダを一括で \#include します。
-* [sample](sample): 簡単なサンプルです。
+* [hs](hs): F1ヘルプ
+* [test](test): テストコード
 
 * 後方互換用
   * [abdata/backward_compatible.as](abdata/backward_compatible.as): 古い abdata をそこそこ動かせる。
@@ -29,7 +32,7 @@
 ### コンテナの操作
 以下のような関数がサポートされます。ただしコンテナによっては定義されていないこともあります。詳しい仕様は実装を参照してください。
 
-関数の実際の名前は ``コンテナ名_関数名`` です。(例: `list_new`, `unor_make()`, ...)
+関数の実際の名前は ``コンテナ名_関数名`` です。(例: `list_make()`, `unor_delete`, ...)
 
 * 構築
   * make()
