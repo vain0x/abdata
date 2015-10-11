@@ -1,4 +1,4 @@
-#include "../abdata/pair.hsp"
+#include "../abdata/all.hsp"
 
 	//get
 	pair_new p, "l", "r"

@@ -1,5 +1,4 @@
-#include "../abdata/list.hsp"
-#include "../abdata/mod_ref.hsp"
+#include "../abdata/all.hsp"
 
 #ifndef true
  #define global true 1
