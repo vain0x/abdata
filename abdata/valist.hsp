@@ -72,7 +72,7 @@ len_:
 	return len_
 	
 #modcfunc valistImpl_vartype int i
-	return ap_type_at(i)
+	return ap_type_at(valistImpl_regular_ix(thismod, i))
 	
 #modcfunc valistImpl_regular_ix int i
 
