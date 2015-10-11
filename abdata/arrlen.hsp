@@ -93,6 +93,19 @@
 	}
 	return
 	
+#deffunc arrlen_iter_move array self, int len, int i_src, int i_dst,  \
+	local tmp, local i, local dir
+
+	assert 0 <= i_src && i_src < len
+	assert 0 <= i_dst && i_dst < len
+	if ( i_src < i_dst ) { dir = 1 } else { dir = -1 }
+	tmp = self(i_src)
+	for i, i_src, i_dst, dir
+		self(i) = self(i + dir)
+	next
+	self(i_dst) = tmp
+	return
+	
 #defcfunc arrlen_is_sorted array self, int len,  \
 	local is_sorted
 	

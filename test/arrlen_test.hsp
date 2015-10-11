@@ -115,4 +115,18 @@
 		}
 	loop
 	
+	//ˆÚ“®
+	
+	//‘Oi
+	arrlen_iota      arr, arr_len, 5
+	arrlen_iter_move arr, arr_len, 1, 4
+	expected = 0, 2, 3, 4, 1
+	assert arrlen_compare(arr, arr_len, expected, length(expected)) == 0
+	
+	//Œã‘Ş
+	arrlen_iota      arr, arr_len, 5
+	arrlen_iter_move arr, arr_len, 3, 0
+	expected = 3, 0, 1, 2, 4
+	assert arrlen_compare(arr, arr_len, expected, length(expected)) == 0
+	
 	logmes "arrlen test completed."

@@ -121,6 +121,20 @@ self の i0, i1 番目の2つの要素を交換する。
 
 
 %index
+arrlen_iter_move
+要素を交換
+%prm
+(self, len, i_src, i_dst)
+array self
+int len
+int i_src: 移動する要素の位置
+int i_dst: 移動後の位置
+%inst
+self の i_src 番目の要素を、i_dst 番目に移動する。
+
+
+
+%index
 arrlen_is_sorted
 整列済みか？
 %prm
