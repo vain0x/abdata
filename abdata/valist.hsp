@@ -447,10 +447,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #deffunc valist_iter_move int self, int i_src, int i_dst,  \
 	local aps
 	
-	assert 0 <= i_src && i_src < valist_size(self)
-	assert 0 <= i_dst && i_dst < valist_size(self)
 	valistImpl_dup_aps__ abdataInsts(self), aps
-	stdarray_iter_move aps, i_src, i_end
+	stdarray_iter_move aps, valist_regular_ix(self, i_src), valist_regular_ix(self, i_dst)
 	return
 #global
 
