@@ -3,7 +3,7 @@
 
 #include "abheader.hsp"
 #include "abbox.hsp"
-#include "mod_shiftArray.hsp"
+#include "arrlen.hsp"
 #include "mod_nullmod.hsp"
 #include "mod_pvalptr.hsp"
 #include "mod_compare.hsp"
@@ -158,14 +158,12 @@ result を、i 番目の要素のデータへのクローン変数にする。
 		loop
 	}
 	
-	// 新要素に対応する ap を挿入
-	stdarray_insert_room aps_, i
+	// 新要素に対応する ap のための要素を挿入
+	arrlen_insert_no_init aps_, len_, i
 	
 	// 新要素を挿入
 	abbox_add arrs_(vartype(value)), value
 	aps_(i) = ap_make(vartype(value), stat)
-	
-	len_ ++
 	return
 	
 #modfunc valistImpl_erase_range int i_beg, int i_end
@@ -174,21 +172,17 @@ result を、i 番目の要素のデータへのクローン変数にする。
 		valistImpl_erase_range thismod, valistImpl_regular_ix_or_end(thismod, i_beg), valistImpl_regular_ix_or_end(thismod, i_end)
 		return
 	}
-	if ( i_beg >= i_end ) { return }
+	assert 0 <= i_beg && i_beg <= i_end && i_end <= len_
 	
 	repeat i_end - i_beg, i_beg
 		abbox_unsafe_erase_at arrs_(ap_type_at(cnt)), ap_ix_at(cnt)
 	loop
 	
-	stdarray_erase_range aps_, len_, i_beg, i_end
-	len_ -= i_end - i_beg
+	arrlen_erase_range aps_, len_, i_beg, i_end
 	return
 	
 #modfunc valistImpl_iter_swap int i0, int i1
-
-	assert 0 <= i0 && i0 < len_
-	assert 0 <= i1 && i1 < len_
-	stdarray_iter_swap aps_, i0, i1
+	arrlen_iter_swap aps_, len_, i0, i1
 	return
 	
 #modfunc valistImpl_sort int sort_mode,  \
@@ -448,7 +442,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	local aps
 	
 	valistImpl_dup_aps__ abdataInsts(self), aps
-	stdarray_iter_move aps, valist_regular_ix(self, i_src), valist_regular_ix(self, i_dst)
+	arrlen_iter_move aps, valist_size(self), i_src, i_dst
 	return
 #global
 
@@ -456,13 +450,8 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #deffunc valist_reverse__ int self, int i_beg, int i_end,  \
 	local aps
 	
-	if ( i_end < 0 ) {
-		valist_reverse__ self, i_beg, valist_regular_ix_or_end(self, i_end)
-		return
-	}
-	assert 0 <= i_beg && i_beg <= i_end && i_end <= valist_size(self)
 	valistImpl_dup_aps__ abdataInsts(self), aps
-	stdarray_reverse aps, i_beg, i_end
+	arrlen_reverse aps, valist_size(self), i_beg, i_end
 	return
 #global
 
