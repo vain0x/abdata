@@ -139,7 +139,7 @@ vals_:
 // 
 // @ Šù‘¶‚È‚çŽ¸”s
 //------------------------------------------------
-#define global unorImpl_add(%1, %2 = "", %3 = stt_zero@) %tabdata \
+#define global unorImpl_add(%1, %2 = "", %3 = defvar@__abdata) %tabdata \
 	_cat@__abdata(%i,@__tmp) = %3 :\
 	unorImpl_addv %1, %2, _cat@__abdata(%o,@__tmp)
 
@@ -258,7 +258,7 @@ vals_:
 	if ( stat ) { return idx }
 	
 	if ( bNoAdd == false ) {
-		unorImpl_addValue_by_index_ thismod, idx, key, stt_zero@
+		unorImpl_addValue_by_index_ thismod, idx, key, defvar@__abdata
 		return stat
 	}
 	return -1
@@ -357,7 +357,7 @@ vals_:
 #define global unor_set(%1,%2="",%3)  unorImpl_set  abdataInsts(%1), %2, %3
 #define global unor_setv(%1,%2="",%3) unorImpl_setv abdataInsts(%1), %2, %3
 
-#define global unor_add(%1, %2 = "",%3 = stt_zero@) unorImpl_add abdataInsts(%1), %2, %3
+#define global unor_add(%1, %2 = "",%3 = defvar@__abdata) unorImpl_add abdataInsts(%1), %2, %3
 #define global unor_addv(%1, %2, %3) unorImpl_addv abdataInsts(%1), %2, %3
 
 #define global unor_erase(%1, %2) unorImpl_erase abdataInsts(%1), %2

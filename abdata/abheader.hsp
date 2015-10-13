@@ -5,7 +5,7 @@
 
 	// Œx‰ñ”ğ
 	dim stt_allinsts@__abdata
-	dim stt_zero@
+	dim defvar@__abdata
 
 #endif //defined(_debug)
 

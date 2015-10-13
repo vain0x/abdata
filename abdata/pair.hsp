@@ -23,7 +23,7 @@
 #define global ctype pairImpl_empty(%1) 0
 #define global pairImpl_length pairImpl_size
 
-#define global pairImpl_new(%1, %2 = stt_zero@, %3 = stt_zero@) %tabdata %i0 %i0 \
+#define global pairImpl_new(%1, %2 = defvar@__abdata, %3 = defvar@__abdata) %tabdata %i0 %i0 \
 	_cat@__abdata(%p0,@__tmp) = %2 :\
 	_cat@__abdata(%p1,@__tmp) = %3 :\
 	newmod %1, abdata_pair_impl@, _cat@__abdata(%p0,@__tmp), _cat@__abdata(%p1,@__tmp)  :\
@@ -227,13 +227,13 @@
 #define global ctype pair_count(%1, %2) pairImpl_count(abdataInsts(%1), %2)
 #define global pair_length pair_size
 
-#define global pair_new(%1, %2 = stt_zero@, %3 = stt_zero@) \
+#define global pair_new(%1, %2 = defvar@__abdata, %3 = defvar@__abdata) \
 	pairImpl_new abdataInsts_var, %2, %3 : %1 = stat
 	
 #define global pair_delete(%1) pairImpl_delete abdataInsts(%1)
 
 #module
-#define global ctype pair_make(%1 = stt_zero@, %2 = stt_zero@) \
+#define global ctype pair_make(%1 = defvar@__abdata, %2 = defvar@__abdata) \
 	pair_make_impl(%1, %2)
 	
 #defcfunc pair_make_impl var lhs, var rhs,  local newObj

@@ -151,7 +151,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	// 要素数の自動拡張
 	if ( i > len_ ) {
 		repeat i - len_, len_
-			listImpl_insertv thismod, stt_zero@, cnt
+			listImpl_insertv thismod, defvar@__abdata, cnt
 		loop
 	}
 	
@@ -231,13 +231,13 @@ result を、i 番目の要素のデータへのクローン変数にする。
 //##############################################################################
 // wrapper
 
-#define global list_new(%1, %2 = 0, %3 = stt_zero@) \
+#define global list_new(%1, %2 = 0, %3 = defvar@__abdata) \
 	%1 = list_make_replicate(%2, %3)
 
 #define global list_delete(%1) \
 	delmod abdataInsts(%1)
 
-#define global ctype list_make(%1 = 0, %2 = stt_zero@) \
+#define global ctype list_make(%1 = 0, %2 = defvar@__abdata) \
 	list_make_replicate(%1, %2)
 	
 #define global list_clear(%1) \
@@ -442,7 +442,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
-#define global list_resize(%1, %2, %3 = stt_zero@) \
+#define global list_resize(%1, %2, %3 = defvar@__abdata) \
 	list_resize__ %1, %2, %3
 
 #deffunc list_resize__ int self, int new_len, var value,  \

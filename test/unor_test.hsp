@@ -90,7 +90,7 @@
 	unor_add un, "#3", "2"
 	two_str = "2"
 	assert unor_count_value(un, two_str) == 1
-	assert unor_count_value(un, stt_zero@) == 1
+	assert unor_count_value(un, defvar@__abdata) == 1
 	assert unor_count_key(un, "#2") == 1
 	assert unor_count_key(un, "#4") == 0
 	
