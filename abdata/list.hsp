@@ -339,7 +339,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	// abdataInsts_var の伸長
 	#define __len length(abdataInsts_var)
 		if ( __len > 1 ) : if ( varuse(abdataInsts_var(__len - 2)) ) {
-			abdataInsts_var(__len * 2) = abNullmod
+			abdataInsts_var(__len * 2) = nullmod@__abdata
 		}
 	#undef __len
 	
@@ -592,8 +592,5 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #endif //defined(_debug)
 
 #define global listNull abdataNull
-
-	listNull = list_make()
-	assert listNull == 0
 
 #endif

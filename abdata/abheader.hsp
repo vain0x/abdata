@@ -5,7 +5,6 @@
 
 	// Œx‰ñ”ğ
 	dim stt_allinsts@__abdata
-	dim stt_nullinst@__abdata
 	dim stt_zero@
 
 // abdata “à•”‚Åg—p‚·‚é assert –½—ß
@@ -21,16 +20,15 @@
 #define ctype _cat@__abdata(%1,%2)%1%2
 #define _empty@__abdata//
 
-#ifndef abdataInsts
- #define global ctype abdataInsts(%1) stt_allinsts@__abdata(%1)
-#endif
-
+#define global ctype abdataInsts(%1) stt_allinsts@__abdata(%1)
 #define global abdataInsts_var stt_allinsts@__abdata
-#define global abdataNull      stt_nullinst@__abdata //=0
+#define global abdataNull      0
 
 #define global abdata_sort_ascending 0
 #define global abdata_sort_decending 1
 #define global abdata_ix_end (-127)
 #define global stdarray_index_of_end (-127)
+
+	dimtype nullmod@__abdata, 5 // vartype("struct")
 
 #endif

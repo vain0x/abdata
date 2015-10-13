@@ -3,7 +3,6 @@
 
 #include "abheader.hsp"
 #include "mod_compare.hsp"
-#include "mod_nullmod.hsp"
 #include "mod_pvalptr.hsp"
 #include "mod_ref.hsp"
 #include "arrlen.hsp"
@@ -12,5 +11,8 @@
 #include "pair.hsp"
 #include "list.hsp"
 #include "unor.hsp"
+
+	assert@hsp list_make() == 0
+	assert varuse(abdataInsts(abdataNull)) != 0
 
 #endif
