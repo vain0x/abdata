@@ -2,6 +2,15 @@
 #define ig_abdata_unor_hsp
 
 #module abdata_unor_impl keys_, vals_
+/**
+keys_:
+	連想配列 self に格納されている要素のキー全体からなるリスト。
+	常に整列済み。重複要素を持たない。
+
+vals_:
+	リスト。
+	vals_(i) が、キー keys_(i) に対応する値を持つ。
+//*/
 
 #define ctype operate_strcmp(%1,%2,%3) ( (%1) != (%3) %2 0 )
 #define true  1
@@ -19,7 +28,7 @@
 	return getaptr(thismod)
 	
 //------------------------------------------------
-// 内部用の読み書き
+// 内部メンバの読み書き用
 //------------------------------------------------
 #modfunc unorImpl_dup_members@abdata_unor_impl array keys, array vals
 	dup keys, keys_

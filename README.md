@@ -111,12 +111,7 @@
 * 2つの abbox がそれぞれ lhs, rhs の値を持つ。
 
 #### unor
-* STL の std::unordered ではなく、Loki::AssocVector みたいなもの。
-* キーの配列 keys と値の配列 values がある。
-* keys(i) と values(i) が対応している。
-* keys は常に整列済みであり、重複する要素をもたない。
-  * 整列済みなので2分探索を利用できる。
-* 仕組み上、キーには文字列以外も使えるようにできるが、`_get()` の引数に変数を渡さなければならなくなって、不便である。
+* 実装 [abdata/unor.hsp](abdata/unor.hsp) のコメントを参照。
 
 #### tnode
 * **非推奨**
