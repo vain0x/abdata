@@ -1,21 +1,13 @@
 #ifndef        ig_abdata_header_hsp
 #define global ig_abdata_header_hsp
 
-#ifdef _DEBUG
+#ifdef _debug
 
 	// Œx‰ñ”ğ
 	dim stt_allinsts@__abdata
 	dim stt_zero@
 
-// abdata “à•”‚Åg—p‚·‚é assert –½—ß
- #define global abAssert(%1 = 0, %2 = "") \
-	if ( false == (%1) ) { if ( "" != (%2) ) { logmes "[Error] abdata: " + (%2) } : assert }
-
-#else //defined(_DEBUG)
-
- #define global abAssert(%1 = 0, %2 = 0) :
-
-#endif //defined(_DEBUG)
+#endif //defined(_debug)
 
 #define ctype _cat@__abdata(%1,%2)%1%2
 #define _empty@__abdata//
