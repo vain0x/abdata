@@ -9,6 +9,9 @@
 `*_count`: 現在はある値を持つ要素の個数を数えるコマンド。古いものは `*_size` を使う。
 //*/
 
+#include "mod_shiftArray.hsp"
+#include "tnode.hsp"
+
 #enum global SortMode_Ascending = 0
 #enum global SortMode_Decending = 1
 
