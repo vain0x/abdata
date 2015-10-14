@@ -182,6 +182,23 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	arrlen_iter_swap aps_, len_, i0, i1
 	return
 	
+#modfunc listImpl_permutate array perm,  \
+	local done, local i
+	
+	assert length(perm) >= len_
+	if ( len_ > 0 ) {
+		dim done, len_
+		repeat len_ - 1
+			// cnt を含む巡回置換を適用する
+			i = cnt : done(cnt) = true
+			while ( done(perm(i)) == false )
+				abdata_swap_i aps_(i), aps_(perm(i))
+				i = perm(i) : done(i) = true
+			wend
+		loop
+	}
+	return
+	
 #modfunc listImpl_sort int sort_mode,  \
 	local p, local p1, local e1, local p2, local e2, local size_segment, local size_seg_merged, \
 	local aps_tmp, local l_ref, local r_ref, local cmp
@@ -224,6 +241,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 		
 		if ( len_ <= size_segment ) { break }
 	loop
+	
 	return
 	
 #global
@@ -314,6 +332,9 @@ result を、i 番目の要素のデータへのクローン変数にする。
 
 #define global list_reverse(%1, %2 = 0, %3 = abdata_ix_end) \
 	list_reverse__ %1, %2, %3
+
+#define global list_permutate(%1, %2) \
+	listImpl_permutate abdataInsts(%1), %2
 
 #define global list_sort(%1, %2 = abdata_sort_ascending) \
 	listImpl_sort abdataInsts(%1), %2

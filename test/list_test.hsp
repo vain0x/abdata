@@ -227,6 +227,20 @@
 	list_sort con0
 	assert list_compare(con0, list_make_iota(10)) == 0
 	
+	//permutate
+	repeat 3
+		// –³ìˆ×‚È‡—ñ‚ğ¶¬
+		con0 = list_make_iota(10)
+		list_shuffle con0
+		repeat 10
+			perm(cnt) = list_get(con0, cnt)
+		loop
+		
+		con1 = list_make_iota(10)
+		list_permutate con1, perm
+		assert list_compare(con0, con1) == 0
+	loop
+	
 	//•¡”‚ÌŒ^
 	con2 = list_make()
 	list_push_back con2, "b"
