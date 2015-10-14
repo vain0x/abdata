@@ -480,6 +480,25 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
+#define global list_shuffle(%1, %2 = 0, %3 = abdata_ix_end) \
+	list_shuffle__ %1, %2, %3
+
+#deffunc list_shuffle__ int self, int i_beg, int i_end,  \
+	local aps, local i
+	
+	if ( i_beg < 0 || i_end < 0 ) {
+		list_shuffle__ self, list_regular_ix_or_end(self, i_beg), list_regular_ix_or_end(self, i_end)
+		return
+	}
+	listImpl_dup_aps__ abdataInsts(self), aps
+	// Durstenfeld's algorithm
+	for i, list_size(self), 0, -1
+		abdata_swap_i aps(i - 1), aps(rnd(i))
+	next
+	return
+#global
+
+#module
 #defcfunc list_compare int self, int rhs,  \
 	local len, local cmp, local l_ref, local r_ref
 	

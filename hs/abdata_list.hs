@@ -261,6 +261,17 @@ int ix_beg, ix_end: 要素の範囲
 
 ;--------------------
 %index
+list_shuffle
+要素順の無作為化
+%prm
+self
+int self
+int ix_beg, ix_end: 要素の範囲
+%inst
+リストの [ix_beg, ix_end) 番目の要素の順番を一様に無作為化する。
+
+;--------------------
+%index
 list_count
 要素の数え上げ
 %prm
