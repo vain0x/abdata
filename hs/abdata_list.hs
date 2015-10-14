@@ -382,7 +382,22 @@ int sort_mode (= abdata_sort_ascending): 順序
 %inst
 リストを整列する。
 %href
+list_ix_sort
 list_is_sorted
+
+;--------------------
+%index
+list_ix_sort
+整列
+%prm
+self, perm, sort_mode
+int self
+array perm: 置換が代入される配列
+int sort_mode (= abdata_sort_ascending): 順序
+%inst
+リストを整列する。
+
+perm は「もともと i 番目にあった要素が perm(i) 番目に移動した」ということを表す配列変数。
 
 ;--------------------
 %index

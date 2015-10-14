@@ -219,6 +219,14 @@
 		assert list_get(con1, cnt) <= list_get(con1, cnt + 1)
 	loop
 	
+	//インデックスソート
+	con0 = list_make_iota(10)
+	list_reverse con0
+	list_ix_sort con0, perm
+	repeat 10
+		assert perm(cnt) == 10 - cnt - 1
+	loop
+	
 	//shuffle
 	// iota の攪乱順列になっていることを確認
 	con0 = list_make_iota(10)
