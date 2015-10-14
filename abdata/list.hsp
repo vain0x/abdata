@@ -24,6 +24,7 @@ len_:
 #define true 1
 #define false 0
 #define int_max 0x7FFFFFFF
+#define sizeof_int 4
 
 #define ctype ap_type_at(%1) ap_type(aps_(%1))
 #define ctype ap_ix_at(%1)   ap_ix(aps_(%1))
@@ -200,10 +201,22 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	return
 	
 #modfunc listImpl_sort int sort_mode,  \
-	local p, local p1, local e1, local p2, local e2, local size_segment, local size_seg_merged, \
-	local aps_tmp, local l_ref, local r_ref, local cmp
+	local perm
 	
-	dim aps_tmp, len_
+	listImpl_ix_sort thismod, perm, sort_mode
+	return
+	
+#modfunc listImpl_ix_sort array ix_dst, int sort_mode,  \
+	local p, local p1, local e1, local p2, local e2, local size_segment, local size_seg_merged, \
+	local ix_tmp, local aps_tmp, local l_ref, local r_ref, local cmp
+	
+	dim ix_tmp, len_
+	dim ix_dst, len_
+	repeat len_
+		ix_tmp(cnt) = cnt
+		ix_dst(cnt) = cnt
+	loop
+	
 	repeat
 		size_segment = 1 << cnt
 		
@@ -217,31 +230,32 @@ result を、i 番目の要素のデータへのクローン変数にする。
 			
 			if ( size_seg_merged < size_segment ) { break }
 			
+			// 区間 [p1, e1) と [p2, e2) をマージ
 			repeat size_seg_merged
 				if ( p2 >= e2 ) {
-					aps_tmp(cnt) = aps_(p1) : p1 ++
+					ix_tmp(cnt) = ix_dst(p1) : p1 ++
 				} else : if ( p1 >= e1 ) {
-					aps_tmp(cnt) = aps_(p2) : p2 ++
+					ix_tmp(cnt) = ix_dst(p2) : p2 ++
 				} else {
-					listImpl_unsafe_dup thismod, l_ref, p1
-					listImpl_unsafe_dup thismod, r_ref, p2
+					listImpl_unsafe_dup thismod, l_ref, ix_dst(p1)
+					listImpl_unsafe_dup thismod, r_ref, ix_dst(p2)
 					cmp = abdata_compare(l_ref, r_ref)
 					if ( cmp == 0 || ((cmp < 0) == (sort_mode == abdata_sort_ascending)) ) {
-						aps_tmp(cnt) = aps_(p1) : p1 ++
+						ix_tmp(cnt) = ix_dst(p1) : p1 ++
 					} else {
-						aps_tmp(cnt) = aps_(p2) : p2 ++
+						ix_tmp(cnt) = ix_dst(p2) : p2 ++
 					}
 				}
 			loop
 			
-			repeat size_seg_merged
-				aps_(p + cnt) = aps_tmp(cnt)
-			loop
+			memcpy ix_dst(p), ix_tmp, size_seg_merged * sizeof_int
 		loop
 		
 		if ( len_ <= size_segment ) { break }
 	loop
 	
+	// aps_ に結果を反映
+	listImpl_permutate thismod, ix_dst
 	return
 	
 #global
@@ -338,6 +352,9 @@ result を、i 番目の要素のデータへのクローン変数にする。
 
 #define global list_sort(%1, %2 = abdata_sort_ascending) \
 	listImpl_sort abdataInsts(%1), %2
+	
+#define global list_ix_sort(%1, %2, %3 = abdata_sort_ascending) \
+	listImpl_ix_sort abdataInsts(%1), %2, %3
 
 #define global ctype list_lb(%1, %2, %3 = abdata_sort_ascending)  list_lb_ub__(%1, %2, %3, 0 /* finds_lb */)
 #define global ctype list_ub(%1, %2, %3 = abdata_sort_ascending)  list_lb_ub__(%1, %2, %3, 1 /* finds_ub */)
