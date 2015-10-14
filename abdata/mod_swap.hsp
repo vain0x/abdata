@@ -1,0 +1,18 @@
+#ifndef ig_abdata_swap_hsp
+#define ig_abdata_swap_hsp
+
+#module
+#deffunc abdata_swap_i var x, var y
+	assert vartype(x) == 4
+	assert vartype(y) == 4
+	if ( x != y ) {
+		x ^= y : y ^= x : x ^= y
+	}
+	return
+	
+#deffunc abdata_swap_v var x, var y,  local t
+	t = x : x = y : y = t
+	return
+#global
+
+#endif
