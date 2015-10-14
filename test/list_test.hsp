@@ -219,6 +219,14 @@
 		assert list_get(con1, cnt) <= list_get(con1, cnt + 1)
 	loop
 	
+	//shuffle
+	// iota ‚Ì˜—‡—ñ‚É‚È‚Á‚Ä‚¢‚é‚±‚Æ‚ğŠm”F
+	con0 = list_make_iota(10)
+	list_shuffle con0
+	assert list_size(con0) == 10
+	list_sort con0
+	assert list_compare(con0, list_make_iota(10)) == 0
+	
 	//•¡”‚ÌŒ^
 	con2 = list_make()
 	list_push_back con2, "b"
