@@ -272,6 +272,19 @@ int ix_beg, ix_end: 要素の範囲
 
 ;--------------------
 %index
+list_permutate
+要素順の指定
+%prm
+self
+int self
+array perm: 置換
+%inst
+リストの i 番目の要素を perm(i) 番目に移動させる。
+
+配列 perm は、[0, list_size(self)) を並び替えた数列でなければいけない。list_regular_ix は適用されない。
+
+;--------------------
+%index
 list_count
 要素の数え上げ
 %prm
