@@ -16,10 +16,10 @@ len_:
 	self ‚ªŽ‚Â—v‘f‚ÌŒÂ”B
 //*/
 
-#define ctype ap_type(%1) (((%1) & 0x7F000000) >> 24)
-#define ctype ap_ix(%1)    ((%1) & 0x00FFFFFF)
-#define ctype ap_make(%1, %2) ((((%1) & 0x7F) << 24) | ap_ix(%2))
-#define vartype_max 7
+#define ctype ap_type(%1) (((%1) & 0xF0000000) >> 28)
+#define ctype ap_ix(%1)    ((%1) & 0x0FFFFFFF)
+#define ctype ap_make(%1, %2) ((((%1) & 0xF) << 28) | ap_ix(%2))
+#define vartype_max 4
 
 #define true 1
 #define false 0
