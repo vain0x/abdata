@@ -16,6 +16,9 @@
 #define global abdataInsts_var stt_allinsts@__abdata
 #define global abdataNull      0
 
+#define true@__abdata 1
+#define false@__abdata 0
+
 #define global abdata_sort_ascending 0
 #define global abdata_sort_decending 1
 #define global abdata_ix_end (-127)

@@ -513,10 +513,10 @@ result を、i 番目の要素のデータへのクローン変数にする。
 		list_dup self, l_ref, i
 		list_dup self, r_ref, i + 1
 		if ( abdata_compare(l_ref, r_ref) * (1 - 2 * sort_mode) > 0 ) {
-			return false
+			return false@__abdata
 		}
 	next
-	return true
+	return true@__abdata
 #global
 
 #module
