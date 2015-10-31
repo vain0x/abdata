@@ -1,0 +1,279 @@
+#ifndef ig_abdata_dict_hsp
+#define ig_abdata_dict_hsp
+
+#module abdata_dict keys_, vals_, hash_, size_, capa_, conflicts_, conflicts_len_
+
+#define assert_unreachable assert : end 1
+#define size_of_int 4
+#define int_max 0x7FFFFFF
+#define true 1
+#define false 0
+
+// hash_ の値の分類
+#define ctype hash_is_legal(%1) ((%1) >= 0)
+#define hash_empty  (-1)
+#define hash_erased (-2)
+
+// 衝突時のポリシー
+#enum global dict_conflict_update = 0
+#enum global dict_conflict_keep
+#enum global dict_conflict_record // 衝突表 conflicts_ に保存
+#enum global dict_conflict_abort
+
+// 線型走査するときのスキップ量
+#define step 3
+
+// 再構成する積載率の閾値
+#define threshold_load_factor 0.8
+
+#define global dict_delete(%1) delmod %1
+
+#define global dict_new(%1, %2 = 4, %3 = 0) \
+	newmod %1, abdata_dict@, %2, %3
+
+#modinit int vtype, int capa
+	dict_init thismod, vtype, capa
+	return getaptr(thismod)
+	
+#modfunc dict_init int vtype, int capa,  \
+	local new_capa
+
+	assert capa >= 0
+	// capa 個の要素を挿入した後の積載率が閾値程度になるくらいの大きさ、stepの倍数ではない数
+	capa_ = limit(int(double(capa) / threshold_load_factor / (step - 1)) * step + 1, 13, int_max)
+	
+	size_ = 0
+	sdim keys_, , capa_
+	dimtype vals_, vtype, capa_
+	dim hash_, capa_
+	memset hash_, 0xFF, capa_ * size_of_int
+	return
+	
+#modcfunc dict_type
+	return vartype(vals_)
+	
+#modcfunc dict_capacity
+	return capa_
+	
+#modcfunc dict_size
+	return size_
+	
+#modcfunc dict_load_factor int inc
+	return double(size_ + inc) / capa_
+	
+#modcfunc dict_hash var key
+	return ((hash_v(key) \ capa_) + capa_) \ capa_
+	
+// Is the (%2)th element busy?
+#define ctype dict_is_busy_elem(%1, %2) \
+	hash_is_legal(hash_(%2))
+	
+#modcfunc dict_needs_rebuild int inc
+	return dict_load_factor(thismod, inc) >= threshold_load_factor
+	
+#modfunc dict_auto_rebuild int inc
+	if ( dict_needs_rebuild(thismod, inc) ) {
+		dict_rebuild thismod
+	}
+	return
+	
+#modfunc dict_rebuild  \
+	local tmp_keys, local tmp_vals, local key, local val, local tmp_cnt
+	
+	dict_copy_to_alist thismod, tmp_keys, tmp_vals
+	tmp_cnt = size_
+	
+	dict_init thismod, vartype(vals_), capa_ * step
+	
+	dict_chain_alist thismod, tmp_keys, tmp_vals, tmp_cnt
+	return
+	
+#modfunc dict_chain var src, int conflict_policy, \
+	local key, local val
+	
+	dict_auto_rebuild thismod, dict_size(src)
+	
+	if ( conflict_policy == dict_conflict_record ) {
+		dict_conflicts_clear thismod
+	}
+	repeat dict_capacity(src)
+		if ( dict_is_busy_elem(src, cnt) ) {
+			dict_dup_kv_at src, cnt, key, val
+			dict_insert_impl thismod, key, val, conflict_policy
+		}
+	loop
+	return
+	
+#modcfunc dict_find_index var key,  \
+	local h, local i
+	
+	h = dict_hash(thismod, key)
+	for i, 0, capa_
+		if ( dict_is_busy_elem(thismod, h) ) {
+			if ( keys_(h) == key ) {
+				return h
+			}
+		}
+		h = (h + step) \ capa_
+	next
+	return -1
+	
+#modcfunc dict_has_key var key
+	return ( dict_find_index(thismod, key) >= 0 )
+	
+#modfunc dict_insert var key, var val, int conflict_policy
+	
+	if ( conflict_policy == dict_conflict_record ) {
+		dict_conflicts_clear thismod
+	}
+	dict_insert_impl thismod, key, val, conflict_policy
+	return
+	
+#modfunc dict_insert_impl var key, var val, int conflict_policy, \
+	local h, local h_bak, local i
+	
+	dict_auto_rebuild thismod, 1
+	h = dict_hash(thismod, key)
+	h_bak = h
+	for i, 0, capa_
+		if ( dict_is_busy_elem(thismod, h) ) {
+			// Conflicts?
+			if ( hash_(h) == h_bak ) { if ( keys_(h) == key ) {
+				switch ( conflict_policy )
+					case dict_conflict_update:
+						vals_(h) = val
+						swbreak
+					case dict_conflict_keep:
+						swbreak
+					case dict_conflict_record:
+						conflicts_(conflicts_len_) = key
+						conflicts_len_ ++
+						swbreak
+					//case dict_conflict_abort:
+					default: assert_unreachable
+				swend
+				return
+			} }
+			
+			// Walk to find space
+			h = (h + step) \ capa_
+			_continue
+			
+		} else {
+			keys_(h) = key
+			vals_(h) = val
+			hash_(h) = h_bak
+			size_ ++
+			return
+		}
+		assert
+	next
+	assert_unreachable
+	
+#modfunc dict_erase var key,  \
+	local h
+	
+	h = dict_find_index(thismod, key)
+	if ( h >= 0 ) {
+		hash_(h) = hash_erased
+		size_ --
+		return true
+	}
+	return false
+	
+#modcfunc dict_get var key
+	return vals_(dict_find_index(thismod, key))
+	
+#define global ctype dict_ref(%1, %2) \
+	ref_ref_expr_template_2(dict_ref__, %1, %2)
+	
+#modcfunc dict_ref__ array ref, var key
+	dup ref, vals_(dict_find_index(thismod, key))
+	return 0
+	
+#modfunc dict_iter_init var h
+	h = 0
+	return
+	
+#modcfunc dict_iter_next_kv var h, var key, var value
+	
+	while ( h < capa_ )
+		if ( dict_is_busy_elem(thismod, h) ) {
+			dict_dup_kv_at thismod, h, key, value
+			h ++
+			return true
+		}
+		h ++
+	wend
+	return false
+	
+#define global dict_iter_kv(%1, %2, %3) %titer \
+	declvar@__abdata _cat@__abdata(%i,@__tmp)                         :\
+	dict_iter_init %1, _cat@__abdata(%p,@__tmp)                       :\
+	declvar@__abdata %2                                               :\
+	declvar@__abdata %3                                               :\
+	while ( dict_iter_next_kv(%1, _cat@__abdata(%p,@__tmp), %2, %3) ) :\
+	//
+	
+#define global dict_iter_kv_end %titer \
+	wend :\
+	%o0  :\
+	//
+	
+#modfunc dict_copy_to_alist array keys, array vals,  \
+	local key, local val, local i
+	
+	sdim keys, , size_
+	dimtype vals, vartype(vals_), size_
+	dict_iter_kv thismod, key, val
+		keys(i) = key
+		vals(i) = val
+		i ++
+	dict_iter_kv_end
+	assert i == size_
+	return size_
+	
+#modfunc dict_chain_alist array keys, array vals, int len, int conflict_policy,  \
+	local key, local val
+	
+	if ( conflict_policy == dict_conflict_record ) {
+		dict_conflicts_clear thismod
+	}
+	repeat len
+		dict_insert_impl thismod, keys(cnt), vals(cnt)
+	loop
+	return
+	
+#modfunc dict_dup_kv_at int h, var key, var val
+
+	assert 0 <= h && h < capa_
+	assert dict_is_busy_elem(thismod, h)
+	dup key, keys_(h)
+	dup val, vals_(h)
+	return
+	
+#modfunc dict_conflicts_clear
+
+	sdim conflicts_
+	conflicts_len_ = 0
+	return
+	
+#modcfunc dict_conflicts_size
+	return conflicts_len_
+	
+#define global dict_conflicts_iter(%1, %2) %tdict %i0 \
+	for _cat(%p,@__tmp), 0, dict_conflicts_size(%1)   :\
+		dict_conflicts_iter__ %1, %2, _cat(%p,@__tmp) :\
+	//
+	
+#define global dict_conflicts_iter_end(%1, %2) %tdict \
+	next :\
+	%o0 //
+	
+#modfunc dict_conflicts_iter__ array ref, int i
+	dup ref, conflicts_(i)
+	return
+	
+#global
+
+#endif
