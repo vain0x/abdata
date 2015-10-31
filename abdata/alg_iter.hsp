@@ -79,6 +79,8 @@
 #define global iter_new(%1, %2) \
 	ARG_TEMP@abdata_iter(new_src) = %1 :\
 	ITER_INST_IDX_VAR(%1) ++ :\
+	declvar@__abdata ITER_INST_NAME(%1) :\
+	declvar@__abdata ITER_REF_DATA(%1)  :\
 	newmod ITER_INST_NAME(%1), abdata_iter@, ARG_TEMP@abdata_iter(new_src) :\
 	dummy_sttm@abdata_iter ITER_INST(%1) /* ref —p‚Ì•Ï”‚ÌŒ^‚ğ‡‚í‚¹‚é */ :\
 	%2_iter_init ITER_INST(%1), ITER_REF_DATA(%1)
