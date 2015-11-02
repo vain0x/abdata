@@ -126,6 +126,19 @@
 		assert dict_conflicts_size(idt) == dict_size(idt)
 	// }
 	
+	// 衝突ポリシーの既定値のテスト
+	// {
+		dim idt
+		
+		// 更新
+		dict_new idt, vartype("int"), , dict_conflict_update
+		repeat 3
+			dict_insert idt, ref_xs("#2"), ref_xi(cnt * 100) /*, omit conflict policy */
+		loop
+		assert dict_size(idt) == 1
+		assert dict_get(idt, ref_xs("#2")) == 200
+	// }
+	
 	return
 #global
 

@@ -37,12 +37,15 @@ dict_init
 self, vtype, size
 int   vtype [vartype_int]: 辞書の値の型の型タイプ値
 int   size  [0]: 要求する初期キャパシティ
+int   conflict_policy [dict_conflict_record]: キー衝突時のポリシー
 %inst
 辞書の中身を全消去する。
 
 初期化後の辞書は、値として vtype 型の値を持つ。
 
 size が指定された場合、少なくとも size 個の要素を追加できる程度の大きさをあらかじめ確保する。(つまり、size 個まではリハッシュされない。 dict_rebuild を参照。)　dict_size や dict_capacity の値が size になるわけではない。
+
+conflict_policy は、辞書に既に存在するキーを挿入しようとしたときの挙動を決める値 (dict_chain を参照)。
 
 辞書の内部実装については dict_auto_rebuild を参照。
 
@@ -127,7 +130,7 @@ int inc [0]: 追加予定の要素の個数
 dict_rebuild
 辞書の再構成(リハッシュ)
 %prm
-self 
+self
 %inst
 dict_auto_rebuild を参照。
 
@@ -138,16 +141,17 @@ dict_chain
 %prm
 self, src, conflict_policy
 var src: 連結する辞書
-int conflict_policy [dict_conflict_update]: キー衝突時のポリシー
+int conflict_policy [dict_conflict_default]: キー衝突時のポリシー
 %inst
 辞書 src が持つ各要素を、self に挿入する。
 
 src と self が同じキーがあるとき、キーが衝突するという。衝突時の挙動は conflict_policy の値にしたがう。
 
+dict_conflict_default: 辞書 self に設定されているポリシーを使う。(dict_init を参照。)
 dict_conflict_update: src の要素で上書きする。(self が持っていたそのキーの値は消える。)
 dict_conflict_keep:   self が持っている要素を残す。
 dict_conflict_record: self の衝突表に記録する。
-dict_conflict_abort:  プログラムを異常終了(end 1)する。
+dict_conflict_abort:  プログラムを異常終了(end 1)する。キー衝突が起きないと分かっているときに使う。
 
 dict_conflict_record を指定した場合、衝突が起きるか否かにかかわらず、self に新しい衝突表が確保される。キーが衝突した要素は、self には挿入されず、代わりに self の衝突リストにキーが記録される。したがって、このオプションでは次のようなスクリプトが推奨される。
 
@@ -274,6 +278,17 @@ conflict_policy は、self がすでに挿入されるキーを含んでいるときの処理を表す。dic
 keys は昇順でなくてもいい。
 %href
 dict_copy_to_alist
+
+;--------------------
+%index
+dict_conflict_policy
+辞書のキー衝突時のポリシーの既定値
+%prm
+(self)
+%inst
+dict_insert などの命令の conflict_policy 引数を省略したときの値。
+
+値の意味については dict_chain を参照。
 
 ;--------------------
 %index
