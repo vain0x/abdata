@@ -48,13 +48,18 @@
 		assert r == cnt
 	loop
 	
-	// try_get テスト
+	// try_get, try_dup テスト
 	repeat n + 4, -2
 		dimtype r, vartype("label")
 		// 範囲内ならすべて成功し、範囲外ならすべて失敗する
 		assert dict_try_get(idt, r, ref_xs("#" + cnt)) == (0 <= cnt && cnt < n)
 		if ( stat ) {
 			assert vartype(r) == vartype("int")
+			assert r == cnt
+		}
+	
+		assert dict_try_dup(idt, r, ref_xs("#" + cnt)) == (0 <= cnt && cnt < n)
+		if ( stat ) {
 			assert r == cnt
 		}
 	loop

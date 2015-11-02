@@ -237,6 +237,15 @@ conflicts_, conflicts_len_:
 #modcfunc dict_get var key
 	return vals_(dict_find_index(thismod, key))
 	
+#modcfunc dict_try_dup array ref, var key
+
+	if ( dict_find_index(thismod, key) >= 0 ) {
+		dup ref, vals_(stat)
+		return true
+	} else {
+		return false
+	}
+	
 #define global ctype dict_ref(%1, %2) \
 	ref_ref_expr_template_2(dict_ref__, %1, %2)
 	

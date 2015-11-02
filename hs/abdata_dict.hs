@@ -220,6 +220,18 @@ dict_ref
 
 ;--------------------
 %index
+dict_try_dup
+辞書の要素への参照
+%prm
+(self, ref, key)
+array ref: クローン変数にする配列変数
+var key: キー
+return: 成功したら真
+%inst
+辞書がキー key を持つ場合は、ref をそれに対応する要素へのクローン変数にして、true を返す。持たない場合は、false を返す。
+
+;--------------------
+%index
 dict_ref
 辞書の要素の値の参照
 %prm
