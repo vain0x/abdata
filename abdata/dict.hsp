@@ -226,6 +226,14 @@ conflicts_, conflicts_len_:
 	}
 	return false
 	
+#modcfunc dict_try_get var result, var key
+
+	if ( dict_find_index(thismod, key) >= 0 ) {
+		result = vals_(stat)
+		return true
+	}
+	return false
+	
 #modcfunc dict_get var key
 	return vals_(dict_find_index(thismod, key))
 	
