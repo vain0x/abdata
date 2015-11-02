@@ -196,6 +196,17 @@ return: 除去されたなら真
 
 ;--------------------
 %index
+dict_try_get
+辞書の要素値の取得
+%prm
+(self, result, key)
+var result: 値を代入する変数
+var key: 値を取得したい要素のキー
+return: 成功したら真
+%inst
+辞書がキー key を持つ場合は、それに対応する値を result に代入して、true を返す。持たない場合は、false を返す。
+;--------------------
+%index
 dict_get
 辞書の要素の値
 %prm

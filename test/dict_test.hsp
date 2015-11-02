@@ -48,6 +48,17 @@
 		assert r == cnt
 	loop
 	
+	// try_get テスト
+	repeat n + 4, -2
+		dimtype r, vartype("label")
+		// 範囲内ならすべて成功し、範囲外ならすべて失敗する
+		assert dict_try_get(idt, r, ref_xs("#" + cnt)) == (0 <= cnt && cnt < n)
+		if ( stat ) {
+			assert vartype(r) == vartype("int")
+			assert r == cnt
+		}
+	loop
+	
 	// iter_kv のテスト
 	sdim keys, , n
 	dim  vals, n
