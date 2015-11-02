@@ -145,14 +145,15 @@ conflicts_, conflicts_len_:
 	return
 	
 #modcfunc dict_find_index var key,  \
-	local h, local i
+	local h, local h_key, local i
 	
-	h = dict_hash(thismod, key)
+	h_key = dict_hash(thismod, key)
+	h = h_key
 	for i, 0, capa_
 		if ( dict_is_busy_elem(thismod, h) ) {
-			if ( keys_(h) == key ) {
+			if ( hash_(h) == h_key ) { if ( keys_(h) == key ) {
 				return h
-			}
+			} }
 		}
 		h = (h + step) \ capa_
 	next
