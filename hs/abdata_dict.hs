@@ -51,7 +51,7 @@ conflict_policy は、辞書に既に存在するキーを挿入しようとしたときの挙動を決める値
 
 ;--------------------
 %index
-dict_type
+dict_vartype
 辞書の値の型
 %prm
 (self)

@@ -79,7 +79,7 @@ conflicts_, conflicts_len_:
 	conflict_policy_ = dict_conflict_policy(thismod, conflict_policy_opt)
 	return
 	
-#modcfunc dict_type
+#modcfunc dict_vartype
 	return vartype(vals_)
 	
 #modcfunc dict_capacity
