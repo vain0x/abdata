@@ -3,6 +3,25 @@
 
 #module abdata_dict keys_, vals_, hash_, size_, capa_, conflicts_, conflicts_len_
 
+/**
+keys_, vals, hash_:
+	いずれも長さ capa_ の配列変数。この3つを合わせてルート配列と呼ぶ。
+	キー keys_(h) に対応する値が変数 vals_(h) に保存される。
+	hash_(h) はキー keys_(h) のハッシュ値。
+	ただし、空き要素の hash_(h) には特殊な定数 hash_(empty|erase) が割り当てられる。
+	
+capa_:
+	上述の通り、ルート配列の長さ。
+	
+size_:
+	辞書が実際に持っている要素の個数。
+	すなわち、ルート配列のなかで hash_is_legal(hash_(h)) となる要素の個数。
+	
+conflicts_, conflicts_len_:
+	arrlen ペアで、str 型配列変数を表す。衝突表と呼ぶ。
+	詳しくは dict_conflict_record を参照。
+//*/
+
 #define assert_unreachable assert : end 1
 #define size_of_int 4
 #define int_max 0x7FFFFFF
