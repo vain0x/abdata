@@ -50,6 +50,23 @@ conflict_policy は、辞書に既に存在するキーを挿入しようとしたときの挙動を決める値
 辞書の内部実装については dict_auto_rebuild を参照。
 
 ;--------------------
+%inst
+dict_new_multi
+多重辞書の構築
+%prm
+self, vtype, capa
+%inst
+dict_new と同様。ただし、これにより構築された辞書を多重辞書と呼ぶ。
+
+多重辞書はキー1つに対して複数の要素を持てる。
+
+そのため、挿入時(dict_insert)にキー衝突は生じない。conflict_policy 引数は無視される。
+
+dict_get, dict_erase などの、キーに対応する値がちょうど1個であると信じている命令や関数を多重辞書に使用することはできない。
+%href
+dict_is_multi
+
+;--------------------
 %index
 dict_vartype
 辞書の値の型
@@ -78,6 +95,17 @@ return: 辞書が格納している要素の個数
 辞書が実際に持っている要素の個数。
 %href
 dict_capacity
+
+;--------------------
+%inst
+dict_is_multi
+辞書が多重辞書であるか？
+%prm
+(self)
+%inst
+多重辞書なら真を返す。
+%href
+dict_new_multi
 
 ;--------------------
 %index

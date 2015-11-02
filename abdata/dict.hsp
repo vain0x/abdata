@@ -19,6 +19,7 @@ size_:
 	
 conflict_policy_:
 	既存キーを挿入しようとしたときの既定の挙動。
+	多重辞書のときは dict_conflict_multi になる。
 	
 conflicts_, conflicts_len_:
 	arrlen ペアで、str 型配列変数を表す。衝突表と呼ぶ。
@@ -41,6 +42,7 @@ conflicts_, conflicts_len_:
 #enum global dict_conflict_update
 #enum global dict_conflict_keep
 #enum global dict_conflict_record // 衝突表 conflicts_ に保存
+#enum global dict_conflict_multi  // 多重辞書
 #enum global dict_conflict_abort  // 衝突が絶対に起きないことの表明
 
 #define ctype dict_conflict_is_valid(%1) \
@@ -56,6 +58,9 @@ conflicts_, conflicts_len_:
 
 #define global dict_new(%1, %2 = 4, %3 = 0, %4 = dict_conflict_default) \
 	newmod %1, abdata_dict@, %2, %3, %4
+	
+#define global dict_multi_new(%1, %2 = _empty@__abdata, %3 = _empty@__abdata) \
+	dict_new %1, %2, %3, dict_conflict_multi
 
 #modinit int vtype, int capa, int conflict_policy_opt
 
@@ -76,7 +81,7 @@ conflicts_, conflicts_len_:
 	dim hash_, capa_
 	memset hash_, 0xFF, capa_ * size_of_int
 	
-	conflict_policy_ = dict_conflict_policy(thismod, conflict_policy_opt)
+	conflict_policy_ = dict_conflict_policy(thismod, conflict_policy_opt, /* on_init */ true)
 	return
 	
 #modcfunc dict_vartype
@@ -96,13 +101,22 @@ conflicts_, conflicts_len_:
 	
 // Return default conflict policy if dict_conflict_default is given
 // 内部では conflict_policy_opt 引数値の正規化にも使う。
-#modcfunc dict_conflict_policy int conflict_policy_opt
-	if ( conflict_policy_opt == dict_conflict_default ) {
+#modcfunc dict_conflict_policy int conflict_policy_opt, int on_init
+
+	assert dict_conflict_is_valid(conflict_policy_opt)
+	// 既定値(dict_conflict_default)に対しては既定値を返す。
+	// また、多重辞書は挿入時に指定されたキー衝突時ポリシーを無視する。
+	if ( conflict_policy_opt == dict_conflict_default || (on_init != false && conflict_policy_ == dict_conflict_multi) ) {
 		return conflict_policy_
+		
 	} else {
-		assert dict_conflict_is_valid(conflict_policy_opt)
+		// Accept dict_conflict_multi only if on_init is true
+		assert conflict_policy_opt != dict_conflict_multi || on_init != false
 		return conflict_policy_opt
 	}
+	
+#modcfunc dict_is_multi
+	return dict_conflict_policy(thismod) == dict_conflict_multi
 	
 // Is the (%2)th element busy?
 #define ctype dict_is_busy_elem(%1, %2) \
@@ -194,13 +208,16 @@ conflicts_, conflicts_len_:
 						conflicts_(conflicts_len_) = key
 						conflicts_len_ ++
 						swbreak
+					case dict_conflict_multi:
+						goto *LDictInsertImpl_walk_to_find_space
+						
 					//case dict_conflict_abort:
 					default: assert_unreachable
 				swend
 				return
 			} }
 			
-			// Walk to find space
+		:*LDictInsertImpl_walk_to_find_space
 			h = (h + step) \ capa_
 			_continue
 			
