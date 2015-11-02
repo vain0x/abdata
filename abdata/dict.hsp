@@ -215,12 +215,10 @@ conflicts_, conflicts_len_:
 	next
 	assert_unreachable
 	
-#modfunc dict_erase var key,  \
-	local h
+#modfunc dict_erase var key
 	
-	h = dict_find_index(thismod, key)
-	if ( h >= 0 ) {
-		hash_(h) = hash_erased
+	if ( dict_find_index(thismod, key) >= 0 ) {
+		hash_(stat) = hash_erased
 		size_ --
 		return true
 	}
