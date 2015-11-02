@@ -292,15 +292,6 @@ dict_insert などの命令の conflict_policy 引数を省略したときの値。
 
 ;--------------------
 %index
-dict_conflicts_size
-辞書の衝突リストの長さ
-%prm
-(self)
-%href
-dict_conflicts_iter
-
-;--------------------
-%index
 dict_conflicts_iter
 辞書の衝突リストを反復
 %prm

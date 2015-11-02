@@ -303,6 +303,7 @@ conflicts_, conflicts_len_:
 	conflicts_len_ = 0
 	return
 	
+// Number of keys conflicted at the last insertion
 #modcfunc dict_conflicts_size
 	return conflicts_len_
 	
