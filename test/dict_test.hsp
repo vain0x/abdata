@@ -11,7 +11,7 @@
 	
 	// 構築テスト、容量のチェック
 	dict_new mdt, vartype("struct"), n
-	assert dict_type(mdt) == vartype("struct")
+	assert dict_vartype(mdt) == vartype("struct")
 	assert dict_capacity(mdt) >= n
 	assert dict_size(mdt) == 0
 	
