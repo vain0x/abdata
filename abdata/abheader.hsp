@@ -1,36 +1,30 @@
 #ifndef        ig_abdata_header_hsp
 #define global ig_abdata_header_hsp
 
-#ifdef _DEBUG
+#ifdef _debug
+	#define declvar@__abdata(%1) if 0 { dim %1 }
+#else
+	#define declvar@__abdata(%1) :
+#endif //defined(_debug)
 
-	// Œx‰ñ”ğ
-	dim stt_allinsts@__abdata
-	dim stt_nullinst@__abdata
-	dim stt_zero@
-
-// abdata “à•”‚Åg—p‚·‚é assert –½—ß
- #define global abAssert(%1 = 0, %2 = "") \
-	if ( false == (%1) ) { if ( "" != (%2) ) { logmes "[Error] abdata: " + (%2) } : assert }
-
-#else //defined(_DEBUG)
-
- #define global abAssert(%1 = 0, %2 = 0) :
-
-#endif //defined(_DEBUG)
+	declvar@__abdata stt_allinsts@__abdata
+	declvar@__abdata defvar@__abdata
 
 #define ctype _cat@__abdata(%1,%2)%1%2
 #define _empty@__abdata//
 
-#ifndef abdataInsts
- #define global ctype abdataInsts(%1) stt_allinsts@__abdata(%1)
-#endif
-
+#define global ctype abdataInsts(%1) stt_allinsts@__abdata(%1)
 #define global abdataInsts_var stt_allinsts@__abdata
-#define global abdataNull      stt_nullinst@__abdata //=0
+#define global abdataNull      0
+
+#define true@__abdata 1
+#define false@__abdata 0
 
 #define global abdata_sort_ascending 0
 #define global abdata_sort_decending 1
 #define global abdata_ix_end (-127)
 #define global stdarray_index_of_end (-127)
+
+	dimtype nullmod@__abdata, 5 // vartype("struct")
 
 #endif

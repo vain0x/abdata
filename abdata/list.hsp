@@ -1,13 +1,6 @@
 #ifndef ig_abdata_list_hsp
 #define ig_abdata_list_hsp
 
-#include "abheader.hsp"
-#include "abbox.hsp"
-#include "arrlen.hsp"
-#include "mod_nullmod.hsp"
-#include "mod_pvalptr.hsp"
-#include "mod_compare.hsp"
-
 #module abdata_list_impl arrs_, aps_, len_
 
 /**
@@ -23,10 +16,10 @@ len_:
 	self が持つ要素の個数。
 //*/
 
-#define ctype ap_type(%1) (((%1) & 0x7F000000) >> 24)
-#define ctype ap_ix(%1)    ((%1) & 0x00FFFFFF)
-#define ctype ap_make(%1, %2) ((((%1) & 0x7F) << 24) | ap_ix(%2))
-#define vartype_max 7
+#define ctype ap_type(%1) (((%1) & 0xF0000000) >> 28)
+#define ctype ap_ix(%1)    ((%1) & 0x0FFFFFFF)
+#define ctype ap_make(%1, %2) ((((%1) & 0xF) << 28) | ap_ix(%2))
+#define vartype_max 4
 
 #define true 1
 #define false 0
@@ -158,7 +151,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	// 要素数の自動拡張
 	if ( i > len_ ) {
 		repeat i - len_, len_
-			listImpl_insertv thismod, stt_zero@, cnt
+			listImpl_insertv thismod, defvar@__abdata, cnt
 		loop
 	}
 	
@@ -238,13 +231,13 @@ result を、i 番目の要素のデータへのクローン変数にする。
 //##############################################################################
 // wrapper
 
-#define global list_new(%1, %2 = 0, %3 = stt_zero@) \
+#define global list_new(%1, %2 = 0, %3 = defvar@__abdata) \
 	%1 = list_make_replicate(%2, %3)
 
 #define global list_delete(%1) \
 	delmod abdataInsts(%1)
 
-#define global ctype list_make(%1 = 0, %2 = stt_zero@) \
+#define global ctype list_make(%1 = 0, %2 = defvar@__abdata) \
 	list_make_replicate(%1, %2)
 	
 #define global list_clear(%1) \
@@ -346,7 +339,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 	// abdataInsts_var の伸長
 	#define __len length(abdataInsts_var)
 		if ( __len > 1 ) : if ( varuse(abdataInsts_var(__len - 2)) ) {
-			abdataInsts_var(__len * 2) = abNullmod
+			abdataInsts_var(__len * 2) = nullmod@__abdata
 		}
 	#undef __len
 	
@@ -449,7 +442,7 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #global
 
 #module
-#define global list_resize(%1, %2, %3 = stt_zero@) \
+#define global list_resize(%1, %2, %3 = defvar@__abdata) \
 	list_resize__ %1, %2, %3
 
 #deffunc list_resize__ int self, int new_len, var value,  \
@@ -520,10 +513,10 @@ result を、i 番目の要素のデータへのクローン変数にする。
 		list_dup self, l_ref, i
 		list_dup self, r_ref, i + 1
 		if ( abdata_compare(l_ref, r_ref) * (1 - 2 * sort_mode) > 0 ) {
-			return false
+			return false@__abdata
 		}
 	next
-	return true
+	return true@__abdata
 #global
 
 #module
@@ -599,8 +592,5 @@ result を、i 番目の要素のデータへのクローン変数にする。
 #endif //defined(_debug)
 
 #define global listNull abdataNull
-
-	listNull = list_make()
-	assert listNull == 0
 
 #endif

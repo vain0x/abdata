@@ -1,11 +1,18 @@
-#ifndef ig_abdata_all_as
-#define ig_abdata_all_as
+#ifndef ig_abdata_all_hsp
+#define ig_abdata_all_hsp
 
-#include "alg_iter.hsp"
-#include "mod_shiftArray.hsp"
+#include "abheader.hsp"
+#include "mod_compare.hsp"
+#include "mod_pvalptr.hsp"
+#include "mod_ref.hsp"
 #include "arrlen.hsp"
+#include "abbox.hsp"
+#include "alg_iter.hsp"
+#include "pair.hsp"
 #include "list.hsp"
 #include "unor.hsp"
-#include "pair.hsp"
+
+	assert@hsp list_make() == 0
+	assert varuse(abdataInsts(abdataNull)) != 0
 
 #endif

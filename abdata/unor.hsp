@@ -1,13 +1,16 @@
 #ifndef ig_abdata_unor_hsp
 #define ig_abdata_unor_hsp
 
-#include "abheader.hsp"
-#include "list.hsp"
-#include "alg_iter.hsp"
-#include "mod_pvalptr.hsp"
-#include "mod_ref.hsp"
+#module abdata_unor_impl keys_, vals_
+/**
+keys_:
+	連想配列 self に格納されている要素のキー全体からなるリスト。
+	常に整列済み。重複要素を持たない。
 
-#module abdata_unor_impl mlistKey, mlistValue
+vals_:
+	リスト。
+	vals_(i) が、キー keys_(i) に対応する値を持つ。
+//*/
 
 #define ctype operate_strcmp(%1,%2,%3) ( (%1) != (%3) %2 0 )
 #define true  1
@@ -20,16 +23,16 @@
 // [i] 構築
 //------------------------------------------------
 #modinit
-	mlistKey = list_make()
-	mlistValue = list_make()
+	keys_ = list_make()
+	vals_ = list_make()
 	return getaptr(thismod)
 	
 //------------------------------------------------
-// 内部用の読み書き
+// 内部メンバの読み書き用
 //------------------------------------------------
 #modfunc unorImpl_dup_members@abdata_unor_impl array keys, array vals
-	dup keys, mlistKey
-	dup vals, mlistValue
+	dup keys, keys_
+	dup vals, vals_
 	return
 	
 //------------------------------------------------
@@ -40,7 +43,7 @@
 // @ *_get_try_v_()   : *_get_v_ の、キーが存在しないとき失敗し false を返す版。
 //------------------------------------------------
 #modfunc unorImpl_getv_by_index_ int i, var result, int bRemove
-	list_getv mlistValue, result, i
+	list_getv vals_, result, i
 	
 	if ( bRemove ) {
 		unorImpl_erase_by_index_ thismod, i
@@ -81,7 +84,7 @@
 // 参照化 ( 命令形式 )
 //------------------------------------------------
 #modfunc unorImpl_dup_by_index_ var vRef, int i
-	list_dup mlistValue, vRef, i
+	list_dup vals_, vRef, i
 	return
 	
 #modfunc unorImpl_dup str key, var vRef
@@ -89,8 +92,8 @@
 	return
 	
 #modfunc unorImpl_dup_kv_by_index_@abdata_unor_impl var key, var value, int i
-	list_dup mlistKey,     key, i
-	list_dup mlistValue, value, i
+	list_dup keys_,     key, i
+	list_dup vals_, value, i
 	return
 	
 //------------------------------------------------
@@ -110,7 +113,7 @@
 // 型の取得 ( 関数形式 )
 //------------------------------------------------
 #modcfunc unorImpl_vartype_by_index_ int i
-	return list_vartype( mlistValue, i )
+	return list_vartype( vals_, i )
 	
 #define global ctype unorImpl_vartype(%1,%2="") unorImpl_vartype_(%1, %2)
 #modcfunc unorImpl_vartype_ str key
@@ -128,7 +131,7 @@
 	return
 	
 #modfunc unorImpl_setv_by_index_ int i, var vValue
-	list_setv mlistValue, vValue, i
+	list_setv vals_, vValue, i
 	return
 	
 //------------------------------------------------
@@ -136,7 +139,7 @@
 // 
 // @ 既存なら失敗
 //------------------------------------------------
-#define global unorImpl_add(%1, %2 = "", %3 = stt_zero@) %tabdata \
+#define global unorImpl_add(%1, %2 = "", %3 = defvar@__abdata) %tabdata \
 	_cat@__abdata(%i,@__tmp) = %3 :\
 	unorImpl_addv %1, %2, _cat@__abdata(%o,@__tmp)
 
@@ -158,16 +161,16 @@
 	return
 	
 #modfunc unorImpl_erase_by_index_ int i
-	list_erase mlistKey,   i
-	list_erase mlistValue, i
+	list_erase keys_,   i
+	list_erase vals_, i
 	return
 	
 //------------------------------------------------
 // [i] 完全消去
 //------------------------------------------------
 #modfunc unorImpl_clear
-	list_clear mlistKey
-	list_clear mlistValue
+	list_clear keys_
+	list_clear vals_
 	return
 	
 //------------------------------------------------
@@ -199,13 +202,13 @@
 	if ( cmp ) { return cmp }
 	
 	unorImpl_dup_members rhs, keys, vals
-	repeat list_size(mlistKey)
-		list_dup mlistKey, lhs_key, cnt
+	repeat list_size(keys_)
+		list_dup keys_, lhs_key, cnt
 		list_dup     keys, rhs_key, cnt
 		cmp = (lhs_key != rhs_key)
 		if ( cmp ) { break }
 		
-		list_dup mlistValue, lhs_elem, cnt
+		list_dup vals_, lhs_elem, cnt
 		list_dup       vals, rhs_elem, cnt
 		cmp = abdata_compare(lhs_elem, rhs_elem)
 		if ( cmp ) { break }
@@ -216,20 +219,20 @@
 // [i] 反復子::初期化
 //------------------------------------------------
 #modfunc unorImpl_iter_init var iterData
-	list_iter_init mlistKey, iterData
+	list_iter_init keys_, iterData
 	return
 	
 //------------------------------------------------
 // [i] 反復子::更新
 //------------------------------------------------
 #modcfunc unorImpl_iter_next var vIt, var iterData
-	return list_iter_next( mlistKey, vIt, iterData )
+	return list_iter_next( keys_, vIt, iterData )
 	
 //------------------------------------------------
 // [i] 要素数
 //------------------------------------------------
 #modcfunc unorImpl_size
-	return list_size( mlistKey )
+	return list_size( keys_ )
 	
 #define global unorImpl_length unorImpl_size
 #define global ctype unorImpl_empty(%1) ( unorImpl_size(%1) == 0 )
@@ -241,7 +244,7 @@
 	return ( unorImpl_getIndex( thismod, key, true ) >= 0 )
 	
 #modcfunc unorImpl_count_value var value
-	return list_count(mlistValue, value)
+	return list_count(vals_, value)
 	
 //------------------------------------------------
 // 実際の要素番号を得る
@@ -255,7 +258,7 @@
 	if ( stat ) { return idx }
 	
 	if ( bNoAdd == false ) {
-		unorImpl_addValue_by_index_ thismod, idx, key, stt_zero@
+		unorImpl_addValue_by_index_ thismod, idx, key, defvar@__abdata
 		return stat
 	}
 	return -1
@@ -276,8 +279,8 @@
 	return idx
 	
 #modfunc unorImpl_addValue_by_index_@abdata_unor_impl int idx, str key, var vValue
-	list_insert  mlistKey,      key, idx
-	list_insertv mlistValue, vValue, idx
+	list_insert  keys_,      key, idx
+	list_insertv vals_, vValue, idx
 	return idx
 	
 //------------------------------------------------
@@ -290,9 +293,9 @@
 	local key
 	
 	key = _key
-	idx = list_lb(mlistKey, key)
-	if ( idx != list_size(mlistKey) ) {
-		if ( list_get(mlistKey, idx) == key ) {
+	idx = list_lb(keys_, key)
+	if ( idx != list_size(keys_) ) {
+		if ( list_get(keys_, idx) == key ) {
 			return true
 		}
 	}
@@ -354,7 +357,7 @@
 #define global unor_set(%1,%2="",%3)  unorImpl_set  abdataInsts(%1), %2, %3
 #define global unor_setv(%1,%2="",%3) unorImpl_setv abdataInsts(%1), %2, %3
 
-#define global unor_add(%1, %2 = "",%3 = stt_zero@) unorImpl_add abdataInsts(%1), %2, %3
+#define global unor_add(%1, %2 = "",%3 = defvar@__abdata) unorImpl_add abdataInsts(%1), %2, %3
 #define global unor_addv(%1, %2, %3) unorImpl_addv abdataInsts(%1), %2, %3
 
 #define global unor_erase(%1, %2) unorImpl_erase abdataInsts(%1), %2

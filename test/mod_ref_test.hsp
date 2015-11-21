@@ -1,4 +1,4 @@
-#include "../abdata/mod_ref.hsp"
+#include "../abdata/all.hsp"
 
 #module refTestKls val_
 

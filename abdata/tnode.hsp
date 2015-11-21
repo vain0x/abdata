@@ -2,9 +2,7 @@
 #define ig_abdata_tnode_hsp
 
 // [[deprecated]]
-
-#include "list.hsp"
-#include "alg_iter.hsp"
+#include "all.as"
 
 #define global TNode_ClsName "tnode"
 #define global tnodeNull listNull
@@ -20,7 +18,7 @@
 
 #define ctype ARG_TEMP(%1) argtmp_tnode_%1@__abdata
 
-#define global tnode_new(%1, %2 = stt_zero@, %3 = stt_zero@) \
+#define global tnode_new(%1, %2 = defvar@__abdata, %3 = defvar@__abdata) \
 	ARG_TEMP@abdata_tnode(1) = (%2) :\
 	ARG_TEMP@abdata_tnode(2) = (%3) :\
 	tnode_newv %1, ARG_TEMP@abdata_tnode(1), ARG_TEMP@abdata_tnode(2) ://
@@ -37,7 +35,7 @@
 //------------------------------------------------
 // 既定の2つの要素を追加する
 //------------------------------------------------
-#define global tnode_resetElems(%1, %2 = stt_zero@, %3 = stt_zero@) \
+#define global tnode_resetElems(%1, %2 = defvar@__abdata, %3 = defvar@__abdata) \
 	ARG_TEMP@abdata_tnode(1) = (%2) :\
 	ARG_TEMP@abdata_tnode(2) = (%3) :\
 	tnode_resetElemsv %1, ARG_TEMP@abdata_tnode(1), ARG_TEMP@abdata_tnode(2) ://
@@ -127,7 +125,7 @@
 //        子ノード操作::拡張記法
 //##########################################################
 #ifdef pair_new
- #define global ctype tnb_addChd(%1, %2 = 0, %3 = stt_zero@, %4 = stt_zero@) \
+ #define global ctype tnb_addChd(%1, %2 = 0, %3 = defvar@__abdata, %4 = defvar@__abdata) \
 	ARG_TEMP@abdata_tnode(addChd_1) = (%2)                /* ノード値 */:\
 	ARG_TEMP@abdata_tnode(addChd_2) = pair_new( %3, %4 )  /* 子データになる pair を作成 */:\
 	tnode_newv %1, ARG_TEMP@abdata_tnode(addChd_1), ARG_TEMP@abdata_tnode(addChd_2) ://

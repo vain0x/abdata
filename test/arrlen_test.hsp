@@ -1,4 +1,4 @@
-#include "../abdata/arrlen.hsp"
+#include "../abdata/all.hsp"
 
 #ifndef true
  #define global true 1

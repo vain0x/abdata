@@ -1,5 +1,4 @@
-#include "../abdata/list.hsp"
-#include "../abdata/mod_ref.hsp"
+#include "../abdata/all.hsp"
 
 #ifndef true
  #define global true 1
@@ -120,7 +119,7 @@
 		if ( cnt < 3 || cnt == 7 ) {
 			assert list_get(con, cnt) == cnt
 		} else {
-			assert list_get(con, cnt) == stt_zero@
+			assert list_get(con, cnt) == defvar@__abdata
 		}
 	loop
 	
@@ -239,7 +238,7 @@
 	list_push_back con, 1
 	list_push_back con, 4
 	assert list_count(con, ref_xi(1)) == 1
-	assert list_count(con, stt_zero@) == 0
+	assert list_count(con, defvar@__abdata) == 0
 	
 	//«‘‡”äŠr
 	con1 = list_make_iota(4)
