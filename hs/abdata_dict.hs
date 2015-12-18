@@ -288,6 +288,17 @@ self, rhs: 辞書
 self と rhs に含まれるキーがすべて等しく、さらに同じキーに対する値が型を含めて等しいとき、真を返す。
 
 ;--------------------
+dict_intersect_keys
+辞書の共通キーの配列
+%prm
+self, rhs, keys
+self, rhs: 辞書
+array keys: キーの配列になる配列変数
+return: keys の長さ
+%inst
+keys を、self, rhs の両方に含まれるキーからなる配列にする。
+
+;--------------------
 %index
 dict_copy_to_alist
 辞書の各要素を連想リストに複写

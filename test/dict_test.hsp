@@ -114,6 +114,19 @@
 		assert dict_size(idt) == n
 	// }
 	
+	// 共通キー配列
+	dim idt2 : dict_new idt2, vartype("int")
+	repeat 10
+		dict_insert idt2, ref_xs("#" + (n - 2 + cnt)), ref_xi(n - 2 + cnt)
+	loop
+	dict_intersect_keys idt, idt2, keys
+	assert stat == 2
+	repeat 2
+		assert dict_has_key(idt,  keys(cnt))
+		assert dict_has_key(idt2, keys(cnt))
+	loop
+	dim keys
+	
 	// 衝突テスト
 	assert dict_size(idt) == n
 	// {

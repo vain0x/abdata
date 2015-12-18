@@ -303,6 +303,18 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 	if ( size_ != dict_size(rhs) ) { return false }
 	return dict_is_subset_of(thismod, rhs)
 	
+#modfunc dict_intersect_keys var rhs, array keys,  \
+	local keys_len, local key, local val
+	
+	sdim keys, , limit(size_, dict_size(rhs), int_max)
+	dict_iter_kv thismod, key, val
+		if ( dict_has_key(rhs, key) ) {
+			keys(keys_len) = key
+			keys_len ++
+		}
+	dict_iter_kv_end
+	return keys_len
+	
 #modfunc dict_copy_to_alist array keys, array vals,  \
 	local key, local val, local i
 	
