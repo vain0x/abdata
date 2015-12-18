@@ -119,7 +119,7 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 	repeat dict_capacity(src)
 		if ( dict_is_busy_elem(src, cnt) ) {
 			dict_dup_kv_at src, cnt, key, val
-			dict_insert_impl thismod, key, val, conflict_policy
+			dict_insert thismod, key, val, conflict_policy
 		}
 	loop
 	return
@@ -142,11 +142,7 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 #modcfunc dict_has_key var key
 	return ( dict_find_index(thismod, key) >= 0 )
 	
-#modfunc dict_insert var key, var val, int conflict_policy
-	dict_insert_impl thismod, key, val, conflict_policy
-	return
-	
-#modfunc dict_insert_impl var key, var val, int conflict_policy, \
+#modfunc dict_insert var key, var val, int conflict_policy, \
 	local h, local h_bak, local i
 	
 	dict_auto_rebuild thismod, 1
@@ -294,7 +290,7 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 	local key, local val
 	
 	repeat len
-		dict_insert_impl thismod, keys(cnt), vals(cnt), conflict_policy
+		dict_insert thismod, keys(cnt), vals(cnt), conflict_policy
 	loop
 	return
 	
