@@ -5,6 +5,7 @@
 #include "mod_compare.hsp"
 #include "mod_pvalptr.hsp"
 #include "mod_ref.hsp"
+#include "mod_swap.hsp"
 #include "arrlen.hsp"
 #include "abbox.hsp"
 #include "alg_iter.hsp"

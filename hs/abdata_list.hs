@@ -261,6 +261,30 @@ int ix_beg, ix_end: 要素の範囲
 
 ;--------------------
 %index
+list_shuffle
+要素順の無作為化
+%prm
+self
+int self
+int ix_beg, ix_end: 要素の範囲
+%inst
+リストの [ix_beg, ix_end) 番目の要素の順番を一様に無作為化する。
+
+;--------------------
+%index
+list_permutate
+要素順の指定
+%prm
+self
+int self
+array perm: 置換
+%inst
+リストの i 番目の要素を perm(i) 番目に移動させる。
+
+配列 perm は、[0, list_size(self)) を並び替えた数列でなければいけない。list_regular_ix は適用されない。
+
+;--------------------
+%index
 list_count
 要素の数え上げ
 %prm
@@ -358,7 +382,22 @@ int sort_mode (= abdata_sort_ascending): 順序
 %inst
 リストを整列する。
 %href
+list_ix_sort
 list_is_sorted
+
+;--------------------
+%index
+list_ix_sort
+整列
+%prm
+self, perm, sort_mode
+int self
+array perm: 置換が代入される配列
+int sort_mode (= abdata_sort_ascending): 順序
+%inst
+リストを整列する。
+
+perm は「もともと i 番目にあった要素が perm(i) 番目に移動した」ということを表す配列変数。
 
 ;--------------------
 %index
