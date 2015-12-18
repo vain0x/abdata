@@ -2,6 +2,7 @@
 #ifndef true
  #define global true 1
  #define global false 0
+ #define global declvar(%1) if (0) { dim %1 }
 #endif
 
 #include "mod_ref_test.hsp"
