@@ -186,6 +186,9 @@
 	dict_insert di, ref_xs("#2"), ref_xi(999)
 	assert dict_is_subset_of(di, di3) == 0
 	
+	// “¯’l
+	assert dict_equals(di3, di3)
+	
 	return
 	
 #global

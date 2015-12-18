@@ -298,6 +298,11 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 	dict_iter_kv_end
 	return true
 	
+#modcfunc dict_equals var rhs
+
+	if ( size_ != dict_size(rhs) ) { return false }
+	return dict_is_subset_of(thismod, rhs)
+	
 #modfunc dict_copy_to_alist array keys, array vals,  \
 	local key, local val, local i
 	
