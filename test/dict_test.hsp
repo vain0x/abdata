@@ -155,7 +155,39 @@
 		assert dict_get(idt, ref_xs("#2")) == 200
 	// }
 	
+	dictTest_compare
 	return
+	
+#deffunc dictTest_compare  \
+	local di0, local ds0, local di3, local ds3, local di
+	
+	dict_new di0, vartype("int")
+	dict_new ds0, vartype("str")
+	
+	dict_new di3, vartype("int")
+	repeat 3 : dict_insert di3, ref_xs("#" + cnt), ref_xi(cnt) : loop
+	
+	// 単純なケース
+	assert dict_is_subset_of(di3, di3)  // 同じ辞書は subset になる
+	assert dict_is_subset_of(ds0, di3)  // 空辞書は型によらず subset になる
+	
+	// キーが少ないものは subset になる
+	dict_new di, vartype("int")
+	dict_insert di, ref_xs("#0"), ref_xi(0)
+	assert dict_is_subset_of(di, di3)
+	assert dict_is_subset_of(di3, di) == 0
+	
+	// 異なるキーを持つものは subset にならない
+	dict_insert di, ref_xs("#99"), ref_xi(1)
+	assert dict_is_subset_of(di, di3) == 0
+	dict_erase di, ref_xs("#99")
+	
+	// 共通のキーが異なる値を持つものは subset にならない
+	dict_insert di, ref_xs("#2"), ref_xi(999)
+	assert dict_is_subset_of(di, di3) == 0
+	
+	return
+	
 #global
 
 	dictTest_main

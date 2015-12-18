@@ -286,6 +286,18 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ð‚¯‚éB
 	%o0  :\
 	//
 	
+#modcfunc dict_is_subset_of var rhs,  \
+	local key, local val, local rhs_val
+
+	if ( size_ == 0 ) { return true }
+	if ( size_ > dict_size(rhs) ) { return false }
+	if ( dict_vartype(thismod) != dict_vartype(rhs) ) { return false }
+	dict_iter_kv thismod, key, val
+		if ( dict_try_dup(rhs, rhs_val, key) == 0 ) { return false }
+		if ( abdata_hom_cmp(val, rhs_val) != 0 ) { return false }
+	dict_iter_kv_end
+	return true
+	
 #modfunc dict_copy_to_alist array keys, array vals,  \
 	local key, local val, local i
 	

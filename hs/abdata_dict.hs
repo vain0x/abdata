@@ -269,6 +269,16 @@ dict_iter_kv から始まるループの終わりを示す。
 
 ;--------------------
 %index
+dict_is_subset_of
+辞書が部分集合か？
+%prm
+(self, rhs)
+self, rhs: 辞書
+%inst
+self のすべてのキーが rhs のキーでもあり、その値が型を含めて等しいとき、真を返す。
+
+;--------------------
+%index
 dict_copy_to_alist
 辞書の各要素を連想リストに複写
 %prm
