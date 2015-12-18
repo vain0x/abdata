@@ -152,6 +152,7 @@
 	loop
 	
 	//参照化
+	declvar r
 	con = list_make_iota(4)
 	list_dup con, r, -2
 	assert r == 2
@@ -216,6 +217,7 @@
 	loop
 	
 	//インデックスソート
+	declvar perm
 	con0 = list_make_iota(10)
 	list_reverse con0
 	list_ix_sort con0, perm

@@ -33,7 +33,7 @@
 	return
 	
 #deffunc arrlenTest_sorted_erase array _arr, int _value, int max_count,  int x_lb, int x_ub, int x_c, \
-	local arr, local value, local lb, local ub
+	local arr, local len, local value, local lb, local ub
 	
 	arrlen_copy arr, len,  _arr, length(_arr)
 	value = _value
@@ -91,6 +91,10 @@
 	arrlenTest_sorted_erase arr, 9, 99,    8, 8,  0
 	
 	//î‰är
+	declvar arr2
+	declvar arr2_len
+	declvar arr3
+	declvar arr3_len
 	arrlen_copy arr2, arr2_len,  arr, arr_len
 	arrlen_copy arr3, arr3_len,  arr, arr_len
 	arr2(1) --

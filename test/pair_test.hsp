@@ -16,6 +16,9 @@
 	assert pair_get_lhs(p) == 77
 	
 	//QÆ‰»
+	declvar lhs_ref
+	declvar rhs_ref
+	
 	pair_new p, "l", "r"
 	pair_dup p, lhs_ref, 0
 	pair_dup p, rhs_ref, 1
