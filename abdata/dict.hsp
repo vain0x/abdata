@@ -30,12 +30,12 @@ size_:
 #define hash_erased (-2)
 
 // 衝突時のポリシー
-#enum global dict_conflict_update = 0
-#enum global dict_conflict_keep
-#enum global dict_conflict_abort  // 衝突が絶対に起きないことの表明
+#enum global dict_conflict_keep = 0
+#enum global dict_conflict_update
+#enum global dict_conflict_abort
 
 #define ctype dict_conflict_is_valid(%1) \
-	(dict_conflict_update <= (%1) && (%1) <= dict_conflict_abort)
+	(dict_conflict_keep <= (%1) && (%1) <= dict_conflict_abort)
 
 // 線型走査するときのスキップ量
 #define step 3

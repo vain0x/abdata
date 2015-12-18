@@ -138,7 +138,7 @@ dict_chain
 %prm
 self, src, conflict_policy
 var src: 連結する辞書
-int conflict_policy [dict_conflict_update]: キー衝突時のポリシー
+int conflict_policy [dict_conflict_keep]: キー衝突時のポリシー
 %inst
 辞書 src が持つ各要素を、self に挿入する。
 
@@ -165,7 +165,7 @@ dict_insert
 self, key, val, conflict_policy
 var key: 挿入するキー
 var val: 値
-int conflict_policy [dict_conflict_update]: キー衝突時のポリシー
+int conflict_policy [dict_conflict_keep]: キー衝突時のポリシー
 %inst
 辞書に、キーが key、値が val の要素を挿入する。
 
