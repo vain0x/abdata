@@ -40,7 +40,6 @@ conflicts_, conflicts_len_:
 #enum global dict_conflict_default = 0
 #enum global dict_conflict_update
 #enum global dict_conflict_keep
-#enum global dict_conflict_record // Õ“Ë•\ conflicts_ ‚É•Û‘¶
 #enum global dict_conflict_abort  // Õ“Ë‚ªâ‘Î‚É‹N‚«‚È‚¢‚±‚Æ‚Ì•\–¾
 
 #define ctype dict_conflict_is_valid(%1) \
@@ -67,7 +66,7 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 
 #modinit int vtype, int expected_size, int conflict_policy_opt
 
-	conflict_policy_ = dict_conflict_record  // default setting
+	conflict_policy_ = dict_conflict_update  // default setting
 	dict_init thismod, vtype, expected_size, conflict_policy_opt
 	return getaptr(thismod)
 	
@@ -139,9 +138,6 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 	dict_auto_rebuild thismod, dict_size(src)
 	
 	conflict_policy = dict_conflict_policy(thismod, conflict_policy_opt)
-	if ( conflict_policy == dict_conflict_record ) {
-		dict_conflicts_clear thismod
-	}
 	repeat dict_capacity(src)
 		if ( dict_is_busy_elem(src, cnt) ) {
 			dict_dup_kv_at src, cnt, key, val
@@ -172,9 +168,6 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 	local conflict_policy
 	
 	conflict_policy = dict_conflict_policy(thismod, conflict_policy_opt)
-	if ( conflict_policy == dict_conflict_record ) {
-		dict_conflicts_clear thismod
-	}
 	dict_insert_impl thismod, key, val, conflict_policy
 	return
 	
@@ -195,10 +188,6 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 						vals_(h) = val
 						swbreak
 					case dict_conflict_keep:
-						swbreak
-					case dict_conflict_record:
-						conflicts_(conflicts_len_) = key
-						conflicts_len_ ++
 						swbreak
 					//case dict_conflict_abort:
 					default: assert_unreachable
@@ -332,9 +321,6 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ğ‚¯‚éB
 	local key, local val, local conflict_policy
 	
 	conflict_policy = dict_conflict_policy(thismod, conflict_policy_opt)
-	if ( conflict_policy == dict_conflict_record ) {
-		dict_conflicts_clear thismod
-	}
 	repeat len
 		dict_insert_impl thismod, keys(cnt), vals(cnt), conflict_policy
 	loop

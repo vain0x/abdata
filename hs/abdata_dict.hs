@@ -37,7 +37,7 @@ dict_init
 self, vtype, size
 int   vtype [vartype_int]: 辞書の値の型の型タイプ値
 int   size  [0]: 要求する初期キャパシティ
-int   conflict_policy [dict_conflict_record]: キー衝突時のポリシー
+int   conflict_policy [dict_conflict_update]: キー衝突時のポリシー
 %inst
 辞書の中身を全消去する。
 
@@ -150,13 +150,7 @@ src と self が同じキーがあるとき、キーが衝突するという。衝突時の挙動は conflict_
 dict_conflict_default: 辞書 self に設定されているポリシーを使う。(dict_init を参照。)
 dict_conflict_update: src の要素で上書きする。(self が持っていたそのキーの値は消える。)
 dict_conflict_keep:   self が持っている要素を残す。
-dict_conflict_record: self の衝突表に記録する。
 dict_conflict_abort:  プログラムを異常終了(end 1)する。キー衝突が起きないと分かっているときに使う。
-
-dict_conflict_record を指定した場合、衝突が起きるか否かにかかわらず、self に新しい衝突表が確保される。キーが衝突した要素は、self には挿入されず、代わりに self の衝突リストにキーが記録される。したがって、このオプションでは次のようなスクリプトが推奨される。
-
-1. dict_chain 命令を呼ぶ。(dict_conflict_record を指定する)
-2. その後、dict_conflicts_iter を行い、衝突した各要素に何らかの処理をする。(値を足し合わせるとか、大きいほうで上書きするとか、具体的な処理は場合による。)
 
 ;--------------------
 %index
@@ -175,7 +169,7 @@ dict_insert
 self, key, val, conflict_policy
 var key: 挿入するキー
 var val: 値
-int conflict_policy [dict_conflict_update]: キー衝突時のポリシー
+int conflict_policy [dict_conflict_default]: キー衝突時のポリシー
 %inst
 辞書に、キーが key、値が val の要素を挿入する。
 
