@@ -1,7 +1,7 @@
 #ifndef ig_abdata_dict_hsp
 #define ig_abdata_dict_hsp
 
-#module abdata_dict keys_, vals_, hash_, size_, capa_, conflict_policy_, conflicts_, conflicts_len_
+#module abdata_dict keys_, vals_, hash_, size_, capa_, conflict_policy_
 
 /**
 keys_, vals, hash_:
@@ -19,10 +19,6 @@ size_:
 	
 conflict_policy_:
 	既存キーを挿入しようとしたときの既定の挙動。
-	
-conflicts_, conflicts_len_:
-	arrlen ペアで、str 型配列変数を表す。衝突表と呼ぶ。
-	詳しくは dict_conflict_record を参照。
 //*/
 
 #define assert_unreachable assert : end 1
@@ -332,29 +328,6 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	assert dict_is_busy_elem(thismod, h)
 	dup key, keys_(h)
 	dup val, vals_(h)
-	return
-	
-#modfunc dict_conflicts_clear
-
-	sdim conflicts_
-	conflicts_len_ = 0
-	return
-	
-// Number of keys conflicted at the last insertion
-#modcfunc dict_conflicts_size
-	return conflicts_len_
-	
-#define global dict_conflicts_iter(%1, %2) %tdict %i0 \
-	for _cat(%p,@__tmp), 0, dict_conflicts_size(%1)   :\
-		dict_conflicts_iter__ %1, %2, _cat(%p,@__tmp) :\
-	//
-	
-#define global dict_conflicts_iter_end(%1, %2) %tdict \
-	next :\
-	%o0 //
-	
-#modfunc dict_conflicts_iter__ array ref, int i
-	dup ref, conflicts_(i)
 	return
 	
 #global

@@ -337,26 +337,3 @@ dict_conflict_policy
 dict_insert などの命令の conflict_policy 引数を省略したときの値。
 
 値の意味については dict_chain を参照。
-
-;--------------------
-%index
-dict_conflicts_iter
-辞書の衝突リストを反復
-%prm
-(self, key)
-var key: キーが代入される変数
-%inst
-self の衝突リストにある各キーについて、dict_conflicts_iter_end までを反復する。
-
-衝突リストについては dict_chain 命令のオプション「dict_conflict_record」を参照。
-
-このループの間、dict_chain 命令などを dict_conflict_record モードで実行してはいけない。(その他のモードならOK)
-
-for 文と同様に、内部で _break や _continue 命令が使用できる。
-
-;--------------------
-%index
-dict_conflicts_iter_end
-dict_conflicts_iter の終端
-%inst
-dict_conflicts_iter から始まるループの終わりを示す。
