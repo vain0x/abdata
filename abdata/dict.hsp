@@ -1,7 +1,7 @@
 #ifndef ig_abdata_dict_hsp
 #define ig_abdata_dict_hsp
 
-#module abdata_dict keys_, vals_, hash_, size_, capa_, conflict_policy_
+#module abdata_dict keys_, vals_, hash_, size_, capa_
 
 /**
 keys_, vals, hash_:
@@ -16,9 +16,6 @@ capa_:
 size_:
 	辞書が実際に持っている要素の個数。
 	すなわち、ルート配列のなかで hash_is_legal(hash_(h)) となる要素の個数。
-	
-conflict_policy_:
-	既存キーを挿入しようとしたときの既定の挙動。
 //*/
 
 #define assert_unreachable assert : end 1
@@ -33,13 +30,12 @@ conflict_policy_:
 #define hash_erased (-2)
 
 // 衝突時のポリシー
-#enum global dict_conflict_default = 0
-#enum global dict_conflict_update
+#enum global dict_conflict_update = 0
 #enum global dict_conflict_keep
 #enum global dict_conflict_abort  // 衝突が絶対に起きないことの表明
 
 #define ctype dict_conflict_is_valid(%1) \
-	(dict_conflict_default <= (%1) && (%1) <= dict_conflict_abort)
+	(dict_conflict_update <= (%1) && (%1) <= dict_conflict_abort)
 
 // 線型走査するときのスキップ量
 #define step 3
@@ -49,8 +45,8 @@ conflict_policy_:
 
 #define global dict_delete(%1) delmod %1
 
-#define global dict_new(%1, %2 = 4, %3 = 0, %4 = dict_conflict_default) \
-	newmod %1, abdata_dict@, %2, %3, %4
+#define global dict_new(%1, %2 = 4, %3 = 0) \
+	newmod %1, abdata_dict@, %2, %3
 
 /*
 キャパシティの計算式
@@ -60,13 +56,12 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 #define ctype dict_calc_capa(%1) \
 	limit(int(double(%1) / threshold_load_factor / (step - 1)) * step + 1, 13, int_max)
 
-#modinit int vtype, int expected_size, int conflict_policy_opt
+#modinit int vtype, int expected_size
 
-	conflict_policy_ = dict_conflict_update  // default setting
-	dict_init thismod, vtype, expected_size, conflict_policy_opt
+	dict_init thismod, vtype, expected_size
 	return getaptr(thismod)
 	
-#modfunc dict_init int vtype, int expected_size, int conflict_policy_opt
+#modfunc dict_init int vtype, int expected_size
 
 	assert expected_size >= 0
 	capa_ = dict_calc_capa(expected_size)
@@ -76,8 +71,6 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	dimtype vals_, vtype, capa_
 	dim hash_, capa_
 	memset hash_, 0xFF, capa_ * size_of_int
-	
-	conflict_policy_ = dict_conflict_policy(thismod, conflict_policy_opt)
 	return
 	
 #modcfunc dict_vartype
@@ -94,16 +87,6 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	
 #modcfunc dict_hash var key
 	return ((hash_v(key) \ capa_) + capa_) \ capa_
-	
-// Return default conflict policy if dict_conflict_default is given
-// 内部では conflict_policy_opt 引数値の正規化にも使う。
-#modcfunc dict_conflict_policy int conflict_policy_opt
-	if ( conflict_policy_opt == dict_conflict_default ) {
-		return conflict_policy_
-	} else {
-		assert dict_conflict_is_valid(conflict_policy_opt)
-		return conflict_policy_opt
-	}
 	
 // Is the (%2)th element busy?
 #define ctype dict_is_busy_elem(%1, %2) \
@@ -125,15 +108,14 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	tmp_cnt = size_
 	
 	dict_init thismod, vartype(vals_), capa_ * step
-	dict_chain_alist thismod, tmp_keys, tmp_vals, tmp_cnt, dict_conflict_abort
+	dict_chain_alist thismod, tmp_keys, tmp_vals, tmp_cnt
 	return
 	
-#modfunc dict_chain var src, int conflict_policy_opt, \
-	local key, local val, local conflict_policy
+#modfunc dict_chain var src, int conflict_policy, \
+	local key, local val
 	
 	dict_auto_rebuild thismod, dict_size(src)
 	
-	conflict_policy = dict_conflict_policy(thismod, conflict_policy_opt)
 	repeat dict_capacity(src)
 		if ( dict_is_busy_elem(src, cnt) ) {
 			dict_dup_kv_at src, cnt, key, val
@@ -160,17 +142,12 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 #modcfunc dict_has_key var key
 	return ( dict_find_index(thismod, key) >= 0 )
 	
-#modfunc dict_insert var key, var val, int conflict_policy_opt,  \
-	local conflict_policy
-	
-	conflict_policy = dict_conflict_policy(thismod, conflict_policy_opt)
+#modfunc dict_insert var key, var val, int conflict_policy
 	dict_insert_impl thismod, key, val, conflict_policy
 	return
 	
 #modfunc dict_insert_impl var key, var val, int conflict_policy, \
 	local h, local h_bak, local i
-	
-	assert conflict_policy != dict_conflict_default
 	
 	dict_auto_rebuild thismod, 1
 	h = dict_hash(thismod, key)
@@ -313,10 +290,9 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	assert i == size_
 	return size_
 	
-#modfunc dict_chain_alist array keys, array vals, int len, int conflict_policy_opt,  \
-	local key, local val, local conflict_policy
+#modfunc dict_chain_alist array keys, array vals, int len, int conflict_policy,  \
+	local key, local val
 	
-	conflict_policy = dict_conflict_policy(thismod, conflict_policy_opt)
 	repeat len
 		dict_insert_impl thismod, keys(cnt), vals(cnt), conflict_policy
 	loop
