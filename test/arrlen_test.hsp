@@ -1,9 +1,5 @@
 #include "../abdata/all.hsp"
 
-#ifndef true
- #define global true 1
-#endif
-
 #module
 
 #deffunc arrlen_iota array arr, var len, int len_

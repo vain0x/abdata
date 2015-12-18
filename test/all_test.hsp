@@ -1,4 +1,9 @@
 
+#ifndef true
+ #define global true 1
+ #define global false 0
+#endif
+
 #include "mod_ref_test.hsp"
 #include "arrlen_test.hsp"
 #include "dict_test.hsp"

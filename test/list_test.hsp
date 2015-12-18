@@ -1,9 +1,5 @@
 #include "../abdata/all.hsp"
 
-#ifndef true
- #define global true 1
-#endif
-
 #module
 #deffunc list_logmes int self
 	repeat list_size(self)
