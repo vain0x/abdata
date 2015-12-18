@@ -57,6 +57,14 @@ conflicts_, conflicts_len_:
 #define global dict_new(%1, %2 = 4, %3 = 0, %4 = dict_conflict_default) \
 	newmod %1, abdata_dict@, %2, %3, %4
 
+/*
+キャパシティの計算式
+(%1) 個の要素を挿入した後に rehash を生じない最小限のキャパシティが好ましい。
+stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
+*/
+#define ctype dict_calc_capa(%1) \
+	limit(int(double(%1) / threshold_load_factor / (step - 1)) * step + 1, 13, int_max)
+
 #modinit int vtype, int capa, int conflict_policy_opt
 
 	conflict_policy_ = dict_conflict_record  // default setting
@@ -67,8 +75,7 @@ conflicts_, conflicts_len_:
 	local new_capa
 
 	assert capa >= 0
-	// capa 個の要素を挿入した後の積載率が閾値程度になるくらいの大きさ、stepの倍数ではない数
-	capa_ = limit(int(double(capa) / threshold_load_factor / (step - 1)) * step + 1, 13, int_max)
+	capa_ = dict_calc_capa(capa)
 	
 	size_ = 0
 	sdim keys_, , capa_
