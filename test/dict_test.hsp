@@ -1,4 +1,4 @@
-#include "../abdata/all.hsp"
+#include "abtest_header.hsp"
 
 #module
 #deffunc dictTest_main
@@ -85,6 +85,7 @@
 	
 	sortval vals(cnt)
 	repeat n
+		declvar i
 		sortget i, cnt
 		assert keys(i) == "#" + cnt
 		assert vals(cnt) = cnt
