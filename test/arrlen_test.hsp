@@ -1,4 +1,4 @@
-#include "../abdata/all.hsp"
+#include "abtest_header.hsp"
 
 #module
 

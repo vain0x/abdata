@@ -1,0 +1,12 @@
+#ifndef        ig_abdata_test_header_hsp
+#define global ig_abdata_test_header_hsp
+
+#include "../abdata/all.hsp"
+
+#ifndef true
+ #define global true 1
+ #define global false 0
+ #define global declvar(%1) if (0) { dim %1 }
+#endif
+
+#endif
