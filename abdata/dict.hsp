@@ -65,17 +65,16 @@ step‚Ì”{”‚ÍAüŒ^‘–¸‚Å‘S—v‘f‚É“n‚ê‚È‚­‚È‚é‚Ì‚Å”ð‚¯‚éB
 #define ctype dict_calc_capa(%1) \
 	limit(int(double(%1) / threshold_load_factor / (step - 1)) * step + 1, 13, int_max)
 
-#modinit int vtype, int capa, int conflict_policy_opt
+#modinit int vtype, int expected_size, int conflict_policy_opt
 
 	conflict_policy_ = dict_conflict_record  // default setting
-	dict_init thismod, vtype, capa, conflict_policy_opt
+	dict_init thismod, vtype, expected_size, conflict_policy_opt
 	return getaptr(thismod)
 	
-#modfunc dict_init int vtype, int capa, int conflict_policy_opt,  \
-	local new_capa
+#modfunc dict_init int vtype, int expected_size, int conflict_policy_opt
 
-	assert capa >= 0
-	capa_ = dict_calc_capa(capa)
+	assert expected_size >= 0
+	capa_ = dict_calc_capa(expected_size)
 	
 	size_ = 0
 	sdim keys_, , capa_
