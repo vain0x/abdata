@@ -177,9 +177,9 @@ self が昇順に整列済みであるとは、すなわち self(0) <= self(1) <= ... <= self(len 
 整列済みの配列のための特別な命令群が用意されている。
 %href
 arrlen_equal_range
-arrlen_ord_count
-arrlen_ord_insert
-arrlen_ord_erase
+arrlen_sorted_count
+arrlen_sorted_insert
+arrlen_sorted_erase
 
 
 
@@ -272,9 +272,9 @@ var ub: 上界の値を代入する変数
 
 2分探索を使う。O(log len) 時間。
 %href
+arrlen_is_sorted
 arrlen_lb
 arrlen_ub
-arrlen_ord_count
 
 
 
