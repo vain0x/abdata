@@ -14,6 +14,7 @@
 
 #enum global SortMode_Ascending = 0
 #enum global SortMode_Decending = 1
+#define global abdata_sort_decending abdata_sort_descending
 
 #define global list_clone list_dup
 #define global unor_clone unor_dup
