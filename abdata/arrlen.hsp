@@ -219,7 +219,7 @@
 	arrlen_equal_range self, len, value, lb, ub
 	return ub - lb
 	
-#define global arrlen_sorted_insert_v(%1, %2, %3, %4 = true@arrlen, %5 = abdata_sort_ascending) \
+#define global arrlen_sorted_insert_v(%1, %2, %3, %4 = true@__abdata, %5 = abdata_sort_ascending) \
 	arrlen_sorted_insert_v__ (%1), (%2), (%3), (%4), (%5)
 
 #deffunc arrlen_sorted_insert_v__ array self, var len, var value, int may_dup, int sort_mode,  \
@@ -233,10 +233,10 @@
 	}
 	return 0
 	
-#define global arrlen_sorted_erase_v(%1, %2, %3, %4 = int_max@arrlen, %5 = abdata_sort_ascending) \
-	_arrlen_sorted_erase_v@arrlen (%1), (%2), (%3), (%4), (%5)
+#define global arrlen_sorted_erase_v(%1, %2, %3, %4 = int_max@abdata_arrlen, %5 = abdata_sort_ascending) \
+	arrlen_sorted_erase_v__ (%1), (%2), (%3), (%4), (%5)
 	
-#deffunc _arrlen_sorted_erase_v@arrlen \
+#deffunc arrlen_sorted_erase_v__ \
 	array self, var len, var value, int max_count, int sort_mode,  \
 	local lb, local ub
 	
