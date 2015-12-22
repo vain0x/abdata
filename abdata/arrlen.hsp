@@ -181,8 +181,6 @@
 #defcfunc arrlen_lb array self, int len, var value, int sort_mode,  \
 	local lb, local ub, local mid, local cmp
 	
-	assert arrlen_is_sorted(self, len, sort_mode)
-	
 	lb = -1 : ub = len
 	repeat
 		if ( (ub - lb) <= 1 ) { break }
@@ -197,8 +195,6 @@
 	
 #defcfunc arrlen_ub array self, int len, var value, int sort_mode,  \
 	local lb, local ub, local mid, local cmp
-	
-	assert arrlen_is_sorted(self, len, sort_mode)
 	
 	lb = -1 : ub = len
 	repeat
