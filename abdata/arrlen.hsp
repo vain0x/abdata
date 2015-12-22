@@ -245,6 +245,22 @@
 	arrlen_erase_range self, len, lb, ub
 	return ub - lb
 	
+#deffunc arrlen_init_random_combi array self, var len, int n, int k,  \
+	local t
+	
+	assert 0 <= k && k <= n
+	dim self, k
+	len = 0
+	repeat k, n - k
+		t = rnd(cnt + 1)
+		arrlen_sorted_insert_v self, len, t, /* may_dup */ false
+		if ( stat ) { continue }
+		t = cnt
+		arrlen_sorted_insert_v self, len, t, /* may_dup */ false
+		assert stat == 1
+	loop
+	return
+
 #global
 
 #endif

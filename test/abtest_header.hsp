@@ -11,4 +11,6 @@
 
 #define global _abdata_debug
 
+	randomize
+
 #endif
