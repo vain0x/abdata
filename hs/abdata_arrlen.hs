@@ -177,9 +177,9 @@ self が昇順に整列済みであるとは、すなわち self(0) <= self(1) <= ... <= self(len 
 整列済みの配列のための特別な命令群が用意されている。
 %href
 arrlen_equal_range
-arrlen_ord_count
-arrlen_ord_insert
-arrlen_ord_erase
+arrlen_sorted_count
+arrlen_sorted_insert
+arrlen_sorted_erase
 
 
 
@@ -220,6 +220,8 @@ var value: 探す値
 var lb: 下界の値を代入する変数
 var ub: 上界の値を代入する変数
 %inst
+この命令を呼び出すには、必ず self が整列済みでなければならない。すなわち、この命令は arrlen_is_sorted(self, len) が真になる self にだけ使用できる。
+
 整列済みの配列 self にある value が連続して並んでいる位置 [lb, ub) を計算する。以下に詳しく解説する。
 
 例として次のような配列を考える。
@@ -227,7 +229,7 @@ var ub: 上界の値を代入する変数
   self = 10, 10, 20, 50, 50, 50, 90
   len  = 7
 
-配列 self は整列済み(arrlen_is_sorted)なので、ここにある 10 や 50 のように、同じ値は必ず連続して並ぶ。
+配列 self は整列済みなので、ここにある 10 や 50 のように、同じ値は必ず連続して並ぶ。
 
 まず、仮に value = 50 が与えられた場合を考える。lb, ub というのは「50 がどこからどこまでにあるか」を表す数値になる。つまり、lb は「50 が最初にある位置」を指す番号で、ub は「50 が最後にある位置の次」を指す番号になる。
 
@@ -272,9 +274,9 @@ var ub: 上界の値を代入する変数
 
 2分探索を使う。O(log len) 時間。
 %href
+arrlen_is_sorted
 arrlen_lb
 arrlen_ub
-arrlen_ord_count
 
 
 
