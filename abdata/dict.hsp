@@ -6,7 +6,7 @@
 /**
 keys_, vals_, hash_:
 	いずれも長さ capa_ の配列変数。この3つを合わせてルート配列と呼ぶ。
-	キー keys_(h) に対応する値が変数 vals_(h) に保存される。
+	キー keys_(h) に対応する値が、変数 vals_(h) に保存される。
 	hash_(h) はキー keys_(h) のハッシュ値。
 	ただし、空き要素の hash_(h) には特殊な定数 hash_(empty|erase) が割り当てられる。
 	
@@ -70,6 +70,8 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	sdim keys_, , capa_
 	dimtype vals_, vtype, capa_
 	dim hash_, capa_
+	
+	// hash_empty (= -1) で埋める
 	memset hash_, 0xFF, capa_ * size_of_int
 	return
 	
