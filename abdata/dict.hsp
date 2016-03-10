@@ -5,13 +5,23 @@
 
 /**
 keys_, vals_, hash_:
-	いずれも長さ capa_ の配列変数。この3つを合わせてルート配列と呼ぶ。
+	いずれも長さ (capa_(0) + capa_(1)) の配列変数。
+	3本の配列を合わせて取り扱う。
+	前半 capa_(0) 個と、後半 capa_(1) 個で2本の配列とみなす。
+	
+	前半の要素組からなる配列を、ルート配列と呼ぶ。
 	キー keys_(h) に対応する値が、変数 vals_(h) に保存される。
 	hash_(h) はキー keys_(h) のハッシュ値。
 	ただし、空き要素の hash_(h) には特殊な定数 hash_(empty|erase) が割り当てられる。
 	
+	後半の要素組からなる配列を、スタッシュ配列と呼ぶ。
+	キー keys_(i) に対応する値が、変数 vals_(i) に保存される。
+	hash_(i) は、キー keys_(i) のハッシュ値か、定数 /hash_(empty|erase)/。
+	ルート配列と異なるのは、要素の並び順がハッシュ値ではなく挿入順であること。
+	
 capa_:
-	上述の通り、ルート配列の長さ。
+	長さ 2 の配列。
+	上述の通り、(0) はルート配列の長さ、(1) はスタッシュ配列の長さ。
 	
 size_:
 	辞書が実際に持っている要素の個数。
@@ -34,52 +44,48 @@ size_:
 #enum global dict_conflict_update
 #enum global dict_conflict_abort
 
+// スタッシュ配列の長さ
+#define stash_capa_ (capa_(1))
+
+#define ctype stash_index_(%1) (capa_ + (%1))
+#define ctype stash_keys_(%1) keys_(capa_ + (%1))
+#define ctype stash_vals_(%1) vals_(capa_ + (%1))
+#define ctype stash_hash_(%1) hash_(capa_ + (%1))
+
 #define ctype dict_conflict_is_valid(%1) \
 	(dict_conflict_keep <= (%1) && (%1) <= dict_conflict_abort)
-
-// 線型走査するときのスキップ量
-#define step 3
-
-// 再構成する積載率の閾値
-#define threshold_load_factor 0.8
 
 #define global dict_delete(%1) delmod %1
 
 #define global dict_new(%1, %2 = 4, %3 = 0) \
 	newmod %1, abdata_dict@, %2, %3
 
-/*
-キャパシティの計算式
-(%1) 個の要素を挿入した後に rehash を生じない最小限のキャパシティが好ましい。
-stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
-*/
-#define ctype dict_calc_capa(%1) \
-	limit(int(double(%1) / threshold_load_factor / (step - 1)) * step + 1, 13, int_max)
-
 #modinit int vtype, int expected_size
 
 	dict_init thismod, vtype, expected_size
 	return getaptr(thismod)
 	
-#modfunc dict_init int vtype, int expected_size
+#modfunc dict_init int vtype, int expected_size,  local len
 
 	assert expected_size >= 0
-	capa_ = dict_calc_capa(expected_size)
+	capa_(0) = limit(expected_size, 1, int_max)
+	capa_(1) = limit(int(logf(expected_size + 1)), 15, int_max)
+	len      = dict_capacity(thismod)
 	
 	size_ = 0
-	sdim keys_, , capa_
-	dimtype vals_, vtype, capa_
-	dim hash_, capa_
+	sdim keys_, , len
+	dimtype vals_, vtype, len
+	dim hash_, len
 	
 	// hash_empty (= -1) で埋める
-	memset hash_, 0xFF, capa_ * size_of_int
+	memset hash_, 0xFF, len * size_of_int
 	return
 	
 #modcfunc dict_vartype
 	return vartype(vals_)
 	
 #modcfunc dict_capacity
-	return capa_
+	return capa_ + stash_capa_
 	
 #modcfunc dict_size
 	return size_
@@ -94,29 +100,18 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 #define ctype dict_is_busy_elem(%1, %2) \
 	hash_is_legal(hash_(%2))
 	
-#modcfunc dict_needs_rebuild int inc
-	return dict_load_factor(thismod, inc) >= threshold_load_factor
-	
-#modfunc dict_auto_rebuild int inc
-	if ( dict_needs_rebuild(thismod, inc) ) {
-		dict_rebuild thismod
-	}
-	return
-	
 #modfunc dict_rebuild  \
 	local tmp_keys, local tmp_vals, local key, local val, local tmp_cnt
 	
 	dict_copy_to_alist thismod, tmp_keys, tmp_vals
 	tmp_cnt = size_
 	
-	dict_init thismod, vartype(vals_), capa_ * step
+	dict_init thismod, vartype(vals_), dict_capacity(thismod) * 2 + 1
 	dict_chain_alist thismod, tmp_keys, tmp_vals, tmp_cnt
 	return
 	
 #modfunc dict_chain var src, int conflict_policy, \
 	local key, local val
-	
-	dict_auto_rebuild thismod, dict_size(src)
 	
 	repeat dict_capacity(src)
 		if ( dict_is_busy_elem(src, cnt) ) {
@@ -127,59 +122,70 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	return
 	
 #modcfunc dict_find_index var key,  \
-	local h, local h_key, local i
+	local h, local i
 	
-	h_key = dict_hash(thismod, key)
-	h = h_key
-	for i, 0, capa_
-		if ( dict_is_busy_elem(thismod, h) ) {
-			if ( hash_(h) == h_key ) { if ( keys_(h) == key ) {
-				return h
+	h = dict_hash(thismod, key)
+	if ( dict_is_busy_elem(thismod, h) ) {
+		if ( hash_(h) == h ) { if ( keys_(h) == key ) {
+			return h
+		} }
+	}
+	
+	if ( hash_(h) != hash_empty ) {
+		// Search stash
+		for i, 0, stash_capa_
+			if ( stash_hash_(i) == h ) { if ( stash_keys_(i) == key ) {
+				return stash_index_(i)
 			} }
-		}
-		h = (h + step) \ capa_
-	next
+		next
+	}
 	return -1
 	
 #modcfunc dict_has_key var key
 	return ( dict_find_index(thismod, key) >= 0 )
 	
 #modfunc dict_insert var key, var val, int conflict_policy, \
-	local h, local h_bak, local i
+	local h, local i
 	
-	dict_auto_rebuild thismod, 1
 	h = dict_hash(thismod, key)
-	h_bak = h
-	for i, 0, capa_
-		if ( dict_is_busy_elem(thismod, h) ) {
-			// Conflicts?
-			if ( hash_(h) == h_bak ) { if ( keys_(h) == key ) {
-				switch ( conflict_policy )
-					case dict_conflict_update:
-						vals_(h) = val
-						swbreak
-					case dict_conflict_keep:
-						swbreak
-					//case dict_conflict_abort:
-					default: assert_unreachable
-				swend
-				return
-			} }
-			
-			// Walk to find space
-			h = (h + step) \ capa_
-			_continue
-			
-		} else {
-			keys_(h) = key
-			vals_(h) = val
-			hash_(h) = h_bak
-			size_ ++
+	
+	if ( dict_is_busy_elem(thismod, h) ) {
+		// Conflicts?
+		if ( hash_(h) == h ) { if ( keys_(h) == key ) {
+			switch ( conflict_policy )
+				case dict_conflict_update:
+					vals_(h) = val
+					swbreak
+				case dict_conflict_keep:
+					swbreak
+				//case dict_conflict_abort:
+				default: assert_unreachable
+			swend
 			return
-		}
-		assert
-	next
-	assert_unreachable
+		} }
+		
+		// Search stash
+		for i, 0, stash_capa_
+			if ( dict_is_busy_elem(thismod, stash_index_(i)) == false ) {
+				stash_keys_(i) = key
+				stash_vals_(i) = val
+				stash_hash_(i) = h
+				size_ ++
+				return
+			}
+		next
+		
+		dict_rebuild thismod
+		dict_insert  thismod, key, val, conflict_policy
+		return
+		
+	} else {
+		keys_(h) = key
+		vals_(h) = val
+		hash_(h) = h
+		size_ ++
+	}
+	return
 	
 #modfunc dict_erase var key
 	
@@ -223,7 +229,7 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	
 #modcfunc dict_iter_next_kv var h, var key, var value
 	
-	while ( h < capa_ )
+	while ( h < dict_capacity(thismod) )
 		if ( dict_is_busy_elem(thismod, h) ) {
 			dict_dup_kv_at thismod, h, key, value
 			h ++
@@ -298,7 +304,7 @@ stepの倍数は、線型走査で全要素に渡れなくなるので避ける。
 	
 #modfunc dict_dup_kv_at int h, var key, var val
 
-	assert 0 <= h && h < capa_
+	assert 0 <= h && h < dict_capacity(thismod)
 	assert dict_is_busy_elem(thismod, h)
 	dup key, keys_(h)
 	dup val, vals_(h)
