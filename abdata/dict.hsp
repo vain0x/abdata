@@ -4,7 +4,7 @@
 #module abdata_dict keys_, vals_, hash_, size_, capa_
 
 /**
-keys_, vals, hash_:
+keys_, vals_, hash_:
 	いずれも長さ capa_ の配列変数。この3つを合わせてルート配列と呼ぶ。
 	キー keys_(h) に対応する値が変数 vals_(h) に保存される。
 	hash_(h) はキー keys_(h) のハッシュ値。
