@@ -12,9 +12,6 @@
 
 * [hs](hs) フォルダの中身を「hsphelp」フォルダに移動すると、F1キーから各命令のヘルプが見れるようになる。
 
-* abdata ライブラリの全ファイルは誰でも自由に使用、再配布可能。
-  * [NYSL (煮るなり焼くなり好きにしろライセンス)](http://www.kmonos.net/nysl/) に従う。
-
 ### Paket を用いた導入方法
 paket.dependencies に以下のように記述して、paket install コマンドを実行する。
 
@@ -143,6 +140,9 @@ github vain0/abdata abdata/all.hsp
 * 標準の1次元配列変数
   * モジュールクラスではない。
 * 標準のものは要素数を 0 にしたり減らしたりできないので、長さを `length` の代わりに変数で持つ。
+
+## ライセンス/License
+本リポジトリに含まれるすべてのファイルは public domain とする。
 
 ## リンク
 * プログラ広場 <http://prograpark.ninja-web.net/>
