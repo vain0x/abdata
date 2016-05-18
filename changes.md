@@ -1,4 +1,7 @@
 ## 更新履歴
+### 2015/12/22
+* `abdata_sort_decending` → `abdata_sort_descending` に改名した。
+
 ### 2015/10/31
 * 辞書構造のモジュール `dict` を追加した。
   * hsp3colle から移動。

@@ -20,7 +20,7 @@ size_:
 
 #define assert_unreachable assert : end 1
 #define size_of_int 4
-#define int_max 0x7FFFFFF
+#define int_max 0x7FFFFFFF
 #define true 1
 #define false 0
 

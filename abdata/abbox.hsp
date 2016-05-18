@@ -67,7 +67,7 @@ empty_len_:
 #modfunc abbox_unsafe_erase_at int i
 	
 	// empty_ ‚Éd•¡Œ³‚ª¶‚¶‚È‚¢‚Æ‚«‚É‚¾‚¯g‚¤B
-	#ifdef _debug
+	#ifdef _abdata_debug
 		repeat empty_len_
 			assert empty_(cnt) != i
 		loop

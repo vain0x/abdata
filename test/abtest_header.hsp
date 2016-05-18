@@ -9,4 +9,6 @@
  #define global declvar(%1) if (0) { dim %1 }
 #endif
 
+#define global _abdata_debug
+
 #endif
