@@ -12,14 +12,14 @@
 
 * [hs](hs) フォルダの中身を「hsphelp」フォルダに移動すると、F1キーから各命令のヘルプが見れるようになる。
 
-### Paket を用いた導入方法
-paket.dependencies に以下のように記述して、paket install コマンドを実行する。
+### Paket による導入方法
+ソリューションルートでコマンドプロンプトを開き、以下のコマンドを入力する。
 
 ```
-github vain0/abdata abdata/all.hsp
+.paket\paket.exe init
+github vain0/abdata >> paket.dependencies
+.paket\paket.exe install
 ```
-
-ダウンロードされたファイルのなかにある all.hsp を `#include` して使う。
 
 * 参考: [Paket と Gist で始める簡単パッケージ管理](http://qiita.com/ue_dai/items/41f13fed6f88be7f4e7e)
 
