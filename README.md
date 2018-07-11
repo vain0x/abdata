@@ -3,7 +3,7 @@
 抽象データ型を提供するモジュールです。
 
 ## 導入方法
-* [最新版](https://github.com/vain0/abdata/archive/master.zip)をダウンロードし、abdata フォルダを common フォルダの下に置く。
+* [最新版](https://github.com/vain0x/abdata/archive/master.zip)をダウンロードし、abdata フォルダを common フォルダの下に置く。
 * スクリプトの最初のほうに次のように書く。
 
 ```hsp
@@ -17,11 +17,11 @@
 
 ```
 .paket\paket.exe init
-github vain0/abdata >> paket.dependencies
+github vain0x/abdata >> paket.dependencies
 .paket\paket.exe install
 ```
 
-* 参考: [Paket と Gist で始める簡単パッケージ管理](http://qiita.com/ue_dai/items/41f13fed6f88be7f4e7e)
+* 参考: [PaketとGistで始める簡単パッケージ管理](http://qiita.com/vain0x/items/41f13fed6f88be7f4e7e)
 
 ## 内容
 * [abdata/all.hsp](abdata/all.hsp): すべてのヘッダを一括で \#include します。
@@ -143,6 +143,3 @@ github vain0/abdata >> paket.dependencies
 
 ## ライセンス/License
 本リポジトリに含まれるすべてのファイルは public domain とする。
-
-## リンク
-* プログラ広場 <http://prograpark.ninja-web.net/>
