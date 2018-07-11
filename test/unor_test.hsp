@@ -1,4 +1,4 @@
-#include "../abdata/all.hsp"
+#include "abtest_header.hsp"
 
 #module
 #defcfunc make_iota_unor int n,  local self
@@ -31,6 +31,7 @@
 	//éQè∆âª
 	un = make_iota_unor(3)
 	
+	declvar r
 	unor_dup un, "#1", r
 	assert r == 1
 	r = 99

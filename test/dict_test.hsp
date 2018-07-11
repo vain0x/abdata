@@ -1,0 +1,184 @@
+#include "abtest_header.hsp"
+
+#module
+#deffunc dictTest_main
+	randomize
+	n = rnd(100)
+	
+	dim idt
+	dim sdt
+	dim mdt
+	
+	// 構築テスト、容量のチェック
+	dict_new mdt, vartype("struct"), n
+	assert dict_vartype(mdt) == vartype("struct")
+	assert dict_capacity(mdt) >= n
+	assert dict_size(mdt) == 0
+	
+	// 構築テスト
+	// 要求キャパシティ以下の個数を挿入して、再構成が生じないことを確認
+	repeat 5
+		n = rnd(100)
+		
+		dim idt
+		dict_new idt, vartype("int"), n
+		assert dict_needs_rebuild(idt, n) == 0
+		capa = dict_capacity(idt)
+		repeat n
+			dict_insert idt, ref_xs("#" + cnt), ref_xi(cnt)
+		loop
+		assert dict_capacity(idt) == capa
+	loop
+	
+	// 構築テスト: 連番、自動再構成
+	dim idt
+	n = 111
+	dict_new idt, vartype("int")
+	repeat n
+		dict_insert idt, ref_xs("#" + cnt), ref_xi(cnt)
+		
+		assert dict_get(idt, ref_xs("#" + cnt)) == cnt
+	loop
+	assert dict_size(idt) == n
+	
+	// get, ref テスト
+	repeat n
+		assert dict_get(idt, ref_xs("#" + cnt)) == cnt
+		dup r, dict_ref(idt, ref_xs("#" + cnt))
+		assert r == cnt
+	loop
+	
+	// try_get, try_dup テスト
+	repeat n + 4, -2
+		dimtype r, vartype("label")
+		// 範囲内ならすべて成功し、範囲外ならすべて失敗する
+		assert dict_try_get(idt, r, ref_xs("#" + cnt)) == (0 <= cnt && cnt < n)
+		if ( stat ) {
+			assert vartype(r) == vartype("int")
+			assert r == cnt
+		}
+	
+		assert dict_try_dup(idt, r, ref_xs("#" + cnt)) == (0 <= cnt && cnt < n)
+		if ( stat ) {
+			assert r == cnt
+		}
+	loop
+	
+	// iter_kv のテスト
+	sdim keys, , n
+	dim  vals, n
+	dict_iter_kv idt, key, val
+		assert keys(val) == ""
+		keys(val) = key
+		vals(val) = val
+	dict_iter_kv_end
+	
+	repeat n
+		assert dict_get(idt, ref_xs(keys(cnt))) == vals(cnt)
+	loop
+	dim keys : dim vals
+	dim key  : dim val
+	
+	// 連想リストへのコピー
+	dict_copy_to_alist idt, keys, vals
+	assert stat == n
+	
+	sortval vals(cnt)
+	repeat n
+		declvar i
+		sortget i, cnt
+		assert keys(i) == "#" + cnt
+		assert vals(cnt) = cnt
+	loop
+	dim keys : dim vals
+	
+	// 要素の除去のテスト
+	// {
+		// 存在しない要素の除去
+		dict_erase idt, ref_xs("#10000")
+		assert stat == 0
+		assert dict_size(idt) == n
+		
+		// 存在する要素の除去
+		dict_erase idt, ref_xs("#1")
+		assert stat
+		assert dict_size(idt) == n - 1
+		
+		// 全要素の状態を確認
+		repeat n
+			if ( cnt == 1 ) { continue }
+			assert dict_get(idt, ref_xs("#" + cnt)) == cnt
+		loop
+		
+		// 再挿入
+		dict_insert idt, ref_xs("#1"), ref_xi(1)
+		assert dict_size(idt) == n
+	// }
+	
+	// 共通キー配列
+	dim idt2 : dict_new idt2, vartype("int")
+	repeat 10
+		dict_insert idt2, ref_xs("#" + (n - 2 + cnt)), ref_xi(n - 2 + cnt)
+	loop
+	dict_intersect_keys idt, idt2, keys
+	assert stat == 2
+	repeat 2
+		assert dict_has_key(idt,  keys(cnt))
+		assert dict_has_key(idt2, keys(cnt))
+	loop
+	dim keys
+	
+	// 衝突テスト
+	assert dict_size(idt) == n
+	// {
+		// 更新
+		dict_insert idt, ref_xs("#0"), ref_xi(999), dict_conflict_update
+		assert dict_get(idt, ref_xs("#0")) == 999
+		assert dict_size(idt) == n
+		
+		// 維持
+		dict_insert idt, ref_xs("#1"), ref_xi(999), dict_conflict_keep
+		assert dict_get(idt, ref_xs("#1")) == 1
+		assert dict_size(idt) == n
+	// }
+	
+	dictTest_compare
+	return
+	
+#deffunc dictTest_compare  \
+	local di0, local ds0, local di3, local ds3, local di
+	
+	dict_new di0, vartype("int")
+	dict_new ds0, vartype("str")
+	
+	dict_new di3, vartype("int")
+	repeat 3 : dict_insert di3, ref_xs("#" + cnt), ref_xi(cnt) : loop
+	
+	// 単純なケース
+	assert dict_is_subset_of(di3, di3)  // 同じ辞書は subset になる
+	assert dict_is_subset_of(ds0, di3)  // 空辞書は型によらず subset になる
+	
+	// キーが少ないものは subset になる
+	dict_new di, vartype("int")
+	dict_insert di, ref_xs("#0"), ref_xi(0)
+	assert dict_is_subset_of(di, di3)
+	assert dict_is_subset_of(di3, di) == 0
+	
+	// 異なるキーを持つものは subset にならない
+	dict_insert di, ref_xs("#99"), ref_xi(1)
+	assert dict_is_subset_of(di, di3) == 0
+	dict_erase di, ref_xs("#99")
+	
+	// 共通のキーが異なる値を持つものは subset にならない
+	dict_insert di, ref_xs("#2"), ref_xi(999)
+	assert dict_is_subset_of(di, di3) == 0
+	
+	// 同値
+	assert dict_equals(di3, di3)
+	
+	return
+	
+#global
+
+	dictTest_main
+	logmes "dict test completed."

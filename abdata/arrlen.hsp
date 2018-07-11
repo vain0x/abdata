@@ -178,10 +178,32 @@
 	loop
 	return is_sorted
 	
+/**
+配列がおそらくソート済みなら真
+
+問題: init_random_combi のなかで用いられる arrlen_lb, _ub からもこの関数が呼ばれるせいですごく遅い。
+//*/
+#defcfunc arrlen_is_probably_sorted array self, int len, int sort_mode,  \
+	local result, local k, local ixs
+	
+	if ( len == 0 ) { return true }
+	
+	// 検査する要素対の個数
+	k = limit(int(logf(len) + 16), 0, len - 1)
+	arrlen_init_random_combi ixs, k, len - 1, k
+	
+	result = true
+	repeat k
+		if ( abdata_hom_cmp(self(cnt), self(cnt + 1)) * (1 - 2 * sort_mode) > 0 ) {
+			result = false : break
+		}
+	loop
+	return result
+	
 #defcfunc arrlen_lb array self, int len, var value, int sort_mode,  \
 	local lb, local ub, local mid, local cmp
 	
-	assert arrlen_is_sorted(self, len, sort_mode)
+	assert arrlen_is_probably_sorted(self, len, sort_mode)
 	
 	lb = -1 : ub = len
 	repeat
@@ -198,7 +220,7 @@
 #defcfunc arrlen_ub array self, int len, var value, int sort_mode,  \
 	local lb, local ub, local mid, local cmp
 	
-	assert arrlen_is_sorted(self, len, sort_mode)
+	assert arrlen_is_probably_sorted(self, len, sort_mode)
 	
 	lb = -1 : ub = len
 	repeat
@@ -223,7 +245,7 @@
 	arrlen_equal_range self, len, value, lb, ub
 	return ub - lb
 	
-#define global arrlen_sorted_insert_v(%1, %2, %3, %4 = true@arrlen, %5 = abdata_sort_ascending) \
+#define global arrlen_sorted_insert_v(%1, %2, %3, %4 = true@__abdata, %5 = abdata_sort_ascending) \
 	arrlen_sorted_insert_v__ (%1), (%2), (%3), (%4), (%5)
 
 #deffunc arrlen_sorted_insert_v__ array self, var len, var value, int may_dup, int sort_mode,  \
@@ -237,10 +259,10 @@
 	}
 	return 0
 	
-#define global arrlen_sorted_erase_v(%1, %2, %3, %4 = int_max@arrlen, %5 = abdata_sort_ascending) \
-	_arrlen_sorted_erase_v@arrlen (%1), (%2), (%3), (%4), (%5)
+#define global arrlen_sorted_erase_v(%1, %2, %3, %4 = int_max@abdata_arrlen, %5 = abdata_sort_ascending) \
+	arrlen_sorted_erase_v__ (%1), (%2), (%3), (%4), (%5)
 	
-#deffunc _arrlen_sorted_erase_v@arrlen \
+#deffunc arrlen_sorted_erase_v__ \
 	array self, var len, var value, int max_count, int sort_mode,  \
 	local lb, local ub
 	
@@ -275,6 +297,22 @@
 	loop
 	return buf_len
 	
+#deffunc arrlen_init_random_combi array self, var len, int n, int k,  \
+	local t
+	
+	assert 0 <= k && k <= n
+	dim self, k
+	len = 0
+	repeat k, n - k
+		t = rnd(cnt + 1)
+		arrlen_sorted_insert_v self, len, t, /* may_dup */ false
+		if ( stat ) { continue }
+		t = cnt
+		arrlen_sorted_insert_v self, len, t, /* may_dup */ false
+		assert stat == 1
+	loop
+	return
+
 #global
 
 #endif

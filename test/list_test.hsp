@@ -1,8 +1,4 @@
-#include "../abdata/all.hsp"
-
-#ifndef true
- #define global true 1
-#endif
+#include "abtest_header.hsp"
 
 #module
 #deffunc list_logmes int self
@@ -156,6 +152,7 @@
 	loop
 	
 	//参照化
+	declvar r
 	con = list_make_iota(4)
 	list_dup con, r, -2
 	assert r == 2
@@ -220,6 +217,7 @@
 	loop
 	
 	//インデックスソート
+	declvar perm
 	con0 = list_make_iota(10)
 	list_reverse con0
 	list_ix_sort con0, perm
@@ -291,11 +289,11 @@
 	assert list_is_sorted(con, abdata_sort_ascending)
 	
 	list_reverse con
-	assert list_is_sorted(con, abdata_sort_decending)
+	assert list_is_sorted(con, abdata_sort_descending)
 	
 	list_set con, 99, 2
 	assert list_is_sorted(con, abdata_sort_ascending) == 0
-	assert list_is_sorted(con, abdata_sort_decending) == 0
+	assert list_is_sorted(con, abdata_sort_descending) == 0
 	
 	//下界、上界
 	expected = 1, 3, 3, 5, 5, 5, 7, 8
@@ -331,25 +329,25 @@
 	list_chain   con2, con1
 	list_reverse con2 //8, 7, 5, 5, 5, 3, 3, 1
 	
-	listTest_eq_ran con2, 9, abdata_sort_decending,   0, 0
-	listTest_eq_ran con2, 8, abdata_sort_decending,   0, 1
-	listTest_eq_ran con2, 5, abdata_sort_decending,   2, 5
-	listTest_eq_ran con2, 0, abdata_sort_decending,   8, 8
+	listTest_eq_ran con2, 9, abdata_sort_descending,   0, 0
+	listTest_eq_ran con2, 8, abdata_sort_descending,   0, 1
+	listTest_eq_ran con2, 5, abdata_sort_descending,   2, 5
+	listTest_eq_ran con2, 0, abdata_sort_descending,   8, 8
 	
 	//整列済み挿入
 	//挿入後に、挿入した値の equal_range がどうなるか
-	listTest_sorted_insert con2, 9,  true, abdata_sort_decending,    0, 1
-	listTest_sorted_insert con2, 8,  true, abdata_sort_decending,    0, 2
-	listTest_sorted_insert con2, 7, false, abdata_sort_decending,    1, 2
-	listTest_sorted_insert con2, 5,  true, abdata_sort_decending,    2, 6
-	listTest_sorted_insert con2, 0,  true, abdata_sort_decending,    8, 9
+	listTest_sorted_insert con2, 9,  true, abdata_sort_descending,    0, 1
+	listTest_sorted_insert con2, 8,  true, abdata_sort_descending,    0, 2
+	listTest_sorted_insert con2, 7, false, abdata_sort_descending,    1, 2
+	listTest_sorted_insert con2, 5,  true, abdata_sort_descending,    2, 6
+	listTest_sorted_insert con2, 0,  true, abdata_sort_descending,    8, 9
 	
 	//整列済みの除去
 	//除去後に、除去された値の equal_range がどうなるか
-	listTest_sorted_erase con2, 9,  1, abdata_sort_decending,    0, 0
-	listTest_sorted_erase con2, 5,  1, abdata_sort_decending,    2, 4
-	listTest_sorted_erase con2, 3, 99, abdata_sort_decending,    5, 5
-	listTest_sorted_erase con2, 0, 99, abdata_sort_decending,    8, 8
+	listTest_sorted_erase con2, 9,  1, abdata_sort_descending,    0, 0
+	listTest_sorted_erase con2, 5,  1, abdata_sort_descending,    2, 4
+	listTest_sorted_erase con2, 3, 99, abdata_sort_descending,    5, 5
+	listTest_sorted_erase con2, 0, 99, abdata_sort_descending,    8, 8
 	
 	logmes "list test completed."
 	return

@@ -12,8 +12,16 @@
 
 * [hs](hs) フォルダの中身を「hsphelp」フォルダに移動すると、F1キーから各命令のヘルプが見れるようになる。
 
-* abdata ライブラリの全ファイルは誰でも自由に使用、再配布可能。
-  * [NYSL (煮るなり焼くなり好きにしろライセンス)](http://www.kmonos.net/nysl/) に従う。
+### Paket による導入方法
+ソリューションルートでコマンドプロンプトを開き、以下のコマンドを入力する。
+
+```
+.paket\paket.exe init
+github vain0/abdata >> paket.dependencies
+.paket\paket.exe install
+```
+
+* 参考: [Paket と Gist で始める簡単パッケージ管理](http://qiita.com/ue_dai/items/41f13fed6f88be7f4e7e)
 
 ## 内容
 * [abdata/all.hsp](abdata/all.hsp): すべてのヘッダを一括で \#include します。
@@ -25,9 +33,11 @@
   * 各種 `.as` ファイル。
 
 ### コンテナ
-* list: 型なし配列
-* unor: 文字列からの連想配列
-* arrlen: 配列
+* arrlen: 標準の配列
+* dict: 文字列をキーとする連想配列 (型固定)
+
+* list: 配列 (型なし)
+* unor: 文字列をキーとする連想配列 (型なし)
 
 ### コンテナの操作
 以下のような関数がサポートされます。ただしコンテナによっては定義されていないこともあります。詳しい仕様は実装を参照してください。
@@ -130,6 +140,9 @@
 * 標準の1次元配列変数
   * モジュールクラスではない。
 * 標準のものは要素数を 0 にしたり減らしたりできないので、長さを `length` の代わりに変数で持つ。
+
+## ライセンス/License
+本リポジトリに含まれるすべてのファイルは public domain とする。
 
 ## リンク
 * プログラ広場 <http://prograpark.ninja-web.net/>

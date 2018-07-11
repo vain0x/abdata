@@ -1,4 +1,4 @@
-#include "../abdata/all.hsp"
+#include "abtest_header.hsp"
 
 #module refTestKls val_
 
@@ -41,12 +41,15 @@
 	double_var = M_PI
 	int_var = 103
 	
+	declvar vs
 	newmod vs, refTestKls, str_var
 	test_str refTestKls_ref(vs), str_var
 	
+	declvar vd
 	newmod vd, refTestKls, double_var
 	test_double refTestKls_ref(vd), double_var
 	
+	declvar vi
 	newmod vi, refTestKls, int_var
 	test_int refTestKls_ref(vi), int_var
 	return

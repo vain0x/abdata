@@ -1,4 +1,11 @@
 ## 更新履歴
+### 2015/12/22
+* `abdata_sort_decending` → `abdata_sort_descending` に改名した。
+
+### 2015/10/31
+* 辞書構造のモジュール `dict` を追加した。
+  * hsp3colle から移動。
+
 ### 2015/11/21
 * true, false が未定義な箇所があったのを修正した。
 * list の長さの上限が 0x00FFFFFF から 0x0FFFFFFF に緩和された。
@@ -10,6 +17,10 @@
 * 全く使われていなかったモジュール `mod_getnextaddindex.hsp` を削除した。
   * `getaptr` の何らかの代替案は必要だが、O(n) のこれは現実的でない。
 * リリース (ver: 1.12)
+
+* モジュール `mod_swap` の縮小版を復活させた。
+* リストを並び替えるメンバ関数を追加した。
+  * `list_shuffle`, `list_permutate`, `list_ix_sort`
 
 ### 2015/10/11
 * モジュール `list` の実装を `valist` で差し替えた。

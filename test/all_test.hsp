@@ -1,6 +1,8 @@
 
+#include "abtest_header.hsp"
 #include "mod_ref_test.hsp"
 #include "arrlen_test.hsp"
+#include "dict_test.hsp"
 #include "list_test.hsp"
 #include "unor_test.hsp"
 #include "pair_test.hsp"

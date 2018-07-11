@@ -359,8 +359,8 @@ return int: リストが整列済みなら真
 リストが整列されていることを確認する。
 
 sort_mode は次の2つのどちらか。
-abdata_sort_ascending: 昇順 (小さいものが前、大きいものが後)
-abdata_sort_decending: 降順 (大きいものが前、小さいものが後)
+abdata_sort_ascending:  昇順 (小さいものが前、大きいものが後)
+abdata_sort_descending: 降順 (大きいものが前、小さいものが後)
 %href
 list_compare
 list_sort
