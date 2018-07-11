@@ -325,6 +325,21 @@ self から value に等しい要素を最大 max_count 個まで除去する。
 
 
 %index
+arrlen_to_str
+文字列化
+%prm
+self, len, buf, delim
+array self
+int len
+var buf: 文字列を書き込む変数
+str delim: 区切り文字
+return stat: 書き込んだbyte数
+%inst
+配列の各要素を str 関数で文字列化し、区切り記号 delim で区切って、連結する。その文字列を変数 buf に書き込む。
+
+
+
+%index
 arrlen_init_random_combi
 初期化 (乱択組み合わせ)
 %prm

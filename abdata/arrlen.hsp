@@ -271,6 +271,32 @@
 	arrlen_erase_range self, len, lb, ub
 	return ub - lb
 	
+#deffunc arrlen_to_str array self, int len, var buf, str delim,  \
+	local s, local delim_len, local buf_size, local buf_len, local buf_len_next
+	
+	if ( vartype(buf) != 2 ) {
+		sdim buf, 64
+	}
+	if ( len == 0 ) {
+		poke buf
+		return 0
+	}
+	buf_size = 64
+	delim_len = strlen(delim)
+	repeat len
+		s = str(self(cnt))
+		buf_len_next = buf_len + strlen(s) + ((cnt != 0) * delim_len)
+		if ( buf_len_next >= buf_size ) {
+			buf_size = buf_len_next + (buf_size >> 1) + 1
+			memexpand buf, buf_size
+		}
+		
+		if ( cnt ) { poke buf, buf_len, delim : buf_len += strsize }
+		poke buf, buf_len, s : buf_len += strsize
+		assert buf_len == buf_len_next
+	loop
+	return buf_len
+	
 #deffunc arrlen_init_random_combi array self, var len, int n, int k,  \
 	local t
 	
