@@ -179,4 +179,27 @@
 	expected = 0, 4, 3, 2, 1
 	assert arrlen_compare(arr, arr_len, expected, arr_len) == 0
 	
+	//•¶š—ñ‰»
+	arrlen_iota   arr, arr_len, 3
+	arrlen_to_str arr, arr_len, buf, ", "
+	assert buf == "0, 1, 2"
+	
+	//‘g‚İ‡‚í‚¹‚Ì—‘ğ
+	//’Êí
+	arrlen_init_random_combi arr, arr_len, 15, 7
+	assert arr_len == 7
+	repeat arr_len
+		assert 0 <= arr(cnt) && arr(cnt) < 15
+	loop
+	assert arrlen_is_sorted(arr, arr_len)
+	
+	//‹«ŠE(n == 0)
+	arrlen_init_random_combi arr, arr_len, 0, 0
+	assert arr_len == 0
+	
+	//‹«ŠE(n == k)
+	arrlen_init_random_combi arr, arr_len, 5, 5
+	expected = 0, 1, 2, 3, 4
+	assert arrlen_compare(arr, arr_len, expected, 5) == 0
+	
 	logmes "arrlen test completed."

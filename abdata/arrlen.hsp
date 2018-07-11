@@ -178,8 +178,32 @@
 	loop
 	return is_sorted
 	
+/**
+配列がおそらくソート済みなら真
+
+問題: init_random_combi のなかで用いられる arrlen_lb, _ub からもこの関数が呼ばれるせいですごく遅い。
+//*/
+#defcfunc arrlen_is_probably_sorted array self, int len, int sort_mode,  \
+	local result, local k, local ixs
+	
+	if ( len == 0 ) { return true }
+	
+	// 検査する要素対の個数
+	k = limit(int(logf(len) + 16), 0, len - 1)
+	arrlen_init_random_combi ixs, k, len - 1, k
+	
+	result = true
+	repeat k
+		if ( abdata_hom_cmp(self(cnt), self(cnt + 1)) * (1 - 2 * sort_mode) > 0 ) {
+			result = false : break
+		}
+	loop
+	return result
+	
 #defcfunc arrlen_lb array self, int len, var value, int sort_mode,  \
 	local lb, local ub, local mid, local cmp
+	
+	assert arrlen_is_probably_sorted(self, len, sort_mode)
 	
 	lb = -1 : ub = len
 	repeat
@@ -195,6 +219,8 @@
 	
 #defcfunc arrlen_ub array self, int len, var value, int sort_mode,  \
 	local lb, local ub, local mid, local cmp
+	
+	assert arrlen_is_probably_sorted(self, len, sort_mode)
 	
 	lb = -1 : ub = len
 	repeat
@@ -245,6 +271,48 @@
 	arrlen_erase_range self, len, lb, ub
 	return ub - lb
 	
+#deffunc arrlen_to_str array self, int len, var buf, str delim,  \
+	local s, local delim_len, local buf_size, local buf_len, local buf_len_next
+	
+	if ( vartype(buf) != 2 ) {
+		sdim buf, 64
+	}
+	if ( len == 0 ) {
+		poke buf
+		return 0
+	}
+	buf_size = 64
+	delim_len = strlen(delim)
+	repeat len
+		s = str(self(cnt))
+		buf_len_next = buf_len + strlen(s) + ((cnt != 0) * delim_len)
+		if ( buf_len_next >= buf_size ) {
+			buf_size = buf_len_next + (buf_size >> 1) + 1
+			memexpand buf, buf_size
+		}
+		
+		if ( cnt ) { poke buf, buf_len, delim : buf_len += strsize }
+		poke buf, buf_len, s : buf_len += strsize
+		assert buf_len == buf_len_next
+	loop
+	return buf_len
+	
+#deffunc arrlen_init_random_combi array self, var len, int n, int k,  \
+	local t
+	
+	assert 0 <= k && k <= n
+	dim self, k
+	len = 0
+	repeat k, n - k
+		t = rnd(cnt + 1)
+		arrlen_sorted_insert_v self, len, t, /* may_dup */ false
+		if ( stat ) { continue }
+		t = cnt
+		arrlen_sorted_insert_v self, len, t, /* may_dup */ false
+		assert stat == 1
+	loop
+	return
+
 #global
 
 #endif
