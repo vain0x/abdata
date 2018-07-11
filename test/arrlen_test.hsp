@@ -182,7 +182,7 @@
 	//•¶š—ñ‰»
 	arrlen_iota   arr, arr_len, 3
 	arrlen_to_str arr, arr_len, buf, ", "
-	assert buf == "0,1,2"
+	assert buf == "0, 1, 2"
 	
 	//‘g‚İ‡‚í‚¹‚Ì—‘ğ
 	//’Êí
