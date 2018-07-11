@@ -143,6 +143,3 @@ github vain0x/abdata >> paket.dependencies
 
 ## ライセンス/License
 本リポジトリに含まれるすべてのファイルは public domain とする。
-
-## リンク
-* プログラ広場 <http://prograpark.ninja-web.net/>
