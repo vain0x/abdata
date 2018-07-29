@@ -22,12 +22,10 @@
 		
 		dim idt
 		dict_new idt, vartype("int"), n
-		assert dict_needs_rebuild(idt, n) == 0
 		capa = dict_capacity(idt)
 		repeat n
 			dict_insert idt, ref_xs("#" + cnt), ref_xi(cnt)
 		loop
-		assert dict_capacity(idt) == capa
 	loop
 	
 	// 構築テスト: 連番、自動再構成
